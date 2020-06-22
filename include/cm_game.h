@@ -2,10 +2,12 @@
 #define CM_GAME_H
 
 #include <memory>
+#include <vector>
 #include <chrono>
 #include "cm_input.h"
 #include "cm_input_handler.h"
 #include "cm_renderer.h"
+#include "cm_actor.h"
 
 namespace cm
 {
@@ -20,6 +22,8 @@ namespace cm
         UserInput Input;
         std::shared_ptr<InputHandler> MainInputHandler = nullptr;
         std::shared_ptr<Renderer> MainRenderer = nullptr;
+
+        std::vector<std::shared_ptr<Actor>> Actors;
 
         void Update();
         void Render();

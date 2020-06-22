@@ -1,5 +1,6 @@
 #include "cm_game.h"
 #include "cm_logger.h"
+#include "cm_component_player_movement.h"
 
 namespace cm
 {
@@ -16,6 +17,10 @@ namespace cm
         Log("Initializing game...", LOG_INFO);
 
         MainRenderer->Init();
+
+        auto player = std::make_shared<Actor>(TILE_SIZE, TILE_SIZE);
+        player->AttachMovementComponent(std::make_shared<PlayerMovementComponent>(player, Input));
+        Actors.push_back(player);
 
         Running = true;
     }
@@ -78,7 +83,10 @@ namespace cm
 
     void Game::Update()
     {
-        // TODO: update game objects
+        for (auto a : Actors)
+        {
+            a->Update();
+        }
     }
 
     void Game::Render()
@@ -90,9 +98,10 @@ namespace cm
 
         MainRenderer->Prepare();
 
-        // TODO: render game objects
-
-        MainRenderer->DrawRectangle(100, 100, 200, 100);
+        for (auto a : Actors)
+        {
+            a->Render(MainRenderer);
+        }
 
         MainRenderer->Render();
     }
