@@ -3,6 +3,13 @@
 
 namespace cm
 {
+    GPU_Rect SDLGPURenderer::FlipRect(const GPU_Rect r)
+    {
+        GPU_Rect flipped = r;
+        flipped.y = ResolutionH - flipped.y - flipped.h;
+        return flipped;
+    }
+
     void SDLGPURenderer::Init()
     {
         Log("Initializing SDL GPU renderer...", LOG_INFO);
@@ -27,7 +34,7 @@ namespace cm
 
     void SDLGPURenderer::DrawRectangle(float x, float y, float w, float h)
     {
-        GPU_Rectangle(gpu, x, y, x + w, y + h, {0xFF, 0x00, 0x00, 0xFF});
+        GPU_RectangleRoundFilled2(gpu, FlipRect({x, y, w, h}), 8, {0xAA, 0x10, 0x00, 0xFF});
     }
 
 } // namespace cm

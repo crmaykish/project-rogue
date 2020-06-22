@@ -3,8 +3,8 @@
 
 namespace cm
 {
-    const int RESOLUTION_DEFAULT_W = 800;
-    const int RESOLUTION_DEFAULT_H = 600;
+    const int RESOLUTION_DEFAULT_W = 1280;
+    const int RESOLUTION_DEFAULT_H = 768;
 
     class SDLGPURenderer : public Renderer
     {
@@ -12,6 +12,8 @@ namespace cm
         GPU_Target *gpu;
         int ResolutionW = RESOLUTION_DEFAULT_W;
         int ResolutionH = RESOLUTION_DEFAULT_H;
+
+        GPU_Rect FlipRect(const GPU_Rect r);
 
     public:
         void Init() override;
