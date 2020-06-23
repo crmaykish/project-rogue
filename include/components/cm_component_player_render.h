@@ -4,13 +4,14 @@
 #include <memory>
 #include "cm_component_render.h"
 #include "cm_renderer.h"
+#include "cm_actor.h"
 
 namespace cm
 {
     class PlayerRenderComponent : public RenderComponent
     {
     private:
-        std::shared_ptr<Renderer> MainRenderer;
+        std::shared_ptr<Actor> Player;
 
     public:
         PlayerRenderComponent(std::shared_ptr<Actor> player, std::shared_ptr<Renderer> renderer);

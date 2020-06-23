@@ -3,8 +3,8 @@
 
 namespace cm
 {
-    PlayerMovementComponent::PlayerMovementComponent(std::shared_ptr<Actor> owner, UserInput &userInput)
-        : Input(userInput), Component(owner) {}
+    PlayerMovementComponent::PlayerMovementComponent(std::shared_ptr<Actor> player, UserInput &userInput)
+        : Player(player), Input(userInput) {}
 
     void PlayerMovementComponent::OnUpdate()
     {

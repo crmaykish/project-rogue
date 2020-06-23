@@ -3,8 +3,8 @@
 
 namespace cm
 {
-    PlayerRenderComponent::PlayerRenderComponent(std::shared_ptr<Actor> owner, std::shared_ptr<Renderer> renderer)
-        : MainRenderer(renderer), Owner(owner) {}
+    PlayerRenderComponent::PlayerRenderComponent(std::shared_ptr<Actor> player, std::shared_ptr<Renderer> renderer)
+        : Player(player), RenderComponent(renderer) {}
 
     void PlayerRenderComponent::OnUpdate() {}
 
@@ -13,8 +13,8 @@ namespace cm
         float playerOffset = 4;
         float playerSize = TILE_SIZE - 2 * playerOffset;
 
-        MainRenderer->DrawRectangle(Owner->GetX() + playerOffset,
-                                    Owner->GetY() + playerOffset,
+        MainRenderer->DrawRectangle(Player->GetX() + playerOffset,
+                                    Player->GetY() + playerOffset,
                                     playerSize,
                                     playerSize,
                                     COLOR_GREEN);

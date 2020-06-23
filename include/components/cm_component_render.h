@@ -9,11 +9,11 @@ namespace cm
 {
     class RenderComponent : public Component
     {
-    private:
+    protected:
         std::shared_ptr<Renderer> MainRenderer;
 
     public:
-        RenderComponent(std::share_ptr<Actor> owner, std::shared_ptr<Renderer> renderer);
+        RenderComponent(std::shared_ptr<Renderer> renderer);
     };
 } // namespace cm
 

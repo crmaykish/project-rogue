@@ -2,6 +2,8 @@
 #include "cm_logger.h"
 #include "cm_component_player_movement.h"
 #include "cm_component_player_render.h"
+#include "cm_component_enemy_render.h"
+#include "cm_component_enemy_movement.h"
 
 namespace cm
 {
@@ -29,6 +31,12 @@ namespace cm
         player->AttachMovementComponent(std::make_shared<PlayerMovementComponent>(player, Input));
         player->AttachRenderComponent(std::make_shared<PlayerRenderComponent>(player, MainRenderer));
         Actors.push_back(player);
+
+        // Add an enemy
+        auto enemy = std::make_shared<Actor>(6 * TILE_SIZE, 5 * TILE_SIZE);
+        enemy->AttachRenderComponent(std::make_shared<EnemyRenderComponent>(enemy, MainRenderer));
+        enemy->AttachMovementComponent(std::make_shared<EnemyMovementComponent>(enemy));
+        Actors.push_back(enemy);
 
         Running = true;
     }
