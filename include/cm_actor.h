@@ -7,8 +7,6 @@
 
 namespace cm
 {
-    const int TILE_SIZE = 64;
-
     class Actor
     {
     protected:

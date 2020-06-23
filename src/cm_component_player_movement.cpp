@@ -1,4 +1,5 @@
 #include "cm_component_player_movement.h"
+#include "cm_world.h"
 
 namespace cm
 {

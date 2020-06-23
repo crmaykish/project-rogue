@@ -8,6 +8,7 @@
 #include "cm_input_handler.h"
 #include "cm_renderer.h"
 #include "cm_actor.h"
+#include "cm_world.h"
 
 namespace cm
 {
@@ -24,6 +25,8 @@ namespace cm
         std::shared_ptr<Renderer> MainRenderer = nullptr;
 
         std::vector<std::shared_ptr<Actor>> Actors;
+
+        std::shared_ptr<World> CurrentWorld;
 
         void Update();
         void Render();

@@ -18,6 +18,9 @@ namespace cm
 
         MainRenderer->Init();
 
+        CurrentWorld = World::GenerateWorld();
+
+        // Create a player
         auto player = std::make_shared<Actor>(TILE_SIZE, TILE_SIZE);
         player->AttachMovementComponent(std::make_shared<PlayerMovementComponent>(player, Input));
         Actors.push_back(player);
@@ -98,10 +101,16 @@ namespace cm
 
         MainRenderer->Prepare();
 
+        // Render the world
+        CurrentWorld->Render(MainRenderer);
+
+        // Render the actors
         for (auto a : Actors)
         {
             a->Render(MainRenderer);
         }
+
+        // TODO: render the UI
 
         MainRenderer->Render();
     }
