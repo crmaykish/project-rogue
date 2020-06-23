@@ -3,10 +3,19 @@
 
 namespace cm
 {
-    GPU_Rect SDLGPURenderer::FlipRect(const GPU_Rect r)
+    GPU_Rect SDLGPURenderer::TransformRect(const GPU_Rect r)
     {
         GPU_Rect flipped = r;
+
         flipped.y = ResolutionH - flipped.y - flipped.h;
+
+        if (MainCamera != nullptr)
+        {
+            // Offset everything by the camera position
+            flipped.x -= MainCamera->GetX();
+            flipped.y -= MainCamera->GetY();
+        }
+
         return flipped;
     }
 
@@ -32,9 +41,14 @@ namespace cm
         GPU_Flip(gpu);
     }
 
+    void SDLGPURenderer::SetCamera(std::shared_ptr<Camera> camera)
+    {
+        MainCamera = camera;
+    }
+
     void SDLGPURenderer::DrawRectangle(float x, float y, float w, float h)
     {
-        GPU_RectangleRoundFilled2(gpu, FlipRect({x, y, w, h}), 8, {0xAA, 0x10, 0x00, 0xFF});
+        GPU_RectangleRoundFilled2(gpu, TransformRect({x, y, w, h}), 8, {0xAA, 0x10, 0x00, 0xFF});
     }
 
 } // namespace cm

@@ -16,7 +16,10 @@ namespace cm
     {
         Log("Initializing game...", LOG_INFO);
 
+        MainCamera = std::make_shared<Camera>();
+
         MainRenderer->Init();
+        MainRenderer->SetCamera(MainCamera);
 
         CurrentWorld = World::GenerateWorld();
 
@@ -50,14 +53,8 @@ namespace cm
 
             while (lag >= TIME_PER_TICK)
             {
-                if (Input.Quit.On)
-                {
-                    Running = false;
-                }
-
                 Update();
 
-                // Input has been handled
                 Input.Reset();
 
                 lag -= TIME_PER_TICK;
@@ -86,6 +83,22 @@ namespace cm
 
     void Game::Update()
     {
+        if (Input.Quit.On)
+        {
+            Running = false;
+        }
+
+        // Update camera
+        if (Input.Mouse.Left.Once())
+        {
+            mouseDownX = Input.Mouse.X + MainCamera->GetX();
+            mouseDownY = Input.Mouse.Y + MainCamera->GetY();
+        }
+        else if (Input.Mouse.Left.On)
+        {
+            MainCamera->SetPosition(mouseDownX - Input.Mouse.X, mouseDownY - Input.Mouse.Y);
+        }
+
         for (auto a : Actors)
         {
             a->Update();
