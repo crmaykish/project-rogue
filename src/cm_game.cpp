@@ -1,6 +1,7 @@
 #include "cm_game.h"
 #include "cm_logger.h"
 #include "cm_component_player_movement.h"
+#include "cm_component_player_render.h"
 
 namespace cm
 {
@@ -26,6 +27,7 @@ namespace cm
         // Create a player
         auto player = std::make_shared<Actor>(TILE_SIZE, TILE_SIZE);
         player->AttachMovementComponent(std::make_shared<PlayerMovementComponent>(player, Input));
+        player->AttachRenderComponent(std::make_shared<PlayerRenderComponent>(player, MainRenderer));
         Actors.push_back(player);
 
         Running = true;
@@ -120,7 +122,7 @@ namespace cm
         // Render the actors
         for (auto a : Actors)
         {
-            a->Render(MainRenderer);
+            a->Render();
         }
 
         // TODO: render the UI

@@ -1,6 +1,9 @@
 #ifndef CM_COMPONENT_H
 #define CM_COMPONENT_H
 
+#include <memory>
+#include "cm_actor.h"
+
 namespace cm
 {
     class Component

@@ -10,11 +10,19 @@ namespace cm
         {
             MovementComponent->OnUpdate();
         }
+
+        if (RenderComponent != nullptr)
+        {
+            RenderComponent->OnUpdate();
+        }
     }
 
-    void Actor::Render(std::shared_ptr<Renderer> renderer)
+    void Actor::Render()
     {
-        renderer->DrawRectangle(X, Y, 64, 64, COLOR_GREEN);
+        if (RenderComponent != nullptr)
+        {
+            RenderComponent->OnRender();
+        }
     }
 
     void Actor::Move(float x, float y)
@@ -23,9 +31,24 @@ namespace cm
         Y += y;
     }
 
+    float Actor::GetX()
+    {
+        return X;
+    }
+
+    float Actor::GetY()
+    {
+        return Y;
+    }
+
     void Actor::AttachMovementComponent(std::shared_ptr<Component> movementComponent)
     {
         MovementComponent = movementComponent;
+    }
+
+    void Actor::AttachRenderComponent(std::shared_ptr<Component> renderComponent)
+    {
+        RenderComponent = renderComponent;
     }
 
 } // namespace cm
