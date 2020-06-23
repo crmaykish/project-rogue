@@ -14,7 +14,7 @@ namespace cm
 
     void Actor::Render(std::shared_ptr<Renderer> renderer)
     {
-        renderer->DrawRectangle(X, Y, 64, 64);
+        renderer->DrawRectangle(X, Y, 64, 64, COLOR_GREEN);
     }
 
     void Actor::Move(float x, float y)

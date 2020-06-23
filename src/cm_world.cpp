@@ -25,7 +25,7 @@ namespace cm
         {
             if (!t.Walkable)
             {
-                renderer->DrawRectangle(t.X * TILE_SIZE, t.Y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                renderer->DrawRectangle(t.X * TILE_SIZE, t.Y * TILE_SIZE, TILE_SIZE, TILE_SIZE, COLOR_GREY);
             }
         }
     }

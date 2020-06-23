@@ -46,9 +46,10 @@ namespace cm
         MainCamera = camera;
     }
 
-    void SDLGPURenderer::DrawRectangle(float x, float y, float w, float h)
+    void SDLGPURenderer::DrawRectangle(float x, float y, float w, float h, Color color)
     {
-        GPU_RectangleRoundFilled2(gpu, TransformRect({x, y, w, h}), 8, {0xAA, 0x10, 0x00, 0xFF});
+        SDL_Color c = {color.red, color.green, color.blue, color.alpha};
+        GPU_RectangleRoundFilled2(gpu, TransformRect({x, y, w, h}), 8, c);
     }
 
 } // namespace cm

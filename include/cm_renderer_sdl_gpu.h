@@ -26,6 +26,6 @@ namespace cm
 
         void SetCamera(std::shared_ptr<Camera> camera) override;
 
-        void DrawRectangle(float x, float y, float w, float h) override;
+        void DrawRectangle(float x, float y, float w, float h, Color color) override;
     };
 } // namespace cm

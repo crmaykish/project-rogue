@@ -3,6 +3,7 @@
 
 #include <memory>
 #include "cm_camera.h"
+#include "cm_color.h"
 
 namespace cm
 {
@@ -16,7 +17,7 @@ namespace cm
 
         virtual void SetCamera(std::shared_ptr<Camera> camera) = 0;
 
-        virtual void DrawRectangle(float x, float y, float w, float h) = 0;
+        virtual void DrawRectangle(float x, float y, float w, float h, Color color) = 0;
     };
 } // namespace cm
 
