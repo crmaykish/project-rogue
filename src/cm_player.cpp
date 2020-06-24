@@ -2,10 +2,7 @@
 
 namespace cm
 {
-    Player::Player(float x, float y,
-                   std::shared_ptr<World> world,
-                   UserInput &input,
-                   std::shared_ptr<Renderer> renderer)
+    Player::Player(float x, float y, World &world, UserInput &input, Renderer &renderer)
         : Actor(x, y),
           CurrentWorld(world),
           Input(input),
@@ -15,17 +12,17 @@ namespace cm
     {
         if (Input.Right.Once())
         {
-            X += TILE_SIZE;
+            // TODO move right
         }
         else if (Input.Left.Once())
         {
-            X -= TILE_SIZE;
+            // TODO move left
         }
     }
 
     void Player::Render()
     {
-        MainRenderer->DrawRectangle(X, Y, TILE_SIZE, TILE_SIZE, COLOR_GREEN);
+        MainRenderer.DrawRectangle(X, Y, TILE_SIZE, TILE_SIZE, COLOR_GREEN);
     }
 
 } // namespace cm

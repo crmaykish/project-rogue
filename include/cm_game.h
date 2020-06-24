@@ -9,7 +9,6 @@
 #include "cm_renderer.h"
 #include "cm_actor.h"
 #include "cm_world.h"
-#include "cm_camera.h"
 
 namespace cm
 {
@@ -26,10 +25,10 @@ namespace cm
         int mouseDownX = 0;
         int mouseDownY = 0;
 
-        std::shared_ptr<InputHandler> MainInputHandler = nullptr;
-        std::shared_ptr<Renderer> MainRenderer = nullptr;
-        std::shared_ptr<Camera> MainCamera = nullptr;
-        std::shared_ptr<World> CurrentWorld = nullptr;
+        std::unique_ptr<InputHandler> MainInputHandler = nullptr;
+        std::unique_ptr<Renderer> MainRenderer = nullptr;
+        std::unique_ptr<World> CurrentWorld = nullptr;
+
         std::vector<std::shared_ptr<Actor>> Actors;
 
         void Update();
@@ -43,8 +42,8 @@ namespace cm
         void Loop();
         void Close();
 
-        void SetMainInputHandler(std::shared_ptr<InputHandler> mainInputHandler);
-        void SetMainRenderer(std::shared_ptr<Renderer> mainRenderer);
+        void SetMainInputHandler(std::unique_ptr<InputHandler> mainInputHandler);
+        void SetMainRenderer(std::unique_ptr<Renderer> mainRenderer);
     };
 
 } // namespace cm

@@ -1,8 +1,6 @@
 #ifndef CM_RENDERER_H
 #define CM_RENDERER_H
 
-#include <memory>
-#include "cm_camera.h"
 #include "cm_color.h"
 
 namespace cm
@@ -14,8 +12,9 @@ namespace cm
         virtual void Close() = 0;
         virtual void Prepare() = 0;
         virtual void Render() = 0;
-
-        virtual void SetCamera(std::shared_ptr<Camera> camera) = 0;
+        virtual void SetCameraPosition(float x, float y) = 0;
+        virtual float GetCamX() = 0;
+        virtual float GetCamY() = 0;
 
         virtual void DrawRectangle(float x, float y, float w, float h, Color color) = 0;
     };

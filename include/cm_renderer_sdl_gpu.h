@@ -10,11 +10,10 @@ namespace cm
     {
     private:
         GPU_Target *gpu;
-        
         int ResolutionW = RESOLUTION_DEFAULT_W;
         int ResolutionH = RESOLUTION_DEFAULT_H;
-
-        std::shared_ptr<Camera> MainCamera;
+        float CameraOffsetX = 0.0;
+        float CameraOffsetY = 0.0;
 
         GPU_Rect TransformRect(const GPU_Rect r);
 
@@ -23,8 +22,9 @@ namespace cm
         void Close() override;
         void Prepare() override;
         void Render() override;
-
-        void SetCamera(std::shared_ptr<Camera> camera) override;
+        void SetCameraPosition(float x, float y) override;
+        virtual float GetCamX() override;
+        virtual float GetCamY() override;
 
         void DrawRectangle(float x, float y, float w, float h, Color color) override;
     };

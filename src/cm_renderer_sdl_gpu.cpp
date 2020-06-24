@@ -9,12 +9,9 @@ namespace cm
 
         flipped.y = ResolutionH - flipped.y - flipped.h;
 
-        if (MainCamera != nullptr)
-        {
-            // Offset everything by the camera position
-            flipped.x -= MainCamera->GetX();
-            flipped.y -= MainCamera->GetY();
-        }
+        // Offset everything by the camera position
+        flipped.x -= CameraOffsetX;
+        flipped.y -= CameraOffsetY;
 
         return flipped;
     }
@@ -41,9 +38,20 @@ namespace cm
         GPU_Flip(gpu);
     }
 
-    void SDLGPURenderer::SetCamera(std::shared_ptr<Camera> camera)
+    void SDLGPURenderer::SetCameraPosition(float x, float y)
     {
-        MainCamera = camera;
+        CameraOffsetX = x;
+        CameraOffsetY = y;
+    }
+
+    float SDLGPURenderer::GetCamX()
+    {
+        return CameraOffsetX;
+    }
+
+    float SDLGPURenderer::GetCamY()
+    {
+        return CameraOffsetY;
     }
 
     void SDLGPURenderer::DrawRectangle(float x, float y, float w, float h, Color color)

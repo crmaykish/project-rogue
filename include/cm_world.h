@@ -25,11 +25,11 @@ namespace cm
         int Turn = 1;
 
     public:
-        static std::shared_ptr<World> GenerateWorld(int width, int height);
+        static std::unique_ptr<World> GenerateWorld(int width, int height);
 
         void Update();
         void Step();
-        void Render(std::shared_ptr<Renderer> renderer);
+        void Render(Renderer &renderer);
 
         Tile TileAt(int x, int y);
     };

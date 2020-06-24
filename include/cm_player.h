@@ -1,7 +1,6 @@
 #ifndef CM_PLAYER_H
 #define CM_PLAYER_H
 
-#include <memory>
 #include "cm_actor.h"
 #include "cm_world.h"
 #include "cm_renderer.h"
@@ -12,12 +11,12 @@ namespace cm
     class Player : public Actor
     {
     private:
-        std::shared_ptr<World> CurrentWorld;
+        World &CurrentWorld;
         UserInput &Input;
-        std::shared_ptr<Renderer> MainRenderer;
+        Renderer &MainRenderer;
 
     public:
-        Player(float x, float y, std::shared_ptr<World> world, UserInput &input, std::shared_ptr<Renderer> renderer);
+        Player(float x, float y, World &world, UserInput &input, Renderer &renderer);
         void Update() override;
         void Render() override;
     };

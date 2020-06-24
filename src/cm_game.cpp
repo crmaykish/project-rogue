@@ -17,17 +17,14 @@ namespace cm
     {
         Log("Initializing game...", LOG_INFO);
 
-        MainCamera = std::make_shared<Camera>();
-
         MainRenderer->Init();
-        MainRenderer->SetCamera(MainCamera);
 
         CurrentWorld = World::GenerateWorld(40, 24);
 
         // move actors to world?
 
         // Create a player
-        auto player = std::make_shared<Player>(TILE_SIZE, TILE_SIZE, CurrentWorld, Input, MainRenderer);
+        auto player = std::make_shared<Player>(TILE_SIZE, TILE_SIZE, *CurrentWorld, Input, *MainRenderer);
         Actors.push_back(player);
 
         // Create an enemy
@@ -77,14 +74,14 @@ namespace cm
         MainRenderer->Close();
     }
 
-    void Game::SetMainInputHandler(std::shared_ptr<InputHandler> mainInputHandler)
+    void Game::SetMainInputHandler(std::unique_ptr<InputHandler> mainInputHandler)
     {
-        MainInputHandler = mainInputHandler;
+        MainInputHandler = std::move(mainInputHandler);
     }
 
-    void Game::SetMainRenderer(std::shared_ptr<Renderer> mainRenderer)
+    void Game::SetMainRenderer(std::unique_ptr<Renderer> mainRenderer)
     {
-        MainRenderer = mainRenderer;
+        MainRenderer = std::move(mainRenderer);
     }
 
     void Game::Update()
@@ -97,12 +94,12 @@ namespace cm
         // Update camera
         if (Input.Mouse.Left.Once())
         {
-            mouseDownX = Input.Mouse.X + MainCamera->GetX();
-            mouseDownY = Input.Mouse.Y + MainCamera->GetY();
+            mouseDownX = Input.Mouse.X + MainRenderer->GetCamX();
+            mouseDownY = Input.Mouse.Y + MainRenderer->GetCamY();
         }
         else if (Input.Mouse.Left.On)
         {
-            MainCamera->SetPosition(mouseDownX - Input.Mouse.X, mouseDownY - Input.Mouse.Y);
+            MainRenderer->SetCameraPosition(mouseDownX - Input.Mouse.X, mouseDownY - Input.Mouse.Y);
         }
 
         // Update the world
@@ -133,7 +130,7 @@ namespace cm
         MainRenderer->Prepare();
 
         // Render the world
-        CurrentWorld->Render(MainRenderer);
+        CurrentWorld->Render(*MainRenderer);
 
         // Render the actors
         for (auto a : Actors)

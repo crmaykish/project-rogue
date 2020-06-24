@@ -3,11 +3,11 @@
 
 namespace cm
 {
-    std::shared_ptr<World> World::GenerateWorld(int width, int height)
+    std::unique_ptr<World> World::GenerateWorld(int width, int height)
     {
         Log("Generating world", LOG_INFO);
 
-        auto world = std::make_shared<World>();
+        auto world = std::make_unique<World>();
 
         // Create a map
         for (int i = 0; i < width; i++)
@@ -40,13 +40,13 @@ namespace cm
         Turn++; // TODO: only if it succeeds
     }
 
-    void World::Render(std::shared_ptr<Renderer> renderer)
+    void World::Render(Renderer &renderer)
     {
         for (auto t : Map)
         {
             if (!t.Walkable)
             {
-                renderer->DrawRectangle(t.X * TILE_SIZE, t.Y * TILE_SIZE, TILE_SIZE, TILE_SIZE, COLOR_GREY);
+                renderer.DrawRectangle(t.X * TILE_SIZE, t.Y * TILE_SIZE, TILE_SIZE, TILE_SIZE, COLOR_GREY);
             }
         }
     }

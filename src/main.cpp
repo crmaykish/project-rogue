@@ -6,9 +6,9 @@
 int main(int argv, char **args)
 {
     cm::Game game;
-    
-    game.SetMainInputHandler(std::make_shared<cm::SDLInputHandler>());
-    game.SetMainRenderer(std::make_shared<cm::SDLGPURenderer>());
+
+    game.SetMainInputHandler(std::make_unique<cm::SDLInputHandler>());
+    game.SetMainRenderer(std::make_unique<cm::SDLGPURenderer>());
 
     game.Init();
     game.Loop();
