@@ -12,7 +12,7 @@ namespace cm
         float Y = 0;
 
     public:
-        Actor(float x, float y);
+        virtual ~Actor() {}
         virtual void Update() = 0;
         virtual void Render() = 0;
         float GetX();

@@ -2,8 +2,6 @@
 
 namespace cm
 {
-    Actor::Actor(float x, float y) : X(x), Y(y) {}
-
     void Actor::Move(float x, float y)
     {
         X += x;

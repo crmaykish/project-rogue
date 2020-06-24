@@ -8,6 +8,7 @@ namespace cm
     class InputHandler
     {
     public:
+        virtual ~InputHandler() {}
         virtual void PollForInput(UserInput &userinput) = 0;
     };
 

@@ -2,13 +2,11 @@
 #define CM_GAME_H
 
 #include <memory>
-#include <vector>
 #include <chrono>
 #include "cm_input.h"
 #include "cm_input_handler.h"
 #include "cm_renderer.h"
-#include "cm_actor.h"
-#include "cm_world.h"
+#include "cm_game_world.h"
 
 namespace cm
 {
@@ -25,19 +23,14 @@ namespace cm
         int mouseDownX = 0;
         int mouseDownY = 0;
 
+        std::unique_ptr<GameWorld> World;
         std::unique_ptr<InputHandler> MainInputHandler = nullptr;
         std::unique_ptr<Renderer> MainRenderer = nullptr;
-        std::unique_ptr<World> CurrentWorld = nullptr;
-
-        std::vector<std::shared_ptr<Actor>> Actors;
 
         void Update();
         void Render();
 
     public:
-        Game();
-        ~Game();
-
         void Init();
         void Loop();
         void Close();

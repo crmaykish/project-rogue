@@ -1,35 +1,20 @@
 #include "cm_game.h"
 #include "cm_logger.h"
 #include "cm_player.h"
-#include "cm_enemy.h"
 
 namespace cm
 {
-    Game::Game()
-    {
-    }
-
-    Game::~Game()
-    {
-    }
-
     void Game::Init()
     {
         Log("Initializing game...", LOG_INFO);
 
+        World = std::make_unique<GameWorld>(100, 40);
+
         MainRenderer->Init();
 
-        CurrentWorld = World::GenerateWorld(40, 24);
-
-        // move actors to world?
-
-        // Create a player
-        auto player = std::make_shared<Player>(TILE_SIZE, TILE_SIZE, *CurrentWorld, Input, *MainRenderer);
-        Actors.push_back(player);
-
-        // Create an enemy
-        auto enemy = std::make_shared<Enemy>(7 * TILE_SIZE, 8 * TILE_SIZE);
-        Actors.push_back(enemy);
+        // create a player
+        auto player = std::make_unique<Player>(*World, Input, *MainRenderer);
+        // World->AddActor();
 
         Running = true;
     }
@@ -102,21 +87,12 @@ namespace cm
             MainRenderer->SetCameraPosition(mouseDownX - Input.Mouse.X, mouseDownY - Input.Mouse.Y);
         }
 
-        // Update the world
-        CurrentWorld->Update();
-
         // TODO: this is a pretty hacky way to trigger a turn, make this more robust
         // maybe this belongs in the player code? Need a way to not step if the movement fails
         if (Input.Left.Once() || Input.Right.Once() || Input.Up.Once() || Input.Down.Once())
         {
             // Handle a turn of the game world
-            CurrentWorld->Step();
-        }
-
-        // Update the actors
-        for (auto a : Actors)
-        {
-            a->Update();
+            World->Step();
         }
     }
 
@@ -129,16 +105,7 @@ namespace cm
 
         MainRenderer->Prepare();
 
-        // Render the world
-        CurrentWorld->Render(*MainRenderer);
-
-        // Render the actors
-        for (auto a : Actors)
-        {
-            a->Render();
-        }
-
-        // TODO: render the UI
+        World->Render(*MainRenderer);
 
         MainRenderer->Render();
     }

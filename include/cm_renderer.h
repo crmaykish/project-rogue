@@ -8,6 +8,7 @@ namespace cm
     class Renderer
     {
     public:
+        virtual ~Renderer() {}
         virtual void Init() = 0;
         virtual void Close() = 0;
         virtual void Prepare() = 0;
