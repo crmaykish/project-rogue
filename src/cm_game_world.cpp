@@ -1,6 +1,7 @@
 #include "cm_game_world.h"
 #include "cm_player.h"
 #include "cm_logger.h"
+#include "cm_enemy.h"
 
 namespace cm
 {
@@ -20,6 +21,12 @@ namespace cm
                 Tiles.push_back({i, j, !solid});
             }
         }
+
+        // Add some enemies
+        for (int i = 0; i < 10; i++)
+        {
+            AddActor(std::make_unique<Enemy>(*this));
+        }
     }
 
     void GameWorld::Step()
@@ -28,13 +35,13 @@ namespace cm
 
         for (auto &a : Actors)
         {
-            // a is now a reference to a unique pointer?
             a->Update();
         }
     }
 
     void GameWorld::Render(Renderer &renderer)
     {
+        // Render world tiles
         for (auto t : Tiles)
         {
             if (!t.Walkable)
@@ -43,11 +50,16 @@ namespace cm
             }
         }
 
-        // TODO: render actors
+        // Render actors
+        for (auto const &a : Actors)
+        {
+            a->Render(renderer);
+        }
     }
 
     void GameWorld::AddActor(std::unique_ptr<Actor> actor)
     {
-        Log("adding actor", LOG_INFO);
+        Actors.emplace_back(std::move(actor));
     }
+
 } // namespace cm

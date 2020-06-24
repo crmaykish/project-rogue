@@ -1,12 +1,8 @@
 #include "cm_player.h"
-#include "cm_tile.h"
 
 namespace cm
 {
-    Player::Player(GameWorld &world, UserInput &input, Renderer &renderer)
-        : World(world),
-          Input(input),
-          MainRenderer(renderer) {}
+    Player::Player(GameWorld &world, UserInput &input) : World(world), Input(input) {}
 
     void Player::Update()
     {
@@ -20,9 +16,9 @@ namespace cm
         }
     }
 
-    void Player::Render()
+    void Player::Render(Renderer &renderer)
     {
-        MainRenderer.DrawRectangle(X, Y, TileSize, TileSize, COLOR_GREEN);
+        renderer.DrawRectangle(X, Y, TileSize, TileSize, COLOR_GREEN);
     }
 
 } // namespace cm

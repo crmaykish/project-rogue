@@ -13,8 +13,7 @@ namespace cm
         MainRenderer->Init();
 
         // create a player
-        auto player = std::make_unique<Player>(*World, Input, *MainRenderer);
-        // World->AddActor();
+        World->AddActor(std::make_unique<Player>(*World, Input));
 
         Running = true;
     }

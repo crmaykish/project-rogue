@@ -3,6 +3,8 @@
 
 #include <memory>
 
+#include "cm_renderer.h"
+
 namespace cm
 {
     class Actor
@@ -14,7 +16,7 @@ namespace cm
     public:
         virtual ~Actor() {}
         virtual void Update() = 0;
-        virtual void Render() = 0;
+        virtual void Render(Renderer &renderer) = 0;
         float GetX();
         float GetY();
         void Move(float x, float y);
