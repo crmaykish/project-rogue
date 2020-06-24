@@ -24,7 +24,7 @@ namespace cm
         MainRenderer->Init();
         MainRenderer->SetCamera(MainCamera);
 
-        CurrentWorld = World::GenerateWorld(40, 30);
+        CurrentWorld = World::GenerateWorld(40, 24);
 
         // Create a player
         auto player = std::make_shared<Actor>(TILE_SIZE, TILE_SIZE);
@@ -33,9 +33,9 @@ namespace cm
         Actors.push_back(player);
 
         // Add an enemy
-        auto enemy = std::make_shared<Actor>(6 * TILE_SIZE, 5 * TILE_SIZE);
+        auto enemy = std::make_shared<Actor>(7 * TILE_SIZE, 8 * TILE_SIZE);
         enemy->AttachRenderComponent(std::make_shared<EnemyRenderComponent>(enemy, MainRenderer));
-        enemy->AttachMovementComponent(std::make_shared<EnemyMovementComponent>(enemy));
+        enemy->AttachMovementComponent(std::make_shared<EnemyMovementComponent>(enemy, CurrentWorld));
         Actors.push_back(enemy);
 
         Running = true;

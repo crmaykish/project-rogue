@@ -11,7 +11,10 @@ namespace cm
         {
             for (int j = 0; j < height; j++)
             {
-                bool solid = (i % 4 == 0) && (j % 5 == 0);
+                bool solid = (i == 0) || (i == width - 1) ||
+                             (j == 0) || (j == height - 1) ||
+                             ((i % 5 == 0) && (j % 5 == 0));
+
                 world->Map.push_back({i, j, !solid});
             }
         }
@@ -29,4 +32,19 @@ namespace cm
             }
         }
     }
+
+    Tile World::TileAt(int x, int y)
+    {
+        // TODO: depending on how often this is called, storing a full array of tiles might be faster
+        for (auto t : Map)
+        {
+            if (t.X == x && t.Y == y)
+            {
+                return t;
+            }
+        }
+
+        return Tile{0, 0, true, true};
+    }
+
 } // namespace cm
