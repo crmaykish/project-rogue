@@ -7,7 +7,7 @@
 
 namespace cm
 {
-    const int TILE_SIZE = 64;
+    const int TILE_SIZE = 32;
 
     struct Tile
     {
