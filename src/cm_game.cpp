@@ -1,9 +1,7 @@
 #include "cm_game.h"
 #include "cm_logger.h"
-#include "cm_component_player_movement.h"
-#include "cm_component_player_render.h"
-#include "cm_component_enemy_render.h"
-#include "cm_component_enemy_movement.h"
+#include "cm_player.h"
+#include "cm_enemy.h"
 
 namespace cm
 {
@@ -26,16 +24,14 @@ namespace cm
 
         CurrentWorld = World::GenerateWorld(40, 24);
 
+        // move actors to world?
+
         // Create a player
-        auto player = std::make_shared<Actor>(TILE_SIZE, TILE_SIZE);
-        player->AttachMovementComponent(std::make_shared<PlayerMovementComponent>(player, Input));
-        player->AttachRenderComponent(std::make_shared<PlayerRenderComponent>(player, MainRenderer));
+        auto player = std::make_shared<Player>(TILE_SIZE, TILE_SIZE, CurrentWorld, Input, MainRenderer);
         Actors.push_back(player);
 
-        // Add an enemy
-        auto enemy = std::make_shared<Actor>(7 * TILE_SIZE, 8 * TILE_SIZE);
-        enemy->AttachRenderComponent(std::make_shared<EnemyRenderComponent>(enemy, MainRenderer));
-        enemy->AttachMovementComponent(std::make_shared<EnemyMovementComponent>(enemy, CurrentWorld));
+        // Create an enemy
+        auto enemy = std::make_shared<Enemy>(7 * TILE_SIZE, 8 * TILE_SIZE);
         Actors.push_back(enemy);
 
         Running = true;

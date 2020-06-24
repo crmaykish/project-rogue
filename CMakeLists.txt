@@ -9,7 +9,6 @@ file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
 file(COPY config DESTINATION ${CMAKE_BINARY_DIR})
 
 include_directories(include)
-include_directories(include/components)
 
 add_subdirectory(src)
 add_subdirectory(test)
