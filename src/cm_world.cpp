@@ -1,9 +1,12 @@
 #include "cm_world.h"
+#include "cm_logger.h"
 
 namespace cm
 {
     std::shared_ptr<World> World::GenerateWorld(int width, int height)
     {
+        Log("Generating world", LOG_INFO);
+
         auto world = std::make_shared<World>();
 
         // Create a map
@@ -20,6 +23,21 @@ namespace cm
         }
 
         return world;
+    }
+
+    void World::Update()
+    {
+        // Anything that happens in real time goes here
+    }
+
+    void World::Step()
+    {
+        // Anything that happens once per turn goes here
+
+        Log("Turn: " + std::to_string(Turn), LOG_INFO);
+
+        // Turn succeed flag in Actor?
+        Turn++; // TODO: only if it succeeds
     }
 
     void World::Render(std::shared_ptr<Renderer> renderer)

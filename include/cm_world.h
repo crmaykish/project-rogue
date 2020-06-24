@@ -15,17 +15,20 @@ namespace cm
         int X = 0;
         int Y = 0;
         bool Walkable = true;
-        bool NullTile = false;  // hack
+        bool NullTile = false; // hack
     };
 
     class World
     {
     private:
         std::vector<Tile> Map;
+        int Turn = 1;
 
     public:
         static std::shared_ptr<World> GenerateWorld(int width, int height);
-        
+
+        void Update();
+        void Step();
         void Render(std::shared_ptr<Renderer> renderer);
 
         Tile TileAt(int x, int y);
