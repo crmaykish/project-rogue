@@ -2,14 +2,14 @@
 
 namespace cm
 {
-    std::shared_ptr<World> World::GenerateWorld()
+    std::shared_ptr<World> World::GenerateWorld(int width, int height)
     {
         auto world = std::make_shared<World>();
 
         // Create a map
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < width; i++)
         {
-            for (int j = 0; j < 15; j++)
+            for (int j = 0; j < height; j++)
             {
                 bool solid = (i % 4 == 0) && (j % 5 == 0);
                 world->Map.push_back({i, j, !solid});

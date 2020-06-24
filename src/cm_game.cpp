@@ -24,7 +24,7 @@ namespace cm
         MainRenderer->Init();
         MainRenderer->SetCamera(MainCamera);
 
-        CurrentWorld = World::GenerateWorld();
+        CurrentWorld = World::GenerateWorld(40, 30);
 
         // Create a player
         auto player = std::make_shared<Actor>(TILE_SIZE, TILE_SIZE);

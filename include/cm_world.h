@@ -22,7 +22,7 @@ namespace cm
         std::vector<Tile> Map;
 
     public:
-        static std::shared_ptr<World> GenerateWorld();
+        static std::shared_ptr<World> GenerateWorld(int width, int height);
 
         void Render(std::shared_ptr<Renderer> renderer);
     };
