@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "cm_game_world.h"
 #include "cm_player.h"
 #include "cm_enemy.h"
@@ -34,12 +35,18 @@ namespace cm
 
     void GameWorld::Step()
     {
-        // TODO: step all the actors
-
         for (auto &a : Actors)
         {
             a->Update();
         }
+    }
+
+    void GameWorld::Update()
+    {
+        Actors.erase(std::remove_if(Actors.begin(),
+                                    Actors.end(),
+                                    [](auto &a) { Log("Removing inactive actor", LOG_INFO);  return !a->IsActive(); }),
+                     Actors.end());
     }
 
     void GameWorld::Render(Renderer &renderer)

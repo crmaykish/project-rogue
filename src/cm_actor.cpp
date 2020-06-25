@@ -18,4 +18,9 @@ namespace cm
         return Y;
     }
 
+    bool Actor::IsActive()
+    {
+        return Active;
+    }
+
 } // namespace cm

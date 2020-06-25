@@ -12,6 +12,7 @@ namespace cm
     protected:
         float X = 0;
         float Y = 0;
+        bool Active;
 
     public:
         virtual ~Actor() {}
@@ -20,6 +21,8 @@ namespace cm
         float GetX();
         float GetY();
         void Move(float x, float y);
+
+        bool IsActive();
     };
 
 } // namespace cm

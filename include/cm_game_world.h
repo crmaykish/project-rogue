@@ -19,7 +19,7 @@ namespace cm
     public:
         GameWorld(int x, int y);
         void Step();
-        // void Update();
+        void Update();
         void Render(Renderer &renderer);
 
         void AddActor(std::unique_ptr<Actor> actor);
