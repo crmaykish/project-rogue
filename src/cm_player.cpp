@@ -7,11 +7,13 @@ namespace cm
         // TODO: the world should decide the player starting position
         X = 64;
         Y = 64;
+
+        MaxHP = 100;
+        HP = MaxHP;
     }
 
     void Player::Update()
     {
-
         int moveX = 0;
         int moveY = 0;
 
@@ -34,13 +36,23 @@ namespace cm
 
         if (moveX != 0 || moveY != 0)
         {
-            // is target tile walkable?
-
-            auto targetTile = World.GetTile((X / TileSize) + moveX, (Y / TileSize) + moveY);
+            int tileX = (X / TileSize);
+            int tileY = (Y / TileSize);
+            auto targetTile = World.GetTile(tileX + moveX, tileY + moveY);
 
             if (targetTile.Type == TileType::Empty)
             {
-                Move(moveX * TileSize, moveY * TileSize);
+                auto enemy = World.GetActor(tileX + moveX, tileY + moveY);
+
+                if (enemy == nullptr)
+                {
+                    Move(moveX * TileSize, moveY * TileSize);
+                }
+                else
+                {
+                    // attack
+                    enemy->Damage(10);
+                }
             }
         }
     }

@@ -15,7 +15,7 @@ namespace cm
         MainRenderer->Init();
 
         // create a player
-        World->AddActor(std::make_unique<Player>(*World, Input));
+        World->AddActor(std::make_shared<Player>(*World, Input));
 
         Running = true;
     }

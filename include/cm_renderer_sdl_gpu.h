@@ -1,4 +1,5 @@
 #include <SDL_gpu.h>
+#include <SDL_ttf.h>
 #include "cm_renderer.h"
 
 namespace cm

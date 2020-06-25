@@ -10,9 +10,13 @@ namespace cm
     class Actor
     {
     protected:
+        bool Active;
         float X = 0;
         float Y = 0;
-        bool Active;
+
+        // TODO: might be better to move the HP system into a component or at least into the subclasses
+        int HP = 0;
+        int MaxHP = 0;
 
     public:
         virtual ~Actor() {}
@@ -23,6 +27,10 @@ namespace cm
         void Move(float x, float y);
 
         bool IsActive();
+
+        int GetHP();
+        int GetMaxHP();
+        void Damage(int damage);
     };
 
 } // namespace cm

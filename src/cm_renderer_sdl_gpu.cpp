@@ -20,6 +20,11 @@ namespace cm
     {
         Log("Initializing SDL GPU renderer...", LOG_INFO);
 
+        if (TTF_Init() != 0)
+        {
+            Log("Failed to init TTF: " + std::string(TTF_GetError()), LOG_ERROR);
+        }
+
         gpu = GPU_Init(ResolutionW, ResolutionH, GPU_DEFAULT_INIT_FLAGS);
     }
 

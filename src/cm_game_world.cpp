@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <math.h>
 #include "cm_game_world.h"
 #include "cm_player.h"
 #include "cm_enemy.h"
@@ -67,9 +68,9 @@ namespace cm
         }
     }
 
-    void GameWorld::AddActor(std::unique_ptr<Actor> actor)
+    void GameWorld::AddActor(std::shared_ptr<Actor> actor)
     {
-        Actors.emplace_back(std::move(actor));
+        Actors.push_back(actor);
     }
 
     const Tile GameWorld::GetTile(int x, int y)
@@ -88,6 +89,19 @@ namespace cm
         }
 
         return Tile{0, 0, TileType::Empty};
+    }
+
+    std::shared_ptr<Actor> GameWorld::GetActor(int x, int y)
+    {
+        for (auto a : Actors)
+        {
+            if (std::floor(a->GetX() * TileSize) == x && std::floor(a->GetY() * TileSize) == y)
+            {
+                return a;
+            }
+        }
+
+        return nullptr;
     }
 
     int GameWorld::GetWidth()

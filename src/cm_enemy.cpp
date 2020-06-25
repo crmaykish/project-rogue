@@ -5,9 +5,10 @@ namespace cm
 {
     Enemy::Enemy(GameWorld &world) : World(world)
     {
-        // TODO: let the world manage this position, not the enemy
-        // place randomly in the world
+        MaxHP = 20;
+        HP = MaxHP;
 
+        // TODO: let the world manage this position, not the enemy itself
         int x = -1;
         int y = -1;
 
