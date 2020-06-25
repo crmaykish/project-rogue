@@ -88,6 +88,8 @@ namespace cm
             MainRenderer->SetCameraPosition(mouseDownX - Input.Mouse.X, mouseDownY - Input.Mouse.Y);
         }
 
+        World->Update();
+
         // TODO: this is a pretty hacky way to trigger a turn, make this more robust
         // maybe this belongs in the player code? Need a way to not step if the movement fails
         if (Input.Left.Once() || Input.Right.Once() || Input.Up.Once() || Input.Down.Once())

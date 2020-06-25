@@ -5,11 +5,13 @@ namespace cm
     Player::Player(GameWorld &world, UserInput &input) : World(world), Input(input)
     {
         // TODO: the world should decide the player starting position
-        X = 64;
-        Y = 64;
+        TileX = 2;
+        TileY = 2;
 
         MaxHP = 100;
         HP = MaxHP;
+
+        Active = true;
     }
 
     void Player::Update()
@@ -36,22 +38,25 @@ namespace cm
 
         if (moveX != 0 || moveY != 0)
         {
-            int tileX = (X / TileSize);
-            int tileY = (Y / TileSize);
-            auto targetTile = World.GetTile(tileX + moveX, tileY + moveY);
+            auto targetTile = World.GetTile(TileX + moveX, TileY + moveY);
 
             if (targetTile.Type == TileType::Empty)
             {
-                auto enemy = World.GetActor(tileX + moveX, tileY + moveY);
+                auto enemy = World.GetActor(TileX + moveX, TileY + moveY);
 
                 if (enemy == nullptr)
                 {
-                    Move(moveX * TileSize, moveY * TileSize);
+                    Move(moveX, moveY);
                 }
                 else
                 {
                     // attack
                     enemy->Damage(10);
+
+                    if (!enemy->IsActive())
+                    {
+                        Move(moveX, moveY);
+                    }
                 }
             }
         }
@@ -59,7 +64,7 @@ namespace cm
 
     void Player::Render(Renderer &renderer)
     {
-        renderer.DrawRectangle(X, Y, TileSize, TileSize, COLOR_GREEN);
+        renderer.DrawRectangle(TileX * TileSize, TileY * TileSize, TileSize, TileSize, COLOR_GREEN);
     }
 
 } // namespace cm

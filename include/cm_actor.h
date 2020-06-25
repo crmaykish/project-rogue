@@ -11,8 +11,8 @@ namespace cm
     {
     protected:
         bool Active;
-        float X = 0;
-        float Y = 0;
+        int TileX = 0;
+        int TileY = 0;
 
         // TODO: might be better to move the HP system into a component or at least into the subclasses
         int HP = 0;

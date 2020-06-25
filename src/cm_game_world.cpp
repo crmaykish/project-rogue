@@ -46,7 +46,7 @@ namespace cm
     {
         Actors.erase(std::remove_if(Actors.begin(),
                                     Actors.end(),
-                                    [](auto &a) { Log("Removing inactive actor", LOG_INFO);  return !a->IsActive(); }),
+                                    [](auto &a) { return !a->IsActive(); }),
                      Actors.end());
     }
 
@@ -95,7 +95,7 @@ namespace cm
     {
         for (auto a : Actors)
         {
-            if (std::floor(a->GetX() * TileSize) == x && std::floor(a->GetY() * TileSize) == y)
+            if (a->GetX() == x && a->GetY() == y)
             {
                 return a;
             }

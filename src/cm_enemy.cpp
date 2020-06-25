@@ -18,8 +18,10 @@ namespace cm
             y = RandomInt(world.GetHeight());
         }
 
-        X = x * TileSize;
-        Y = y * TileSize;
+        TileX = x;
+        TileY = y;
+
+        Active = true;
     }
 
     void Enemy::Update()
@@ -28,7 +30,7 @@ namespace cm
 
     void Enemy::Render(Renderer &renderer)
     {
-        renderer.DrawRectangle(X, Y, TileSize, TileSize, COLOR_RED);
+        renderer.DrawRectangle(TileX * TileSize, TileY * TileSize, TileSize, TileSize, COLOR_RED);
     }
 
 } // namespace cm

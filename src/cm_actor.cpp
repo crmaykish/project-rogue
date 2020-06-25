@@ -5,18 +5,18 @@ namespace cm
 {
     void Actor::Move(float x, float y)
     {
-        X += x;
-        Y += y;
+        TileX += x;
+        TileY += y;
     }
 
     float Actor::GetX()
     {
-        return X;
+        return TileX;
     }
 
     float Actor::GetY()
     {
-        return Y;
+        return TileY;
     }
 
     bool Actor::IsActive()
