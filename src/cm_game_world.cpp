@@ -1,24 +1,27 @@
 #include "cm_game_world.h"
 #include "cm_player.h"
-#include "cm_logger.h"
 #include "cm_enemy.h"
+#include "cm_logger.h"
 
 namespace cm
 {
-    GameWorld::GameWorld(int x, int y)
+    GameWorld::GameWorld(int x, int y) : Width(x), Height(y)
     {
         Log("Creating game world", LOG_INFO);
 
         // Create a map
-        for (int i = 0; i < x; i++)
+        for (int i = 0; i < Width; i++)
         {
-            for (int j = 0; j < y; j++)
+            for (int j = 0; j < Height; j++)
             {
-                bool solid = (i == 0) || (i == x - 1) ||
-                             (j == 0) || (j == y - 1) ||
+                bool solid = (i == 0) || (i == Width - 1) ||
+                             (j == 0) || (j == Height - 1) ||
                              ((i % 5 == 0) && (j % 5 == 0));
 
-                Tiles.push_back({i, j, !solid});
+                if (solid)
+                {
+                    Tiles.push_back({i, j, TileType::Wall});
+                }
             }
         }
 
@@ -44,7 +47,7 @@ namespace cm
         // Render world tiles
         for (auto t : Tiles)
         {
-            if (!t.Walkable)
+            if (t.Type == TileType::Wall)
             {
                 renderer.DrawRectangle(t.X * TileSize, t.Y * TileSize, TileSize, TileSize, COLOR_GREY);
             }
@@ -60,6 +63,34 @@ namespace cm
     void GameWorld::AddActor(std::unique_ptr<Actor> actor)
     {
         Actors.emplace_back(std::move(actor));
+    }
+
+    const Tile GameWorld::GetTile(int x, int y)
+    {
+        if (x < 0 || x >= Width || y < 0 || y >= Height)
+        {
+            return Tile{0, 0, TileType::Unknown};
+        }
+
+        for (auto t : Tiles)
+        {
+            if (t.X == x && t.Y == y)
+            {
+                return t;
+            }
+        }
+
+        return Tile{0, 0, TileType::Empty};
+    }
+
+    int GameWorld::GetWidth()
+    {
+        return Width;
+    }
+
+    int GameWorld::GetHeight()
+    {
+        return Height;
     }
 
 } // namespace cm

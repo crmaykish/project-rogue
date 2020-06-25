@@ -8,7 +8,9 @@ namespace cm
     {
         Log("Initializing game...", LOG_INFO);
 
-        World = std::make_unique<GameWorld>(100, 40);
+        srand(time(NULL));
+
+        World = std::make_unique<GameWorld>(40, 24);
 
         MainRenderer->Init();
 

@@ -11,6 +11,8 @@ namespace cm
     class GameWorld
     {
     private:
+        int Width = 0;
+        int Height = 0;
         std::vector<Tile> Tiles;
         std::vector<std::unique_ptr<Actor>> Actors;
 
@@ -21,6 +23,11 @@ namespace cm
         void Render(Renderer &renderer);
 
         void AddActor(std::unique_ptr<Actor> actor);
+
+        const Tile GetTile(int x, int y);
+
+        int GetWidth();
+        int GetHeight();
     };
 
 } // namespace cm
