@@ -15,6 +15,7 @@ namespace cm
         int Height = 0;
         std::vector<Tile> Tiles;
         std::vector<std::shared_ptr<Actor>> Actors;
+        std::shared_ptr<Actor> PlayerOne;
 
     public:
         GameWorld(int x, int y);
@@ -23,9 +24,12 @@ namespace cm
         void Render(Renderer &renderer);
 
         void AddActor(std::shared_ptr<Actor> actor);
+        void AddPlayer(std::shared_ptr<Actor> player);
 
         const Tile GetTile(int x, int y);
         std::shared_ptr<Actor> GetActor(int x, int y);
+
+        const Actor &GetPlayer();
 
         int GetWidth();
         int GetHeight();

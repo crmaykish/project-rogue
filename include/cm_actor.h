@@ -22,8 +22,8 @@ namespace cm
         virtual ~Actor() {}
         virtual void Update() = 0;
         virtual void Render(Renderer &renderer) = 0;
-        float GetX();
-        float GetY();
+        float GetX() const;
+        float GetY() const;
         void Move(float x, float y);
 
         bool IsActive();

@@ -16,7 +16,8 @@ namespace cm
         virtual void SetCameraPosition(float x, float y) = 0;
         virtual float GetCamX() = 0;
         virtual float GetCamY() = 0;
-
+        virtual float GetResolutionX() = 0;
+        virtual float GetResolutionY() = 0;
         virtual void DrawRectangle(float x, float y, float w, float h, Color color) = 0;
     };
 } // namespace cm

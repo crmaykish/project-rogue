@@ -15,7 +15,9 @@ namespace cm
         MainRenderer->Init();
 
         // create a player
-        World->AddActor(std::make_shared<Player>(*World, Input));
+        World->AddPlayer(std::make_shared<Player>(*World, Input));
+
+        SnapCameraToPlayer();
 
         Running = true;
     }
@@ -77,7 +79,7 @@ namespace cm
             Running = false;
         }
 
-        // Update camera
+        // Free movement of the camera
         if (Input.Mouse.Left.Once())
         {
             mouseDownX = Input.Mouse.X + MainRenderer->GetCamX();
@@ -96,6 +98,8 @@ namespace cm
         {
             // Handle a turn of the game world
             World->Step();
+
+            SnapCameraToPlayer();
         }
     }
 
@@ -111,6 +115,13 @@ namespace cm
         World->Render(*MainRenderer);
 
         MainRenderer->Render();
+    }
+
+    void Game::SnapCameraToPlayer()
+    {
+        float camX = (World->GetPlayer().GetX() * TileSize) - (MainRenderer->GetResolutionX() / 2) + (TileSize / 2);
+        float camY = (MainRenderer->GetResolutionY() / 2) - (World->GetPlayer().GetY() * TileSize) - (TileSize / 2);
+        MainRenderer->SetCameraPosition(camX, camY);
     }
 
 } // namespace cm

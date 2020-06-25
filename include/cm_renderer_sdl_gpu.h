@@ -4,8 +4,8 @@
 
 namespace cm
 {
-    const int RESOLUTION_DEFAULT_W = 1280;
-    const int RESOLUTION_DEFAULT_H = 768;
+    const int RESOLUTION_DEFAULT_W = 800;
+    const int RESOLUTION_DEFAULT_H = 600;
 
     class SDLGPURenderer : public Renderer
     {
@@ -24,8 +24,10 @@ namespace cm
         void Prepare() override;
         void Render() override;
         void SetCameraPosition(float x, float y) override;
-        virtual float GetCamX() override;
-        virtual float GetCamY() override;
+        float GetCamX() override;
+        float GetCamY() override;
+        float GetResolutionX() override;
+        float GetResolutionY() override;
 
         void DrawRectangle(float x, float y, float w, float h, Color color) override;
     };

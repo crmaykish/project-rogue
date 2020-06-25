@@ -73,6 +73,12 @@ namespace cm
         Actors.push_back(actor);
     }
 
+    void GameWorld::AddPlayer(std::shared_ptr<Actor> player)
+    {
+        PlayerOne = player;
+        AddActor(player);
+    }
+
     const Tile GameWorld::GetTile(int x, int y)
     {
         if (x < 0 || x >= Width || y < 0 || y >= Height)
@@ -102,6 +108,11 @@ namespace cm
         }
 
         return nullptr;
+    }
+
+    const Actor &GameWorld::GetPlayer()
+    {
+        return *PlayerOne;
     }
 
     int GameWorld::GetWidth()

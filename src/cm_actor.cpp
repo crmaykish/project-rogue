@@ -9,12 +9,12 @@ namespace cm
         TileY += y;
     }
 
-    float Actor::GetX()
+    float Actor::GetX() const
     {
         return TileX;
     }
 
-    float Actor::GetY()
+    float Actor::GetY() const
     {
         return TileY;
     }

@@ -59,6 +59,16 @@ namespace cm
         return CameraOffsetY;
     }
 
+    float SDLGPURenderer::GetResolutionX()
+    {
+        return ResolutionW;
+    }
+
+    float SDLGPURenderer::GetResolutionY()
+    {
+        return ResolutionH;
+    }
+
     void SDLGPURenderer::DrawRectangle(float x, float y, float w, float h, Color color)
     {
         SDL_Color c = {color.red, color.green, color.blue, color.alpha};

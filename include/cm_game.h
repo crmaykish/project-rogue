@@ -30,6 +30,8 @@ namespace cm
         void Update();
         void Render();
 
+        void SnapCameraToPlayer();
+
     public:
         void Init();
         void Loop();
