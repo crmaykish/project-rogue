@@ -18,6 +18,7 @@ namespace cm
         int Y = 0;
         TileType Type = TileType::Unknown;
         bool Discovered = false;
+        bool Visible = false;
     };
 } // namespace cm
 

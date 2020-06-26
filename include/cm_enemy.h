@@ -11,6 +11,7 @@ namespace cm
     {
     private:
         GameWorld &World;
+        bool Visible = false;
 
     public:
         Enemy(GameWorld &world);

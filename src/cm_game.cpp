@@ -17,6 +17,9 @@ namespace cm
         // create a player
         World->AddPlayer(std::make_shared<Player>(*World, Input));
 
+        // TODO: kind of a hack
+        World->Step();
+
         SnapCameraToPlayer();
 
         Running = true;

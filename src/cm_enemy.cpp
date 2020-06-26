@@ -26,11 +26,15 @@ namespace cm
 
     void Enemy::Update()
     {
+        Visible = World.DistanceToPlayer(TileX, TileY) <= World.GetViewDistance(); 
     }
 
     void Enemy::Render(Renderer &renderer)
     {
-        renderer.DrawRectangle(TileX * TileSize, TileY * TileSize, TileSize, TileSize, COLOR_RED);
+        if (Visible)
+        {
+            renderer.DrawRectangle(TileX * TileSize, TileY * TileSize, TileSize, TileSize, COLOR_RED);
+        }
     }
 
 } // namespace cm

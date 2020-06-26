@@ -17,7 +17,7 @@ namespace cm
         std::vector<std::shared_ptr<Actor>> Actors;
         std::shared_ptr<Actor> PlayerOne;
 
-        int DistanceToPlayer(int x, int y);
+        int ViewDistance = 4;
 
     public:
         GameWorld(int x, int y);
@@ -32,6 +32,10 @@ namespace cm
         std::shared_ptr<Actor> GetActor(int x, int y);
 
         const Actor &GetPlayer();
+
+        int DistanceToPlayer(int x, int y);
+
+        int GetViewDistance();
 
         int GetWidth();
         int GetHeight();

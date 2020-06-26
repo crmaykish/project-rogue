@@ -60,6 +60,11 @@ namespace cm
             if (DistanceToPlayer(t.X, t.Y) <= 4)
             {
                 t.Discovered = true;
+                t.Visible = true;
+            }
+            else
+            {
+                t.Visible = false;
             }
         }
     }
@@ -81,8 +86,7 @@ namespace cm
                 }
 
                 // draw fog
-                // TODO: should probably have a visible flag in the tile class and update it in Update() instead of checking constantly here in Render()
-                if (DistanceToPlayer(t.X, t.Y) > 4)
+                if (!t.Visible)
                 {
                     renderer.DrawRectangle(t.X * TileSize, t.Y * TileSize, TileSize, TileSize, COLOR_GREY_OVERLAY);
                 }
@@ -93,8 +97,11 @@ namespace cm
         for (auto const &a : Actors)
         {
             // TODO: should probably have a visible flag in the actor class and update it in Update() instead of checking constantly here in Render()
-            if (DistanceToPlayer(a->GetX(), a->GetY()) <= 4)
+            if (DistanceToPlayer(a->GetX(), a->GetY()) <= ViewDistance)
             {
+
+                // TODO: enemies don't always come back into visibility consistently. something to do with update/step probably
+
                 a->Render(renderer);
             }
         }
@@ -145,6 +152,11 @@ namespace cm
     const Actor &GameWorld::GetPlayer()
     {
         return *PlayerOne;
+    }
+
+    int GameWorld::GetViewDistance()
+    {
+        return ViewDistance;
     }
 
     int GameWorld::GetWidth()
