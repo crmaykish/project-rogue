@@ -7,6 +7,13 @@
 
 namespace cm
 {
+    int GameWorld::DistanceToPlayer(int x, int y)
+    {
+        int xDist = std::abs(GetPlayer().GetX() - x);
+        int yDist = std::abs(GetPlayer().GetY() - y);
+        return std::sqrt(std::pow(xDist, 2) + std::pow(yDist, 2));
+    }
+
     GameWorld::GameWorld(int x, int y) : Width(x), Height(y)
     {
         Log("Creating game world", LOG_INFO);
@@ -20,10 +27,7 @@ namespace cm
                              (j == 0) || (j == Height - 1) ||
                              ((i % 5 == 0) && (j % 5 == 0));
 
-                if (solid)
-                {
-                    Tiles.push_back({i, j, TileType::Wall});
-                }
+                Tiles.push_back({i, j, solid ? TileType::Wall : TileType::Empty, false});
             }
         }
 
@@ -36,18 +40,28 @@ namespace cm
 
     void GameWorld::Step()
     {
+
         for (auto &a : Actors)
         {
             a->Update();
         }
-    }
 
-    void GameWorld::Update()
-    {
         Actors.erase(std::remove_if(Actors.begin(),
                                     Actors.end(),
                                     [](auto &a) { return !a->IsActive(); }),
                      Actors.end());
+    }
+
+    void GameWorld::Update()
+    {
+        // Update tiles
+        for (auto &t : Tiles)
+        {
+            if (DistanceToPlayer(t.X, t.Y) <= 4)
+            {
+                t.Discovered = true;
+            }
+        }
     }
 
     void GameWorld::Render(Renderer &renderer)
@@ -55,16 +69,34 @@ namespace cm
         // Render world tiles
         for (auto t : Tiles)
         {
-            if (t.Type == TileType::Wall)
+            if (t.Discovered)
             {
-                renderer.DrawRectangle(t.X * TileSize, t.Y * TileSize, TileSize, TileSize, COLOR_GREY);
+                if (t.Type == TileType::Wall)
+                {
+                    renderer.DrawRectangle(t.X * TileSize, t.Y * TileSize, TileSize, TileSize, COLOR_DARK_GREY);
+                }
+                else if (t.Type == TileType::Empty)
+                {
+                    renderer.DrawRectangle(t.X * TileSize, t.Y * TileSize, TileSize, TileSize, COLOR_LIGHT_GREY);
+                }
+
+                // draw fog
+                // TODO: should probably have a visible flag in the tile class and update it in Update() instead of checking constantly here in Render()
+                if (DistanceToPlayer(t.X, t.Y) > 4)
+                {
+                    renderer.DrawRectangle(t.X * TileSize, t.Y * TileSize, TileSize, TileSize, COLOR_GREY_OVERLAY);
+                }
             }
         }
 
         // Render actors
         for (auto const &a : Actors)
         {
-            a->Render(renderer);
+            // TODO: should probably have a visible flag in the actor class and update it in Update() instead of checking constantly here in Render()
+            if (DistanceToPlayer(a->GetX(), a->GetY()) <= 4)
+            {
+                a->Render(renderer);
+            }
         }
     }
 

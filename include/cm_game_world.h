@@ -17,6 +17,8 @@ namespace cm
         std::vector<std::shared_ptr<Actor>> Actors;
         std::shared_ptr<Actor> PlayerOne;
 
+        int DistanceToPlayer(int x, int y);
+
     public:
         GameWorld(int x, int y);
         void Step();
