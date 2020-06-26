@@ -40,12 +40,6 @@ namespace cm
 
     void GameWorld::Step()
     {
-
-        for (auto &a : Actors)
-        {
-            a->Update();
-        }
-
         Actors.erase(std::remove_if(Actors.begin(),
                                     Actors.end(),
                                     [](auto &a) { return !a->IsActive(); }),
@@ -66,6 +60,11 @@ namespace cm
             {
                 t.Visible = false;
             }
+        }
+
+        for (auto &a : Actors)
+        {
+            a->Update();
         }
     }
 
@@ -96,14 +95,7 @@ namespace cm
         // Render actors
         for (auto const &a : Actors)
         {
-            // TODO: should probably have a visible flag in the actor class and update it in Update() instead of checking constantly here in Render()
-            if (DistanceToPlayer(a->GetX(), a->GetY()) <= ViewDistance)
-            {
-
-                // TODO: enemies don't always come back into visibility consistently. something to do with update/step probably
-
-                a->Render(renderer);
-            }
+            a->Render(renderer);
         }
     }
 

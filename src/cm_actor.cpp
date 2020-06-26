@@ -24,6 +24,11 @@ namespace cm
         return Active;
     }
 
+    bool Actor::IsVisible()
+    {
+        return Visible;
+    }
+
     int Actor::GetHP()
     {
         return HP;

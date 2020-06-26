@@ -10,7 +10,8 @@ namespace cm
     class Actor
     {
     protected:
-        bool Active;
+        bool Active = false;
+        bool Visible = false;
         int TileX = 0;
         int TileY = 0;
 
@@ -27,6 +28,7 @@ namespace cm
         void Move(float x, float y);
 
         bool IsActive();
+        bool IsVisible();
 
         int GetHP();
         int GetMaxHP();

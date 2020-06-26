@@ -12,6 +12,7 @@ namespace cm
         HP = MaxHP;
 
         Active = true;
+        Visible = true;
     }
 
     void Player::Update()

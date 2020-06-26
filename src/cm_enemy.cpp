@@ -26,7 +26,7 @@ namespace cm
 
     void Enemy::Update()
     {
-        Visible = World.DistanceToPlayer(TileX, TileY) <= World.GetViewDistance(); 
+        Visible = World.DistanceToPlayer(TileX, TileY) <= World.GetViewDistance();
     }
 
     void Enemy::Render(Renderer &renderer)
