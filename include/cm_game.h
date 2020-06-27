@@ -7,6 +7,7 @@
 #include "cm_input_handler.h"
 #include "cm_renderer.h"
 #include "cm_game_world.h"
+#include "cm_assets.h"
 
 namespace cm
 {
@@ -25,6 +26,7 @@ namespace cm
 
         std::unique_ptr<GameWorld> World;
         std::unique_ptr<InputHandler> MainInputHandler = nullptr;
+        std::unique_ptr<Assets> AssetManager = nullptr;
         std::unique_ptr<Renderer> MainRenderer = nullptr;
 
         void Update();

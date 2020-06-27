@@ -33,7 +33,7 @@ namespace cm
     {
         if (Visible)
         {
-            renderer.DrawRectangle(TileX * TileSize, TileY * TileSize, TileSize, TileSize, COLOR_RED);
+            renderer.DrawTexture(AssetKey::GhostTexture, TileX * TileSize, TileY * TileSize, TileSize, TileSize);
         }
     }
 

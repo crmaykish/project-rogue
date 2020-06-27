@@ -1,6 +1,8 @@
 #include "cm_game.h"
 #include "cm_logger.h"
 #include "cm_player.h"
+#include "cm_renderer_sdl_gpu.h"
+#include "cm_input_handler_sdl.h"
 
 namespace cm
 {
@@ -10,11 +12,21 @@ namespace cm
 
         srand(time(NULL));
 
+        // Create world
         World = std::make_unique<GameWorld>(40, 24);
 
+        // Create and assign input handler
+        SetMainInputHandler(std::make_unique<cm::SDLInputHandler>());
+
+        // Setup asset manager
+        AssetManager = std::make_unique<Assets>();
+        AssetManager->Init();
+
+        // Setup renderer        
+        SetMainRenderer(std::make_unique<cm::SDLGPURenderer>(*AssetManager));
         MainRenderer->Init();
 
-        // create a player
+        // Create a player
         World->AddPlayer(std::make_shared<Player>(*World, Input));
 
         // TODO: kind of a hack
@@ -115,9 +127,14 @@ namespace cm
 
         MainRenderer->Prepare();
 
+        // Render world objects
         World->Render(*MainRenderer);
 
+        // Render UI
+        MainRenderer->DrawFont("ROGUE", AssetKey::UIFont, COLOR_WHITE, 0, 0);
+
         MainRenderer->Render();
+        
     }
 
     void Game::SnapCameraToPlayer()

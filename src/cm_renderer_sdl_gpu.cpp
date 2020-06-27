@@ -3,15 +3,20 @@
 
 namespace cm
 {
-    GPU_Rect SDLGPURenderer::TransformRect(const GPU_Rect r)
+    SDLGPURenderer::SDLGPURenderer(Assets &assetManager) : AssetManager(assetManager) {}
+
+    GPU_Rect SDLGPURenderer::TransformRect(const GPU_Rect r, bool absolute)
     {
         GPU_Rect flipped = r;
 
         flipped.y = ResolutionH - flipped.y - flipped.h;
 
         // Offset everything by the camera position
-        flipped.x -= CameraOffsetX;
-        flipped.y -= CameraOffsetY;
+        if (!absolute)
+        {
+            flipped.x -= CameraOffsetX;
+            flipped.y -= CameraOffsetY;
+        }
 
         return flipped;
     }
@@ -19,11 +24,6 @@ namespace cm
     void SDLGPURenderer::Init()
     {
         Log("Initializing SDL GPU renderer...", LOG_INFO);
-
-        if (TTF_Init() != 0)
-        {
-            Log("Failed to init TTF: " + std::string(TTF_GetError()), LOG_ERROR);
-        }
 
         gpu = GPU_Init(ResolutionW, ResolutionH, GPU_DEFAULT_INIT_FLAGS);
     }
@@ -72,7 +72,30 @@ namespace cm
     void SDLGPURenderer::DrawRectangle(float x, float y, float w, float h, Color color)
     {
         SDL_Color c = {color.red, color.green, color.blue, color.alpha};
-        GPU_RectangleRoundFilled2(gpu, TransformRect({x, y, w, h}), 8, c);
+        GPU_RectangleFilled2(gpu, TransformRect({x, y, w, h}), c);
+    }
+
+    void SDLGPURenderer::DrawTexture(AssetKey textureKey, float x, float y, float w, float h)
+    {
+        auto image = AssetManager.GetTexture(textureKey);
+        GPU_Rect r = TransformRect({x, y, w, h});
+        GPU_BlitRect(image->GetGPUImage(), NULL, gpu, &r);
+    }
+
+    void SDLGPURenderer::DrawFont(std::string text, AssetKey fontKey, Color color, float x, float y)
+    {
+        SDL_Color fontColor = {color.red, color.green, color.blue, color.alpha};
+
+        auto font = AssetManager.GetFont(fontKey);
+        auto *surface = TTF_RenderText_Solid(font->GetTTFFont(), text.c_str(), fontColor);
+        auto *image = GPU_CopyImageFromSurface(surface);
+
+        GPU_Rect textRect = TransformRect({x, y, (float)image->w, (float)image->h}, true);
+
+        GPU_BlitRect(image, NULL, gpu, &textRect);
+
+        GPU_FreeImage(image);
+        SDL_FreeSurface(surface);
     }
 
 } // namespace cm

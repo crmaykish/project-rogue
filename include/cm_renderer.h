@@ -1,7 +1,9 @@
 #ifndef CM_RENDERER_H
 #define CM_RENDERER_H
 
+#include <string>
 #include "cm_color.h"
+#include "cm_assets.h"
 
 namespace cm
 {
@@ -19,6 +21,8 @@ namespace cm
         virtual float GetResolutionX() = 0;
         virtual float GetResolutionY() = 0;
         virtual void DrawRectangle(float x, float y, float w, float h, Color color) = 0;
+        virtual void DrawTexture(AssetKey textureKey, float x, float y, float w, float h) = 0;
+        virtual void DrawFont(std::string text, AssetKey fontKey, Color color, float x, float y) = 0;
     };
 } // namespace cm
 

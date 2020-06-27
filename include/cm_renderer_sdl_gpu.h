@@ -1,6 +1,7 @@
 #include <SDL_gpu.h>
 #include <SDL_ttf.h>
 #include "cm_renderer.h"
+#include "cm_assets.h"
 
 namespace cm
 {
@@ -11,14 +12,16 @@ namespace cm
     {
     private:
         GPU_Target *gpu;
+        Assets &AssetManager;
         int ResolutionW = RESOLUTION_DEFAULT_W;
         int ResolutionH = RESOLUTION_DEFAULT_H;
         float CameraOffsetX = 0.0;
         float CameraOffsetY = 0.0;
 
-        GPU_Rect TransformRect(const GPU_Rect r);
+        GPU_Rect TransformRect(const GPU_Rect r, bool absolute = false);
 
     public:
+        SDLGPURenderer(Assets &assetManager);
         void Init() override;
         void Close() override;
         void Prepare() override;
@@ -30,5 +33,7 @@ namespace cm
         float GetResolutionY() override;
 
         void DrawRectangle(float x, float y, float w, float h, Color color) override;
+        void DrawTexture(AssetKey textureKey, float x, float y, float w, float h) override;
+        void DrawFont(std::string text, AssetKey fontKey, Color color, float x, float y) override;
     };
 } // namespace cm

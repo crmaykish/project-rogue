@@ -77,11 +77,11 @@ namespace cm
             {
                 if (t.Type == TileType::Wall)
                 {
-                    renderer.DrawRectangle(t.X * TileSize, t.Y * TileSize, TileSize, TileSize, COLOR_DARK_GREY);
+                    renderer.DrawTexture(AssetKey::WallTexture, t.X * TileSize, t.Y * TileSize, TileSize, TileSize);
                 }
                 else if (t.Type == TileType::Empty)
                 {
-                    renderer.DrawRectangle(t.X * TileSize, t.Y * TileSize, TileSize, TileSize, COLOR_LIGHT_GREY);
+                    renderer.DrawTexture(AssetKey::FloorTexture, t.X * TileSize, t.Y * TileSize, TileSize, TileSize);
                 }
 
                 // draw fog

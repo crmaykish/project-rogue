@@ -65,7 +65,7 @@ namespace cm
 
     void Player::Render(Renderer &renderer)
     {
-        renderer.DrawRectangle(TileX * TileSize, TileY * TileSize, TileSize, TileSize, COLOR_GREEN);
+        renderer.DrawTexture(AssetKey::PlayerTexture, TileX * TileSize, TileY * TileSize, TileSize, TileSize);
     }
 
 } // namespace cm
