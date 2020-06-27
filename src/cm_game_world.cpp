@@ -40,6 +40,12 @@ namespace cm
 
     void GameWorld::Step()
     {
+        for (auto &a : Actors)
+        {
+            a->Step();
+        }
+
+        // Remove inactive actors
         Actors.erase(std::remove_if(Actors.begin(),
                                     Actors.end(),
                                     [](auto &a) { return !a->IsActive(); }),

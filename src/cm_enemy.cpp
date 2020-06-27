@@ -1,5 +1,6 @@
 #include "cm_enemy.h"
 #include "cm_random.h"
+#include "cm_moveaction.h"
 
 namespace cm
 {
@@ -24,9 +25,47 @@ namespace cm
         Active = true;
     }
 
+    std::string Enemy::GetName()
+    {
+        return "Ghost";
+    }
+
     void Enemy::Update()
     {
         Visible = World.DistanceToPlayer(TileX, TileY) <= World.GetViewDistance();
+    }
+
+    void Enemy::Step()
+    {
+        int playerDistX = World.GetPlayer().GetX() - TileX;
+        int playerDistY = World.GetPlayer().GetY() - TileY;
+
+        // move toward player
+
+        MoveDirection dir = MoveDirection::Unknown;
+
+        if (playerDistX < 0)
+        {
+            dir = MoveDirection::Left;
+        }
+        else if (playerDistX > 0)
+        {
+            dir = MoveDirection::Right;
+        }
+        else
+        {
+            if (playerDistY < 0)
+            {
+                dir = MoveDirection::Down;
+            }
+            else
+            {
+                dir = MoveDirection::Up;
+            }
+        }
+
+        auto action = MoveAction(dir, *this, World);
+        action.Execute();
     }
 
     void Enemy::Render(Renderer &renderer)

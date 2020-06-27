@@ -15,8 +15,9 @@ namespace cm
 
     public:
         Enemy(GameWorld &world);
-
+        std::string GetName() override;
         void Update() override;
+        void Step() override;
         void Render(Renderer &renderer) override;
     };
 

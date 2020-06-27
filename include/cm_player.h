@@ -16,7 +16,9 @@ namespace cm
 
     public:
         Player(GameWorld &world, UserInput &input);
+        std::string GetName() override;
         void Update() override;
+        void Step() override;
         void Render(Renderer &renderer) override;
     };
 

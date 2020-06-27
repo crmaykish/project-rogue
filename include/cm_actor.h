@@ -22,10 +22,12 @@ namespace cm
     public:
         virtual ~Actor() {}
         virtual void Update() = 0;
+        virtual void Step() = 0;
         virtual void Render(Renderer &renderer) = 0;
+        virtual std::string GetName() = 0;
         float GetX() const;
         float GetY() const;
-        void Move(float x, float y);
+        void Move(int x, int y);
 
         bool IsActive();
         bool IsVisible();

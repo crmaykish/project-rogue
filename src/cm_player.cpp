@@ -1,4 +1,5 @@
 #include "cm_player.h"
+#include "cm_moveaction.h"
 
 namespace cm
 {
@@ -15,51 +16,41 @@ namespace cm
         Visible = true;
     }
 
+    std::string Player::GetName()
+    {
+        return "Colin";
+    }
+
     void Player::Update()
     {
-        int moveX = 0;
-        int moveY = 0;
+    }
+
+    void Player::Step()
+    {
+        auto dir = MoveDirection::Unknown;
 
         if (Input.Right.Once())
         {
-            moveX = 1;
+            dir = MoveDirection::Right;
         }
         else if (Input.Left.Once())
         {
-            moveX = -1;
+            dir = MoveDirection::Left;
         }
         else if (Input.Up.Once())
         {
-            moveY = 1;
+            dir = MoveDirection::Up;
         }
         else if (Input.Down.Once())
         {
-            moveY = -1;
+            dir = MoveDirection::Down;
         }
 
-        if (moveX != 0 || moveY != 0)
+        if (dir != MoveDirection::Unknown)
         {
-            auto targetTile = World.GetTile(TileX + moveX, TileY + moveY);
+            auto action = MoveAction(dir, *this, World);
 
-            if (targetTile.Type == TileType::Empty)
-            {
-                auto enemy = World.GetActor(TileX + moveX, TileY + moveY);
-
-                if (enemy == nullptr)
-                {
-                    Move(moveX, moveY);
-                }
-                else
-                {
-                    // attack
-                    enemy->Damage(10);
-
-                    if (!enemy->IsActive())
-                    {
-                        Move(moveX, moveY);
-                    }
-                }
-            }
+            action.Execute();
         }
     }
 

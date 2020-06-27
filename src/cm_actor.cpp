@@ -3,7 +3,7 @@
 
 namespace cm
 {
-    void Actor::Move(float x, float y)
+    void Actor::Move(int x, int y)
     {
         TileX += x;
         TileY += y;
