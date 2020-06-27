@@ -82,7 +82,7 @@ namespace cm
         GPU_BlitRect(image->GetGPUImage(), NULL, gpu, &r);
     }
 
-    void SDLGPURenderer::DrawFont(std::string text, AssetKey fontKey, Color color, float x, float y)
+    void SDLGPURenderer::DrawFont(std::string text, AssetKey fontKey, Color color, float x, float y, float scale, bool absolute)
     {
         SDL_Color fontColor = {color.red, color.green, color.blue, color.alpha};
 
@@ -90,7 +90,7 @@ namespace cm
         auto *surface = TTF_RenderText_Solid(font->GetTTFFont(), text.c_str(), fontColor);
         auto *image = GPU_CopyImageFromSurface(surface);
 
-        GPU_Rect textRect = TransformRect({x, y, (float)image->w, (float)image->h}, true);
+        GPU_Rect textRect = TransformRect({x, y, (float)image->w * scale, (float)image->h * scale}, absolute);
 
         GPU_BlitRect(image, NULL, gpu, &textRect);
 

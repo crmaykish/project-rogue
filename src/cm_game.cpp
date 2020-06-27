@@ -131,10 +131,9 @@ namespace cm
         World->Render(*MainRenderer);
 
         // Render UI
-        MainRenderer->DrawFont("ROGUE", AssetKey::UIFont, COLOR_WHITE, 0, 0);
+        MainRenderer->DrawFont("ROGUE", AssetKey::UIFont, COLOR_WHITE, 10, 0, 1.0, true);
 
         MainRenderer->Render();
-        
     }
 
     void Game::SnapCameraToPlayer()

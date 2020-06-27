@@ -22,7 +22,7 @@ namespace cm
         virtual float GetResolutionY() = 0;
         virtual void DrawRectangle(float x, float y, float w, float h, Color color) = 0;
         virtual void DrawTexture(AssetKey textureKey, float x, float y, float w, float h) = 0;
-        virtual void DrawFont(std::string text, AssetKey fontKey, Color color, float x, float y) = 0;
+        virtual void DrawFont(std::string text, AssetKey fontKey, Color color, float x, float y, float scale = 1.0, bool absolute = false) = 0;
     };
 } // namespace cm
 

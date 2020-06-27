@@ -34,6 +34,6 @@ namespace cm
 
         void DrawRectangle(float x, float y, float w, float h, Color color) override;
         void DrawTexture(AssetKey textureKey, float x, float y, float w, float h) override;
-        void DrawFont(std::string text, AssetKey fontKey, Color color, float x, float y) override;
+        void DrawFont(std::string text, AssetKey fontKey, Color color, float x, float y, float scale = 1.0, bool absolute = false) override;
     };
 } // namespace cm

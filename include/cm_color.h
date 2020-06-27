@@ -20,7 +20,7 @@ namespace cm
     static const Color COLOR_LIGHT_GREY = {0x60, 0x60, 0x60, 0xFF};
     static const Color COLOR_DARK_GREY = {0x20, 0x20, 0x20, 0xFF};
     static const Color COLOR_GREY_OVERLAY = {0x00, 0x00, 0x00, 0xC0};
-
+    
 } // namespace cm
 
 #endif // CM_COLOR_H

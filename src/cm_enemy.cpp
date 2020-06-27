@@ -34,6 +34,13 @@ namespace cm
         if (Visible)
         {
             renderer.DrawTexture(AssetKey::GhostTexture, TileX * TileSize, TileY * TileSize, TileSize, TileSize);
+
+            renderer.DrawFont(std::to_string(HP) + " / " + std::to_string(MaxHP),
+                              AssetKey::UIFont,
+                              COLOR_WHITE,
+                              TileX * TileSize,
+                              (TileY + 1) * TileSize,
+                              0.5);
         }
     }
 
