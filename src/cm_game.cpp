@@ -29,9 +29,6 @@ namespace cm
         // Create a player
         World->AddPlayer(std::make_shared<Player>(*World, Input));
 
-        // TODO: kind of a hack
-        World->Step();
-
         SnapCameraToPlayer();
 
         Running = true;
@@ -111,9 +108,6 @@ namespace cm
         // maybe this belongs in the player code? Need a way to not step if the movement fails
         if (Input.Left.Once() || Input.Right.Once() || Input.Up.Once() || Input.Down.Once())
         {
-            // Handle a turn of the game world
-            World->Step();
-
             SnapCameraToPlayer();
         }
     }

@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "cm_renderer.h"
+#include "cm_action.h"
 
 namespace cm
 {
@@ -22,9 +23,10 @@ namespace cm
     public:
         virtual ~Actor() {}
         virtual void Update() = 0;
-        virtual void Step() = 0;
         virtual void Render(Renderer &renderer) = 0;
+        virtual std::shared_ptr<Action> NextAction() = 0;
         virtual std::string GetName() = 0;
+
         float GetX() const;
         float GetY() const;
         void Move(int x, int y);

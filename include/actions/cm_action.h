@@ -1,18 +1,22 @@
 #ifndef CM_ACTION_H
 #define CM_ACTION_H
 
+#include <memory>
+
 namespace cm
 {
-    enum struct ActionResult
-    {
-        Success,
-        Failure
-    };
+    struct ActionResult;
 
     class Action
     {
     public:
         virtual ActionResult Execute() = 0;
+    };
+
+    struct ActionResult
+    {
+        bool Success = false;
+        std::shared_ptr<Action> AlternateAction = nullptr;
     };
 
 } // namespace cm

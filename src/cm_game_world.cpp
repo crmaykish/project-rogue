@@ -38,20 +38,6 @@ namespace cm
         }
     }
 
-    void GameWorld::Step()
-    {
-        for (auto &a : Actors)
-        {
-            a->Step();
-        }
-
-        // Remove inactive actors
-        Actors.erase(std::remove_if(Actors.begin(),
-                                    Actors.end(),
-                                    [](auto &a) { return !a->IsActive(); }),
-                     Actors.end());
-    }
-
     void GameWorld::Update()
     {
         // Update tiles
@@ -71,6 +57,23 @@ namespace cm
         for (auto &a : Actors)
         {
             a->Update();
+        }
+
+        // execute action of next actor and increment turn
+
+        // TODO: use an iterator to keep track of the current position instead of an index
+        auto currentActor = Actors.at(CurrentActorIndex);
+
+        auto action = currentActor->NextAction();
+
+        if (action != nullptr)
+        {
+            auto result = action->Execute();
+
+            // TODO: if action failed, request a different action from the actor and execute that
+
+            // Increment actor index
+            CurrentActorIndex = (CurrentActorIndex == Actors.size() - 1) ? 0 : CurrentActorIndex + 1;
         }
     }
 

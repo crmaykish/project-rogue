@@ -25,7 +25,7 @@ namespace cm
     {
     }
 
-    void Player::Step()
+    std::shared_ptr<Action> Player::NextAction()
     {
         auto dir = MoveDirection::Unknown;
 
@@ -48,9 +48,11 @@ namespace cm
 
         if (dir != MoveDirection::Unknown)
         {
-            auto action = MoveAction(dir, *this, World);
-
-            action.Execute();
+            return std::make_shared<MoveAction>(dir, *this, World);
+        }
+        else
+        {
+            return nullptr;
         }
     }
 

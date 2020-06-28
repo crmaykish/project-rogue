@@ -13,6 +13,7 @@ namespace cm
     private:
         int Width = 0;
         int Height = 0;
+        int CurrentActorIndex = 0;
         std::vector<Tile> Tiles;
         std::vector<std::shared_ptr<Actor>> Actors;
         std::shared_ptr<Actor> PlayerOne;
@@ -21,7 +22,6 @@ namespace cm
 
     public:
         GameWorld(int x, int y);
-        void Step();
         void Update();
         void Render(Renderer &renderer);
 

@@ -37,7 +37,7 @@ namespace cm
         Visible = (World.DistanceToPlayer(TileX, TileY) <= World.GetViewDistance());
     }
 
-    void Enemy::Step()
+    std::shared_ptr<Action> Enemy::NextAction()
     {
         int playerDistX = World.GetPlayer().GetX() - TileX;
         int playerDistY = World.GetPlayer().GetY() - TileY;
@@ -65,8 +65,7 @@ namespace cm
             }
         }
 
-        auto action = MoveAction(dir, *this, World);
-        action.Execute();
+        return std::make_shared<MoveAction>(dir, *this, World);
     }
 
     void Enemy::Render(Renderer &renderer)

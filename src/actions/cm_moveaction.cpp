@@ -8,7 +8,7 @@ namespace cm
 
     ActionResult MoveAction::Execute()
     {
-        auto result = ActionResult::Failure;
+        auto result = ActionResult{false, nullptr};
 
         // try to move the actor in the given direction
         int moveX = 0;
@@ -46,12 +46,12 @@ namespace cm
             World.GetActor(targetTile.X + moveX, targetTile.Y + moveY) == nullptr)
         {
             Target.Move(moveX, moveY);
-            result = ActionResult::Success;
+            result.Success = true;
         }
 
         if (Target.IsVisible())
         {
-            if (result == ActionResult::Success)
+            if (result.Success)
             {
                 Log(Target.GetName() + " moved " + dirName, LOG_INFO);
             }
