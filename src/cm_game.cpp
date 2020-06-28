@@ -22,7 +22,7 @@ namespace cm
         AssetManager = std::make_unique<Assets>();
         AssetManager->Init();
 
-        // Setup renderer        
+        // Setup renderer
         SetMainRenderer(std::make_unique<cm::SDLGPURenderer>(*AssetManager));
         MainRenderer->Init();
 
@@ -125,7 +125,23 @@ namespace cm
         World->Render(*MainRenderer);
 
         // Render UI
-        MainRenderer->DrawFont("ROGUE", AssetKey::UIFont, COLOR_WHITE, 10, 0, 1.0, true);
+        int yOffset = MainRenderer->GetResolutionY();
+
+        MainRenderer->DrawFont(World->GetPlayer().GetName(),
+                               AssetKey::UIFont,
+                               COLOR_WHITE,
+                               10,
+                               yOffset - 50,
+                               1.0,
+                               true);
+
+        MainRenderer->DrawFont("HP: " + std::to_string(World->GetPlayer().GetHP()) + " / " + std::to_string(World->GetPlayer().GetMaxHP()),
+                               AssetKey::UIFont,
+                               COLOR_WHITE,
+                               10,
+                               yOffset - 80,
+                               0.6,
+                               true);
 
         MainRenderer->Render();
     }

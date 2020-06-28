@@ -1,6 +1,7 @@
 #include "cm_enemy.h"
 #include "cm_random.h"
 #include "cm_moveaction.h"
+#include "cm_attackaction.h"
 #include "cm_waitaction.h"
 #include "cm_logger.h"
 
@@ -33,6 +34,11 @@ namespace cm
         return "Ghost";
     }
 
+    Faction Enemy::GetFaction()
+    {
+        return Faction::Enemy;
+    }
+
     void Enemy::Update()
     {
         // Visible = (World.DistanceToPlayer(TileX, TileY) <= World.GetViewDistance());
@@ -40,33 +46,43 @@ namespace cm
 
     std::shared_ptr<Action> Enemy::NextAction()
     {
-        // int playerDistX = World.GetPlayer().GetX() - TileX;
-        // int playerDistY = World.GetPlayer().GetY() - TileY;
+        // if player gets too close, start chasing them
+        int playerDistance = World.DistanceToPlayer(TileX, TileY);
 
-        // // move toward player
-        // MoveDirection dir = MoveDirection::Unknown;
+        if (playerDistance == 1)
+        {
+            // attack player
+            return std::make_shared<AttackAction>(World.GetPlayer(), *this, World);
+        }
 
-        // if (playerDistX < 0)
-        // {
-        //     dir = MoveDirection::Left;
-        // }
-        // else if (playerDistX > 0)
-        // {
-        //     dir = MoveDirection::Right;
-        // }
-        // else
-        // {
-        //     if (playerDistY < 0)
-        //     {
-        //         dir = MoveDirection::Down;
-        //     }
-        //     else
-        //     {
-        //         dir = MoveDirection::Up;
-        //     }
-        // }
+        else if (playerDistance < 6)
+        {
+            // really bad pathfinding to player
+            int diffX = World.GetPlayer().GetX() - TileX;
+            int diffY = World.GetPlayer().GetY() - TileY;
 
-        // return std::make_shared<MoveAction>(dir, *this, World);
+            auto dir = MoveDirection::Unknown;
+
+            if (diffX > 0)
+            {
+                dir = MoveDirection::Right;
+            }
+            else if (diffX < 0)
+            {
+                dir = MoveDirection::Left;
+            }
+            else if (diffY > 0)
+            {
+                dir = MoveDirection::Up;
+            }
+            else if (diffY < 0)
+            {
+                dir = MoveDirection::Down;
+            }
+
+            return std::make_shared<MoveAction>(dir, *this, World);
+        }
+
         return std::make_shared<WaitAction>();
     }
 

@@ -19,6 +19,7 @@ namespace cm
         void Update() override;
         std::shared_ptr<Action> NextAction() override;
         void Render(Renderer &renderer) override;
+        Faction GetFaction() override;
     };
 
 } // namespace cm

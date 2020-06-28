@@ -8,6 +8,12 @@
 
 namespace cm
 {
+    enum struct Faction
+    {
+        Human,
+        Enemy
+    };
+
     class Actor
     {
     protected:
@@ -26,7 +32,7 @@ namespace cm
         virtual void Update() = 0;
         virtual void Render(Renderer &renderer) = 0;
         virtual std::shared_ptr<Action> NextAction() = 0;
-        
+
         virtual std::string GetName() = 0;
         virtual int GetAttack() = 0;
 
@@ -40,6 +46,8 @@ namespace cm
         int GetHP();
         int GetMaxHP();
         void Damage(int damage);
+
+        virtual Faction GetFaction() = 0;
     };
 
 } // namespace cm

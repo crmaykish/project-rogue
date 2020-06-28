@@ -31,7 +31,7 @@ namespace cm
         const Tile GetTile(int x, int y);
         std::shared_ptr<Actor> GetActor(int x, int y);
 
-        const Actor &GetPlayer();
+        Actor &GetPlayer();
 
         int DistanceToPlayer(int x, int y);
 

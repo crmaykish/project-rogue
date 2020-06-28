@@ -21,6 +21,11 @@ namespace cm
         return "Colin";
     }
 
+    Faction Player::GetFaction()
+    {
+        return Faction::Human;
+    }
+
     void Player::Update()
     {
     }

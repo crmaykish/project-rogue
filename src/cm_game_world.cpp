@@ -71,6 +71,7 @@ namespace cm
         auto action = currentActor->NextAction();
 
         // TODO: convert this to a queue or while loop. run until a valid action is executed for each actor
+        // this will only handle one failed action before locking up
 
         if (action != nullptr)
         {
@@ -164,7 +165,7 @@ namespace cm
         return nullptr;
     }
 
-    const Actor &GameWorld::GetPlayer()
+    Actor &GameWorld::GetPlayer()
     {
         return *PlayerOne;
     }
