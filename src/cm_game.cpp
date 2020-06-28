@@ -144,12 +144,28 @@ namespace cm
                                0.6,
                                true);
 
+        MainRenderer->DrawFont("Attack: " + std::to_string(World->GetPlayer().GetAttack()),
+                               AssetKey::UIFont,
+                               COLOR_WHITE,
+                               10,
+                               yOffset - 110,
+                               0.6,
+                               true);
+
+        MainRenderer->DrawFont("Armor: " + std::to_string(0),
+                               AssetKey::UIFont,
+                               COLOR_WHITE,
+                               10,
+                               yOffset - 140,
+                               0.6,
+                               true);
+
         MainRenderer->DrawFont("Level " + std::to_string(World->GetLevelIndex()),
                                AssetKey::UIFont,
                                COLOR_WHITE,
                                10,
                                10,
-                               1.0,
+                               0.6,
                                true);
 
         MainRenderer->Render();
