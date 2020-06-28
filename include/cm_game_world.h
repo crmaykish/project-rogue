@@ -11,6 +11,8 @@ namespace cm
     class GameWorld
     {
     private:
+        bool NextLevel = false;
+        int LevelIndex = 0;
         int Width = 0;
         int Height = 0;
         int CurrentActorIndex = 0;
@@ -20,8 +22,13 @@ namespace cm
 
         int ViewDistance = 4;
 
+        void CreateLevel();
+
     public:
-        GameWorld(int x, int y);
+        GameWorld();
+
+        void Init();
+
         void Update();
         void Render(Renderer &renderer);
 
@@ -39,6 +46,10 @@ namespace cm
 
         int GetWidth();
         int GetHeight();
+
+        void SetNextLevel();
+
+        int GetLevelIndex();
     };
 
 } // namespace cm

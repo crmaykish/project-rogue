@@ -15,45 +15,26 @@ namespace cm
         return std::sqrt(std::pow(xDist, 2) + std::pow(yDist, 2));
     }
 
-    GameWorld::GameWorld(int x, int y) : Width(x), Height(y)
+    GameWorld::GameWorld() {}
+
+    void GameWorld::Init()
     {
-        Log("Creating game world", LOG_INFO);
-
-        // Create a map
-        for (int i = 0; i < Width; i++)
-        {
-            for (int j = 0; j < Height; j++)
-            {
-                bool solid = (i == 0) || (i == Width - 1) ||
-                             (j == 0) || (j == Height - 1) ||
-                             ((i % 5 == 0) && (j % 5 == 0));
-
-                Tiles.push_back({i, j, solid ? TileType::Wall : TileType::Empty, true, true});
-            }
-        }
-
-        // Place the exit door randomly
-        int randIndex = RandomInt(Tiles.size() - 2) + 1;
-
-        while (Tiles.at(randIndex).Type != TileType::Empty)
-        {
-            randIndex = RandomInt(Tiles.size() - 2) + 1;
-        }
-        
-        Tiles.at(randIndex).Type = TileType::Door;
-
-        // Add some enemies
-        for (int i = 0; i < 5; i++)
-        {
-            AddActor(std::make_unique<Enemy>(*this));
-        }
+        CreateLevel();
     }
 
     void GameWorld::Update()
     {
+        if (NextLevel)
+        {
+            CreateLevel();
+            NextLevel = false;
+            return;
+        }
+
+        // Remove any inactive actors
         Actors.erase(std::remove_if(Actors.begin(),
                                     Actors.end(),
-                                    [](auto &a) { return !a->IsActive(); }),
+                                    [](auto &a) { return (!a->IsActive() && a->GetFaction() != Faction::Human); }),
                      Actors.end());
 
         // Update tiles
@@ -101,6 +82,11 @@ namespace cm
             // Increment actor index
             CurrentActorIndex = (CurrentActorIndex == Actors.size() - 1) ? 0 : CurrentActorIndex + 1;
         }
+    }
+
+    void GameWorld::SetNextLevel()
+    {
+        NextLevel = true;
     }
 
     void GameWorld::Render(Renderer &renderer)
@@ -198,6 +184,60 @@ namespace cm
     int GameWorld::GetHeight()
     {
         return Height;
+    }
+
+    int GameWorld::GetLevelIndex()
+    {
+        return LevelIndex;
+    }
+
+    void GameWorld::CreateLevel()
+    {
+        // Remove any remaining enemies
+        Actors.erase(std::remove_if(Actors.begin(),
+                                    Actors.end(),
+                                    [](auto &a) { return (a->GetFaction() != Faction::Human); }),
+                     Actors.end());
+
+        // Wipe and rebuild the tile map
+        Tiles.clear();
+
+        Width = RandomInt(20) + 20;
+        Height = RandomInt(15) + 10;
+
+        // Create a map
+        for (int i = 0; i < Width; i++)
+        {
+            for (int j = 0; j < Height; j++)
+            {
+                bool solid = (i == 0) || (i == Width - 1) ||
+                             (j == 0) || (j == Height - 1) ||
+                             ((i % 5 == 0) && (j % 5 == 0));
+
+                Tiles.push_back({i, j, solid ? TileType::Wall : TileType::Empty, true, true});
+            }
+        }
+
+        // Place the exit door randomly
+        int randIndex = RandomInt(Tiles.size() - 2) + 1;
+
+        while (Tiles.at(randIndex).Type != TileType::Empty)
+        {
+            randIndex = RandomInt(Tiles.size() - 2) + 1;
+        }
+
+        Tiles.at(randIndex).Type = TileType::Door;
+
+        // Add some enemies
+        for (int i = 0; i < 5; i++)
+        {
+            AddActor(std::make_unique<Enemy>(*this));
+        }
+
+        // TODO: reset player position
+        GetPlayer().SetPosition(2, 2);
+
+        LevelIndex++;
     }
 
 } // namespace cm

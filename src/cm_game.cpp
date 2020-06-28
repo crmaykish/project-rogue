@@ -13,7 +13,7 @@ namespace cm
         srand(time(NULL));
 
         // Create world
-        World = std::make_unique<GameWorld>(20, 15);
+        World = std::make_unique<GameWorld>();
 
         // Create and assign input handler
         SetMainInputHandler(std::make_unique<cm::SDLInputHandler>());
@@ -28,6 +28,8 @@ namespace cm
 
         // Create a player
         World->AddPlayer(std::make_shared<Player>(*World, Input));
+
+        World->Init();
 
         SnapCameraToPlayer();
 
@@ -104,8 +106,7 @@ namespace cm
 
         World->Update();
 
-        // TODO: this is a pretty hacky way to trigger a turn, make this more robust
-        // maybe this belongs in the player code? Need a way to not step if the movement fails
+        // TODO: find a better way to trigger an automatic camera snap, maybe based on something in World
         if (Input.Left.Once() || Input.Right.Once() || Input.Up.Once() || Input.Down.Once())
         {
             SnapCameraToPlayer();
@@ -141,6 +142,14 @@ namespace cm
                                10,
                                yOffset - 80,
                                0.6,
+                               true);
+
+        MainRenderer->DrawFont("Level " + std::to_string(World->GetLevelIndex()),
+                               AssetKey::UIFont,
+                               COLOR_WHITE,
+                               10,
+                               10,
+                               1.0,
                                true);
 
         MainRenderer->Render();

@@ -5,10 +5,6 @@ namespace cm
 {
     Player::Player(GameWorld &world, UserInput &input) : World(world), Input(input)
     {
-        // TODO: the world should decide the player starting position
-        TileX = 2;
-        TileY = 2;
-
         MaxHP = 100;
         HP = MaxHP;
 

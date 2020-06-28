@@ -36,6 +36,7 @@ namespace cm
         virtual std::string GetName() = 0;
         virtual int GetAttack() = 0;
 
+        void SetPosition(int x, int y);
         float GetX() const;
         float GetY() const;
         void Move(int x, int y);

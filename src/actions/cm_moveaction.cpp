@@ -41,6 +41,15 @@ namespace cm
 
         auto targetTile = World.GetTile(Target.GetX() + moveX, Target.GetY() + moveY);
 
+        // is it an exit tile?
+        // TODO: create NextLevelAction?
+        if (targetTile.Type == TileType::Door && Target.GetFaction() == Faction::Human)
+        {
+            World.SetNextLevel();
+            result.Success = true;
+            result.Message = Target.GetName() + " is exiting level";
+        }
+
         auto enemyOnTargetTile = World.GetActor(targetTile.X, targetTile.Y);
 
         // Is there an enemy on the tile?

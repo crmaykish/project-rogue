@@ -16,12 +16,13 @@ namespace cm
 
     public:
         Player(GameWorld &world, UserInput &input);
-        std::string GetName() override;
-        int GetAttack() override;
+
         void Update() override;
         std::shared_ptr<Action> NextAction() override;
         void Render(Renderer &renderer) override;
 
+        int GetAttack() override;
+        std::string GetName() override;
         Faction GetFaction() override;
     };
 

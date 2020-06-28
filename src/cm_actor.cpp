@@ -9,6 +9,12 @@ namespace cm
         TileY += y;
     }
 
+    void Actor::SetPosition(int x, int y)
+    {
+        TileX = x;
+        TileY = y;
+    }
+
     float Actor::GetX() const
     {
         return TileX;
