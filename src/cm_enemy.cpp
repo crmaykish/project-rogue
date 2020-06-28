@@ -41,7 +41,7 @@ namespace cm
 
     void Enemy::Update()
     {
-        // Visible = (World.DistanceToPlayer(TileX, TileY) <= World.GetViewDistance());
+        Visible = (World.DistanceToPlayer(TileX, TileY) <= World.GetViewDistance());
     }
 
     std::shared_ptr<Action> Enemy::NextAction()
