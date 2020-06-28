@@ -57,7 +57,7 @@ namespace cm
         // Update tiles
         for (auto &t : Tiles)
         {
-            if (DistanceToPlayer(t.X, t.Y) <= 4)
+            if (DistanceToPlayer(t.X, t.Y) <= ViewDistance)
             {
                 t.Discovered = true;
                 t.Visible = true;

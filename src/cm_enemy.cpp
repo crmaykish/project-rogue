@@ -2,6 +2,8 @@
 #include "cm_random.h"
 #include "cm_moveaction.h"
 
+#include "cm_logger.h"
+
 namespace cm
 {
     Enemy::Enemy(GameWorld &world) : World(world)
@@ -32,7 +34,7 @@ namespace cm
 
     void Enemy::Update()
     {
-        Visible = World.DistanceToPlayer(TileX, TileY) <= World.GetViewDistance();
+        Visible = (World.DistanceToPlayer(TileX, TileY) <= World.GetViewDistance());
     }
 
     void Enemy::Step()
@@ -41,7 +43,6 @@ namespace cm
         int playerDistY = World.GetPlayer().GetY() - TileY;
 
         // move toward player
-
         MoveDirection dir = MoveDirection::Unknown;
 
         if (playerDistX < 0)

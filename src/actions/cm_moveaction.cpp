@@ -49,14 +49,18 @@ namespace cm
             result = ActionResult::Success;
         }
 
-        if (result == ActionResult::Success)
+        if (Target.IsVisible())
         {
-            Log(Target.GetName() + " moved " + dirName, LOG_INFO);
+            if (result == ActionResult::Success)
+            {
+                Log(Target.GetName() + " moved " + dirName, LOG_INFO);
+            }
+            else
+            {
+                Log(Target.GetName() + " failed to move " + dirName, LOG_INFO);
+            }
         }
-        else
-        {
-            Log(Target.GetName() + " failed to move " + dirName, LOG_INFO);
-        }
+
         return result;
     }
 
