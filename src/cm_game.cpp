@@ -107,7 +107,7 @@ namespace cm
         World->Update();
 
         // TODO: find a better way to trigger an automatic camera snap, maybe based on something in World
-        if (Input.Left.Once() || Input.Right.Once() || Input.Up.Once() || Input.Down.Once())
+        if (Input.Left.Once() || Input.Right.Once() || Input.Up.Once() || Input.Down.Once() || Input.Primary.Once())
         {
             SnapCameraToPlayer();
         }

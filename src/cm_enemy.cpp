@@ -83,7 +83,7 @@ namespace cm
             return std::make_shared<MoveAction>(dir, *this, World);
         }
 
-        return std::make_shared<WaitAction>();
+        return std::make_shared<WaitAction>(*this, World);
     }
 
     void Enemy::Render(Renderer &renderer)

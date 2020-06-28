@@ -85,25 +85,23 @@ namespace cm
         switch (event.key.keysym.sym)
         {
         case SDLK_a:
+        case SDLK_LEFT:
             userInput.Left.On = keyOn;
             break;
         case SDLK_d:
+        case SDLK_RIGHT:
             userInput.Right.On = keyOn;
             break;
         case SDLK_w:
+        case SDLK_UP:
             userInput.Up.On = keyOn;
             break;
         case SDLK_s:
+        case SDLK_DOWN:
             userInput.Down.On = keyOn;
             break;
-        case SDLK_RETURN:
+        case SDLK_SPACE:
             userInput.Primary.On = keyOn;
-            break;
-        case SDLK_LCTRL:
-            userInput.Secondary.On = keyOn;
-            break;
-        case SDLK_e:
-            userInput.Activate.On = keyOn;
             break;
 
         default:

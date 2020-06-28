@@ -1,5 +1,6 @@
 #include "cm_player.h"
 #include "cm_moveaction.h"
+#include "cm_waitaction.h"
 
 namespace cm
 {
@@ -28,6 +29,11 @@ namespace cm
 
     std::shared_ptr<Action> Player::NextAction()
     {
+        if (Input.Primary.Once())
+        {
+            return std::make_shared<WaitAction>(*this, World);
+        }
+
         auto dir = MoveDirection::Unknown;
 
         if (Input.Right.Once())
