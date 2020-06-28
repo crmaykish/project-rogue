@@ -26,6 +26,7 @@ namespace cm
         // Tiles
         FloorTexture,
         WallTexture,
+        DoorTexture,
         // Actors
         PlayerTexture,
         GhostTexture

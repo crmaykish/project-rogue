@@ -10,6 +10,7 @@ namespace cm
         Unknown,
         Empty,
         Wall,
+        Door
     };
 
     struct Tile

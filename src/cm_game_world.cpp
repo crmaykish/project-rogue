@@ -4,6 +4,7 @@
 #include "cm_player.h"
 #include "cm_enemy.h"
 #include "cm_logger.h"
+#include "cm_random.h"
 
 namespace cm
 {
@@ -30,6 +31,16 @@ namespace cm
                 Tiles.push_back({i, j, solid ? TileType::Wall : TileType::Empty, true, true});
             }
         }
+
+        // Place the exit door randomly
+        int randIndex = RandomInt(Tiles.size() - 2) + 1;
+
+        while (Tiles.at(randIndex).Type != TileType::Empty)
+        {
+            randIndex = RandomInt(Tiles.size() - 2) + 1;
+        }
+        
+        Tiles.at(randIndex).Type = TileType::Door;
 
         // Add some enemies
         for (int i = 0; i < 5; i++)
@@ -106,6 +117,10 @@ namespace cm
                 else if (t.Type == TileType::Empty)
                 {
                     renderer.DrawTexture(AssetKey::FloorTexture, t.X * TileSize, t.Y * TileSize, TileSize, TileSize);
+                }
+                else if (t.Type == TileType::Door)
+                {
+                    renderer.DrawTexture(AssetKey::DoorTexture, t.X * TileSize, t.Y * TileSize, TileSize, TileSize);
                 }
 
                 // draw fog

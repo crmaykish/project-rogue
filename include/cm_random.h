@@ -7,10 +7,7 @@
 
 namespace cm {
     
-    int RandomInt(int max)
-    {
-        return rand() % max;
-    }
+    int RandomInt(int max);
 }
 
 #endif // CM_RANDOM_H
