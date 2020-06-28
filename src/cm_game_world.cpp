@@ -5,6 +5,7 @@
 #include "cm_enemy.h"
 #include "cm_logger.h"
 #include "cm_random.h"
+#include "cm_potion.h"
 
 namespace cm
 {
@@ -129,6 +130,12 @@ namespace cm
             }
         }
 
+        // Render items
+        for (auto i : Items)
+        {
+            renderer.DrawTexture(AssetKey::HealthPotionTexture, 3 * TileSize, 6 * TileSize, TileSize, TileSize);
+        }
+
         // Render actors
         for (auto const &a : Actors)
         {
@@ -244,6 +251,12 @@ namespace cm
         for (int i = 0; i < 5; i++)
         {
             AddActor(std::make_unique<Enemy>(*this));
+        }
+
+        // add some item pickups
+        for (int i = 0; i < 1; i++)
+        {
+            Items.emplace_back(std::make_shared<HealthPotion>());
         }
 
         // TODO: reset player position

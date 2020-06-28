@@ -10,6 +10,7 @@ file(COPY config DESTINATION ${CMAKE_BINARY_DIR})
 
 include_directories(include)
 include_directories(include/actions)
+include_directories(include/items)
 
 add_subdirectory(src)
 add_subdirectory(test)

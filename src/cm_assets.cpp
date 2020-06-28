@@ -71,6 +71,7 @@ namespace cm
         case AssetKey::UIFont:
             assetFileName = "game over.ttf";
             break;
+        // Tiles
         case AssetKey::FloorTexture:
             assetFileName = "floor.png";
             break;
@@ -80,11 +81,16 @@ namespace cm
         case AssetKey::DoorTexture:
             assetFileName = "door.png";
             break;
+        // Actors
         case AssetKey::PlayerTexture:
             assetFileName = "player.png";
             break;
         case AssetKey::GhostTexture:
             assetFileName = "ghost.png";
+            break;
+        // Items
+        case AssetKey::HealthPotionTexture:
+            assetFileName = "potion_hp.png";
             break;
         default:
             Log("No file name found for asset key: " + std::to_string((int)key), LOG_WARNING);

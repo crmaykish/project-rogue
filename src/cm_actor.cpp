@@ -56,4 +56,14 @@ namespace cm
         }
     }
 
+    void Actor::Heal(int health)
+    {
+        HP += health;
+
+        if (HP >= MaxHP)
+        {
+            HP = MaxHP;
+        }
+    }
+
 } // namespace cm

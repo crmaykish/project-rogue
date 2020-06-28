@@ -29,7 +29,12 @@ namespace cm
         DoorTexture,
         // Actors
         PlayerTexture,
-        GhostTexture
+        GhostTexture,
+        // Items
+        HealthPotionTexture,
+        EnergyPotionTexture,
+        RejuvPotionTexture,
+        TorchTexture,
     };
 
     class Font

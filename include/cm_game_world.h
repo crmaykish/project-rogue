@@ -5,6 +5,7 @@
 #include "cm_tile.h"
 #include "cm_actor.h"
 #include "cm_renderer.h"
+#include "cm_item.h"
 
 namespace cm
 {
@@ -18,6 +19,7 @@ namespace cm
         int Height = 0;
         int CurrentActorIndex = 0;
         std::vector<Tile> Tiles;
+        std::vector<std::shared_ptr<Item>> Items;
         std::vector<std::shared_ptr<Actor>> Actors;
         std::shared_ptr<Actor> PlayerOne;
 
