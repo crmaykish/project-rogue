@@ -41,7 +41,10 @@ namespace cm
 
     void Enemy::Update()
     {
-        Visible = (World.DistanceToPlayer(TileX, TileY) <= World.GetViewDistance());
+        if (Active)
+        {
+            Visible = (World.DistanceToPlayer(TileX, TileY) <= World.GetViewDistance());
+        }
     }
 
     std::shared_ptr<Action> Enemy::NextAction()
@@ -88,7 +91,7 @@ namespace cm
 
     void Enemy::Render(Renderer &renderer)
     {
-        if (Visible)
+        if (Active && Visible)
         {
             renderer.DrawTexture(AssetKey::GhostTexture, TileX * TileSize, TileY * TileSize, TileSize, TileSize);
 

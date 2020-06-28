@@ -13,6 +13,7 @@ namespace cm
     private:
         bool NextLevel = false;
         int LevelIndex = 0;
+        int TurnCount = 0;
         int Width = 0;
         int Height = 0;
         int CurrentActorIndex = 0;

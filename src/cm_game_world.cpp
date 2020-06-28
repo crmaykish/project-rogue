@@ -31,12 +31,6 @@ namespace cm
             return;
         }
 
-        // Remove any inactive actors
-        Actors.erase(std::remove_if(Actors.begin(),
-                                    Actors.end(),
-                                    [](auto &a) { return (!a->IsActive() && a->GetFaction() != Faction::Human); }),
-                     Actors.end());
-
         // Update tiles
         for (auto &t : Tiles)
         {
@@ -60,6 +54,12 @@ namespace cm
 
         auto currentActor = Actors.at(CurrentActorIndex);
 
+        while (!currentActor->IsActive())
+        {
+            CurrentActorIndex = ((CurrentActorIndex == Actors.size() - 1) || Actors.size() == 0) ? 0 : CurrentActorIndex + 1;
+            currentActor = Actors.at(CurrentActorIndex);
+        }
+
         auto action = currentActor->NextAction();
 
         // TODO: convert this to a queue or while loop. run until a valid action is executed for each actor
@@ -77,10 +77,14 @@ namespace cm
                 }
             }
 
-            Log(result.Message, LOG_INFO);
+            if (currentActor->IsVisible())
+            {
+                Log(std::to_string(TurnCount) + " | " + result.Message, LOG_INFO);
+                TurnCount++;
+            }
 
             // Increment actor index
-            CurrentActorIndex = (CurrentActorIndex == Actors.size() - 1) ? 0 : CurrentActorIndex + 1;
+            CurrentActorIndex = ((CurrentActorIndex == Actors.size() - 1) || Actors.size() == 0) ? 0 : CurrentActorIndex + 1;
         }
 
         // If player is dead, game over
@@ -165,7 +169,7 @@ namespace cm
     {
         for (auto a : Actors)
         {
-            if (a->GetX() == x && a->GetY() == y)
+            if (a->IsActive() && a->GetX() == x && a->GetY() == y)
             {
                 return a;
             }
