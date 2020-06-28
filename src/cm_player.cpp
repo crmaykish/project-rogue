@@ -61,4 +61,9 @@ namespace cm
         renderer.DrawTexture(AssetKey::PlayerTexture, TileX * TileSize, TileY * TileSize, TileSize, TileSize);
     }
 
+    int Player::GetAttack()
+    {
+        return 10;
+    }
+
 } // namespace cm

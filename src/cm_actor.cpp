@@ -43,11 +43,8 @@ namespace cm
     {
         HP -= damage;
 
-        Log("HP: " + std::to_string(HP) + " of " + std::to_string(MaxHP), LOG_INFO);
-
         if (HP <= 0)
         {
-            Log("Target died", LOG_INFO);
             HP = 0;
             Active = false;
         }

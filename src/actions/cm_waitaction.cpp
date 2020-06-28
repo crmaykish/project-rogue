@@ -4,7 +4,7 @@ namespace cm
 {
     ActionResult WaitAction::Execute()
     {
-        return ActionResult{true, nullptr};
+        return ActionResult{true, "", nullptr};
     }
 
 } // namespace cm

@@ -1,4 +1,5 @@
 #include "cm_moveaction.h"
+#include "cm_attackaction.h"
 #include "cm_logger.h"
 
 namespace cm
@@ -8,7 +9,7 @@ namespace cm
 
     ActionResult MoveAction::Execute()
     {
-        auto result = ActionResult{false, nullptr};
+        ActionResult result;
 
         // try to move the actor in the given direction
         int moveX = 0;
@@ -35,7 +36,6 @@ namespace cm
             dirName = "down";
             break;
         default:
-            Log("Tried to move in invalid direction", LOG_WARNING);
             break;
         }
 
@@ -43,20 +43,16 @@ namespace cm
 
         auto enemyOnTargetTile = World.GetActor(targetTile.X, targetTile.Y);
 
-        // If target tile is walkable and does not contain another actor, move to that tile
-        if (targetTile.Type == TileType::Empty && enemyOnTargetTile == nullptr)
+        // Is there an enemy on the tile?
+        if (enemyOnTargetTile != nullptr)
+        {
+            result.AlternateAction = std::make_shared<AttackAction>(*enemyOnTargetTile, Target, World);
+        }
+        else if (targetTile.Type == TileType::Empty)
         {
             Target.Move(moveX, moveY);
             result.Success = true;
-        }
-
-        if (result.Success)
-        {
-            Log(Target.GetName() + " moved " + dirName, LOG_INFO);
-        }
-        else
-        {
-            Log(Target.GetName() + " failed to move " + dirName, LOG_INFO);
+            result.Message = Target.GetName() + " moves " + dirName;
         }
 
         return result;

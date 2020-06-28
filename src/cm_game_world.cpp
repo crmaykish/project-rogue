@@ -40,6 +40,11 @@ namespace cm
 
     void GameWorld::Update()
     {
+        Actors.erase(std::remove_if(Actors.begin(),
+                                    Actors.end(),
+                                    [](auto &a) { return !a->IsActive(); }),
+                     Actors.end());
+
         // Update tiles
         // for (auto &t : Tiles)
         // {
@@ -59,18 +64,27 @@ namespace cm
             a->Update();
         }
 
-        // execute action of next actor and increment turn
-
         // TODO: use an iterator to keep track of the current position instead of an index
+
         auto currentActor = Actors.at(CurrentActorIndex);
 
         auto action = currentActor->NextAction();
+
+        // TODO: convert this to a queue or while loop. run until a valid action is executed for each actor
 
         if (action != nullptr)
         {
             auto result = action->Execute();
 
-            // TODO: if action failed, request a different action from the actor and execute that
+            if (!result.Success)
+            {
+                if (result.AlternateAction != nullptr)
+                {
+                    result = result.AlternateAction->Execute();
+                }
+            }
+
+            Log(result.Message, LOG_INFO);
 
             // Increment actor index
             CurrentActorIndex = (CurrentActorIndex == Actors.size() - 1) ? 0 : CurrentActorIndex + 1;

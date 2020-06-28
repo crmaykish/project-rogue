@@ -16,6 +16,7 @@ namespace cm
     struct ActionResult
     {
         bool Success = false;
+        std::string Message;
         std::shared_ptr<Action> AlternateAction = nullptr;
     };
 

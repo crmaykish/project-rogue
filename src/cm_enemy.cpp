@@ -26,7 +26,6 @@ namespace cm
 
         Visible = true;
         Active = true;
-
     }
 
     std::string Enemy::GetName()
@@ -84,6 +83,11 @@ namespace cm
                               (TileY + 1) * TileSize,
                               0.5);
         }
+    }
+
+    int Enemy::GetAttack()
+    {
+        return 5;
     }
 
 } // namespace cm
