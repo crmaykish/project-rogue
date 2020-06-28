@@ -6,11 +6,7 @@ namespace cm
 {
     Player::Player(GameWorld &world, UserInput &input) : World(world), Input(input)
     {
-        MaxHP = 100;
-        HP = MaxHP;
-
-        Active = true;
-        Visible = true;
+        Reset();
     }
 
     std::string Player::GetName()
@@ -71,6 +67,15 @@ namespace cm
     int Player::GetAttack()
     {
         return 10;
+    }
+
+    void Player::Reset()
+    {
+        MaxHP = 100;
+        HP = MaxHP;
+
+        Active = true;
+        Visible = true;
     }
 
 } // namespace cm

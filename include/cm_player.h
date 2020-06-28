@@ -24,6 +24,8 @@ namespace cm
         int GetAttack() override;
         std::string GetName() override;
         Faction GetFaction() override;
+
+        void Reset() override;
     };
 
 } // namespace cm

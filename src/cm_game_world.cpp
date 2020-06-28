@@ -82,6 +82,14 @@ namespace cm
             // Increment actor index
             CurrentActorIndex = (CurrentActorIndex == Actors.size() - 1) ? 0 : CurrentActorIndex + 1;
         }
+
+        // If player is dead, game over
+        if (GetPlayer().GetHP() == 0)
+        {
+            GetPlayer().Reset();
+            LevelIndex = 0;
+            NextLevel = true;
+        }
     }
 
     void GameWorld::SetNextLevel()

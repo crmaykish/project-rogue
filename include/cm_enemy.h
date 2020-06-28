@@ -20,6 +20,8 @@ namespace cm
         std::shared_ptr<Action> NextAction() override;
         void Render(Renderer &renderer) override;
         Faction GetFaction() override;
+
+        void Reset() override;
     };
 
 } // namespace cm

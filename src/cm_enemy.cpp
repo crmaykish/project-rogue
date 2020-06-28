@@ -106,4 +106,8 @@ namespace cm
         return 5;
     }
 
+    void Enemy::Reset()
+    {
+    }
+
 } // namespace cm
