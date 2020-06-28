@@ -41,24 +41,22 @@ namespace cm
 
         auto targetTile = World.GetTile(Target.GetX() + moveX, Target.GetY() + moveY);
 
+        auto enemyOnTargetTile = World.GetActor(targetTile.X, targetTile.Y);
+
         // If target tile is walkable and does not contain another actor, move to that tile
-        if (targetTile.Type == TileType::Empty &&
-            World.GetActor(targetTile.X + moveX, targetTile.Y + moveY) == nullptr)
+        if (targetTile.Type == TileType::Empty && enemyOnTargetTile == nullptr)
         {
             Target.Move(moveX, moveY);
             result.Success = true;
         }
 
-        if (Target.IsVisible())
+        if (result.Success)
         {
-            if (result.Success)
-            {
-                Log(Target.GetName() + " moved " + dirName, LOG_INFO);
-            }
-            else
-            {
-                Log(Target.GetName() + " failed to move " + dirName, LOG_INFO);
-            }
+            Log(Target.GetName() + " moved " + dirName, LOG_INFO);
+        }
+        else
+        {
+            Log(Target.GetName() + " failed to move " + dirName, LOG_INFO);
         }
 
         return result;

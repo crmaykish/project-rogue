@@ -27,12 +27,12 @@ namespace cm
                              (j == 0) || (j == Height - 1) ||
                              ((i % 5 == 0) && (j % 5 == 0));
 
-                Tiles.push_back({i, j, solid ? TileType::Wall : TileType::Empty, false});
+                Tiles.push_back({i, j, solid ? TileType::Wall : TileType::Empty, true, true});
             }
         }
 
         // Add some enemies
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 5; i++)
         {
             AddActor(std::make_unique<Enemy>(*this));
         }
@@ -41,18 +41,18 @@ namespace cm
     void GameWorld::Update()
     {
         // Update tiles
-        for (auto &t : Tiles)
-        {
-            if (DistanceToPlayer(t.X, t.Y) <= ViewDistance)
-            {
-                t.Discovered = true;
-                t.Visible = true;
-            }
-            else
-            {
-                t.Visible = false;
-            }
-        }
+        // for (auto &t : Tiles)
+        // {
+        //     if (DistanceToPlayer(t.X, t.Y) <= ViewDistance)
+        //     {
+        //         t.Discovered = true;
+        //         t.Visible = true;
+        //     }
+        //     else
+        //     {
+        //         t.Visible = false;
+        //     }
+        // }
 
         for (auto &a : Actors)
         {

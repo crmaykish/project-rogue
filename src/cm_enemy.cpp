@@ -1,7 +1,7 @@
 #include "cm_enemy.h"
 #include "cm_random.h"
 #include "cm_moveaction.h"
-
+#include "cm_waitaction.h"
 #include "cm_logger.h"
 
 namespace cm
@@ -24,7 +24,9 @@ namespace cm
         TileX = x;
         TileY = y;
 
+        Visible = true;
         Active = true;
+
     }
 
     std::string Enemy::GetName()
@@ -34,38 +36,39 @@ namespace cm
 
     void Enemy::Update()
     {
-        Visible = (World.DistanceToPlayer(TileX, TileY) <= World.GetViewDistance());
+        // Visible = (World.DistanceToPlayer(TileX, TileY) <= World.GetViewDistance());
     }
 
     std::shared_ptr<Action> Enemy::NextAction()
     {
-        int playerDistX = World.GetPlayer().GetX() - TileX;
-        int playerDistY = World.GetPlayer().GetY() - TileY;
+        // int playerDistX = World.GetPlayer().GetX() - TileX;
+        // int playerDistY = World.GetPlayer().GetY() - TileY;
 
-        // move toward player
-        MoveDirection dir = MoveDirection::Unknown;
+        // // move toward player
+        // MoveDirection dir = MoveDirection::Unknown;
 
-        if (playerDistX < 0)
-        {
-            dir = MoveDirection::Left;
-        }
-        else if (playerDistX > 0)
-        {
-            dir = MoveDirection::Right;
-        }
-        else
-        {
-            if (playerDistY < 0)
-            {
-                dir = MoveDirection::Down;
-            }
-            else
-            {
-                dir = MoveDirection::Up;
-            }
-        }
+        // if (playerDistX < 0)
+        // {
+        //     dir = MoveDirection::Left;
+        // }
+        // else if (playerDistX > 0)
+        // {
+        //     dir = MoveDirection::Right;
+        // }
+        // else
+        // {
+        //     if (playerDistY < 0)
+        //     {
+        //         dir = MoveDirection::Down;
+        //     }
+        //     else
+        //     {
+        //         dir = MoveDirection::Up;
+        //     }
+        // }
 
-        return std::make_shared<MoveAction>(dir, *this, World);
+        // return std::make_shared<MoveAction>(dir, *this, World);
+        return std::make_shared<WaitAction>();
     }
 
     void Enemy::Render(Renderer &renderer)

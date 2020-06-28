@@ -13,7 +13,7 @@ namespace cm
         srand(time(NULL));
 
         // Create world
-        World = std::make_unique<GameWorld>(40, 24);
+        World = std::make_unique<GameWorld>(20, 15);
 
         // Create and assign input handler
         SetMainInputHandler(std::make_unique<cm::SDLInputHandler>());
