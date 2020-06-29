@@ -2,7 +2,7 @@
 
 namespace cm
 {
-    void Item::OnPickup(std::shared_ptr<Actor> owner)
+    void Item::OnPickup(Actor &owner)
     {
         if (PickedUp)
         {
@@ -11,11 +11,11 @@ namespace cm
 
         for (auto &e : PickupEffects)
         {
-            e->Use(*owner);
+            e->Use(owner);
         }
     }
 
-    void Item::OnUse(std::shared_ptr<Actor> owner)
+    void Item::OnUse(Actor &owner)
     {
         if (Charges == 0)
         {
@@ -24,8 +24,10 @@ namespace cm
 
         for (auto &e : UseEffects)
         {
-            e->Use(*owner);
+            e->Use(owner);
         }
+
+        Charges--;
     }
 
     void Item::AddPickupEffect(std::shared_ptr<Effect> effect)

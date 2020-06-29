@@ -16,8 +16,8 @@ namespace cm
         std::vector<std::shared_ptr<Effect>> UseEffects;
 
     public:
-        void OnPickup(std::shared_ptr<Actor> owner);
-        void OnUse(std::shared_ptr<Actor> owner);
+        void OnPickup(Actor &owner);
+        void OnUse(Actor &owner);
 
         void AddPickupEffect(std::shared_ptr<Effect> effect);
         void AddUseEffect(std::shared_ptr<Effect> effect);

@@ -106,6 +106,36 @@ namespace cm
         case SDLK_e:
             userInput.Activate.On = keyOn;
             break;
+        case SDLK_0:
+            userInput.Num[0].On = keyOn;
+            break;
+        case SDLK_1:
+            userInput.Num[1].On = keyOn;
+            break;
+        case SDLK_2:
+            userInput.Num[2].On = keyOn;
+            break;
+        case SDLK_3:
+            userInput.Num[3].On = keyOn;
+            break;
+        case SDLK_4:
+            userInput.Num[4].On = keyOn;
+            break;
+        case SDLK_5:
+            userInput.Num[5].On = keyOn;
+            break;
+        case SDLK_6:
+            userInput.Num[6].On = keyOn;
+            break;
+        case SDLK_7:
+            userInput.Num[7].On = keyOn;
+            break;
+        case SDLK_8:
+            userInput.Num[8].On = keyOn;
+            break;
+        case SDLK_9:
+            userInput.Num[9].On = keyOn;
+            break;
         default:
             break;
         }

@@ -1,7 +1,9 @@
+#include <algorithm>
 #include "cm_player.h"
 #include "cm_moveaction.h"
 #include "cm_waitaction.h"
 #include "cm_pickupaction.h"
+#include "cm_useaction.h"
 
 namespace cm
 {
@@ -22,6 +24,10 @@ namespace cm
 
     void Player::Update()
     {
+        Items.erase(std::remove_if(Items.begin(),
+                                   Items.end(),
+                                   [](auto &i) { return (i->ChargesLeft() <= 0); }),
+                    Items.end());
     }
 
     std::shared_ptr<Action> Player::NextAction()
@@ -29,6 +35,15 @@ namespace cm
         if (Input.Primary.Once())
         {
             return std::make_shared<WaitAction>(*this, World);
+        }
+
+        for (int i = 0; i < 10; i++)
+        {
+            auto n = Input.Num[i];
+            if (n.Once())
+            {
+                return std::make_shared<UseAction>(*this, i);
+            }
         }
 
         if (Input.Activate.Once())

@@ -6,6 +6,8 @@ namespace cm
 {
     HealthPotion::HealthPotion()
     {
+        Charges = 1;
+
         AddUseEffect(std::make_shared<HealEffect>());
     }
 

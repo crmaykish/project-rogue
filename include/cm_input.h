@@ -34,6 +34,7 @@ namespace cm
         InputState Secondary;
         InputState Activate;
         InputState Quit;
+        InputState Num[10];
 
         void Reset();
     };

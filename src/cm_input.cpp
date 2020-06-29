@@ -30,6 +30,11 @@ namespace cm
         Activate.Reset();
         Quit.Reset();
         Mouse.Reset();
+
+        for (auto &n : Num)
+        {
+            n.Reset();
+        }
     }
 
 } // namespace cm
