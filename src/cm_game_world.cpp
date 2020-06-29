@@ -35,14 +35,14 @@ namespace cm
         // Update tiles
         for (auto &t : Tiles)
         {
-            if (DistanceToPlayer(t.X, t.Y) <= ViewDistance)
+            if (DistanceToPlayer(t->X, t->Y) <= ViewDistance)
             {
-                t.Discovered = true;
-                t.Visible = true;
+                t->Discovered = true;
+                t->Visible = true;
             }
             else
             {
-                t.Visible = false;
+                t->Visible = false;
             }
         }
 
@@ -107,33 +107,34 @@ namespace cm
         // Render world tiles
         for (auto t : Tiles)
         {
-            if (t.Discovered)
+            if (t->Discovered)
             {
-                if (t.Type == TileType::Wall)
+                if (t->Type == TileType::Wall)
                 {
-                    renderer.DrawTexture(AssetKey::WallTexture, t.X * TileSize, t.Y * TileSize, TileSize, TileSize);
+                    renderer.DrawTexture(AssetKey::WallTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
                 }
-                else if (t.Type == TileType::Empty)
+                else if (t->Type == TileType::Empty)
                 {
-                    renderer.DrawTexture(AssetKey::FloorTexture, t.X * TileSize, t.Y * TileSize, TileSize, TileSize);
+                    renderer.DrawTexture(AssetKey::FloorTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
                 }
-                else if (t.Type == TileType::Door)
+                else if (t->Type == TileType::Door)
                 {
-                    renderer.DrawTexture(AssetKey::DoorTexture, t.X * TileSize, t.Y * TileSize, TileSize, TileSize);
+                    renderer.DrawTexture(AssetKey::DoorTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
                 }
 
                 // draw fog
-                if (!t.Visible)
+                if (!t->Visible)
                 {
-                    renderer.DrawRectangle(t.X * TileSize, t.Y * TileSize, TileSize, TileSize, COLOR_GREY_OVERLAY);
+                    renderer.DrawRectangle(t->X * TileSize, t->Y * TileSize, TileSize, TileSize, COLOR_GREY_OVERLAY);
+                }
+                else
+                {
+                    if (t->Item != nullptr)
+                    {
+                        renderer.DrawTexture(AssetKey::HealthPotionTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
+                    }
                 }
             }
-        }
-
-        // Render items
-        for (auto i : Items)
-        {
-            renderer.DrawTexture(AssetKey::HealthPotionTexture, 3 * TileSize, 6 * TileSize, TileSize, TileSize);
         }
 
         // Render actors
@@ -154,22 +155,23 @@ namespace cm
         AddActor(player);
     }
 
-    const Tile GameWorld::GetTile(int x, int y)
+    // TODO: this should not be using shared pointers
+    std::shared_ptr<Tile> GameWorld::GetTile(int x, int y)
     {
         if (x < 0 || x >= Width || y < 0 || y >= Height)
         {
-            return Tile{0, 0, TileType::Unknown};
+            return nullptr;
         }
 
         for (auto t : Tiles)
         {
-            if (t.X == x && t.Y == y)
+            if (t->X == x && t->Y == y)
             {
                 return t;
             }
         }
 
-        return Tile{0, 0, TileType::Empty};
+        return std::make_shared<Tile>();
     }
 
     std::shared_ptr<Actor> GameWorld::GetActor(int x, int y)
@@ -233,31 +235,37 @@ namespace cm
                              (j == 0) || (j == Height - 1) ||
                              ((i % 5 == 0) && (j % 5 == 0));
 
-                Tiles.push_back({i, j, solid ? TileType::Wall : TileType::Empty, false, false});
+                auto t = std::make_shared<Tile>();
+
+                // TODO: ugly
+                *t = {i, j, solid ? TileType::Wall : TileType::Empty, false, false};
+
+                if (t->Type == TileType::Empty)
+                {
+                    int r = RandomInt(100);
+                    if (r < 2)
+                    {
+                        t->Item = std::make_shared<HealthPotion>();
+                    }
+                    else if (r < 4)
+                    {
+                        AddActor(std::make_unique<Enemy>(*this, i, j));
+                    }
+                }
+
+                Tiles.push_back(t);
             }
         }
 
         // Place the exit door randomly
         int randIndex = RandomInt(Tiles.size() - 2) + 1;
 
-        while (Tiles.at(randIndex).Type != TileType::Empty)
+        while (Tiles.at(randIndex)->Type != TileType::Empty)
         {
             randIndex = RandomInt(Tiles.size() - 2) + 1;
         }
 
-        Tiles.at(randIndex).Type = TileType::Door;
-
-        // Add some enemies
-        for (int i = 0; i < 5; i++)
-        {
-            AddActor(std::make_unique<Enemy>(*this));
-        }
-
-        // add some item pickups
-        for (int i = 0; i < 1; i++)
-        {
-            Items.emplace_back(std::make_shared<HealthPotion>());
-        }
+        Tiles.at(randIndex)->Type = TileType::Door;
 
         // TODO: reset player position
         GetPlayer().SetPosition(2, 2);

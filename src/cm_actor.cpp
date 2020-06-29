@@ -66,4 +66,14 @@ namespace cm
         }
     }
 
+    void Actor::AddItem(std::shared_ptr<Item> item)
+    {
+        Items.push_back(item);
+    }
+
+    std::vector<std::shared_ptr<Item>> Actor::GetItems()
+    {
+        return Items;
+    }
+
 } // namespace cm

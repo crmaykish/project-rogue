@@ -41,23 +41,28 @@ namespace cm
 
         auto targetTile = World.GetTile(Target.GetX() + moveX, Target.GetY() + moveY);
 
+        if (targetTile == nullptr)
+        {
+            return result;
+        }
+
         // is it an exit tile?
         // TODO: create NextLevelAction?
-        if (targetTile.Type == TileType::Door && Target.GetFaction() == Faction::Human)
+        if ( targetTile->Type == TileType::Door && Target.GetFaction() == Faction::Human)
         {
             World.SetNextLevel();
             result.Success = true;
             result.Message = Target.GetName() + " is exiting level";
         }
 
-        auto enemyOnTargetTile = World.GetActor(targetTile.X, targetTile.Y);
+        auto enemyOnTargetTile = World.GetActor(targetTile->X, targetTile->Y);
 
         // Is there an enemy on the tile?
         if (enemyOnTargetTile != nullptr)
         {
             result.AlternateAction = std::make_shared<AttackAction>(*enemyOnTargetTile, Target, World);
         }
-        else if (targetTile.Type == TileType::Empty)
+        else if (targetTile->Type == TileType::Empty)
         {
             Target.Move(moveX, moveY);
             result.Success = true;

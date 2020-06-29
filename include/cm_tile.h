@@ -1,6 +1,8 @@
 #ifndef CM_TILE_H
 #define CM_TILE_H
 
+#include "cm_item.h"
+
 namespace cm
 {
     const int TileSize = 32;
@@ -20,6 +22,9 @@ namespace cm
         TileType Type = TileType::Unknown;
         bool Discovered = false;
         bool Visible = false;
+
+        // TODO: A tile can only hold one item
+        std::shared_ptr<Item> Item = nullptr;
     };
 } // namespace cm
 

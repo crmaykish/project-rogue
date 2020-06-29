@@ -10,8 +10,6 @@
 
 namespace cm
 {
-    const int InventorySize = 8;
-
     enum struct Faction
     {
         Human,
@@ -29,7 +27,8 @@ namespace cm
         int HP = 0;
         int MaxHP = 0;
 
-        std::array<std::shared_ptr<Item>, InventorySize> Items;
+        // TODO: player can hold an infinite amount of items
+        std::vector<std::shared_ptr<Item>> Items;
 
     public:
         virtual ~Actor() {}
@@ -57,6 +56,10 @@ namespace cm
         int GetMaxHP();
         void Damage(int damage);
         void Heal(int health);
+
+        void AddItem(std::shared_ptr<Item> item);
+
+        std::vector<std::shared_ptr<Item>> GetItems();
     };
 
 } // namespace cm

@@ -103,7 +103,9 @@ namespace cm
         case SDLK_SPACE:
             userInput.Primary.On = keyOn;
             break;
-
+        case SDLK_e:
+            userInput.Activate.On = keyOn;
+            break;
         default:
             break;
         }

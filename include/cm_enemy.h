@@ -13,7 +13,7 @@ namespace cm
         GameWorld &World;
 
     public:
-        Enemy(GameWorld &world);
+        Enemy(GameWorld &world, int x, int y);
         std::string GetName() override;
         int GetAttack() override;
         void Update() override;

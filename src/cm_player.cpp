@@ -1,6 +1,7 @@
 #include "cm_player.h"
 #include "cm_moveaction.h"
 #include "cm_waitaction.h"
+#include "cm_pickupaction.h"
 
 namespace cm
 {
@@ -28,6 +29,11 @@ namespace cm
         if (Input.Primary.Once())
         {
             return std::make_shared<WaitAction>(*this, World);
+        }
+
+        if (Input.Activate.Once())
+        {
+            return std::make_shared<PickupAction>(*this, World.GetTile(TileX, TileY));
         }
 
         auto dir = MoveDirection::Unknown;

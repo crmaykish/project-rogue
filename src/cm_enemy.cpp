@@ -7,23 +7,14 @@
 
 namespace cm
 {
-    Enemy::Enemy(GameWorld &world) : World(world)
+    Enemy::Enemy(GameWorld &world, int x, int y)
+        : World(world)
     {
-        MaxHP = 20;
-        HP = MaxHP;
-
-        // TODO: let the world manage this position, not the enemy itself
-        int x = -1;
-        int y = -1;
-
-        while (World.GetTile(x, y).Type != TileType::Empty)
-        {
-            x = RandomInt(world.GetWidth());
-            y = RandomInt(world.GetHeight());
-        }
-
         TileX = x;
         TileY = y;
+
+        MaxHP = 20;
+        HP = MaxHP;
 
         Visible = true;
         Active = true;
