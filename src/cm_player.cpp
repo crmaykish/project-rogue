@@ -26,7 +26,7 @@ namespace cm
     {
         Items.erase(std::remove_if(Items.begin(),
                                    Items.end(),
-                                   [](auto &i) { return (i->ChargesLeft() <= 0); }),
+                                   [](auto &i) { return (i->Charges <= 0); }),
                     Items.end());
     }
 

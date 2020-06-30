@@ -2,7 +2,7 @@
 
 namespace cm
 {
-    void Item::OnPickup(Actor &owner)
+    void Item::Pickup(Actor &owner)
     {
         if (PickedUp)
         {
@@ -13,9 +13,11 @@ namespace cm
         {
             e->Use(owner);
         }
+
+        PickedUp = true;
     }
 
-    void Item::OnUse(Actor &owner)
+    void Item::Use(Actor &owner)
     {
         if (Charges == 0)
         {
@@ -40,9 +42,18 @@ namespace cm
         UseEffects.emplace_back(effect);
     }
 
-    int Item::ChargesLeft()
+    // Item Definitions
+
+    std::unique_ptr<Item> HealthPotion(int healing, int stackSize)
     {
-        return Charges;
+        auto hp = std::make_unique<Item>();
+
+        hp->Name = "Health Potion";
+        hp->Charges = stackSize;
+        hp->AddUseEffect(std::make_shared<HealEffect>());
+
+        // TODO: is it bad to return move?
+        return std::move(hp);
     }
 
 } // namespace cm

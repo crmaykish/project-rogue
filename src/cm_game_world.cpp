@@ -5,7 +5,7 @@
 #include "cm_enemy.h"
 #include "cm_logger.h"
 #include "cm_random.h"
-#include "cm_potion.h"
+#include "cm_item.h"
 
 namespace cm
 {
@@ -246,7 +246,7 @@ namespace cm
                     int r = RandomInt(100);
                     if (r < 2)
                     {
-                        t->Items = std::make_unique<HealthPotion>();
+                        t->Items = HealthPotion(10);
                     }
                     else if (r < 4)
                     {

@@ -14,7 +14,7 @@ namespace cm
             return ActionResult(ActionStatus::Invalid, executor.GetName() + " has nothing to pickup");
         }
 
-        auto message = executor.GetName() + " picked up " + tile->Items->GetName();
+        auto message = executor.GetName() + " picked up " + tile->Items->Name;
 
         // Move the item from the tile to the actor's inventory
         executor.AddItem(std::move(tile->Items));

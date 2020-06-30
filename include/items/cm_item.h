@@ -2,6 +2,7 @@
 #define CM_ITEM_H
 
 #include <memory>
+#include <string>
 #include <vector>
 #include "cm_effect.h"
 
@@ -9,23 +10,23 @@ namespace cm
 {
     class Item
     {
-    protected:
-        int Charges = 0;
-        int PickedUp = false;
+    private:
         std::vector<std::shared_ptr<Effect>> PickupEffects;
         std::vector<std::shared_ptr<Effect>> UseEffects;
 
     public:
-        void OnPickup(Actor &owner);
-        void OnUse(Actor &owner);
+        std::string Name;
+        bool PickedUp = false;
+        int Charges = 0;
+
+        void Pickup(Actor &owner);
+        void Use(Actor &owner);
 
         void AddPickupEffect(std::shared_ptr<Effect> effect);
         void AddUseEffect(std::shared_ptr<Effect> effect);
-
-        int ChargesLeft();
-
-        virtual std::string GetName() = 0;
     };
+
+    std::unique_ptr<Item> HealthPotion(int healing, int stackSize = 1);
 
 } // namespace cm
 
