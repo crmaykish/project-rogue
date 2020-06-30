@@ -162,19 +162,19 @@ namespace cm
 
 
         // TODO: this is hideous
-        if (!World->GetPlayer().GetItems().empty())
-        {
-            for (int i = 0; i < World->GetPlayer().GetItems().size(); i++)
-            {
-                MainRenderer->DrawFont(std::to_string(i) + ": " + World->GetPlayer().GetItems().at(i)->GetName(),
-                                       AssetKey::UIFont,
-                                       COLOR_RED,
-                                       10,
-                                       yOffset - 170 - (30 * i),
-                                       0.6,
-                                       true);
-            }
-        }
+        // if (!World->GetPlayer().GetItems().empty())
+        // {
+        //     for (int i = 0; i < World->GetPlayer().GetItems().size(); i++)
+        //     {
+        //         MainRenderer->DrawFont(std::to_string(i) + ": " + World->GetPlayer().GetItems().at(i)->GetName(),
+        //                                AssetKey::UIFont,
+        //                                COLOR_RED,
+        //                                10,
+        //                                yOffset - 170 - (30 * i),
+        //                                0.6,
+        //                                true);
+        //     }
+        // }
 
         MainRenderer->DrawFont("Level " + std::to_string(World->GetLevelIndex()),
                                AssetKey::UIFont,

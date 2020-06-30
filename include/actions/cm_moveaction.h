@@ -2,7 +2,6 @@
 #define CM_MOVEACTION_H
 
 #include "cm_action.h"
-#include "cm_actor.h"
 #include "cm_game_world.h"
 
 namespace cm
@@ -10,22 +9,25 @@ namespace cm
     enum struct MoveDirection
     {
         Unknown,
-        Left,
-        Right,
+        UpLeft,
         Up,
-        Down
+        UpRight,
+        Right,
+        DownRight,
+        Down,
+        DownLeft,
+        Left
     };
 
     class MoveAction : public Action
     {
     private:
         MoveDirection Direction;
-        Actor &Target;
         GameWorld &World;
 
     public:
-        MoveAction(MoveDirection direction, Actor &target, GameWorld &world);
-        ActionResult Execute() override;
+        MoveAction(MoveDirection direction, GameWorld &world);
+        ActionResult Execute(Actor &executor) override;
     };
 
 } // namespace cm

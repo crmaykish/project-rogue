@@ -66,7 +66,7 @@ namespace cm
         }
     }
 
-    void Actor::AddItem(std::shared_ptr<Item> item)
+    void Actor::AddItem(std::unique_ptr<Item> item)
     {
         Items.push_back(item);
     }
@@ -74,11 +74,6 @@ namespace cm
     void Actor::RemoveItem(int slot)
     {
         Items.erase(Items.begin() + slot);
-    }
-
-    std::vector<std::shared_ptr<Item>> Actor::GetItems()
-    {
-        return Items;
     }
 
 } // namespace cm

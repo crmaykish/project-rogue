@@ -68,15 +68,16 @@ namespace cm
 
         if (action != nullptr)
         {
-            auto result = action->Execute();
+            // TODO: executing actions blindly
+            auto result = action->Execute(*currentActor);
 
-            if (!result.Success)
-            {
-                if (result.AlternateAction != nullptr)
-                {
-                    result = result.AlternateAction->Execute();
-                }
-            }
+            // if (!result.Success)
+            // {
+            //     if (result.AlternateAction != nullptr)
+            //     {
+            //         result = result.AlternateAction->Execute();
+            //     }
+            // }
 
             if (currentActor->IsVisible())
             {
@@ -245,7 +246,7 @@ namespace cm
                     int r = RandomInt(100);
                     if (r < 2)
                     {
-                        t->Item = std::make_shared<HealthPotion>();
+                        t->Item = std::make_unique<HealthPotion>();
                     }
                     else if (r < 4)
                     {

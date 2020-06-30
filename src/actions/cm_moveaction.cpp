@@ -4,72 +4,56 @@
 
 namespace cm
 {
-    MoveAction::MoveAction(MoveDirection direction, Actor &target, GameWorld &world)
-        : Direction(direction), Target(target), World(world) {}
+    MoveAction::MoveAction(MoveDirection direction, GameWorld &world)
+        : Direction(direction), World(world) {}
 
-    ActionResult MoveAction::Execute()
+    ActionResult MoveAction::Execute(Actor &executor)
     {
-        ActionResult result;
-
-        // try to move the actor in the given direction
         int moveX = 0;
         int moveY = 0;
 
-        std::string dirName;
-
         switch (Direction)
         {
+        // TODO: add diagonal movement
         case MoveDirection::Left:
             moveX = -1;
-            dirName = "left";
             break;
         case MoveDirection::Right:
             moveX = 1;
-            dirName = "right";
             break;
         case MoveDirection::Up:
             moveY = 1;
-            dirName = "up";
             break;
         case MoveDirection::Down:
             moveY = -1;
-            dirName = "down";
             break;
         default:
             break;
         }
 
-        auto targetTile = World.GetTile(Target.GetX() + moveX, Target.GetY() + moveY);
+        auto targetTile = World.GetTile(executor.GetX() + moveX, executor.GetY() + moveY);
 
+        // Is there a tile in the move direction?
         if (targetTile == nullptr)
         {
-            return result;
+            return ActionResult(ActionStatus::Invalid);
         }
-
-        // is it an exit tile?
-        // TODO: create NextLevelAction?
-        if ( targetTile->Type == TileType::Door && Target.GetFaction() == Faction::Human)
-        {
-            World.SetNextLevel();
-            result.Success = true;
-            result.Message = Target.GetName() + " is exiting level";
-        }
-
-        auto enemyOnTargetTile = World.GetActor(targetTile->X, targetTile->Y);
 
         // Is there an enemy on the tile?
-        if (enemyOnTargetTile != nullptr)
+        auto enemy = World.GetActor(targetTile->X, targetTile->Y);
+
+        if (enemy != nullptr)
         {
-            result.AlternateAction = std::make_shared<AttackAction>(*enemyOnTargetTile, Target, World);
-        }
-        else if (targetTile->Type == TileType::Empty)
-        {
-            Target.Move(moveX, moveY);
-            result.Success = true;
-            result.Message = Target.GetName() + " moves " + dirName;
+            return ActionResult(std::make_unique<AttackAction>(*enemy, World));
         }
 
-        return result;
+        // Is the tile empty?
+        if (targetTile->Type == TileType::Empty)
+        {
+            executor.Move(moveX, moveY);
+
+            return ActionResult{ActionStatus::Succeeded};
+        }
     }
 
 } // namespace cm

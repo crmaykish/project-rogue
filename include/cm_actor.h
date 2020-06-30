@@ -10,6 +10,8 @@
 
 namespace cm
 {
+    class Action;
+
     enum struct Faction
     {
         Human,
@@ -28,7 +30,7 @@ namespace cm
         int MaxHP = 0;
 
         // TODO: player can hold an infinite amount of items
-        std::vector<std::shared_ptr<Item>> Items;
+        std::vector<std::unique_ptr<Item>> Items;
 
     public:
         virtual ~Actor() {}
@@ -57,10 +59,8 @@ namespace cm
         void Damage(int damage);
         void Heal(int health);
 
-        void AddItem(std::shared_ptr<Item> item);
+        void AddItem(std::unique_ptr<Item> item);
         void RemoveItem(int slot);
-
-        std::vector<std::shared_ptr<Item>> GetItems();
     };
 
 } // namespace cm

@@ -3,29 +3,24 @@
 
 namespace cm
 {
-    AttackAction::AttackAction(Actor &attackTarget, Actor &target, GameWorld &world)
-        : AttackTarget(attackTarget), Target(target), World(world) {}
+    AttackAction::AttackAction(Actor &target, GameWorld &world)
+        : Target(target), World(world) {}
 
-    ActionResult AttackAction::Execute()
+    ActionResult AttackAction::Execute(Actor &executor)
     {
-        ActionResult result;
-
-        if (AttackTarget.GetFaction() != Target.GetFaction())
+        if (Target.GetFaction() != Target.GetFaction())
         {
-            int attackDamage = Target.GetAttack();
-            AttackTarget.Damage(attackDamage);
-
-            if (AttackTarget.GetHP() > 0)
-            {
-                result.Message = Target.GetName() + " attacks " + AttackTarget.GetName();
-            }
-            else
-            {
-                result.Message = Target.GetName() + " killed " + AttackTarget.GetName();
-            }
-
-            result.Success = true;
+            // actors cannot attack members of their own faction
+            return ActionResult(ActionStatus::Invalid);
         }
+
+        Target.Damage(executor.GetAttack());
+
+        // Attack succeeds
+        auto result = ActionResult(ActionStatus::Succeeded);
+
+        auto verb = Target.GetHP() > 0 ? " attacked " : " killed ";
+        result.Message = executor.GetName() + verb + Target.GetName();
 
         return result;
     }

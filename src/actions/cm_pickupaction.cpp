@@ -2,27 +2,24 @@
 
 namespace cm
 {
-    PickupAction::PickupAction(Actor &target, std::shared_ptr<Tile> targetTile)
-        : Target(target), TargetTile(targetTile) {}
+    PickupAction::PickupAction(GameWorld &world) : World(world) {}
 
-    ActionResult PickupAction::Execute()
+    ActionResult PickupAction::Execute(Actor &executor)
     {
-        ActionResult result;
+        auto tile = World.GetTile(executor.GetX(), executor.GetY());
 
-        if (TargetTile->Item != nullptr)
+        // Does the tile contain an item to pickup?
+        if (tile->Item.get() == nullptr)
         {
-            // move the item from the tile to the actor's inventory
-
-            // TODO: items should be unique pointers and use move since there's no need to share them
-            result.Message = Target.GetName() + " picked up " + TargetTile->Item->GetName();
-            
-            Target.AddItem(TargetTile->Item);
-            TargetTile->Item = nullptr;
-
-            result.Success = true;
+            return ActionResult(ActionStatus::Invalid, executor.GetName() + " has nothing to pickup");
         }
 
-        return result;
+        auto message = executor.GetName() + " picked up " + tile->Item->GetName();
+
+        // Move the item from the tile to the actor's inventory
+        executor.AddItem(std::move(tile->Item));
+
+        return ActionResult(ActionStatus::Succeeded, message);
     }
 
 } // namespace cm

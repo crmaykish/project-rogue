@@ -2,12 +2,9 @@
 
 namespace cm
 {
-    WaitAction::WaitAction(Actor &target, GameWorld &world)
-        : Target(target), World(world) {}
-
-    ActionResult WaitAction::Execute()
+    ActionResult WaitAction::Execute(Actor &executor)
     {
-        return ActionResult{true, Target.GetName() + " is waiting", nullptr};
+        return ActionResult(ActionStatus::Succeeded, executor.GetName() + " is waiting");
     }
 
 } // namespace cm

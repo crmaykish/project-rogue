@@ -2,25 +2,11 @@
 
 namespace cm
 {
-    UseAction::UseAction(Actor &target, int itemSlot)
-        : Target(target), ItemSlot(itemSlot) {}
+    UseAction::UseAction(int itemSlot) : ItemSlot(itemSlot) {}
 
-    ActionResult UseAction::Execute()
+    ActionResult UseAction::Execute(Actor &executor)
     {
-        auto actorItems = Target.GetItems();
-
-        if (actorItems.size() < ItemSlot)
-        {
-            return ActionResult{false};
-        }
-
-        auto selectedItem = actorItems.at(ItemSlot);
-        selectedItem->OnUse(Target);
-
-        //remove the item from the inventory
-        Target.RemoveItem(ItemSlot);
-
-        return ActionResult{true, Target.GetName() + " used " + selectedItem->GetName()};
+        return ActionResult(ActionStatus::Invalid);
     }
 
 } // namespace cm
