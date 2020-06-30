@@ -58,6 +58,7 @@ namespace cm
         void Heal(int health);
 
         void AddItem(std::shared_ptr<Item> item);
+        void RemoveItem(int slot);
 
         std::vector<std::shared_ptr<Item>> GetItems();
     };

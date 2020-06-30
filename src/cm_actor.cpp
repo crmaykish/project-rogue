@@ -71,6 +71,11 @@ namespace cm
         Items.push_back(item);
     }
 
+    void Actor::RemoveItem(int slot)
+    {
+        Items.erase(Items.begin() + slot);
+    }
+
     std::vector<std::shared_ptr<Item>> Actor::GetItems()
     {
         return Items;

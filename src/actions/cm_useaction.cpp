@@ -16,7 +16,10 @@ namespace cm
 
         auto selectedItem = actorItems.at(ItemSlot);
         selectedItem->OnUse(Target);
-        
+
+        //remove the item from the inventory
+        Target.RemoveItem(ItemSlot);
+
         return ActionResult{true, Target.GetName() + " used " + selectedItem->GetName()};
     }
 
