@@ -49,8 +49,7 @@ namespace cm
         hp->Charges = stackSize;
         hp->AddUseEffect(std::make_unique<HealEffect>());
 
-        // TODO: is it bad to return move?
-        return std::move(hp);
+        return hp;
     }
 
 } // namespace cm

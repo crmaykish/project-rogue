@@ -30,11 +30,11 @@ namespace cm
                     Items.end());
     }
 
-    std::shared_ptr<Action> Player::NextAction()
+    std::unique_ptr<Action> Player::NextAction()
     {
         if (Input.Primary.Once())
         {
-            return std::make_shared<WaitAction>();
+            return std::make_unique<WaitAction>();
         }
 
         for (int i = 0; i < 10; i++)
@@ -42,13 +42,13 @@ namespace cm
             auto n = Input.Num[i];
             if (n.Once())
             {
-                return std::make_shared<UseAction>(i);
+                return std::make_unique<UseAction>(i);
             }
         }
 
         if (Input.Activate.Once())
         {
-            return std::make_shared<PickupAction>(World);
+            return std::make_unique<PickupAction>(World);
         }
 
         auto dir = MoveDirection::Unknown;
@@ -72,7 +72,7 @@ namespace cm
 
         if (dir != MoveDirection::Unknown)
         {
-            return std::make_shared<MoveAction>(dir, World);
+            return std::make_unique<MoveAction>(dir, World);
         }
         else
         {

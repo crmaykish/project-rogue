@@ -37,7 +37,7 @@ namespace cm
 
         virtual void Update() = 0;
         virtual void Render(Renderer &renderer) = 0;
-        virtual std::shared_ptr<Action> NextAction() = 0;
+        virtual std::unique_ptr<Action> NextAction() = 0;
 
         virtual Faction GetFaction() = 0;
 

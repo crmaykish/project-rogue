@@ -17,7 +17,7 @@ namespace cm
         std::string GetName() override;
         int GetAttack() override;
         void Update() override;
-        std::shared_ptr<Action> NextAction() override;
+        std::unique_ptr<Action> NextAction() override;
         void Render(Renderer &renderer) override;
         Faction GetFaction() override;
 

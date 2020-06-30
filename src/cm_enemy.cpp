@@ -38,7 +38,7 @@ namespace cm
         }
     }
 
-    std::shared_ptr<Action> Enemy::NextAction()
+    std::unique_ptr<Action> Enemy::NextAction()
     {
         // if player gets too close, start chasing them
         int playerDistance = World.DistanceToPlayer(TileX, TileY);
@@ -46,7 +46,7 @@ namespace cm
         if (playerDistance == 1)
         {
             // attack player
-            return std::make_shared<AttackAction>(World.GetPlayer(), World);
+            return std::make_unique<AttackAction>(World.GetPlayer(), World);
         }
 
         else if (playerDistance < 6)
@@ -74,10 +74,10 @@ namespace cm
                 dir = MoveDirection::Down;
             }
 
-            return std::make_shared<MoveAction>(dir, World);
+            return std::make_unique<MoveAction>(dir, World);
         }
 
-        return std::make_shared<WaitAction>();
+        return std::make_unique<WaitAction>();
     }
 
     void Enemy::Render(Renderer &renderer)

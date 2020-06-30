@@ -18,7 +18,7 @@ namespace cm
         Player(GameWorld &world, UserInput &input);
 
         void Update() override;
-        std::shared_ptr<Action> NextAction() override;
+        std::unique_ptr<Action> NextAction() override;
         void Render(Renderer &renderer) override;
 
         int GetAttack() override;
