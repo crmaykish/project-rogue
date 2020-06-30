@@ -3,12 +3,12 @@
 
 namespace cm
 {
-    class Actor;    // TODO: this seems wrong, better way to structure this?
+    class Actor;
 
     class Effect
     {
     public:
-        virtual ~Effect();
+        virtual ~Effect() {}
         virtual void Use(Actor &target) = 0;
     };
 
@@ -16,10 +16,11 @@ namespace cm
     {
     private:
         int Health = 10;
+
     public:
         // HealEffect(int health);
         void Use(Actor &target) override;
     };
-}
+} // namespace cm
 
 #endif // CM_EFFECT_H

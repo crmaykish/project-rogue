@@ -68,7 +68,7 @@ namespace cm
 
     void Actor::AddItem(std::unique_ptr<Item> item)
     {
-        Items.push_back(item);
+        Items.push_back(std::move(item));
     }
 
     void Actor::RemoveItem(int slot)

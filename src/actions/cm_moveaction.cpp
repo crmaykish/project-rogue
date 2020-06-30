@@ -52,8 +52,10 @@ namespace cm
         {
             executor.Move(moveX, moveY);
 
-            return ActionResult{ActionStatus::Succeeded};
+            return ActionResult(ActionStatus::Succeeded);
         }
+
+        return ActionResult(ActionStatus::Invalid);
     }
 
 } // namespace cm

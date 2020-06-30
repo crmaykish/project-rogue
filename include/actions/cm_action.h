@@ -3,7 +3,6 @@
 
 #include <memory>
 #include <string>
-#include "cm_actor.h"
 
 namespace cm
 {
@@ -30,17 +29,16 @@ namespace cm
     class Action
     {
     public:
+        virtual ~Action() {}
         virtual ActionResult Execute(Actor &executor) = 0;
     };
 
     class ActionResult
     {
-    private:
-        std::unique_ptr<Action> AlternateAction;
-
     public:
         ActionStatus Status = ActionStatus::Unknown;
         std::string Message;
+        std::unique_ptr<Action> AlternateAction;
 
         ActionResult(ActionStatus status);
         ActionResult(ActionStatus status, std::string message);

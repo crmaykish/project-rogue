@@ -4,8 +4,6 @@
 
 namespace cm
 {
-    Effect::~Effect() {}
-
     void HealEffect::Use(Actor &target)
     {
         target.Heal(Health);

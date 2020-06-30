@@ -71,13 +71,13 @@ namespace cm
             // TODO: executing actions blindly
             auto result = action->Execute(*currentActor);
 
-            // if (!result.Success)
-            // {
-            //     if (result.AlternateAction != nullptr)
-            //     {
-            //         result = result.AlternateAction->Execute();
-            //     }
-            // }
+            if (result.Status == ActionStatus::Alternate)
+            {
+                if (result.AlternateAction != nullptr)
+                {
+                    result = result.AlternateAction->Execute(*currentActor);
+                }
+            }
 
             if (currentActor->IsVisible())
             {
@@ -130,7 +130,7 @@ namespace cm
                 }
                 else
                 {
-                    if (t->Item != nullptr)
+                    if (t->Items != nullptr)
                     {
                         renderer.DrawTexture(AssetKey::HealthPotionTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
                     }
@@ -246,7 +246,7 @@ namespace cm
                     int r = RandomInt(100);
                     if (r < 2)
                     {
-                        t->Item = std::make_unique<HealthPotion>();
+                        t->Items = std::make_unique<HealthPotion>();
                     }
                     else if (r < 4)
                     {

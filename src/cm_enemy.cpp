@@ -46,7 +46,7 @@ namespace cm
         if (playerDistance == 1)
         {
             // attack player
-            return std::make_shared<AttackAction>(World.GetPlayer(), *this, World);
+            return std::make_shared<AttackAction>(World.GetPlayer(), World);
         }
 
         else if (playerDistance < 6)
@@ -74,10 +74,10 @@ namespace cm
                 dir = MoveDirection::Down;
             }
 
-            return std::make_shared<MoveAction>(dir, *this, World);
+            return std::make_shared<MoveAction>(dir, World);
         }
 
-        return std::make_shared<WaitAction>(*this, World);
+        return std::make_shared<WaitAction>();
     }
 
     void Enemy::Render(Renderer &renderer)

@@ -1,4 +1,5 @@
 #include "cm_waitaction.h"
+#include "cm_actor.h"
 
 namespace cm
 {

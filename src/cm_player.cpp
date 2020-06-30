@@ -34,7 +34,7 @@ namespace cm
     {
         if (Input.Primary.Once())
         {
-            return std::make_shared<WaitAction>(*this, World);
+            return std::make_shared<WaitAction>();
         }
 
         for (int i = 0; i < 10; i++)
@@ -42,13 +42,13 @@ namespace cm
             auto n = Input.Num[i];
             if (n.Once())
             {
-                return std::make_shared<UseAction>(*this, i);
+                return std::make_shared<UseAction>(i);
             }
         }
 
         if (Input.Activate.Once())
         {
-            return std::make_shared<PickupAction>(*this, World.GetTile(TileX, TileY));
+            return std::make_shared<PickupAction>(World);
         }
 
         auto dir = MoveDirection::Unknown;
@@ -72,7 +72,7 @@ namespace cm
 
         if (dir != MoveDirection::Unknown)
         {
-            return std::make_shared<MoveAction>(dir, *this, World);
+            return std::make_shared<MoveAction>(dir, World);
         }
         else
         {

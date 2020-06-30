@@ -24,7 +24,7 @@ namespace cm
         bool Visible = false;
 
         // TODO: A tile can only hold one item
-        std::unique_ptr<Item> Item;
+        std::unique_ptr<Item> Items;
     };
 } // namespace cm
 
