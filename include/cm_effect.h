@@ -18,9 +18,10 @@ namespace cm
         int Health = 10;
 
     public:
-        // HealEffect(int health);
+        HealEffect(int health);
         void Use(Actor &target) override;
     };
+
 } // namespace cm
 
 #endif // CM_EFFECT_H

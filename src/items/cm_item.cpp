@@ -47,7 +47,7 @@ namespace cm
         auto hp = std::make_unique<Item>();
         hp->Name = "Health Potion";
         hp->Charges = stackSize;
-        hp->AddUseEffect(std::make_unique<HealEffect>());
+        hp->AddUseEffect(std::make_unique<HealEffect>(healing));
 
         return hp;
     }
