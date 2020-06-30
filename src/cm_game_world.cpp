@@ -126,7 +126,7 @@ namespace cm
                 // draw fog
                 if (!t->Visible)
                 {
-                    renderer.DrawRectangle(t->X * TileSize, t->Y * TileSize, TileSize, TileSize, COLOR_GREY_OVERLAY);
+                    renderer.DrawRectangle(t->X * TileSize, t->Y * TileSize, TileSize, TileSize, ColorGreyOverlay);
                 }
                 else
                 {

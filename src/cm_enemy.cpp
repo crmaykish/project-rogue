@@ -88,7 +88,7 @@ namespace cm
 
             renderer.DrawFont(std::to_string(HP) + " / " + std::to_string(MaxHP),
                               AssetKey::UIFont,
-                              COLOR_WHITE,
+                              ColorWhite,
                               TileX * TileSize,
                               (TileY + 1) * TileSize,
                               0.5);

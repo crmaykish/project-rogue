@@ -132,7 +132,7 @@ namespace cm
 
         MainRenderer->DrawFont(World->GetPlayer().GetName(),
                                AssetKey::UIFont,
-                               COLOR_WHITE,
+                               ColorWhite,
                                10,
                                yOffset - 50,
                                1.0,
@@ -140,7 +140,7 @@ namespace cm
 
         MainRenderer->DrawFont("HP: " + std::to_string(World->GetPlayer().GetHP()) + " / " + std::to_string(World->GetPlayer().GetMaxHP()),
                                AssetKey::UIFont,
-                               COLOR_WHITE,
+                               ColorWhite,
                                10,
                                yOffset - 80,
                                0.6,
@@ -148,7 +148,7 @@ namespace cm
 
         MainRenderer->DrawFont("Attack: " + std::to_string(World->GetPlayer().GetAttack()),
                                AssetKey::UIFont,
-                               COLOR_WHITE,
+                               ColorWhite,
                                10,
                                yOffset - 110,
                                0.6,
@@ -156,7 +156,7 @@ namespace cm
 
         MainRenderer->DrawFont("Armor: " + std::to_string(0),
                                AssetKey::UIFont,
-                               COLOR_WHITE,
+                               ColorWhite,
                                10,
                                yOffset - 140,
                                0.6,
@@ -170,7 +170,7 @@ namespace cm
         //     {
         //         MainRenderer->DrawFont(std::to_string(i) + ": " + World->GetPlayer().GetItems().at(i)->GetName(),
         //                                AssetKey::UIFont,
-        //                                COLOR_RED,
+        //                                ColorRed,
         //                                10,
         //                                yOffset - 170 - (30 * i),
         //                                0.6,
@@ -180,7 +180,7 @@ namespace cm
 
         MainRenderer->DrawFont("Level " + std::to_string(World->GetLevelIndex()),
                                AssetKey::UIFont,
-                               COLOR_WHITE,
+                               ColorWhite,
                                10,
                                10,
                                0.6,
