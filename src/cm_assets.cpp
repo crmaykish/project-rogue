@@ -3,6 +3,9 @@
 
 namespace cm
 {
+    // Local function prototypes
+    std::string AssetFileName(AssetKey key);
+
     void Assets::Init()
     {
         Log("Initializing asset manager...", LOG_INFO);
@@ -13,9 +16,30 @@ namespace cm
         }
     }
 
-    std::shared_ptr<Font> Assets::GetFont(AssetKey key)
+    void Assets::Close()
     {
-        // TODO: check the font map before loading from file
+        Log("Closing asset manager", LOG_INFO);
+
+        for (auto font : FontMap)
+        {
+            TTF_CloseFont(font.second);
+        }
+
+        for (auto texture : TextureMap)
+        {
+            GPU_FreeImage(texture.second);
+        }
+    }
+
+    TTF_Font *Assets::GetFont(AssetKey key)
+    {
+        auto fontIt = FontMap.find(key);
+
+        if (fontIt != FontMap.end())
+        {
+            return fontIt->second;
+        }
+
         std::string assetFileName = AssetFileName(key);
 
         if (assetFileName.empty())
@@ -26,17 +50,16 @@ namespace cm
 
         assetFileName = FontsPath + assetFileName;
 
-        // Log("Loading font from file: " + assetFileName, LOG_INFO);
+        Log("Loading font from file: " + assetFileName, LOG_INFO);
 
         auto f = TTF_OpenFont(assetFileName.c_str(), FontSize);
-        auto font = std::make_shared<Font>(f);
 
-        FontMap.insert({key, font});
+        FontMap.insert({key, f});
 
-        return font;
+        return FontMap.find(key)->second;
     }
 
-    std::shared_ptr<Texture> Assets::GetTexture(AssetKey key)
+    GPU_Image *Assets::GetTexture(AssetKey key)
     {
         auto textureIt = TextureMap.find(key);
 
@@ -58,11 +81,11 @@ namespace cm
         Log("Loading texture from file: " + assetFileName, LOG_INFO);
         auto t = GPU_LoadImage(assetFileName.c_str());
 
-        TextureMap.insert({key, std::make_shared<Texture>(t)});
+        TextureMap.insert({key, t});
         return TextureMap.find(key)->second;
     }
 
-    std::string Assets::AssetFileName(AssetKey key)
+    std::string AssetFileName(AssetKey key)
     {
         std::string assetFileName;
 

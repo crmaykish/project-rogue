@@ -74,6 +74,8 @@ namespace cm
         Log("Closing game...", LOG_INFO);
 
         MainRenderer->Close();
+
+        AssetManager->Close();
     }
 
     void Game::SetMainInputHandler(std::unique_ptr<InputHandler> mainInputHandler)

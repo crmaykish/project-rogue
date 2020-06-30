@@ -37,61 +37,20 @@ namespace cm
         TorchTexture,
     };
 
-    class Font
-    {
-    private:
-        TTF_Font *TTFFont;
-
-    public:
-        Font(TTF_Font *ttfFont)
-        {
-            TTFFont = ttfFont;
-        }
-        ~Font()
-        {
-            TTF_CloseFont(TTFFont);
-        }
-        TTF_Font *GetTTFFont()
-        {
-            return TTFFont;
-        }
-    };
-
-    class Texture
-    {
-    private:
-        GPU_Image *GPUImage;
-
-    public:
-        Texture(GPU_Image *gpuImage)
-        {
-            GPUImage = gpuImage;
-        };
-        ~Texture()
-        {
-            GPU_FreeImage(GPUImage);
-        }
-        GPU_Image *GetGPUImage()
-        {
-            return GPUImage;
-        }
-    };
-
     class Assets
     {
     private:
-        // TODO: can we get away with not storing shared pointers here?
-        std::map<AssetKey, std::shared_ptr<Font>> FontMap;
-        std::map<AssetKey, std::shared_ptr<Texture>> TextureMap;
-
-        std::string AssetFileName(AssetKey key);
+        std::map<AssetKey, TTF_Font *> FontMap;
+        std::map<AssetKey, GPU_Image *> TextureMap;
 
     public:
         void Init();
+        void Close();
 
-        std::shared_ptr<Font> GetFont(AssetKey key);
-        std::shared_ptr<Texture> GetTexture(AssetKey key);
+        TTF_Font *GetFont(AssetKey key);
+        GPU_Image *GetTexture(AssetKey key);
     };
+
 } // namespace cm
 
 #endif // CM_ASSETS_H
