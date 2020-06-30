@@ -11,8 +11,8 @@ namespace cm
     class Item
     {
     private:
-        std::vector<std::shared_ptr<Effect>> PickupEffects;
-        std::vector<std::shared_ptr<Effect>> UseEffects;
+        std::vector<std::unique_ptr<Effect>> PickupEffects;
+        std::vector<std::unique_ptr<Effect>> UseEffects;
 
     public:
         std::string Name;
@@ -22,8 +22,8 @@ namespace cm
         void Pickup(Actor &owner);
         void Use(Actor &owner);
 
-        void AddPickupEffect(std::shared_ptr<Effect> effect);
-        void AddUseEffect(std::shared_ptr<Effect> effect);
+        void AddPickupEffect(std::unique_ptr<Effect> effect);
+        void AddUseEffect(std::unique_ptr<Effect> effect);
     };
 
     std::unique_ptr<Item> HealthPotion(int healing, int stackSize = 1);

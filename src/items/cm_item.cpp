@@ -9,7 +9,7 @@ namespace cm
             return;
         }
 
-        for (auto &e : PickupEffects)
+        for (auto const &e : PickupEffects)
         {
             e->Use(owner);
         }
@@ -24,7 +24,7 @@ namespace cm
             return;
         }
 
-        for (auto &e : UseEffects)
+        for (auto const &e : UseEffects)
         {
             e->Use(owner);
         }
@@ -32,25 +32,22 @@ namespace cm
         Charges--;
     }
 
-    void Item::AddPickupEffect(std::shared_ptr<Effect> effect)
+    void Item::AddPickupEffect(std::unique_ptr<Effect> effect)
     {
-        PickupEffects.emplace_back(effect);
+        PickupEffects.emplace_back(std::move(effect));
     }
 
-    void Item::AddUseEffect(std::shared_ptr<Effect> effect)
+    void Item::AddUseEffect(std::unique_ptr<Effect> effect)
     {
-        UseEffects.emplace_back(effect);
+        UseEffects.emplace_back(std::move(effect));
     }
-
-    // Item Definitions
 
     std::unique_ptr<Item> HealthPotion(int healing, int stackSize)
     {
         auto hp = std::make_unique<Item>();
-
         hp->Name = "Health Potion";
         hp->Charges = stackSize;
-        hp->AddUseEffect(std::make_shared<HealEffect>());
+        hp->AddUseEffect(std::make_unique<HealEffect>());
 
         // TODO: is it bad to return move?
         return std::move(hp);
