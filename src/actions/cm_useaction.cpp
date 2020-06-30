@@ -7,17 +7,17 @@ namespace cm
 
     ActionResult UseAction::Execute()
     {
-        ActionResult result;
+        auto actorItems = Target.GetItems();
 
-        auto item = Target.GetItems().at(ItemSlot);
+        if (actorItems.size() < ItemSlot)
+        {
+            return ActionResult{false};
+        }
 
-        item->OnUse(Target);
-
-        result.Message = Target.GetName() + " used " + Target.GetItems().at(ItemSlot)->GetName();
-
-        result.Success = true;
-
-        return result;
+        auto selectedItem = actorItems.at(ItemSlot);
+        selectedItem->OnUse(Target);
+        
+        return ActionResult{true, Target.GetName() + " used " + selectedItem->GetName()};
     }
 
 } // namespace cm
