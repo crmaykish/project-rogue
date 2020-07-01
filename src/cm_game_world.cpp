@@ -51,42 +51,29 @@ namespace cm
             a->Update(*this);
         }
 
-        // TODO: use an iterator to keep track of the current position instead of an index
-
-        auto currentActor = Actors.at(CurrentActorIndex);
-
-        while (!currentActor->Active)
-        {
-            CurrentActorIndex = ((CurrentActorIndex == Actors.size() - 1) || Actors.size() == 0) ? 0 : CurrentActorIndex + 1;
-            currentActor = Actors.at(CurrentActorIndex);
-        }
-
-        auto action = currentActor->NextAction(*this);
-
-        // TODO: convert this to a queue or while loop. run until a valid action is executed for each actor
-        // this will only handle one failed action before locking up
+        // TODO: this will only handle one actor's action per frame
+        auto actor = GetCurrentActor();
+        auto action = actor->NextAction(*this);
 
         if (action != nullptr)
         {
-            // TODO: executing actions blindly
-            auto result = action->Execute(*currentActor);
+            // execute
+            auto result = action->Execute(*actor);
 
-            if (result.Status == ActionStatus::Alternate)
+            while (result.Status == ActionStatus::Alternate)
             {
-                if (result.AlternateAction != nullptr)
-                {
-                    result = result.AlternateAction->Execute(*currentActor);
-                }
+                result = result.AlternateAction->Execute(*actor);
             }
 
-            if (currentActor->Visible)
+            if (actor->Visible && !result.Message.empty())
             {
-                Log(std::to_string(TurnCount) + " | " + result.Message, LOG_INFO);
-                TurnCount++;
+                Log(result.Message);
             }
 
-            // Increment actor index
-            CurrentActorIndex = ((CurrentActorIndex == Actors.size() - 1) || Actors.size() == 0) ? 0 : CurrentActorIndex + 1;
+            // TODO: don't move to the next actor if the actor should be given another try,
+            //  i.e. the action failed in a dumb way
+
+            NextActor();
         }
 
         // If player is dead, game over
@@ -255,6 +242,28 @@ namespace cm
     bool GameWorld::IsTileVisible(int x, int y) const
     {
         return (DistanceToPlayer(x, y) <= ViewDistance);
+    }
+
+    Actor *GameWorld::GetCurrentActor()
+    {
+        while (!Actors.at(CurrentActorIndex)->Active)
+        {
+            NextActor();
+        }
+
+        return Actors.at(CurrentActorIndex).get();
+    }
+
+    void GameWorld::NextActor()
+    {
+        if (CurrentActorIndex >= Actors.size() - 1)
+        {
+            CurrentActorIndex = 0;
+        }
+        else
+        {
+            CurrentActorIndex++;
+        }
     }
 
 } // namespace cm

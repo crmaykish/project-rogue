@@ -24,6 +24,10 @@ namespace cm
 
         void CreateLevel();
 
+        // Return the actor whose turn it is
+        Actor *GetCurrentActor();
+        void NextActor();
+
     public:
         GameWorld();
 
