@@ -4,7 +4,7 @@
 
 namespace cm
 {
-    MoveAction::MoveAction(MoveDirection direction, GameWorld &world)
+    MoveAction::MoveAction(MoveDirection direction, const GameWorld &world)
         : Direction(direction), World(world) {}
 
     ActionResult MoveAction::Execute(Actor &executor)
@@ -31,7 +31,7 @@ namespace cm
             break;
         }
 
-        auto targetTile = World.GetTile(executor.GetX() + moveX, executor.GetY() + moveY);
+        auto targetTile = World.GetTile(executor.TileX + moveX, executor.TileY + moveY);
 
         // Is there a tile in the move direction?
         if (targetTile == nullptr)
@@ -44,13 +44,14 @@ namespace cm
 
         if (enemy != nullptr)
         {
-            return ActionResult(std::make_unique<AttackAction>(*enemy, World));
+            return ActionResult(std::make_unique<AttackAction>(*enemy));
         }
 
         // Is the tile empty?
         if (targetTile->Type == TileType::Empty)
         {
-            executor.Move(moveX, moveY);
+            executor.TileX += moveX;
+            executor.TileY += moveY;
 
             return ActionResult(ActionStatus::Succeeded);
         }

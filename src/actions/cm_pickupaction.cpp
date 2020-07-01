@@ -2,19 +2,19 @@
 
 namespace cm
 {
-    PickupAction::PickupAction(GameWorld &world) : World(world) {}
+    PickupAction::PickupAction(const GameWorld &world) : World(world) {}
 
     ActionResult PickupAction::Execute(Actor &executor)
     {
-        auto tile = World.GetTile(executor.GetX(), executor.GetY());
+        auto tile = World.GetTile(executor.TileX, executor.TileY);
 
         // Does the tile contain an item to pickup?
         if (tile->Items.get() == nullptr)
         {
-            return ActionResult(ActionStatus::Invalid, executor.GetName() + " has nothing to pickup");
+            return ActionResult(ActionStatus::Invalid, executor.Name + " has nothing to pickup");
         }
 
-        auto message = executor.GetName() + " picked up " + tile->Items->Name;
+        auto message = executor.Name + " picked up " + tile->Items->Name;
 
         // Move the item from the tile to the actor's inventory
         executor.AddItem(std::move(tile->Items));

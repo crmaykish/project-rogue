@@ -9,10 +9,10 @@ namespace cm
     class PickupAction : public Action
     {
     private:
-        GameWorld &World;
+        const GameWorld &World;
 
     public:
-        PickupAction(GameWorld &world);
+        PickupAction(const GameWorld &world);
         ActionResult Execute(Actor &executor) override;
     };
 

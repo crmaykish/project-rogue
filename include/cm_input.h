@@ -8,7 +8,7 @@ namespace cm
         bool On = false;
         bool OnLast = false;
 
-        bool Once();
+        bool Once() const;
         void Reset();
     };
 

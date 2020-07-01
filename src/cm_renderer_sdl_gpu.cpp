@@ -5,7 +5,7 @@ namespace cm
 {
     SDLGPURenderer::SDLGPURenderer(Assets &assetManager) : AssetManager(assetManager) {}
 
-    GPU_Rect SDLGPURenderer::TransformRect(const GPU_Rect r, bool absolute)
+    GPU_Rect SDLGPURenderer::TransformRect(GPU_Rect r, bool absolute) const
     {
         GPU_Rect flipped = r;
 
@@ -69,20 +69,20 @@ namespace cm
         return ResolutionH;
     }
 
-    void SDLGPURenderer::DrawRectangle(float x, float y, float w, float h, Color color)
+    void SDLGPURenderer::DrawRectangle(float x, float y, float w, float h, Color color) const
     {
         SDL_Color c = {color.red, color.green, color.blue, color.alpha};
         GPU_RectangleFilled2(gpu, TransformRect({x, y, w, h}), c);
     }
 
-    void SDLGPURenderer::DrawTexture(AssetKey textureKey, float x, float y, float w, float h)
+    void SDLGPURenderer::DrawTexture(AssetKey textureKey, float x, float y, float w, float h) const
     {
         auto image = AssetManager.GetTexture(textureKey);
         GPU_Rect r = TransformRect({x, y, w, h});
         GPU_BlitRect(image, NULL, gpu, &r);
     }
 
-    void SDLGPURenderer::DrawFont(std::string text, AssetKey fontKey, Color color, float x, float y, float scale, bool absolute)
+    void SDLGPURenderer::DrawFont(std::string text, AssetKey fontKey, Color color, float x, float y, float scale, bool absolute) const
     {
         SDL_Color fontColor = {color.red, color.green, color.blue, color.alpha};
 

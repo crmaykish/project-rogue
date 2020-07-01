@@ -18,7 +18,7 @@ namespace cm
         float CameraOffsetX = 0.0;
         float CameraOffsetY = 0.0;
 
-        GPU_Rect TransformRect(const GPU_Rect r, bool absolute = false);
+        GPU_Rect TransformRect(const GPU_Rect r, bool absolute = false) const;
 
     public:
         SDLGPURenderer(Assets &assetManager);
@@ -32,8 +32,8 @@ namespace cm
         float GetResolutionX() override;
         float GetResolutionY() override;
 
-        void DrawRectangle(float x, float y, float w, float h, Color color) override;
-        void DrawTexture(AssetKey textureKey, float x, float y, float w, float h) override;
-        void DrawFont(std::string text, AssetKey fontKey, Color color, float x, float y, float scale = 1.0, bool absolute = false) override;
+        void DrawRectangle(float x, float y, float w, float h, Color color) const override;
+        void DrawTexture(AssetKey textureKey, float x, float y, float w, float h) const override;
+        void DrawFont(std::string text, AssetKey fontKey, Color color, float x, float y, float scale = 1.0, bool absolute = false) const override;
     };
 } // namespace cm

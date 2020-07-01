@@ -2,7 +2,7 @@
 
 namespace cm
 {
-    bool InputState::Once()
+    bool InputState::Once() const
     {
         return On && !OnLast;
     }

@@ -2,63 +2,48 @@
 #define CM_ACTOR_H
 
 #include <memory>
-
+#include "cm_game_world.h"
 #include "cm_renderer.h"
 #include "cm_action.h"
-
 #include "cm_item.h"
 
 namespace cm
 {
-    class Action;
+    const int DefaultItemCountMax = 10;
 
-    enum struct Faction
-    {
-        Human,
-        Enemy
-    };
+    // Forward Declarations
+    class GameWorld;
+    class Action;
 
     class Actor
     {
-    protected:
-        bool Active = false;
-        bool Visible = false;
-        int TileX = 0;
-        int TileY = 0;
-        // TODO: might be better to move the HP system into a component or at least into the subclasses
-        int HP = 0;
-        int MaxHP = 0;
-
-        // TODO: player can hold an infinite amount of items
+    private:
+        // TODO: wrap this up in an Inventory class
+        int ItemCountMax = DefaultItemCountMax;
         std::vector<std::unique_ptr<Item>> Items;
 
     public:
+        std::string Name;
+        bool Active = false;
+        bool Visible = false;
+        bool Friendly = false;
+        int TileX = 0;
+        int TileY = 0;
+        int MaxHP = 0;
+        int HP = 0;
+
         virtual ~Actor() {}
 
-        virtual void Update() = 0;
-        virtual void Render(Renderer &renderer) = 0;
-        virtual std::unique_ptr<Action> NextAction() = 0;
-
-        virtual Faction GetFaction() = 0;
-
-        virtual std::string GetName() = 0;
-        virtual int GetAttack() = 0;
-
+        // Game state changes
+        virtual void Update(const GameWorld &world) = 0;
+        virtual void Render(const Renderer &renderer) = 0;
+        virtual std::unique_ptr<Action> NextAction(const GameWorld &world) = 0;
         virtual void Reset() = 0;
 
-        void SetPosition(int x, int y);
-        float GetX() const;
-        float GetY() const;
-        void Move(int x, int y);
+        // Combat
+        virtual int GetAttack() = 0;
 
-        bool IsActive();
-        bool IsVisible();
-
-        int GetHP();
-        int GetMaxHP();
-        void Damage(int damage);
-        void Heal(int health);
-
+        // Inventory management
         void AddItem(std::unique_ptr<Item> item);
         void RemoveItem(int slot);
     };

@@ -23,10 +23,10 @@ namespace cm
     {
     private:
         MoveDirection Direction;
-        GameWorld &World;
+        const GameWorld &World;
 
     public:
-        MoveAction(MoveDirection direction, GameWorld &world);
+        MoveAction(MoveDirection direction, const GameWorld &world);
         ActionResult Execute(Actor &executor) override;
     };
 

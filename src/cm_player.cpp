@@ -7,30 +7,20 @@
 
 namespace cm
 {
-    Player::Player(GameWorld &world, UserInput &input) : World(world), Input(input)
+    Player::Player(const UserInput &input) : Input(input)
     {
         Reset();
     }
 
-    std::string Player::GetName()
+    void Player::Update(const GameWorld &world)
     {
-        return "Colin";
+        // Items.erase(std::remove_if(Items.begin(),
+        //                            Items.end(),
+        //                            [](auto &i) { return (i->Charges <= 0); }),
+        //             Items.end());
     }
 
-    Faction Player::GetFaction()
-    {
-        return Faction::Human;
-    }
-
-    void Player::Update()
-    {
-        Items.erase(std::remove_if(Items.begin(),
-                                   Items.end(),
-                                   [](auto &i) { return (i->Charges <= 0); }),
-                    Items.end());
-    }
-
-    std::unique_ptr<Action> Player::NextAction()
+    std::unique_ptr<Action> Player::NextAction(const GameWorld &world)
     {
         if (Input.Primary.Once())
         {
@@ -48,7 +38,7 @@ namespace cm
 
         if (Input.Activate.Once())
         {
-            return std::make_unique<PickupAction>(World);
+            return std::make_unique<PickupAction>(world);
         }
 
         auto dir = MoveDirection::Unknown;
@@ -72,7 +62,7 @@ namespace cm
 
         if (dir != MoveDirection::Unknown)
         {
-            return std::make_unique<MoveAction>(dir, World);
+            return std::make_unique<MoveAction>(dir, world);
         }
         else
         {
@@ -80,7 +70,7 @@ namespace cm
         }
     }
 
-    void Player::Render(Renderer &renderer)
+    void Player::Render(const Renderer &renderer)
     {
         renderer.DrawTexture(AssetKey::PlayerTexture, TileX * TileSize, TileY * TileSize, TileSize, TileSize);
     }
@@ -92,8 +82,15 @@ namespace cm
 
     void Player::Reset()
     {
+        Name = "Colin";
+
+        Friendly = true;
+
         MaxHP = 100;
         HP = MaxHP;
+
+        TileX = 2;
+        TileY = 2;
 
         Active = true;
         Visible = true;

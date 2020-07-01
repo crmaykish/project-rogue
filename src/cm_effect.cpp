@@ -8,7 +8,12 @@ namespace cm
 
     void HealEffect::Use(Actor &target)
     {
-        target.Heal(Health);
+        target.HP += Health;
+
+        if (target.HP > target.MaxHP)
+        {
+            target.HP = target.MaxHP;
+        }
     }
 
 } // namespace cm

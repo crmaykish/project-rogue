@@ -7,53 +7,46 @@
 
 namespace cm
 {
-    Enemy::Enemy(GameWorld &world, int x, int y)
-        : World(world)
+    Enemy::Enemy(int x, int y)
     {
         TileX = x;
         TileY = y;
 
-        MaxHP = 20;
-        HP = MaxHP;
-
-        Visible = true;
-        Active = true;
+        Reset();
     }
 
-    std::string Enemy::GetName()
+    void Enemy::Update(const GameWorld &world)
     {
-        return "Ghost";
-    }
-
-    Faction Enemy::GetFaction()
-    {
-        return Faction::Enemy;
-    }
-
-    void Enemy::Update()
-    {
-        if (Active)
+        if (!Active)
         {
-            Visible = (World.DistanceToPlayer(TileX, TileY) <= World.GetViewDistance());
+            return;
+        }
+
+        // Can the player see this enemy?
+        Visible = world.IsTileVisible(TileX, TileY);
+
+        if (HP == 0)
+        {
+            Active = false;
         }
     }
 
-    std::unique_ptr<Action> Enemy::NextAction()
+    std::unique_ptr<Action> Enemy::NextAction(const GameWorld &world)
     {
-        // if player gets too close, start chasing them
-        int playerDistance = World.DistanceToPlayer(TileX, TileY);
+        auto player = world.GetPlayer();
+        auto playerDistance = world.DistanceToPlayer(TileX, TileY);
 
         if (playerDistance == 1)
         {
             // attack player
-            return std::make_unique<AttackAction>(World.GetPlayer(), World);
+            return std::make_unique<AttackAction>(*world.GetPlayer());
         }
 
         else if (playerDistance < 6)
         {
             // really bad pathfinding to player
-            int diffX = World.GetPlayer().GetX() - TileX;
-            int diffY = World.GetPlayer().GetY() - TileY;
+            auto diffX = player->TileX - TileX;
+            auto diffY = player->TileY - TileY;
 
             auto dir = MoveDirection::Unknown;
 
@@ -74,13 +67,13 @@ namespace cm
                 dir = MoveDirection::Down;
             }
 
-            return std::make_unique<MoveAction>(dir, World);
+            return std::make_unique<MoveAction>(dir, world);
         }
 
         return std::make_unique<WaitAction>();
     }
 
-    void Enemy::Render(Renderer &renderer)
+    void Enemy::Render(const Renderer &renderer)
     {
         if (Active && Visible)
         {
@@ -102,6 +95,13 @@ namespace cm
 
     void Enemy::Reset()
     {
+        Name = "Ghost";
+
+        MaxHP = 20;
+        HP = MaxHP;
+
+        Visible = true;
+        Active = true;
     }
 
 } // namespace cm

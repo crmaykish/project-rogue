@@ -9,10 +9,10 @@
 
 namespace cm
 {
-    int GameWorld::DistanceToPlayer(int x, int y)
+    int GameWorld::DistanceToPlayer(int x, int y) const
     {
-        int xDist = std::abs(GetPlayer().GetX() - x);
-        int yDist = std::abs(GetPlayer().GetY() - y);
+        int xDist = std::abs(GetPlayer()->TileX - x);
+        int yDist = std::abs(GetPlayer()->TileY - y);
         return std::sqrt(std::pow(xDist, 2) + std::pow(yDist, 2));
     }
 
@@ -48,20 +48,20 @@ namespace cm
 
         for (auto &a : Actors)
         {
-            a->Update();
+            a->Update(*this);
         }
 
         // TODO: use an iterator to keep track of the current position instead of an index
 
         auto currentActor = Actors.at(CurrentActorIndex);
 
-        while (!currentActor->IsActive())
+        while (!currentActor->Active)
         {
             CurrentActorIndex = ((CurrentActorIndex == Actors.size() - 1) || Actors.size() == 0) ? 0 : CurrentActorIndex + 1;
             currentActor = Actors.at(CurrentActorIndex);
         }
 
-        auto action = currentActor->NextAction();
+        auto action = currentActor->NextAction(*this);
 
         // TODO: convert this to a queue or while loop. run until a valid action is executed for each actor
         // this will only handle one failed action before locking up
@@ -79,7 +79,7 @@ namespace cm
                 }
             }
 
-            if (currentActor->IsVisible())
+            if (currentActor->Visible)
             {
                 Log(std::to_string(TurnCount) + " | " + result.Message, LOG_INFO);
                 TurnCount++;
@@ -90,10 +90,9 @@ namespace cm
         }
 
         // If player is dead, game over
-        if (GetPlayer().GetHP() == 0)
+        if (GetPlayer()->HP == 0)
         {
-            GetPlayer().Reset();
-            LevelIndex = 0;
+            GetPlayer()->Reset();
             NextLevel = true;
         }
     }
@@ -106,7 +105,7 @@ namespace cm
     void GameWorld::Render(Renderer &renderer)
     {
         // Render world tiles
-        for (auto t : Tiles)
+        for (auto &t : Tiles)
         {
             if (t->Discovered)
             {
@@ -145,57 +144,46 @@ namespace cm
         }
     }
 
-    void GameWorld::AddActor(std::shared_ptr<Actor> actor)
-    {
-        Actors.push_back(actor);
-    }
-
     void GameWorld::AddPlayer(std::shared_ptr<Actor> player)
     {
         PlayerOne = player;
-        AddActor(player);
+        Actors.push_back(player);
     }
 
-    // TODO: this should not be using shared pointers
-    std::shared_ptr<Tile> GameWorld::GetTile(int x, int y)
+    Tile *GameWorld::GetTile(int x, int y) const
     {
         if (x < 0 || x >= Width || y < 0 || y >= Height)
         {
             return nullptr;
         }
 
-        for (auto t : Tiles)
+        for (auto const &t : Tiles)
         {
             if (t->X == x && t->Y == y)
             {
-                return t;
-            }
-        }
-
-        return std::make_shared<Tile>();
-    }
-
-    std::shared_ptr<Actor> GameWorld::GetActor(int x, int y)
-    {
-        for (auto a : Actors)
-        {
-            if (a->IsActive() && a->GetX() == x && a->GetY() == y)
-            {
-                return a;
+                return t.get(); // TODO: is this crap?
             }
         }
 
         return nullptr;
     }
 
-    Actor &GameWorld::GetPlayer()
+    Actor *GameWorld::GetActor(int x, int y) const
     {
-        return *PlayerOne;
+        for (auto const &a : Actors)
+        {
+            if (a->Active && a->TileX == x && a->TileY == y)
+            {
+                return a.get();
+            }
+        }
+
+        return nullptr;
     }
 
-    int GameWorld::GetViewDistance()
+    Actor *GameWorld::GetPlayer() const
     {
-        return ViewDistance;
+        return PlayerOne.get();
     }
 
     int GameWorld::GetWidth()
@@ -208,17 +196,12 @@ namespace cm
         return Height;
     }
 
-    int GameWorld::GetLevelIndex()
-    {
-        return LevelIndex;
-    }
-
     void GameWorld::CreateLevel()
     {
         // Remove any remaining enemies
         Actors.erase(std::remove_if(Actors.begin(),
                                     Actors.end(),
-                                    [](auto &a) { return (a->GetFaction() != Faction::Human); }),
+                                    [](auto &a) { return !a->Friendly; }),
                      Actors.end());
 
         // Wipe and rebuild the tile map
@@ -236,7 +219,7 @@ namespace cm
                              (j == 0) || (j == Height - 1) ||
                              ((i % 5 == 0) && (j % 5 == 0));
 
-                auto t = std::make_shared<Tile>();
+                auto t = std::make_unique<Tile>();
 
                 // TODO: ugly
                 *t = {i, j, solid ? TileType::Wall : TileType::Empty, false, false};
@@ -250,11 +233,11 @@ namespace cm
                     }
                     else if (r < 4)
                     {
-                        AddActor(std::make_unique<Enemy>(*this, i, j));
+                        Actors.emplace_back(std::make_unique<Enemy>(i, j));
                     }
                 }
 
-                Tiles.push_back(t);
+                Tiles.push_back(std::move(t));
             }
         }
 
@@ -267,11 +250,11 @@ namespace cm
         }
 
         Tiles.at(randIndex)->Type = TileType::Door;
+    }
 
-        // TODO: reset player position
-        GetPlayer().SetPosition(2, 2);
-
-        LevelIndex++;
+    bool GameWorld::IsTileVisible(int x, int y) const
+    {
+        return (DistanceToPlayer(x, y) <= ViewDistance);
     }
 
 } // namespace cm

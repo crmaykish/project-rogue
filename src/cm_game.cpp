@@ -27,7 +27,7 @@ namespace cm
         MainRenderer->Init();
 
         // Create a player
-        World->AddPlayer(std::make_shared<Player>(*World, Input));
+        World->AddPlayer(std::make_shared<Player>(Input));
 
         World->Init();
 
@@ -130,7 +130,7 @@ namespace cm
         // Render UI
         int yOffset = MainRenderer->GetResolutionY();
 
-        MainRenderer->DrawFont(World->GetPlayer().GetName(),
+        MainRenderer->DrawFont(World->GetPlayer()->Name,
                                AssetKey::UIFont,
                                ColorWhite,
                                10,
@@ -138,7 +138,7 @@ namespace cm
                                1.0,
                                true);
 
-        MainRenderer->DrawFont("HP: " + std::to_string(World->GetPlayer().GetHP()) + " / " + std::to_string(World->GetPlayer().GetMaxHP()),
+        MainRenderer->DrawFont("HP: " + std::to_string(World->GetPlayer()->HP) + " / " + std::to_string(World->GetPlayer()->MaxHP),
                                AssetKey::UIFont,
                                ColorWhite,
                                10,
@@ -146,7 +146,7 @@ namespace cm
                                0.6,
                                true);
 
-        MainRenderer->DrawFont("Attack: " + std::to_string(World->GetPlayer().GetAttack()),
+        MainRenderer->DrawFont("Attack: " + std::to_string(World->GetPlayer()->GetAttack()),
                                AssetKey::UIFont,
                                ColorWhite,
                                10,
@@ -164,11 +164,11 @@ namespace cm
 
 
         // TODO: this is hideous
-        // if (!World->GetPlayer().GetItems().empty())
+        // if (!World->GetPlayer()->GetItems().empty())
         // {
-        //     for (int i = 0; i < World->GetPlayer().GetItems().size(); i++)
+        //     for (int i = 0; i < World->GetPlayer()->GetItems().size(); i++)
         //     {
-        //         MainRenderer->DrawFont(std::to_string(i) + ": " + World->GetPlayer().GetItems().at(i)->GetName(),
+        //         MainRenderer->DrawFont(std::to_string(i) + ": " + World->GetPlayer()->GetItems().at(i)->GetName(),
         //                                AssetKey::UIFont,
         //                                ColorRed,
         //                                10,
@@ -178,21 +178,13 @@ namespace cm
         //     }
         // }
 
-        MainRenderer->DrawFont("Level " + std::to_string(World->GetLevelIndex()),
-                               AssetKey::UIFont,
-                               ColorWhite,
-                               10,
-                               10,
-                               0.6,
-                               true);
-
         MainRenderer->Render();
     }
 
     void Game::SnapCameraToPlayer()
     {
-        float camX = (World->GetPlayer().GetX() * TileSize) - (MainRenderer->GetResolutionX() / 2) + (TileSize / 2);
-        float camY = (MainRenderer->GetResolutionY() / 2) - (World->GetPlayer().GetY() * TileSize) - (TileSize / 2);
+        float camX = (World->GetPlayer()->TileX * TileSize) - (MainRenderer->GetResolutionX() / 2) + (TileSize / 2);
+        float camY = (MainRenderer->GetResolutionY() / 2) - (World->GetPlayer()->TileY * TileSize) - (TileSize / 2);
         MainRenderer->SetCameraPosition(camX, camY);
     }
 

@@ -20,9 +20,9 @@ namespace cm
         virtual float GetCamY() = 0;
         virtual float GetResolutionX() = 0;
         virtual float GetResolutionY() = 0;
-        virtual void DrawRectangle(float x, float y, float w, float h, Color color) = 0;
-        virtual void DrawTexture(AssetKey textureKey, float x, float y, float w, float h) = 0;
-        virtual void DrawFont(std::string text, AssetKey fontKey, Color color, float x, float y, float scale = 1.0, bool absolute = false) = 0;
+        virtual void DrawRectangle(float x, float y, float w, float h, Color color) const = 0;
+        virtual void DrawTexture(AssetKey textureKey, float x, float y, float w, float h) const = 0;
+        virtual void DrawFont(std::string text, AssetKey fontKey, Color color, float x, float y, float scale = 1.0, bool absolute = false) const = 0;
     };
 } // namespace cm
 

@@ -12,12 +12,11 @@ namespace cm
     {
     private:
         bool NextLevel = false;
-        int LevelIndex = 0;
         int TurnCount = 0;
         int Width = 0;
         int Height = 0;
         int CurrentActorIndex = 0;
-        std::vector<std::shared_ptr<Tile>> Tiles;
+        std::vector<std::unique_ptr<Tile>> Tiles;
         std::vector<std::shared_ptr<Actor>> Actors;
         std::shared_ptr<Actor> PlayerOne;
 
@@ -33,24 +32,21 @@ namespace cm
         void Update();
         void Render(Renderer &renderer);
 
-        void AddActor(std::shared_ptr<Actor> actor);
         void AddPlayer(std::shared_ptr<Actor> player);
 
-        std::shared_ptr<Tile> GetTile(int x, int y);
-        std::shared_ptr<Actor> GetActor(int x, int y);
+        Tile *GetTile(int x, int y) const;
+        Actor *GetActor(int x, int y) const;
 
-        Actor &GetPlayer();
+        Actor *GetPlayer() const;
 
-        int DistanceToPlayer(int x, int y);
-
-        int GetViewDistance();
+        int DistanceToPlayer(int x, int y) const;
 
         int GetWidth();
         int GetHeight();
 
         void SetNextLevel();
 
-        int GetLevelIndex();
+        bool IsTileVisible(int x, int y) const;
     };
 
 } // namespace cm

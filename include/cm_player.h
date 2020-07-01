@@ -2,30 +2,23 @@
 #define CM_PLAYER_H
 
 #include "cm_actor.h"
-#include "cm_game_world.h"
 #include "cm_input.h"
-#include "cm_renderer.h"
 
 namespace cm
 {
     class Player : public Actor
     {
     private:
-        GameWorld &World;
-        UserInput &Input;
+        const UserInput &Input;
 
     public:
-        Player(GameWorld &world, UserInput &input);
-
-        void Update() override;
-        std::unique_ptr<Action> NextAction() override;
-        void Render(Renderer &renderer) override;
+        Player(const UserInput &input);
+        void Update(const GameWorld &world) override;
+        void Render(const Renderer &renderer) override;
+        std::unique_ptr<Action> NextAction(const GameWorld &world) override;
+        void Reset() override;
 
         int GetAttack() override;
-        std::string GetName() override;
-        Faction GetFaction() override;
-
-        void Reset() override;
     };
 
 } // namespace cm
