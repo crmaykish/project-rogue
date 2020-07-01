@@ -6,6 +6,8 @@
 
 namespace cm
 {
+    static int test = 0;
+
     void Game::Init()
     {
         Log("Initializing game...", LOG_INFO);
@@ -162,7 +164,6 @@ namespace cm
                                0.6,
                                true);
 
-
         // TODO: this is hideous
         // if (!World->GetPlayer()->GetItems().empty())
         // {
@@ -177,6 +178,16 @@ namespace cm
         //                                true);
         //     }
         // }
+
+        MainRenderer->DrawFont("TEST",
+                               AssetKey::UIFont,
+                               ColorBlue,
+                               test,
+                               yOffset - 300,
+                               1.0,
+                               true);
+
+        test = test > RESOLUTION_DEFAULT_W ? 0 : test + 1;
 
         MainRenderer->Render();
     }
