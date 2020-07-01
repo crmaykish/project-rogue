@@ -18,57 +18,18 @@ namespace cm
         //                            Items.end(),
         //                            [](auto &i) { return (i->Charges <= 0); }),
         //             Items.end());
+
+        DecideNextAction(world);
+    }
+
+    bool Player::ActionReady()
+    {
+        return (nextAction != nullptr);
     }
 
     std::unique_ptr<Action> Player::NextAction(const GameWorld &world)
     {
-
-        if (Input.Primary.Once())
-        {
-            return std::make_unique<WaitAction>();
-        }
-
-        for (int i = 0; i < 10; i++)
-        {
-            auto n = Input.Num[i];
-            if (n.Once())
-            {
-                return std::make_unique<UseAction>(i);
-            }
-        }
-
-        if (Input.Activate.Once())
-        {
-            return std::make_unique<PickupAction>(world);
-        }
-
-        auto dir = MoveDirection::Unknown;
-
-        if (Input.Right.Once())
-        {
-            dir = MoveDirection::Right;
-        }
-        else if (Input.Left.Once())
-        {
-            dir = MoveDirection::Left;
-        }
-        else if (Input.Up.Once())
-        {
-            dir = MoveDirection::Up;
-        }
-        else if (Input.Down.Once())
-        {
-            dir = MoveDirection::Down;
-        }
-
-        if (dir != MoveDirection::Unknown)
-        {
-            return std::make_unique<MoveAction>(dir, world);
-        }
-        else
-        {
-            return nullptr;
-        }
+        return std::move(nextAction);
     }
 
     void Player::Render(const Renderer &renderer)
@@ -95,6 +56,52 @@ namespace cm
 
         Active = true;
         Visible = true;
+    }
+
+    void Player::DecideNextAction(const GameWorld &world)
+    {
+        if (Input.Primary.Once())
+        {
+            nextAction = std::make_unique<WaitAction>();
+        }
+
+        for (int i = 0; i < 10; i++)
+        {
+            auto n = Input.Num[i];
+            if (n.Once())
+            {
+                nextAction = std::make_unique<UseAction>(i);
+            }
+        }
+
+        if (Input.Activate.Once())
+        {
+            nextAction = std::make_unique<PickupAction>(world);
+        }
+
+        auto dir = MoveDirection::Unknown;
+
+        if (Input.Right.Once())
+        {
+            dir = MoveDirection::Right;
+        }
+        else if (Input.Left.Once())
+        {
+            dir = MoveDirection::Left;
+        }
+        else if (Input.Up.Once())
+        {
+            dir = MoveDirection::Up;
+        }
+        else if (Input.Down.Once())
+        {
+            dir = MoveDirection::Down;
+        }
+
+        if (dir != MoveDirection::Unknown)
+        {
+            nextAction = std::make_unique<MoveAction>(dir, world);
+        }
     }
 
 } // namespace cm

@@ -11,8 +11,10 @@ namespace cm
         Enemy(int x, int y);
         void Update(const GameWorld &world) override;
         void Render(const Renderer &renderer) override;
-        std::unique_ptr<Action> NextAction(const GameWorld &world) override;
         void Reset() override;
+
+        bool ActionReady() override;
+        std::unique_ptr<Action> NextAction(const GameWorld &world) override;
 
         int GetAttack() override;
     };

@@ -23,13 +23,17 @@ namespace cm
         }
 
         // Can the player see this enemy?
-        // Visible = world.IsTileVisible(TileX, TileY);
-        Visible = true;
+        Visible = world.IsTileVisible(TileX, TileY);
 
         if (HP == 0)
         {
             Active = false;
         }
+    }
+
+    bool Enemy::ActionReady()
+    {
+        return true;
     }
 
     std::unique_ptr<Action> Enemy::NextAction(const GameWorld &world)

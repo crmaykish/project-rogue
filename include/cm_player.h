@@ -10,14 +10,18 @@ namespace cm
     {
     private:
         const UserInput &Input;
-        bool ActionReady = false;
+        std::unique_ptr<Action> nextAction;
+
+        void DecideNextAction(const GameWorld &world);
 
     public:
         Player(const UserInput &input);
         void Update(const GameWorld &world) override;
         void Render(const Renderer &renderer) override;
-        std::unique_ptr<Action> NextAction(const GameWorld &world) override;
         void Reset() override;
+
+        bool ActionReady() override;
+        std::unique_ptr<Action> NextAction(const GameWorld &world) override;
 
         int GetAttack() override;
     };

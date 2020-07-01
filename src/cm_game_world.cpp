@@ -37,15 +37,15 @@ namespace cm
         // Update tiles
         for (auto &t : Tiles)
         {
-            // if (DistanceToPlayer(t->X, t->Y) <= ViewDistance)
-            // {
-            t->Discovered = true;
-            t->Visible = true;
-            // }
-            // else
-            // {
-            //     t->Visible = false;
-            // }
+            if (DistanceToPlayer(t->X, t->Y) <= ViewDistance)
+            {
+                t->Discovered = true;
+                t->Visible = true;
+            }
+            else
+            {
+                t->Visible = false;
+            }
         }
 
         for (auto &a : Actors)
@@ -54,36 +54,34 @@ namespace cm
         }
 
         auto actor = GetCurrentActor();
-        auto action = actor->NextAction(*this);
 
-        while (action != nullptr)
+        // Execute each actor's action if they provide one
+        while (actor->ActionReady())
         {
-            auto start = std::chrono::high_resolution_clock::now();
-
-            // execute
+            auto action = actor->NextAction(*this);
             auto result = action->Execute(*actor);
 
+            // If the action result suggests an alternate, execute that until there is a concrete result
             while (result.Status == ActionStatus::Alternate)
             {
                 result = result.AlternateAction->Execute(*actor);
             }
 
+            // If the actor is in range of the player and the action returns a message, display it
             if (actor->Visible && !result.Message.empty())
             {
                 Log(result.Message);
             }
 
-            // TODO: don't move to the next actor if the actor should be given another try,
-            //  i.e. the action failed in a dumb way
-
-            NextActor();
-
-            actor = GetCurrentActor();
-            action = actor->NextAction(*this);
-
-            auto stop = std::chrono::high_resolution_clock::now();
-            auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-            Log(std::to_string(duration.count()));
+            // Any successful or failed action moves to the next actor
+            // If the actor is an NPC, any result should move on
+            if (result.Status == ActionStatus::Succeeded ||
+                result.Status == ActionStatus::Failed ||
+                !actor->Friendly)
+            {
+                NextActor();
+                actor = GetCurrentActor();
+            }
         }
 
         // If player is dead, game over
@@ -158,7 +156,7 @@ namespace cm
         {
             if (t->X == x && t->Y == y)
             {
-                return t.get(); // TODO: is this crap?
+                return t.get();
             }
         }
 
@@ -230,9 +228,9 @@ namespace cm
                     {
                         t->Items = HealthPotion(10);
                     }
-                    else if (r < 20)
+                    else if (r < 4)
                     {
-                        // Actors.emplace_back(std::make_unique<Enemy>(i, j));
+                        Actors.emplace_back(std::make_unique<Enemy>(i, j));
                         enemies++;
                     }
                 }
@@ -250,8 +248,6 @@ namespace cm
         }
 
         Tiles.at(randIndex)->Type = TileType::Door;
-
-        Log("enemies: " + std::to_string(enemies));
     }
 
     bool GameWorld::IsTileVisible(int x, int y) const
