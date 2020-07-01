@@ -7,6 +7,8 @@
 #include "cm_random.h"
 #include "cm_item.h"
 
+#include <chrono>
+
 namespace cm
 {
     int GameWorld::DistanceToPlayer(int x, int y) const
@@ -35,15 +37,15 @@ namespace cm
         // Update tiles
         for (auto &t : Tiles)
         {
-            if (DistanceToPlayer(t->X, t->Y) <= ViewDistance)
-            {
-                t->Discovered = true;
-                t->Visible = true;
-            }
-            else
-            {
-                t->Visible = false;
-            }
+            // if (DistanceToPlayer(t->X, t->Y) <= ViewDistance)
+            // {
+            t->Discovered = true;
+            t->Visible = true;
+            // }
+            // else
+            // {
+            //     t->Visible = false;
+            // }
         }
 
         for (auto &a : Actors)
@@ -51,12 +53,13 @@ namespace cm
             a->Update(*this);
         }
 
-        // TODO: this will only handle one actor's action per frame
         auto actor = GetCurrentActor();
         auto action = actor->NextAction(*this);
 
-        if (action != nullptr)
+        while (action != nullptr)
         {
+            auto start = std::chrono::high_resolution_clock::now();
+
             // execute
             auto result = action->Execute(*actor);
 
@@ -74,6 +77,13 @@ namespace cm
             //  i.e. the action failed in a dumb way
 
             NextActor();
+
+            actor = GetCurrentActor();
+            action = actor->NextAction(*this);
+
+            auto stop = std::chrono::high_resolution_clock::now();
+            auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+            Log(std::to_string(duration.count()));
         }
 
         // If player is dead, game over
@@ -197,6 +207,8 @@ namespace cm
         Width = RandomInt(20) + 20;
         Height = RandomInt(15) + 10;
 
+        int enemies = 0;
+
         // Create a map
         for (int i = 0; i < Width; i++)
         {
@@ -218,9 +230,10 @@ namespace cm
                     {
                         t->Items = HealthPotion(10);
                     }
-                    else if (r < 4)
+                    else if (r < 20)
                     {
-                        Actors.emplace_back(std::make_unique<Enemy>(i, j));
+                        // Actors.emplace_back(std::make_unique<Enemy>(i, j));
+                        enemies++;
                     }
                 }
 
@@ -237,6 +250,8 @@ namespace cm
         }
 
         Tiles.at(randIndex)->Type = TileType::Door;
+
+        Log("enemies: " + std::to_string(enemies));
     }
 
     bool GameWorld::IsTileVisible(int x, int y) const

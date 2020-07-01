@@ -22,6 +22,7 @@ namespace cm
 
     std::unique_ptr<Action> Player::NextAction(const GameWorld &world)
     {
+
         if (Input.Primary.Once())
         {
             return std::make_unique<WaitAction>();

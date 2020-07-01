@@ -40,12 +40,12 @@ namespace cm
         }
 
         // Is there an enemy on the tile?
-        auto enemy = World.GetActor(targetTile->X, targetTile->Y);
+        // auto enemy = World.GetActor(targetTile->X, targetTile->Y);
 
-        if (enemy != nullptr)
-        {
-            return ActionResult(std::make_unique<AttackAction>(*enemy));
-        }
+        // if (enemy != nullptr)
+        // {
+        //     return ActionResult(std::make_unique<AttackAction>(*enemy));
+        // }
 
         // Is the tile empty?
         if (targetTile->Type == TileType::Empty)

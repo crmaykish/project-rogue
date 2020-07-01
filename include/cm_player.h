@@ -10,6 +10,7 @@ namespace cm
     {
     private:
         const UserInput &Input;
+        bool ActionReady = false;
 
     public:
         Player(const UserInput &input);

@@ -52,6 +52,8 @@ namespace cm
             previousTime = currentTime;
             lag += elapsedTime;
 
+            // auto start = std::chrono::high_resolution_clock::now();
+
             // Check for user input
             if (MainInputHandler != nullptr)
             {
@@ -60,6 +62,7 @@ namespace cm
 
             while (lag >= TIME_PER_TICK)
             {
+
                 Update();
 
                 Input.Reset();
@@ -68,6 +71,10 @@ namespace cm
             }
 
             Render();
+
+            // auto stop = std::chrono::high_resolution_clock::now();
+            // auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+            // Log(std::to_string(duration.count()));
         }
     }
 
@@ -97,24 +104,9 @@ namespace cm
             Running = false;
         }
 
-        // Free movement of the camera
-        if (Input.Mouse.Left.Once())
-        {
-            mouseDownX = Input.Mouse.X + MainRenderer->GetCamX();
-            mouseDownY = Input.Mouse.Y + MainRenderer->GetCamY();
-        }
-        else if (Input.Mouse.Left.On)
-        {
-            MainRenderer->SetCameraPosition(mouseDownX - Input.Mouse.X, mouseDownY - Input.Mouse.Y);
-        }
-
         World->Update();
 
-        // TODO: find a better way to trigger an automatic camera snap, maybe based on something in World
-        if (Input.Left.Once() || Input.Right.Once() || Input.Up.Once() || Input.Down.Once() || Input.Primary.Once())
-        {
-            SnapCameraToPlayer();
-        }
+        SnapCameraToPlayer();
     }
 
     void Game::Render()

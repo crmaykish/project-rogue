@@ -23,7 +23,8 @@ namespace cm
         }
 
         // Can the player see this enemy?
-        Visible = world.IsTileVisible(TileX, TileY);
+        // Visible = world.IsTileVisible(TileX, TileY);
+        Visible = true;
 
         if (HP == 0)
         {
@@ -42,7 +43,7 @@ namespace cm
             return std::make_unique<AttackAction>(*world.GetPlayer());
         }
 
-        else if (playerDistance < 6)
+        else if (playerDistance < 500)
         {
             // really bad pathfinding to player
             auto diffX = player->TileX - TileX;
