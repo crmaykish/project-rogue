@@ -9,6 +9,20 @@
 
 namespace cm
 {
+    enum struct ItemType
+    {
+        Consumable,
+        Head,
+        Chest,
+        Legs,
+        Gloves,
+        Boots,
+        OneHand,
+        TwoHand,
+        OffHand,
+        Charm
+    };
+
     class Item
     {
     private:
@@ -19,6 +33,7 @@ namespace cm
         std::string Name;
         bool PickedUp = false;
         int Charges = 0;
+        ItemType Type = ItemType::Consumable;
 
         AssetKey TextureKey;
 
@@ -33,6 +48,8 @@ namespace cm
 
     std::unique_ptr<Item> HealthPotion(int healing, int stackSize = 1);
     std::unique_ptr<Item> Torch();
+
+    std::unique_ptr<Item> RustyDagger();
 
 } // namespace cm
 

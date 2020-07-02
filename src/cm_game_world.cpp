@@ -234,6 +234,10 @@ namespace cm
                     }
                     else if (r < 6)
                     {
+                        t->Items = RustyDagger();
+                    }
+                    else if (r < 7)
+                    {
                         Actors.emplace_back(std::make_unique<Enemy>(i, j));
                         enemies++;
                     }

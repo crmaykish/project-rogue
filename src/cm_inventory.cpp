@@ -22,6 +22,28 @@ namespace cm
         return Items.at(slot).get();
     }
 
+    void Inventory::EquipItem(int slot)
+    {
+        // TODO: unequip any existing item first
+        
+        auto item = std::move(Items.at(slot));
+
+        Equipment.emplace(item->Type, std::move(item));
+
+        // remove empty pointer from Items
+        Items.erase(Items.begin() + slot);
+    }
+
+    Item *Inventory::EquipmentAt(ItemType type)
+    {
+        if (Equipment.find(type)->second == nullptr)
+        {
+            return nullptr;
+        }
+        // TODO: this is kind of redundant
+        return Equipment.find(type)->second.get();
+    }
+
     int Inventory::ItemCount()
     {
         return Items.size();

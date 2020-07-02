@@ -4,6 +4,7 @@
 namespace cm
 {
     class Actor;
+    class Item;
 
     class Effect
     {

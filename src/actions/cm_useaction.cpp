@@ -1,4 +1,5 @@
 #include "cm_useaction.h"
+#include "cm_equipaction.h"
 #include "cm_actor.h"
 
 namespace cm
@@ -14,14 +15,23 @@ namespace cm
             return ActionResult(ActionStatus::Invalid, "No item in slot: " + std::to_string(ItemSlot));
         }
 
-        item->Use(executor);
-
-        if (item->Charges == 0)
+        if (item->Type == ItemType::Consumable)
         {
-            executor.GetInventory()->RemoveItem(ItemSlot);
-        }
+            // Use the item
+            item->Use(executor);
 
-        return ActionResult(ActionStatus::Succeeded, executor.Name + " used " + item->Name);
+            if (item->Charges == 0)
+            {
+                executor.GetInventory()->RemoveItem(ItemSlot);
+            }
+
+            return ActionResult(ActionStatus::Succeeded, executor.Name + " used " + item->Name);
+        }
+        else
+        {
+            // Try to equip the item instead
+            return ActionResult(std::make_unique<EquipAction>(ItemSlot));
+        }
     }
 
 } // namespace cm

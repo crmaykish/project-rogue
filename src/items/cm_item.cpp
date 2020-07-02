@@ -63,10 +63,19 @@ namespace cm
         auto torch = std::make_unique<Item>();
         torch->Name = "Torch";
         torch->TextureKey = AssetKey::TorchTexture;
-        torch->Charges = 0;
         torch->AddPickupEffect(std::make_unique<AddTorchFuelEffect>());
 
         return torch;
+    }
+
+    std::unique_ptr<Item> RustyDagger()
+    {
+        auto dagger = std::make_unique<Item>();
+        dagger->Name = "Rusty Dagger";
+        dagger->Type = ItemType::OneHand;
+        dagger->TextureKey = AssetKey::DaggerTexture;
+
+        return dagger;
     }
 
 } // namespace cm

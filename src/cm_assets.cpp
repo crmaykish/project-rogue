@@ -92,7 +92,7 @@ namespace cm
         switch (key)
         {
         case AssetKey::UIFont:
-            assetFileName = "game over.ttf";
+            assetFileName = "EXEPixelPerfect.ttf";
             break;
         // Tiles
         case AssetKey::FloorTexture:
@@ -115,8 +115,11 @@ namespace cm
         case AssetKey::HealthPotionTexture:
             assetFileName = "potion_hp.png";
             break;
-            case AssetKey::TorchTexture:
+        case AssetKey::TorchTexture:
             assetFileName = "torch.png";
+            break;
+        case AssetKey::DaggerTexture:
+            assetFileName = "dagger_rusty.png";
             break;
         default:
             Log("No file name found for asset key: " + std::to_string((int)key), LOG_WARNING);

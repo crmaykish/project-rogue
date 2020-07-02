@@ -35,6 +35,7 @@ namespace cm
         EnergyPotionTexture,
         RejuvPotionTexture,
         TorchTexture,
+        DaggerTexture,
     };
 
     class Assets

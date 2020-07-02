@@ -20,7 +20,7 @@ namespace cm
         tile->Items->Pickup(executor);
 
         // If the item has charges, add to inventory, otherwise remove it from the tile
-        if (tile->Items->Charges > 0)
+        if (tile->Items->Charges > 0 || tile->Items->Type != ItemType::Consumable)
         {
             executor.GetInventory()->AddItem(std::move(tile->Items));
         }
