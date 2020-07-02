@@ -20,8 +20,6 @@ namespace cm
         std::vector<std::shared_ptr<Actor>> Actors;
         std::shared_ptr<Actor> PlayerOne;
 
-        int ViewDistance = 4;
-
         void CreateLevel();
 
         // Return the actor whose turn it is
@@ -29,6 +27,8 @@ namespace cm
         void NextActor();
 
     public:
+        int ViewDistance = 4;
+
         GameWorld();
 
         void Init();

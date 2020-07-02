@@ -52,4 +52,13 @@ namespace cm
         return hp;
     }
 
+    std::unique_ptr<Item> Torch(int fuel)
+    {
+        auto torch = std::make_unique<Item>();
+
+        torch->Name = "Torch";
+        torch->Charges = 0;
+        // torch->AddPickupEffect()
+    }
+
 } // namespace cm

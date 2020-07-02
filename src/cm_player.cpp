@@ -24,6 +24,8 @@ namespace cm
 
     std::unique_ptr<Action> Player::NextAction(const GameWorld &world)
     {
+        
+
         return std::move(nextAction);
     }
 

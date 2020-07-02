@@ -22,6 +22,16 @@ namespace cm
         void Use(Actor &target) override;
     };
 
+    class AddTorchFuelEffect : public Effect
+    {
+    private:
+        int &FuelTotal;
+
+    public:
+        AddTorchFuelEffect(int &fuelTotal);
+        void Use(Actor &target) override;
+    };
+
 } // namespace cm
 
 #endif // CM_EFFECT_H

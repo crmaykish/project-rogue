@@ -16,4 +16,14 @@ namespace cm
         }
     }
 
+    AddTorchFuelEffect::AddTorchFuelEffect(int &fuelTotal) : FuelTotal(fuelTotal) {}
+
+    void AddTorchFuelEffect::Use(Actor &target)
+    {
+        if (target.Friendly)
+        {
+            FuelTotal += 10;
+        }
+    }
+
 } // namespace cm

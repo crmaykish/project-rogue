@@ -27,6 +27,7 @@ namespace cm
     };
 
     std::unique_ptr<Item> HealthPotion(int healing, int stackSize = 1);
+    std::unique_ptr<Item> Torch(int fuel = 10);
 
 } // namespace cm
 
