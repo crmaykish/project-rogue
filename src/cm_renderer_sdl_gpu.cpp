@@ -35,7 +35,7 @@ namespace cm
 
     void SDLGPURenderer::Prepare()
     {
-        GPU_Clear(gpu);
+        GPU_ClearRGB(gpu, ColorBlack.red, ColorBlack.green, ColorBlack.blue);
     }
 
     void SDLGPURenderer::Render()
@@ -87,7 +87,7 @@ namespace cm
         SDL_Color fontColor = {color.red, color.green, color.blue, color.alpha};
 
         auto font = AssetManager.GetFont(fontKey);
-        auto *surface = TTF_RenderText_Solid(font, text.c_str(), fontColor);
+        auto *surface = TTF_RenderText_Blended(font, text.c_str(), fontColor);
         auto *image = GPU_CopyImageFromSurface(surface);
 
         GPU_Rect textRect = TransformRect({x, y, (float)image->w * scale, (float)image->h * scale}, absolute);

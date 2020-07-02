@@ -124,19 +124,27 @@ namespace cm
                                1.0,
                                true);
 
-        MainRenderer->DrawFont("HP: " + std::to_string(World->GetPlayer()->HP) + " / " + std::to_string(World->GetPlayer()->MaxHP),
+        MainRenderer->DrawFont(std::to_string(World->GetPlayer()->HP) + " / " + std::to_string(World->GetPlayer()->MaxHP),
                                AssetKey::UIFont,
-                               ColorWhite,
+                               ColorRed,
                                10,
                                yOffset - 80,
                                0.6,
                                true);
 
-        MainRenderer->DrawFont("Fuel: " + std::to_string(World->GetPlayer()->TorchFuel),
+        MainRenderer->DrawFont(std::to_string(40) + " / " + std::to_string(40),
                                AssetKey::UIFont,
-                               ColorWhite,
+                               ColorBlue,
                                10,
                                yOffset - 110,
+                               0.6,
+                               true);
+
+        MainRenderer->DrawFont(std::to_string(World->GetPlayer()->TorchFuel)+ " / " + std::to_string(40),
+                               AssetKey::UIFont,
+                               ColorYellow,
+                               10,
+                               yOffset - 140,
                                0.6,
                                true);
 
@@ -146,9 +154,9 @@ namespace cm
         {
             MainRenderer->DrawFont(std::to_string(i) + ": " + items->ItemAt(i)->Name,
                                    AssetKey::UIFont,
-                                   ColorRed,
+                                   ColorGreen,
                                    10,
-                                   yOffset - 140 - (30 * i),
+                                   yOffset - 190 - (30 * i),
                                    0.6,
                                    true);
         }
