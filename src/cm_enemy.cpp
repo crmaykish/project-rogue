@@ -23,7 +23,7 @@ namespace cm
         }
 
         // Can the player see this enemy?
-        Visible = world.IsTileVisible(TileX, TileY);
+        Visible = world.TileBrightness(TileX, TileY) > 0;
 
         if (HP == 0)
         {

@@ -21,7 +21,7 @@ namespace cm
         int Y = 0;
         TileType Type = TileType::Unknown;
         bool Discovered = false;
-        bool Visible = false;
+        uint8_t Brightness = 0;
 
         // TODO: A tile can only hold one item
         std::unique_ptr<Item> Items;

@@ -37,14 +37,11 @@ namespace cm
         // Update tiles
         for (auto &t : Tiles)
         {
-            if (DistanceToPlayer(t->X, t->Y) <= PlayerOne->GetViewDistance())
+            t->Brightness = TileBrightness(t->X, t->Y);
+
+            if (t->Brightness > 0)
             {
                 t->Discovered = true;
-                t->Visible = true;
-            }
-            else
-            {
-                t->Visible = false;
             }
         }
 
@@ -102,34 +99,37 @@ namespace cm
         // Render world tiles
         for (auto &t : Tiles)
         {
-            if (t->Discovered)
+            if (t->Type == TileType::Wall)
             {
-                if (t->Type == TileType::Wall)
-                {
-                    renderer.DrawTexture(AssetKey::WallTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
-                }
-                else if (t->Type == TileType::Empty)
-                {
-                    renderer.DrawTexture(AssetKey::FloorTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
-                }
-                else if (t->Type == TileType::Door)
-                {
-                    renderer.DrawTexture(AssetKey::DoorTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
-                }
-
-                // draw fog
-                if (!t->Visible)
-                {
-                    renderer.DrawRectangle(t->X * TileSize, t->Y * TileSize, TileSize, TileSize, ColorGreyOverlay);
-                }
-                else
-                {
-                    if (t->Items != nullptr)
-                    {
-                        renderer.DrawTexture(t->Items->GetTextureKey(), t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
-                    }
-                }
+                renderer.DrawTexture(AssetKey::WallTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
             }
+            else if (t->Type == TileType::Empty)
+            {
+                renderer.DrawTexture(AssetKey::FloorTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
+            }
+            else if (t->Type == TileType::Door)
+            {
+                renderer.DrawTexture(AssetKey::DoorTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
+            }
+
+            if (t->Items != nullptr)
+            {
+                renderer.DrawTexture(t->Items->GetTextureKey(), t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
+            }
+
+            // draw fog
+            Color overlayColor = ColorBlack;
+
+            if (t->Brightness == 0 && t->Discovered)
+            {
+                overlayColor.alpha = 0xFF - 0x20;
+            }
+            else
+            {
+                overlayColor.alpha = 0xFF - t->Brightness;
+            }
+
+            renderer.DrawRectangle(t->X * TileSize, t->Y * TileSize, TileSize, TileSize, overlayColor);
         }
 
         // Render actors
@@ -254,9 +254,30 @@ namespace cm
         Tiles.at(randIndex)->Type = TileType::Door;
     }
 
-    bool GameWorld::IsTileVisible(int x, int y) const
+    uint8_t GameWorld::TileBrightness(int x, int y) const
     {
-        return (DistanceToPlayer(x, y) <= PlayerOne->GetViewDistance());
+        auto dist = DistanceToPlayer(x, y);
+
+        int offset = (PlayerOne->TorchFuel + 1) / 5;
+
+        if (dist <= offset + 1)
+        {
+            return 0xFF;
+        }
+        if (dist == offset + 2)
+        {
+            return 0xC0;
+        }
+        if (dist == offset + 3)
+        {
+            return 0xA0;
+        }
+        if (dist == offset + 4)
+        {
+            return 0x60;
+        }
+
+        return 0;
     }
 
     Actor *GameWorld::GetCurrentActor()

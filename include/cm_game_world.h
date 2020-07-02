@@ -50,7 +50,7 @@ namespace cm
 
         void SetNextLevel();
 
-        bool IsTileVisible(int x, int y) const;
+        uint8_t TileBrightness(int x, int y) const;
     };
 
 } // namespace cm
