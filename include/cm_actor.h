@@ -5,23 +5,16 @@
 #include "cm_game_world.h"
 #include "cm_renderer.h"
 #include "cm_action.h"
-#include "cm_item.h"
+#include "cm_inventory.h"
 
 namespace cm
 {
-    const int DefaultItemCountMax = 10;
-
     // Forward Declarations
     class GameWorld;
     class Action;
 
     class Actor
     {
-    private:
-        // TODO: wrap this up in an Inventory class
-        int ItemCountMax = DefaultItemCountMax;
-        std::vector<std::unique_ptr<Item>> Items;
-
     public:
         std::string Name;
         bool Active = false;
@@ -45,9 +38,7 @@ namespace cm
         // Combat
         virtual int GetAttack() = 0;
 
-        // Inventory management
-        void AddItem(std::unique_ptr<Item> item);
-        void RemoveItem(int slot);
+        virtual Inventory *GetInventory() = 0;
     };
 
 } // namespace cm

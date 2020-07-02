@@ -17,7 +17,7 @@ namespace cm
         auto message = executor.Name + " picked up " + tile->Items->Name;
 
         // Move the item from the tile to the actor's inventory
-        executor.AddItem(std::move(tile->Items));
+        executor.GetInventory()->AddItem(std::move(tile->Items));
 
         return ActionResult(ActionStatus::Succeeded, message);
     }

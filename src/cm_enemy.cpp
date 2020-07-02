@@ -109,4 +109,9 @@ namespace cm
         Active = true;
     }
 
+    Inventory *Enemy::GetInventory()
+    {
+        return nullptr;
+    }
+
 } // namespace cm

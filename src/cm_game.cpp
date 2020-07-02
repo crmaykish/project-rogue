@@ -6,8 +6,6 @@
 
 namespace cm
 {
-    static int test = 0;
-
     void Game::Init()
     {
         Log("Initializing game...", LOG_INFO);
@@ -52,8 +50,6 @@ namespace cm
             previousTime = currentTime;
             lag += elapsedTime;
 
-            // auto start = std::chrono::high_resolution_clock::now();
-
             // Check for user input
             if (MainInputHandler != nullptr)
             {
@@ -71,10 +67,6 @@ namespace cm
             }
 
             Render();
-
-            // auto stop = std::chrono::high_resolution_clock::now();
-            // auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-            // Log(std::to_string(duration.count()));
         }
     }
 
@@ -157,29 +149,17 @@ namespace cm
                                true);
 
         // TODO: this is hideous
-        // if (!World->GetPlayer()->GetItems().empty())
-        // {
-        //     for (int i = 0; i < World->GetPlayer()->GetItems().size(); i++)
-        //     {
-        //         MainRenderer->DrawFont(std::to_string(i) + ": " + World->GetPlayer()->GetItems().at(i)->GetName(),
-        //                                AssetKey::UIFont,
-        //                                ColorRed,
-        //                                10,
-        //                                yOffset - 170 - (30 * i),
-        //                                0.6,
-        //                                true);
-        //     }
-        // }
-
-        MainRenderer->DrawFont("TEST",
-                               AssetKey::UIFont,
-                               ColorBlue,
-                               test,
-                               yOffset - 300,
-                               1.0,
-                               true);
-
-        test = test > RESOLUTION_DEFAULT_W ? 0 : test + 1;
+        auto items = World->GetPlayer()->GetInventory();
+        for (int i = 0; i < items->ItemCount(); i++)
+        {
+            MainRenderer->DrawFont(std::to_string(i) + ": " + items->ItemAt(i)->Name,
+                                   AssetKey::UIFont,
+                                   ColorRed,
+                                   10,
+                                   yOffset - 170 - (30 * i),
+                                   0.6,
+                                   true);
+        }
 
         MainRenderer->Render();
     }

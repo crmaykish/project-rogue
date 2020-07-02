@@ -12,6 +12,8 @@ namespace cm
         const UserInput &Input;
         std::unique_ptr<Action> nextAction;
 
+        Inventory Items;
+
         void DecideNextAction(const GameWorld &world);
 
     public:
@@ -24,6 +26,8 @@ namespace cm
         std::unique_ptr<Action> NextAction(const GameWorld &world) override;
 
         int GetAttack() override;
+
+        Inventory *GetInventory() override;
     };
 
 } // namespace cm

@@ -14,11 +14,6 @@ namespace cm
 
     void Player::Update(const GameWorld &world)
     {
-        // Items.erase(std::remove_if(Items.begin(),
-        //                            Items.end(),
-        //                            [](auto &i) { return (i->Charges <= 0); }),
-        //             Items.end());
-
         DecideNextAction(world);
     }
 
@@ -102,6 +97,11 @@ namespace cm
         {
             nextAction = std::make_unique<MoveAction>(dir, world);
         }
+    }
+
+    Inventory *Player::GetInventory()
+    {
+        return &Items;
     }
 
 } // namespace cm
