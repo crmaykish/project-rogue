@@ -115,6 +115,9 @@ namespace cm
         case AssetKey::HealthPotionTexture:
             assetFileName = "potion_hp.png";
             break;
+            case AssetKey::TorchTexture:
+            assetFileName = "torch.png";
+            break;
         default:
             Log("No file name found for asset key: " + std::to_string((int)key), LOG_WARNING);
             break;

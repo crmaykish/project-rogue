@@ -24,7 +24,7 @@ namespace cm
 
     std::unique_ptr<Action> Player::NextAction(const GameWorld &world)
     {
-        
+        TorchFuel = (TorchFuel == 0) ? 0 : TorchFuel - 1;
 
         return std::move(nextAction);
     }

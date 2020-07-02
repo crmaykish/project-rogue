@@ -132,19 +132,11 @@ namespace cm
                                0.6,
                                true);
 
-        MainRenderer->DrawFont("Attack: " + std::to_string(World->GetPlayer()->GetAttack()),
+        MainRenderer->DrawFont("Fuel: " + std::to_string(World->GetPlayer()->TorchFuel),
                                AssetKey::UIFont,
                                ColorWhite,
                                10,
                                yOffset - 110,
-                               0.6,
-                               true);
-
-        MainRenderer->DrawFont("Armor: " + std::to_string(0),
-                               AssetKey::UIFont,
-                               ColorWhite,
-                               10,
-                               yOffset - 140,
                                0.6,
                                true);
 
@@ -156,7 +148,7 @@ namespace cm
                                    AssetKey::UIFont,
                                    ColorRed,
                                    10,
-                                   yOffset - 170 - (30 * i),
+                                   yOffset - 140 - (30 * i),
                                    0.6,
                                    true);
         }

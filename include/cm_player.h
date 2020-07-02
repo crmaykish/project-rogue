@@ -27,6 +27,23 @@ namespace cm
         int GetAttack() override;
 
         Inventory *GetInventory() override;
+
+        int GetViewDistance() override
+        {
+            int ViewDistance = TorchFuel / 2;
+
+            if (ViewDistance < 1)
+            {
+                ViewDistance = 1;
+            }
+
+            if (ViewDistance > 8)
+            {
+                ViewDistance = 6;
+            }
+
+            return ViewDistance;
+        }
     };
 
 } // namespace cm

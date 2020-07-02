@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include "cm_effect.h"
+#include "cm_assets.h"
 
 namespace cm
 {
@@ -19,15 +20,19 @@ namespace cm
         bool PickedUp = false;
         int Charges = 0;
 
+        AssetKey TextureKey;
+
         void Pickup(Actor &owner);
         void Use(Actor &owner);
 
         void AddPickupEffect(std::unique_ptr<Effect> effect);
         void AddUseEffect(std::unique_ptr<Effect> effect);
+
+        AssetKey GetTextureKey();
     };
 
     std::unique_ptr<Item> HealthPotion(int healing, int stackSize = 1);
-    std::unique_ptr<Item> Torch(int fuel = 10);
+    std::unique_ptr<Item> Torch();
 
 } // namespace cm
 

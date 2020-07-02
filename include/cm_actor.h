@@ -25,6 +25,8 @@ namespace cm
         int MaxHP = 0;
         int HP = 0;
 
+        int TorchFuel = 20;
+
         virtual ~Actor() {}
 
         // Game state changes
@@ -39,6 +41,8 @@ namespace cm
         virtual int GetAttack() = 0;
 
         virtual Inventory *GetInventory() = 0;
+
+        virtual int GetViewDistance() = 0;
     };
 
 } // namespace cm

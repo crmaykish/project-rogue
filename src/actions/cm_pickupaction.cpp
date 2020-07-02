@@ -16,8 +16,18 @@ namespace cm
 
         auto message = executor.Name + " picked up " + tile->Items->Name;
 
-        // Move the item from the tile to the actor's inventory
-        executor.GetInventory()->AddItem(std::move(tile->Items));
+        // Activate on-pickup effects
+        tile->Items->Pickup(executor);
+
+        // If the item has charges, add to inventory, otherwise remove it from the tile
+        if (tile->Items->Charges > 0)
+        {
+            executor.GetInventory()->AddItem(std::move(tile->Items));
+        }
+        else
+        {
+            tile->Items.reset();
+        }
 
         return ActionResult(ActionStatus::Succeeded, message);
     }

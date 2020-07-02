@@ -114,4 +114,9 @@ namespace cm
         return nullptr;
     }
 
+    int Enemy::GetViewDistance()
+    {
+        return 0;
+    }
+
 } // namespace cm

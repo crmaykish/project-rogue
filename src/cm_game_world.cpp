@@ -37,7 +37,7 @@ namespace cm
         // Update tiles
         for (auto &t : Tiles)
         {
-            if (DistanceToPlayer(t->X, t->Y) <= ViewDistance)
+            if (DistanceToPlayer(t->X, t->Y) <= PlayerOne->GetViewDistance())
             {
                 t->Discovered = true;
                 t->Visible = true;
@@ -126,7 +126,7 @@ namespace cm
                 {
                     if (t->Items != nullptr)
                     {
-                        renderer.DrawTexture(AssetKey::HealthPotionTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
+                        renderer.DrawTexture(t->Items->GetTextureKey(), t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
                     }
                 }
             }
@@ -230,6 +230,10 @@ namespace cm
                     }
                     else if (r < 4)
                     {
+                        t->Items = Torch();
+                    }
+                    else if (r < 6)
+                    {
                         Actors.emplace_back(std::make_unique<Enemy>(i, j));
                         enemies++;
                     }
@@ -252,7 +256,7 @@ namespace cm
 
     bool GameWorld::IsTileVisible(int x, int y) const
     {
-        return (DistanceToPlayer(x, y) <= ViewDistance);
+        return (DistanceToPlayer(x, y) <= PlayerOne->GetViewDistance());
     }
 
     Actor *GameWorld::GetCurrentActor()
