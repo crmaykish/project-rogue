@@ -36,7 +36,7 @@ namespace cm
 
     Item *Inventory::EquipmentAt(ItemType type)
     {
-        if (Equipment.find(type)->second == nullptr)
+        if (Equipment.find(type) == Equipment.end())
         {
             return nullptr;
         }

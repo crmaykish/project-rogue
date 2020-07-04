@@ -140,7 +140,7 @@ namespace cm
                                0.6,
                                true);
 
-        MainRenderer->DrawFont(std::to_string(World->GetPlayer()->TorchFuel)+ " / " + std::to_string(40),
+        MainRenderer->DrawFont(std::to_string(World->GetPlayer()->TorchFuel) + " / " + std::to_string(40),
                                AssetKey::UIFont,
                                ColorYellow,
                                10,
@@ -157,6 +157,19 @@ namespace cm
                                    ColorGreen,
                                    10,
                                    yOffset - 190 - (30 * i),
+                                   0.6,
+                                   true);
+        }
+
+        auto mainWeapon = items->EquipmentAt(ItemType::OneHand);
+
+        if (mainWeapon != nullptr)
+        {
+            MainRenderer->DrawFont(mainWeapon->Name,
+                                   AssetKey::UIFont,
+                                   ColorBlue,
+                                   150,
+                                   yOffset - 190,
                                    0.6,
                                    true);
         }
