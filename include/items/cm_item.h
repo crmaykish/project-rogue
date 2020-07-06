@@ -46,10 +46,13 @@ namespace cm
         AssetKey GetTextureKey();
     };
 
+    // Item Creation
     std::unique_ptr<Item> HealthPotion(int healing, int stackSize = 1);
     std::unique_ptr<Item> Torch();
-
     std::unique_ptr<Item> RustyDagger();
+    std::unique_ptr<Item> Sword();
+    std::unique_ptr<Item> LeatherHelmet();
+    std::unique_ptr<Item> LeatherBoots();
 
 } // namespace cm
 

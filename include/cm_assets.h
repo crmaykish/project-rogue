@@ -27,6 +27,7 @@ namespace cm
         FloorTexture,
         WallTexture,
         DoorTexture,
+        TreeTexture,
         // Actors
         PlayerTexture,
         GhostTexture,
@@ -36,6 +37,10 @@ namespace cm
         RejuvPotionTexture,
         TorchTexture,
         DaggerTexture,
+        SwordGreyTexture,
+        SwordBlueTexture,
+        BootsLeatherTexture,
+        HelmetLeatherTexture,
     };
 
     class Assets

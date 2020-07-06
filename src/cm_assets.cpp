@@ -104,6 +104,9 @@ namespace cm
         case AssetKey::DoorTexture:
             assetFileName = "door.png";
             break;
+        case AssetKey::TreeTexture:
+            assetFileName = "tree.png";
+            break;
         // Actors
         case AssetKey::PlayerTexture:
             assetFileName = "player.png";
@@ -120,6 +123,18 @@ namespace cm
             break;
         case AssetKey::DaggerTexture:
             assetFileName = "dagger_rusty.png";
+            break;
+        case AssetKey::SwordGreyTexture:
+            assetFileName = "sword_grey.png";
+            break;
+        case AssetKey::SwordBlueTexture:
+            assetFileName = "sword_blue.png";
+            break;
+        case AssetKey::BootsLeatherTexture:
+            assetFileName = "boots_leather.png";
+            break;
+        case AssetKey::HelmetLeatherTexture:
+            assetFileName = "helmet_leather.png";
             break;
         default:
             Log("No file name found for asset key: " + std::to_string((int)key), LOG_WARNING);

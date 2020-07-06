@@ -78,4 +78,34 @@ namespace cm
         return dagger;
     }
 
+    std::unique_ptr<Item> Sword()
+    {
+        auto sword = std::make_unique<Item>();
+        sword->Name = "Longsword";
+        sword->Type = ItemType::OneHand;
+        sword->TextureKey = AssetKey::SwordGreyTexture;
+
+        return sword;
+    }
+
+    std::unique_ptr<Item> LeatherHelmet()
+    {
+        auto helmet = std::make_unique<Item>();
+        helmet->Name = "Leather Helmet";
+        helmet->Type = ItemType::Head;
+        helmet->TextureKey = AssetKey::HelmetLeatherTexture;
+
+        return helmet;
+    }
+
+    std::unique_ptr<Item> LeatherBoots()
+    {
+        auto boots = std::make_unique<Item>();
+        boots->Name = "Leather Boots";
+        boots->Type = ItemType::Boots;
+        boots->TextureKey = AssetKey::BootsLeatherTexture;
+
+        return boots;
+    }
+
 } // namespace cm

@@ -238,6 +238,18 @@ namespace cm
                     }
                     else if (r < 7)
                     {
+                        t->Items = Sword();
+                    }
+                    else if (r < 8)
+                    {
+                        t->Items = LeatherBoots();
+                    }
+                    else if (r < 9)
+                    {
+                        t->Items = LeatherHelmet();
+                    }
+                    else if (r < 10)
+                    {
                         Actors.emplace_back(std::make_unique<Enemy>(i, j));
                         enemies++;
                     }
