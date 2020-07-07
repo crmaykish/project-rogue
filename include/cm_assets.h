@@ -28,8 +28,10 @@ namespace cm
         WallTexture,
         DoorTexture,
         TreeTexture,
+        ChestTexture,
         // Actors
-        PlayerTexture,
+        KnightTexture,
+        MageTexture,
         GhostTexture,
         // Items
         HealthPotionTexture,

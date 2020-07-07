@@ -107,9 +107,15 @@ namespace cm
         case AssetKey::TreeTexture:
             assetFileName = "tree.png";
             break;
+        case AssetKey::ChestTexture:
+            assetFileName = "chest.png";
+            break;
         // Actors
-        case AssetKey::PlayerTexture:
-            assetFileName = "player.png";
+        case AssetKey::KnightTexture:
+            assetFileName = "knight.png";
+            break;
+        case AssetKey::MageTexture:
+            assetFileName = "mage.png";
             break;
         case AssetKey::GhostTexture:
             assetFileName = "ghost.png";
