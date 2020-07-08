@@ -24,23 +24,26 @@ namespace cm
 
     void Inventory::EquipItem(int slot)
     {
-        // TODO: unequip any existing item first
-
-        auto item = std::move(Items.at(slot));
-
-        auto existingItem = EquipmentAt(item->Type);
-
-        if (existingItem != nullptr)
-        {
-            // move existing item back to inventory
-            // TODO: this isn't working
-            Items.emplace_back(std::move(Equipment.find(existingItem->Type)->second));
-        }
-
-        Equipment.emplace(item->Type, std::move(item));
+        auto newItem = std::move(Items.at(slot));
 
         // remove empty pointer from Items
         Items.erase(Items.begin() + slot);
+
+        auto itemType = newItem->Type;
+
+        auto existingItem = Equipment.find(itemType);
+
+        if (existingItem != Equipment.end())
+        {
+            // there is an item already in the slot, move it back to inventory
+            Items.emplace_back(std::move(existingItem->second));
+
+            // erase now null pointer from equipment
+            Equipment.erase(itemType);
+        }
+
+        // equip new item
+        Equipment.emplace(itemType, std::move(newItem));
     }
 
     Item *Inventory::EquipmentAt(ItemType type)
