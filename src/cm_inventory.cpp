@@ -28,6 +28,15 @@ namespace cm
 
         auto item = std::move(Items.at(slot));
 
+        auto existingItem = EquipmentAt(item->Type);
+
+        if (existingItem != nullptr)
+        {
+            // move existing item back to inventory
+            // TODO: this isn't working
+            Items.emplace_back(std::move(Equipment.find(existingItem->Type)->second));
+        }
+
         Equipment.emplace(item->Type, std::move(item));
 
         // remove empty pointer from Items
