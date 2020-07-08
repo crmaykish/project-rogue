@@ -177,7 +177,27 @@ namespace cm
         for (int i = 0; i < items->ItemCount(); i++)
         {
             MainRenderer->DrawTexture(items->ItemAt(i)->GetTextureKey(), 10, yOffset, TileSize, TileSize, true);
+
             MainRenderer->DrawFont(std::to_string(i) + ": " + items->ItemAt(i)->Name,
+                                   AssetKey::UIFont,
+                                   ColorLightGrey,
+                                   10 + 10 + TileSize,
+                                   yOffset + 4,
+                                   0.6,
+                                   true);
+
+            yOffset -= (TileSize + 8);
+        }
+
+        yOffset -= 16;
+
+        // Weapon
+        auto weapon = items->EquipmentAt(ItemType::OneHand);
+        if (weapon != nullptr)
+        {
+            MainRenderer->DrawTexture(weapon->GetTextureKey(), 10, yOffset, TileSize, TileSize, true);
+
+            MainRenderer->DrawFont(weapon->Name,
                                    AssetKey::UIFont,
                                    ColorGreen,
                                    10 + 10 + TileSize,
@@ -188,22 +208,36 @@ namespace cm
             yOffset -= (TileSize + 8);
         }
 
-        // TODO: show all equipped weapons
-
-        // Equipped Items
-        auto mainWeapon = items->EquipmentAt(ItemType::OneHand);
-
-        if (mainWeapon != nullptr)
+        auto helm = items->EquipmentAt(ItemType::Head);
+        if (helm != nullptr)
         {
-            MainRenderer->DrawTexture(mainWeapon->GetTextureKey(), 10, yOffset, TileSize, TileSize);
+            MainRenderer->DrawTexture(helm->GetTextureKey(), 10, yOffset, TileSize, TileSize, true);
 
-            MainRenderer->DrawFont(mainWeapon->Name,
+            MainRenderer->DrawFont(helm->Name,
                                    AssetKey::UIFont,
-                                   ColorBlue,
-                                   TileSize + 20,
-                                   yOffset,
+                                   ColorGreen,
+                                   10 + 10 + TileSize,
+                                   yOffset + 4,
                                    0.6,
                                    true);
+
+            yOffset -= (TileSize + 8);
+        }
+
+        auto boots = items->EquipmentAt(ItemType::Boots);
+        if (boots != nullptr)
+        {
+            MainRenderer->DrawTexture(boots->GetTextureKey(), 10, yOffset, TileSize, TileSize, true);
+
+            MainRenderer->DrawFont(boots->Name,
+                                   AssetKey::UIFont,
+                                   ColorGreen,
+                                   10 + 10 + TileSize,
+                                   yOffset + 4,
+                                   0.6,
+                                   true);
+
+            yOffset -= (TileSize + 8);
         }
     }
 

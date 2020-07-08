@@ -25,7 +25,7 @@ namespace cm
     void Inventory::EquipItem(int slot)
     {
         // TODO: unequip any existing item first
-        
+
         auto item = std::move(Items.at(slot));
 
         Equipment.emplace(item->Type, std::move(item));
