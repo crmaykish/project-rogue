@@ -33,7 +33,7 @@ namespace cm
         float GetResolutionY() override;
 
         void DrawRectangle(float x, float y, float w, float h, Color color) const override;
-        void DrawTexture(AssetKey textureKey, float x, float y, float w, float h) const override;
+        void DrawTexture(AssetKey textureKey, float x, float y, float w, float h, bool absolute = true) const override;
         void DrawFont(std::string text, AssetKey fontKey, Color color, float x, float y, float scale = 1.0, bool absolute = false) const override;
     };
 } // namespace cm

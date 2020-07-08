@@ -75,10 +75,10 @@ namespace cm
         GPU_RectangleFilled2(gpu, TransformRect({x, y, w, h}), c);
     }
 
-    void SDLGPURenderer::DrawTexture(AssetKey textureKey, float x, float y, float w, float h) const
+    void SDLGPURenderer::DrawTexture(AssetKey textureKey, float x, float y, float w, float h, bool absolute) const
     {
         auto image = AssetManager.GetTexture(textureKey);
-        GPU_Rect r = TransformRect({x, y, w, h});
+        GPU_Rect r = TransformRect({x, y, w, h}, absolute);
         GPU_BlitRect(image, NULL, gpu, &r);
     }
 

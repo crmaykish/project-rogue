@@ -32,6 +32,8 @@ namespace cm
         void Update();
         void Render();
 
+        void RenderUI();
+
         void SnapCameraToPlayer();
 
     public:

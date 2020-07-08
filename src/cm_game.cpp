@@ -113,66 +113,7 @@ namespace cm
         // Render world objects
         World->Render(*MainRenderer);
 
-        // Render UI
-        int yOffset = MainRenderer->GetResolutionY();
-
-        MainRenderer->DrawFont(World->GetPlayer()->Name,
-                               AssetKey::UIFont,
-                               ColorWhite,
-                               10,
-                               yOffset - 50,
-                               1.0,
-                               true);
-
-        MainRenderer->DrawFont(std::to_string(World->GetPlayer()->HP) + " / " + std::to_string(World->GetPlayer()->MaxHP),
-                               AssetKey::UIFont,
-                               ColorRed,
-                               10,
-                               yOffset - 80,
-                               0.6,
-                               true);
-
-        MainRenderer->DrawFont(std::to_string(40) + " / " + std::to_string(40),
-                               AssetKey::UIFont,
-                               ColorBlue,
-                               10,
-                               yOffset - 110,
-                               0.6,
-                               true);
-
-        MainRenderer->DrawFont(std::to_string(World->GetPlayer()->TorchFuel) + " / " + std::to_string(40),
-                               AssetKey::UIFont,
-                               ColorYellow,
-                               10,
-                               yOffset - 140,
-                               0.6,
-                               true);
-
-        // TODO: this is hideous
-        auto items = World->GetPlayer()->GetInventory();
-        for (int i = 0; i < items->ItemCount(); i++)
-        {
-            MainRenderer->DrawFont(std::to_string(i) + ": " + items->ItemAt(i)->Name,
-                                   AssetKey::UIFont,
-                                   ColorGreen,
-                                   10,
-                                   yOffset - 190 - (30 * i),
-                                   0.6,
-                                   true);
-        }
-
-        auto mainWeapon = items->EquipmentAt(ItemType::OneHand);
-
-        if (mainWeapon != nullptr)
-        {
-            MainRenderer->DrawFont(mainWeapon->Name,
-                                   AssetKey::UIFont,
-                                   ColorBlue,
-                                   150,
-                                   yOffset - 190,
-                                   0.6,
-                                   true);
-        }
+        RenderUI();
 
         MainRenderer->Render();
     }
@@ -182,6 +123,88 @@ namespace cm
         float camX = (World->GetPlayer()->TileX * TileSize) - (MainRenderer->GetResolutionX() / 2) + (TileSize / 2);
         float camY = (MainRenderer->GetResolutionY() / 2) - (World->GetPlayer()->TileY * TileSize) - (TileSize / 2);
         MainRenderer->SetCameraPosition(camX, camY);
+    }
+
+    void Game::RenderUI()
+    {
+        int yOffset = MainRenderer->GetResolutionY() - 50;
+
+        MainRenderer->DrawFont(World->GetPlayer()->Name,
+                               AssetKey::UIFont,
+                               ColorWhite,
+                               10,
+                               yOffset,
+                               1.0,
+                               true);
+
+        yOffset -= 30;
+
+        MainRenderer->DrawFont(std::to_string(World->GetPlayer()->HP) + " / " + std::to_string(World->GetPlayer()->MaxHP),
+                               AssetKey::UIFont,
+                               ColorRed,
+                               10,
+                               yOffset,
+                               0.6,
+                               true);
+
+        yOffset -= 30;
+
+        MainRenderer->DrawFont(std::to_string(40) + " / " + std::to_string(40),
+                               AssetKey::UIFont,
+                               ColorBlue,
+                               10,
+                               yOffset,
+                               0.6,
+                               true);
+
+        yOffset -= 30;
+
+        MainRenderer->DrawFont(std::to_string(World->GetPlayer()->TorchFuel) + " / " + std::to_string(40),
+                               AssetKey::UIFont,
+                               ColorYellow,
+                               10,
+                               yOffset,
+                               0.6,
+                               true);
+
+        yOffset -= 30;
+
+        yOffset -= 8;
+
+        // Inventory
+        // TODO: this is hideous
+        auto items = World->GetPlayer()->GetInventory();
+        for (int i = 0; i < items->ItemCount(); i++)
+        {
+            MainRenderer->DrawTexture(items->ItemAt(i)->GetTextureKey(), 10, yOffset, TileSize, TileSize, true);
+            MainRenderer->DrawFont(std::to_string(i) + ": " + items->ItemAt(i)->Name,
+                                   AssetKey::UIFont,
+                                   ColorGreen,
+                                   10 + 10 + TileSize,
+                                   yOffset + 4,
+                                   0.6,
+                                   true);
+
+            yOffset -= (TileSize + 8);
+        }
+
+        // TODO: show all equipped weapons
+
+        // Equipped Items
+        auto mainWeapon = items->EquipmentAt(ItemType::OneHand);
+
+        if (mainWeapon != nullptr)
+        {
+            MainRenderer->DrawTexture(mainWeapon->GetTextureKey(), 10, yOffset, TileSize, TileSize);
+
+            MainRenderer->DrawFont(mainWeapon->Name,
+                                   AssetKey::UIFont,
+                                   ColorBlue,
+                                   TileSize + 20,
+                                   yOffset,
+                                   0.6,
+                                   true);
+        }
     }
 
 } // namespace cm
