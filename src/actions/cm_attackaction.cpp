@@ -16,9 +16,10 @@ namespace cm
 
         Target.HP -= executor.GetAttack();
 
-        if (Target.HP < 0)
+        if (Target.HP <= 0)
         {
             Target.HP = 0;
+            Target.Active = false;
         }
 
         // Attack succeeds
