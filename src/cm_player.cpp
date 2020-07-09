@@ -31,17 +31,17 @@ namespace cm
 
     void Player::Render(const Renderer &renderer)
     {
-        renderer.DrawTexture(AssetKey::KnightTexture, TileX * TileSize, TileY * TileSize, TileSize, TileSize);
+        renderer.DrawTexture(AssetKey::MageTexture, TileX * TileSize, TileY * TileSize, TileSize, TileSize);
     }
 
     int Player::GetAttack()
     {
-        return BaseAttack + Items.GetAddedAttack();
+        return (Level * BaseAttack) + Items.GetAddedAttack();
     }
 
     int Player::GetDefense()
     {
-        return BaseDefense + Items.GetAddedDefense();
+        return (Level * BaseDefense) + Items.GetAddedDefense();
     }
 
     void Player::Reset()
@@ -58,6 +58,8 @@ namespace cm
 
         Active = true;
         Visible = true;
+
+        Experience = 0;
 
         Items.Reset();
     }

@@ -140,8 +140,19 @@ namespace cm
 
         yOffset -= 30;
 
+        // Level/experience
+        MainRenderer->DrawFont("LVL: " + std::to_string(World->GetPlayer()->Level) + " | XP: " + std::to_string(World->GetPlayer()->Experience),
+                               AssetKey::UIFont,
+                               ColorGreen,
+                               10,
+                               yOffset,
+                               0.6,
+                               true);
+
+        yOffset -= 30;
+
         // HP
-        MainRenderer->DrawFont(std::to_string(World->GetPlayer()->HP) + " / " + std::to_string(World->GetPlayer()->MaxHP),
+        MainRenderer->DrawFont("HP: " + std::to_string(World->GetPlayer()->HP) + " / " + std::to_string(World->GetPlayer()->MaxHP),
                                AssetKey::UIFont,
                                ColorRed,
                                10,
@@ -151,18 +162,7 @@ namespace cm
 
         yOffset -= 30;
 
-        // Torch light
-        MainRenderer->DrawFont(std::to_string(World->GetPlayer()->TorchFuel) + " / " + std::to_string(40),
-                               AssetKey::UIFont,
-                               ColorYellow,
-                               10,
-                               yOffset,
-                               0.6,
-                               true);
-
-        yOffset -= 30;
-
-        MainRenderer->DrawFont("A: " + std::to_string(World->GetPlayer()->GetAttack()) + " | D: " + std::to_string(World->GetPlayer()->GetDefense()),
+        MainRenderer->DrawFont("ATK: " + std::to_string(World->GetPlayer()->GetAttack()) + " | DEF: " + std::to_string(World->GetPlayer()->GetDefense()),
                                AssetKey::UIFont,
                                ColorBlue,
                                10,
