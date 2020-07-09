@@ -30,12 +30,12 @@ namespace cm
         virtual ~Actor() {}
 
         // Game state changes
-        virtual void Update(const GameWorld &world) = 0;
+        virtual void Update(GameWorld &world) = 0;
         virtual void Render(const Renderer &renderer) = 0;
         virtual void Reset() = 0;
 
         virtual bool ActionReady() = 0;
-        virtual std::unique_ptr<Action> NextAction(const GameWorld &world) = 0;
+        virtual std::unique_ptr<Action> NextAction(GameWorld &world) = 0;
 
         // Combat
         virtual int GetAttack() = 0;

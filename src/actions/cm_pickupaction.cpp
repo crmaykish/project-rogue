@@ -1,12 +1,18 @@
 #include "cm_pickupaction.h"
+#include "cm_exitlevelaction.h"
 
 namespace cm
 {
-    PickupAction::PickupAction(const GameWorld &world) : World(world) {}
+    PickupAction::PickupAction(GameWorld &world) : World(world) {}
 
     ActionResult PickupAction::Execute(Actor &executor)
     {
         auto tile = World.GetTile(executor.TileX, executor.TileY);
+
+        if (tile->Type == TileType::Door)
+        {
+            return ActionResult(std::make_unique<ExitLevelAction>(World));
+        }
 
         // Does the tile contain an item to pickup?
         if (tile->Items.size() == 0)

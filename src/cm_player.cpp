@@ -12,7 +12,7 @@ namespace cm
         Reset();
     }
 
-    void Player::Update(const GameWorld &world)
+    void Player::Update(GameWorld &world)
     {
         DecideNextAction(world);
     }
@@ -22,7 +22,7 @@ namespace cm
         return (nextAction != nullptr);
     }
 
-    std::unique_ptr<Action> Player::NextAction(const GameWorld &world)
+    std::unique_ptr<Action> Player::NextAction(GameWorld &world)
     {
         TorchFuel = (TorchFuel == 0) ? 0 : TorchFuel - 1;
 
@@ -58,9 +58,11 @@ namespace cm
 
         Active = true;
         Visible = true;
+
+        Items.Reset();
     }
 
-    void Player::DecideNextAction(const GameWorld &world)
+    void Player::DecideNextAction(GameWorld &world)
     {
         if (Input.Primary.Once())
         {

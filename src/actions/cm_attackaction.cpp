@@ -20,12 +20,11 @@ namespace cm
         if (Target.HP <= 0)
         {
             Target.HP = 0;
-            Target.Active = false;
 
-            // drop loot
-            // TODO: I don't love having loot drops inside the attack action
             if (!Target.Friendly)
             {
+                Target.Active = false;
+
                 if (RandomInt(100) < 20)
                 {
                     World.GetTile(Target.TileX, Target.TileY)->Items.emplace_back(RandomItem());

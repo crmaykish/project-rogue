@@ -15,7 +15,7 @@ namespace cm
         Reset();
     }
 
-    void Enemy::Update(const GameWorld &world)
+    void Enemy::Update(GameWorld &world)
     {
         if (!Active)
         {
@@ -36,7 +36,7 @@ namespace cm
         return true;
     }
 
-    std::unique_ptr<Action> Enemy::NextAction(const GameWorld &world)
+    std::unique_ptr<Action> Enemy::NextAction(GameWorld &world)
     {
         auto player = world.GetPlayer();
         auto playerDistance = world.DistanceToPlayer(TileX, TileY);

@@ -16,16 +16,16 @@ namespace cm
         int BaseAttack = 10;
         int BaseDefense = 5;
 
-        void DecideNextAction(const GameWorld &world);
+        void DecideNextAction(GameWorld &world);
 
     public:
         Player(const UserInput &input);
-        void Update(const GameWorld &world) override;
+        void Update(GameWorld &world) override;
         void Render(const Renderer &renderer) override;
         void Reset() override;
 
         bool ActionReady() override;
-        std::unique_ptr<Action> NextAction(const GameWorld &world) override;
+        std::unique_ptr<Action> NextAction(GameWorld &world) override;
 
         int GetAttack() override;
         int GetDefense() override;

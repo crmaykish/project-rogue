@@ -9,12 +9,12 @@ namespace cm
     {
     public:
         Enemy(int x, int y);
-        void Update(const GameWorld &world) override;
+        void Update(GameWorld &world) override;
         void Render(const Renderer &renderer) override;
         void Reset() override;
 
         bool ActionReady() override;
-        std::unique_ptr<Action> NextAction(const GameWorld &world) override;
+        std::unique_ptr<Action> NextAction(GameWorld &world) override;
 
         int GetAttack() override;
         int GetDefense() override;

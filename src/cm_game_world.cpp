@@ -248,6 +248,9 @@ namespace cm
 
                 Tiles.push_back(std::move(t));
             }
+
+            PlayerOne->TileX = 2;
+            PlayerOne->TileY = 2;
         }
 
         // Place the exit door randomly

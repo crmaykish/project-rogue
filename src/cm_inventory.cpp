@@ -91,4 +91,12 @@ namespace cm
         }
     }
 
+    void Inventory::Reset()
+    {
+        Items.clear();
+        Equipment.clear();
+
+        RecalculateTotalStats();
+    }
+
 } // namespace cm

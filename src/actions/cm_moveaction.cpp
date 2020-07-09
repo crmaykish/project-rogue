@@ -47,8 +47,8 @@ namespace cm
             return ActionResult(std::make_unique<AttackAction>(*enemy, World));
         }
 
-        // Is the tile empty?
-        if (targetTile->Type == TileType::Empty)
+        // Is the tile walkable?
+        if (targetTile->Type != TileType::Wall)
         {
             executor.TileX += moveX;
             executor.TileY += moveY;

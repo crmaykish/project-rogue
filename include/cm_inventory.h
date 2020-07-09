@@ -35,6 +35,7 @@ namespace cm
         int GetAddedAttack();
         int GetAddedDefense();
 
+        void Reset();
     };
 } // namespace cm
 
