@@ -62,6 +62,8 @@ namespace cm
     std::unique_ptr<Item> Sword();
     std::unique_ptr<Item> LeatherHelmet();
     std::unique_ptr<Item> LeatherBoots();
+    std::unique_ptr<Item> Buckler();
+    std::unique_ptr<Item> Shield();
 
     std::unique_ptr<Item> RandomItem();
 

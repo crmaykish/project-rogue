@@ -23,6 +23,8 @@ namespace cm
     {
         // Fonts
         UIFont,
+        // Interface
+        ItemOutlineTexture,
         // Tiles
         FloorTexture,
         WallTexture,
@@ -43,6 +45,8 @@ namespace cm
         SwordBlueTexture,
         BootsLeatherTexture,
         HelmetLeatherTexture,
+        BucklerTexture,
+        ShieldTexture,
     };
 
     class Assets

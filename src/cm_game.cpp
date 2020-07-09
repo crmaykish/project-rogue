@@ -210,6 +210,22 @@ namespace cm
             yOffset -= (TileSize + 8);
         }
 
+        auto offhand = items->EquipmentAt(ItemType::OffHand);
+        if (offhand != nullptr)
+        {
+            MainRenderer->DrawTexture(offhand->GetTextureKey(), 10, yOffset, TileSize, TileSize, true);
+
+            MainRenderer->DrawFont(offhand->Name,
+                                   AssetKey::UIFont,
+                                   ColorGreen,
+                                   10 + 10 + TileSize,
+                                   yOffset + 4,
+                                   0.6,
+                                   true);
+
+            yOffset -= (TileSize + 8);
+        }
+
         auto helm = items->EquipmentAt(ItemType::Head);
         if (helm != nullptr)
         {

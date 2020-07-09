@@ -94,6 +94,10 @@ namespace cm
         case AssetKey::UIFont:
             assetFileName = "EXEPixelPerfect.ttf";
             break;
+        // Interface
+        case AssetKey::ItemOutlineTexture:
+            assetFileName = "item_outline.png";
+            break;
         // Tiles
         case AssetKey::FloorTexture:
             assetFileName = "floor.png";
@@ -141,6 +145,12 @@ namespace cm
             break;
         case AssetKey::HelmetLeatherTexture:
             assetFileName = "helmet_leather.png";
+            break;
+        case AssetKey::BucklerTexture:
+            assetFileName = "buckler.png";
+            break;
+        case AssetKey::ShieldTexture:
+            assetFileName = "shield.png";
             break;
         default:
             Log("No file name found for asset key: " + std::to_string((int)key), LOG_WARNING);

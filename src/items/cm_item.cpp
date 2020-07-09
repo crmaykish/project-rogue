@@ -113,9 +113,31 @@ namespace cm
         return boots;
     }
 
+    std::unique_ptr<Item> Buckler()
+    {
+        auto buckler = std::make_unique<Item>();
+        buckler->Name = "Buckler";
+        buckler->Type = ItemType::OffHand;
+        buckler->TextureKey = AssetKey::BucklerTexture;
+        buckler->BaseArmor = 8 + RandomInt(5); // 8 to 13 base armor
+
+        return buckler;
+    }
+
+    std::unique_ptr<Item> Shield()
+    {
+        auto shield = std::make_unique<Item>();
+        shield->Name = "Shield";
+        shield->Type = ItemType::OffHand;
+        shield->TextureKey = AssetKey::ShieldTexture;
+        shield->BaseArmor = 15 + RandomInt(10); // 15 to 25 base armor
+
+        return shield;
+    }
+
     std::unique_ptr<Item> RandomItem()
     {
-        switch (RandomInt(6))
+        switch (RandomInt(8))
         {
         case 0:
             return HealthPotion(15);
@@ -134,6 +156,12 @@ namespace cm
             break;
         case 5:
             return LeatherHelmet();
+            break;
+        case 6:
+            return Buckler();
+            break;
+        case 7:
+            return Shield();
             break;
         default:
             return nullptr;
