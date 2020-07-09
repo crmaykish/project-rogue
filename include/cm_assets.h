@@ -21,6 +21,8 @@ namespace cm
 
     enum struct AssetKey
     {
+        // Misc
+        Unknown,
         // Fonts
         UIFont,
         // Interface
@@ -35,6 +37,9 @@ namespace cm
         KnightTexture,
         MageTexture,
         GhostTexture,
+        FlameTexture,
+        SpiderTexture,
+        SkeletonTexture,
         // Items
         HealthPotionTexture,
         EnergyPotionTexture,

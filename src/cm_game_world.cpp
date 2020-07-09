@@ -230,7 +230,7 @@ namespace cm
                     // 1.5% chance to spawn enemy on empty tile
                     if (RandomInt(1000) < 15)
                     {
-                        Actors.emplace_back(std::make_unique<Enemy>(i, j));
+                        Actors.emplace_back(RandomEnemy(i, j, PlayerOne->Level));
                         enemies++;
                     }
 

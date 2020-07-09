@@ -8,10 +8,13 @@ namespace cm
     class Enemy : public Actor
     {
     public:
+        AssetKey Texture = AssetKey::Unknown;
+        int BaseAttack = 0;
+        int BaseDefense = 0;
+
         Enemy(int x, int y);
         void Update(GameWorld &world) override;
         void Render(const Renderer &renderer) override;
-        void Reset() override;
 
         bool ActionReady() override;
         std::unique_ptr<Action> NextAction(GameWorld &world) override;
@@ -21,6 +24,14 @@ namespace cm
 
         Inventory *GetInventory() override;
     };
+
+    // TODO: make these into real factory methods
+    std::unique_ptr<Actor> Ghost(int x, int y, int level);
+    std::unique_ptr<Actor> Flame(int x, int y, int level);
+    std::unique_ptr<Actor> Skeleton(int x, int y, int level);
+    std::unique_ptr<Actor> Spider(int x, int y, int level);
+
+    std::unique_ptr<Actor> RandomEnemy(int x, int y, int level);
 
 } // namespace cm
 

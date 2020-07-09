@@ -91,6 +91,9 @@ namespace cm
 
         switch (key)
         {
+        case AssetKey::Unknown:
+            assetFileName = "error.png";
+            break;
         case AssetKey::UIFont:
             assetFileName = "EXEPixelPerfect.ttf";
             break;
@@ -123,6 +126,15 @@ namespace cm
             break;
         case AssetKey::GhostTexture:
             assetFileName = "ghost.png";
+            break;
+        case AssetKey::FlameTexture:
+            assetFileName = "flame.png";
+            break;
+        case AssetKey::SpiderTexture:
+            assetFileName = "spider.png";
+            break;
+        case AssetKey::SkeletonTexture:
+            assetFileName = "skeleton.png";
             break;
         // Items
         case AssetKey::HealthPotionTexture:

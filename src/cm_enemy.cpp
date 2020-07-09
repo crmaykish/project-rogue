@@ -11,8 +11,6 @@ namespace cm
     {
         TileX = x;
         TileY = y;
-
-        Reset();
     }
 
     void Enemy::Update(GameWorld &world)
@@ -82,7 +80,7 @@ namespace cm
     {
         if (Active && Visible)
         {
-            renderer.DrawTexture(AssetKey::GhostTexture, TileX * TileSize, TileY * TileSize, TileSize, TileSize);
+            renderer.DrawTexture(Texture, TileX * TileSize, TileY * TileSize, TileSize, TileSize);
 
             renderer.DrawFont(std::to_string(HP) + " / " + std::to_string(MaxHP),
                               AssetKey::UIFont,
@@ -95,28 +93,110 @@ namespace cm
 
     int Enemy::GetAttack()
     {
-        return 5;
+        return BaseAttack * Level;
     }
 
     int Enemy::GetDefense()
     {
-        return 0;
-    }
-
-    void Enemy::Reset()
-    {
-        Name = "Ghost";
-
-        MaxHP = 20;
-        HP = MaxHP;
-
-        Visible = true;
-        Active = true;
+        return BaseDefense * Level;
     }
 
     Inventory *Enemy::GetInventory()
     {
         return nullptr;
+    }
+
+    std::unique_ptr<Actor> Ghost(int x, int y, int level)
+    {
+        auto a = std::make_unique<Enemy>(x, y);
+        a->Name = "Ghost";
+        a->Texture = AssetKey::GhostTexture;
+        a->Visible = true;
+        a->Active = true;
+        a->Level = level;
+
+        // Stats
+        a->MaxHP = level * (15 + RandomInt(10)); // 15-25 health per level
+        a->HP = a->MaxHP;
+        a->BaseAttack = 5;
+        a->BaseDefense = 2;
+
+        return a;
+    }
+
+    std::unique_ptr<Actor> Flame(int x, int y, int level)
+    {
+        auto a = std::make_unique<Enemy>(x, y);
+        a->Name = "Flame";
+        a->Texture = AssetKey::FlameTexture;
+        a->Visible = true;
+        a->Active = true;
+        a->Level = level;
+
+        // Stats
+        a->MaxHP = level * (10 + RandomInt(8)); // 10-18 health per level
+        a->HP = a->MaxHP;
+        a->BaseAttack = 10;
+        a->BaseDefense = 1;
+
+        return a;
+    }
+
+    std::unique_ptr<Actor> Skeleton(int x, int y, int level)
+    {
+        auto a = std::make_unique<Enemy>(x, y);
+        a->Name = "Skeleton";
+        a->Texture = AssetKey::SkeletonTexture;
+        a->Visible = true;
+        a->Active = true;
+        a->Level = level;
+
+        // Stats
+        a->MaxHP = level * (20 + RandomInt(10)); // 20-30 health per level
+        a->HP = a->MaxHP;
+        a->BaseAttack = 12;
+        a->BaseDefense = 20;
+
+        return a;
+    }
+
+    std::unique_ptr<Actor> Spider(int x, int y, int level)
+    {
+        auto a = std::make_unique<Enemy>(x, y);
+        a->Name = "Spider";
+        a->Texture = AssetKey::SpiderTexture;
+        a->Visible = true;
+        a->Active = true;
+        a->Level = level;
+
+        // Stats
+        a->MaxHP = level * (6 + RandomInt(30)); // 6-36 health per level
+        a->HP = a->MaxHP;
+        a->BaseAttack = 4;
+        a->BaseDefense = 5;
+
+        return a;
+    }
+
+    std::unique_ptr<Actor> RandomEnemy(int x, int y, int level)
+    {
+        switch (RandomInt(4))
+        {
+        case 0:
+            return Ghost(x, y, level);
+            break;
+        case 1:
+            return Flame(x, y, level);
+            break;
+        case 2:
+            return Spider(x, y, level);
+            break;
+        case 3:
+            return Skeleton(x, y, level);
+            break;
+        default:
+            return nullptr;
+        }
     }
 
 } // namespace cm

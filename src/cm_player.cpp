@@ -84,6 +84,7 @@ namespace cm
         Active = true;
         Visible = true;
 
+        Level = 1;
         Experience = 0;
 
         Items.Reset();

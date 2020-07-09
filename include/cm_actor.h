@@ -34,7 +34,7 @@ namespace cm
         // Game state changes
         virtual void Update(GameWorld &world) = 0;
         virtual void Render(const Renderer &renderer) = 0;
-        virtual void Reset() = 0;
+        virtual void Reset(){};
 
         // Actions
         virtual bool ActionReady() = 0;
