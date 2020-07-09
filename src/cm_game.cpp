@@ -171,24 +171,25 @@ namespace cm
                                true);
 
         yOffset -= 30;
-        yOffset -= 8;
+        yOffset -= 24;
 
-        // Inventory
-        // TODO: this is hideous
+        // Belt
         auto items = World->GetPlayer()->GetInventory();
         for (int i = 0; i < items->ItemCount(); i++)
         {
-            MainRenderer->DrawTexture(items->ItemAt(i)->GetTextureKey(), 10, yOffset, TileSize, TileSize, true);
+            MainRenderer->DrawTexture(AssetKey::ItemOutlineTexture, 10, yOffset, 48, 48, true);
 
-            MainRenderer->DrawFont(std::to_string(i) + ": " + items->ItemAt(i)->Name,
+            MainRenderer->DrawTexture(items->ItemAt(i)->GetTextureKey(), 10 + 6, yOffset + 6, TileSize, TileSize, true);
+
+            MainRenderer->DrawFont(std::to_string(i+1),
                                    AssetKey::UIFont,
-                                   ColorLightGrey,
-                                   10 + 10 + TileSize,
-                                   yOffset + 4,
-                                   0.6,
+                                   ColorWhite,
+                                   10+6,
+                                   yOffset + 6,
+                                   0.5,
                                    true);
 
-            yOffset -= (TileSize + 8);
+            yOffset -= (TileSize + 16);
         }
 
         yOffset -= 16;

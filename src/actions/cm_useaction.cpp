@@ -8,7 +8,7 @@ namespace cm
 
     ActionResult UseAction::Execute(Actor &executor)
     {
-        auto item = executor.GetInventory()->ItemAt(ItemSlot);
+        auto item = executor.GetInventory()->ItemAt(ItemSlot - 1);
 
         if (item == nullptr)
         {
@@ -22,7 +22,7 @@ namespace cm
 
             if (item->Charges == 0)
             {
-                executor.GetInventory()->RemoveItem(ItemSlot);
+                executor.GetInventory()->RemoveItem(ItemSlot - 1);
             }
 
             return ActionResult(ActionStatus::Succeeded, executor.Name + " used " + item->Name);
@@ -30,7 +30,7 @@ namespace cm
         else
         {
             // Try to equip the item instead
-            return ActionResult(std::make_unique<EquipAction>(ItemSlot));
+            return ActionResult(std::make_unique<EquipAction>(ItemSlot - 1));
         }
     }
 
