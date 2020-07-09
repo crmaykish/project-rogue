@@ -39,6 +39,7 @@ namespace cm
 
         // Combat
         virtual int GetAttack() = 0;
+        virtual int GetDefense() = 0;
 
         virtual Inventory *GetInventory() = 0;
 

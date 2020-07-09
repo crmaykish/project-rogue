@@ -31,12 +31,17 @@ namespace cm
 
     void Player::Render(const Renderer &renderer)
     {
-        renderer.DrawTexture(AssetKey::MageTexture, TileX * TileSize, TileY * TileSize, TileSize, TileSize);
+        renderer.DrawTexture(AssetKey::KnightTexture, TileX * TileSize, TileY * TileSize, TileSize, TileSize);
     }
 
     int Player::GetAttack()
     {
-        return 10;
+        return BaseAttack + Items.GetAddedAttack();
+    }
+
+    int Player::GetDefense()
+    {
+        return BaseDefense + Items.GetAddedDefense();
     }
 
     void Player::Reset()

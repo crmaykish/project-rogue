@@ -98,6 +98,11 @@ namespace cm
         return 5;
     }
 
+    int Enemy::GetDefense()
+    {
+        return 0;
+    }
+
     void Enemy::Reset()
     {
         Name = "Ghost";

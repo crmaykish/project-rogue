@@ -129,6 +129,7 @@ namespace cm
     {
         int yOffset = MainRenderer->GetResolutionY() - 50;
 
+        // Player name
         MainRenderer->DrawFont(World->GetPlayer()->Name,
                                AssetKey::UIFont,
                                ColorWhite,
@@ -139,6 +140,7 @@ namespace cm
 
         yOffset -= 30;
 
+        // HP
         MainRenderer->DrawFont(std::to_string(World->GetPlayer()->HP) + " / " + std::to_string(World->GetPlayer()->MaxHP),
                                AssetKey::UIFont,
                                ColorRed,
@@ -149,16 +151,7 @@ namespace cm
 
         yOffset -= 30;
 
-        MainRenderer->DrawFont(std::to_string(40) + " / " + std::to_string(40),
-                               AssetKey::UIFont,
-                               ColorBlue,
-                               10,
-                               yOffset,
-                               0.6,
-                               true);
-
-        yOffset -= 30;
-
+        // Torch light
         MainRenderer->DrawFont(std::to_string(World->GetPlayer()->TorchFuel) + " / " + std::to_string(40),
                                AssetKey::UIFont,
                                ColorYellow,
@@ -169,6 +162,15 @@ namespace cm
 
         yOffset -= 30;
 
+        MainRenderer->DrawFont("A: " + std::to_string(World->GetPlayer()->GetAttack()) + " | D: " + std::to_string(World->GetPlayer()->GetDefense()),
+                               AssetKey::UIFont,
+                               ColorBlue,
+                               10,
+                               yOffset,
+                               0.6,
+                               true);
+
+        yOffset -= 30;
         yOffset -= 8;
 
         // Inventory

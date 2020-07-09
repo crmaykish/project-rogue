@@ -17,6 +17,7 @@ namespace cm
         std::unique_ptr<Action> NextAction(const GameWorld &world) override;
 
         int GetAttack() override;
+        int GetDefense() override;
 
         Inventory *GetInventory() override;
 

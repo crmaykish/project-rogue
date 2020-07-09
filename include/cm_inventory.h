@@ -16,6 +16,11 @@ namespace cm
         std::vector<std::unique_ptr<Item>> Items;
         std::unordered_map<ItemType, std::unique_ptr<Item>> Equipment;
 
+        int AddedAttack = 0;
+        int AddedDefense = 0;
+
+        void RecalculateTotalStats();
+
     public:
         void AddItem(std::unique_ptr<Item> item);
         void RemoveItem(int slot);
@@ -26,6 +31,9 @@ namespace cm
 
         void EquipItem(int slot);
         Item *EquipmentAt(ItemType type);
+
+        int GetAddedAttack();
+        int GetAddedDefense();
 
     };
 } // namespace cm

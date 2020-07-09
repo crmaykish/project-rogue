@@ -44,6 +44,8 @@ namespace cm
 
         // equip new item
         Equipment.emplace(itemType, std::move(newItem));
+
+        RecalculateTotalStats();
     }
 
     Item *Inventory::EquipmentAt(ItemType type)
@@ -64,6 +66,29 @@ namespace cm
     int Inventory::InventorySize()
     {
         return ItemCountMax;
+    }
+
+    int Inventory::GetAddedAttack()
+    {
+        return AddedAttack;
+    }
+
+    int Inventory::GetAddedDefense()
+    {
+        return AddedDefense;
+    }
+
+    void Inventory::RecalculateTotalStats()
+    {
+        // recalculate added attack and defense
+        AddedAttack = 0;
+        AddedDefense = 0;
+
+        for (auto &e : Equipment)
+        {
+            AddedAttack += e.second->BaseDamage;
+            AddedDefense += e.second->BaseArmor;
+        }
     }
 
 } // namespace cm

@@ -1,4 +1,5 @@
 #include "cm_item.h"
+#include "cm_random.h"
 
 namespace cm
 {
@@ -74,6 +75,7 @@ namespace cm
         dagger->Name = "Rusty Dagger";
         dagger->Type = ItemType::OneHand;
         dagger->TextureKey = AssetKey::DaggerTexture;
+        dagger->BaseDamage = 1 + RandomInt(5);  // 1 to 5 base damage
 
         return dagger;
     }
@@ -84,6 +86,7 @@ namespace cm
         sword->Name = "Longsword";
         sword->Type = ItemType::OneHand;
         sword->TextureKey = AssetKey::SwordGreyTexture;
+        sword->BaseDamage = 5 + RandomInt(7); // 5 to 12 base damage
 
         return sword;
     }
@@ -94,6 +97,7 @@ namespace cm
         helmet->Name = "Leather Helmet";
         helmet->Type = ItemType::Head;
         helmet->TextureKey = AssetKey::HelmetLeatherTexture;
+        helmet->BaseArmor = 3 + RandomInt(3); // 3 to 6 base armor
 
         return helmet;
     }
@@ -104,6 +108,7 @@ namespace cm
         boots->Name = "Leather Boots";
         boots->Type = ItemType::Boots;
         boots->TextureKey = AssetKey::BootsLeatherTexture;
+        boots->BaseArmor = 1 + RandomInt(3); // 1 to 3 base armor
 
         return boots;
     }

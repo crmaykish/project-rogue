@@ -6,6 +6,7 @@
 #include <vector>
 #include "cm_effect.h"
 #include "cm_assets.h"
+#include "cm_stats.h"
 
 namespace cm
 {
@@ -23,6 +24,11 @@ namespace cm
         Charm
     };
 
+    // TODO:
+    // Passive
+    // Chance on Hit
+    // Chance on Defend
+
     class Item
     {
     private:
@@ -34,8 +40,11 @@ namespace cm
         bool PickedUp = false;
         int Charges = 0;
         ItemType Type = ItemType::Consumable;
-
         AssetKey TextureKey;
+
+        int BaseDamage = 0;
+        int BaseArmor = 0;
+        int BaseResist = 0;
 
         void Pickup(Actor &owner);
         void Use(Actor &owner);

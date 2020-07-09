@@ -13,6 +13,9 @@ namespace cm
         std::unique_ptr<Action> nextAction;
         Inventory Items;
 
+        int BaseAttack = 10;
+        int BaseDefense = 5;
+
         void DecideNextAction(const GameWorld &world);
 
     public:
@@ -25,6 +28,7 @@ namespace cm
         std::unique_ptr<Action> NextAction(const GameWorld &world) override;
 
         int GetAttack() override;
+        int GetDefense() override;
 
         Inventory *GetInventory() override;
 
