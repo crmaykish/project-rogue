@@ -20,8 +20,6 @@ namespace cm
         int GetDefense() override;
 
         Inventory *GetInventory() override;
-
-        int GetViewDistance() override;
     };
 
 } // namespace cm

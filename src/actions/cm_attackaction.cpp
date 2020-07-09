@@ -32,21 +32,7 @@ namespace cm
                 }
 
                 // Award experience
-                executor.Experience += (100 * Target.Level);
-
-                // TODO: this should not be in the attack action class
-                if (executor.Experience >= (executor.Level * 1000))
-                {
-                    // Scale health pool
-                    executor.MaxHP *= 1.5;
-                    executor.HP = executor.MaxHP;
-
-                    // Reset experience counter
-                    executor.Experience -= (executor.Level * 1000);
-
-                    // Level up
-                    executor.Level++;
-                }
+                executor.AddExperience(Target.Level);
             }
         }
 

@@ -36,16 +36,19 @@ namespace cm
         virtual void Render(const Renderer &renderer) = 0;
         virtual void Reset() = 0;
 
+        // Actions
         virtual bool ActionReady() = 0;
         virtual std::unique_ptr<Action> NextAction(GameWorld &world) = 0;
 
         // Combat
         virtual int GetAttack() = 0;
         virtual int GetDefense() = 0;
+        virtual void AddExperience(int killLevel){};
 
+        // Items
         virtual Inventory *GetInventory() = 0;
 
-        virtual int GetViewDistance() = 0;
+        virtual int GetViewDistance() { return 0; }
     };
 
 } // namespace cm
