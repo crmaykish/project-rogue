@@ -26,7 +26,7 @@ namespace cm
             // TODO: I don't love having loot drops inside the attack action
             if (!Target.Friendly)
             {
-                if (RandomInt(100) < 50)
+                if (RandomInt(100) < 20)
                 {
                     World.GetTile(Target.TileX, Target.TileY)->Items.emplace_back(RandomItem());
                 }
