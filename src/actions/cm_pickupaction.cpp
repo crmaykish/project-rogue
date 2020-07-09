@@ -9,25 +9,28 @@ namespace cm
         auto tile = World.GetTile(executor.TileX, executor.TileY);
 
         // Does the tile contain an item to pickup?
-        if (tile->Items.get() == nullptr)
+        if (tile->Items.size() == 0)
         {
             return ActionResult(ActionStatus::Invalid, executor.Name + " has nothing to pickup");
         }
 
-        auto message = executor.Name + " picked up " + tile->Items->Name;
+        auto message = executor.Name + " picked up ";
 
-        // Activate on-pickup effects
-        tile->Items->Pickup(executor);
+        for (auto &item : tile->Items)
+        {
+            message += item->Name + " | ";
 
-        // If the item has charges, add to inventory, otherwise remove it from the tile
-        if (tile->Items->Charges > 0 || tile->Items->Type != ItemType::Consumable)
-        {
-            executor.GetInventory()->AddItem(std::move(tile->Items));
+            // Activate on-pickup effects
+            item->Pickup(executor);
+
+            // If the item has charges, add to inventory, otherwise remove it from the tile
+            if (item->Charges > 0 || item->Type != ItemType::Consumable)
+            {
+                executor.GetInventory()->AddItem(std::move(item));
+            }
         }
-        else
-        {
-            tile->Items.reset();
-        }
+
+        tile->Items.clear();
 
         return ActionResult(ActionStatus::Succeeded, message);
     }

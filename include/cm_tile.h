@@ -25,8 +25,7 @@ namespace cm
         bool Discovered = false;
         uint8_t Brightness = 0;
 
-        // TODO: A tile can only hold one item
-        std::unique_ptr<Item> Items;
+        std::vector<std::unique_ptr<Item>> Items;
     };
 } // namespace cm
 

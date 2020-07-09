@@ -112,9 +112,13 @@ namespace cm
                 renderer.DrawTexture(AssetKey::DoorTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
             }
 
-            if (t->Items != nullptr)
+            if (t->Items.size() == 1)
             {
-                renderer.DrawTexture(t->Items->GetTextureKey(), t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
+                renderer.DrawTexture(t->Items.at(0)->GetTextureKey(), t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
+            }
+            else if (t->Items.size() > 1)
+            {
+                renderer.DrawTexture(AssetKey::ChestTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
             }
 
             // draw fog
@@ -223,35 +227,47 @@ namespace cm
 
                 if (t->Type == TileType::Empty)
                 {
-                    int r = RandomInt(100);
-                    if (r < 2)
-                    {
-                        t->Items = HealthPotion(10);
-                    }
-                    else if (r < 4)
-                    {
-                        t->Items = Torch();
-                    }
-                    else if (r < 6)
-                    {
-                        t->Items = RustyDagger();
-                    }
-                    else if (r < 7)
-                    {
-                        t->Items = Sword();
-                    }
-                    else if (r < 8)
-                    {
-                        t->Items = LeatherBoots();
-                    }
-                    else if (r < 9)
-                    {
-                        t->Items = LeatherHelmet();
-                    }
-                    else if (r < 10)
+                    // 1.5% chance to spawn enemy on empty tile
+                    if (RandomInt(1000) < 15)
                     {
                         Actors.emplace_back(std::make_unique<Enemy>(i, j));
                         enemies++;
+                    }
+
+                    // 0.5% chance to spawn a chest on empty tile
+                    if (RandomInt(1000) < 5)
+                    {
+                        int numItems = 1 + RandomInt(4); // 1 to 4 items
+
+                        for (int i = 0; i < numItems; i++)
+                        {
+                            int itemType = RandomInt(1000);
+
+                            if (itemType < 250)
+                            {
+                                t->Items.emplace_back(HealthPotion(15));
+                            }
+                            else if (itemType < 500)
+                            {
+                                t->Items.emplace_back(Torch());
+                            }
+                            else if (itemType < 600)
+                            {
+                                t->Items.emplace_back(RustyDagger());
+                            }
+                            else if (itemType < 700)
+                            {
+                                t->Items.emplace_back(Sword());
+                            }
+                            else if (itemType < 800)
+                            {
+                                t->Items.emplace_back(LeatherBoots());
+                            }
+                            else if (itemType < 900)
+                            {
+                                t->Items.emplace_back(LeatherHelmet());
+                            }
+                        }
                     }
                 }
 
