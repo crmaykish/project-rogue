@@ -75,7 +75,7 @@ namespace cm
         dagger->Name = "Rusty Dagger";
         dagger->Type = ItemType::OneHand;
         dagger->TextureKey = AssetKey::DaggerTexture;
-        dagger->BaseDamage = 1 + RandomInt(5);  // 1 to 5 base damage
+        dagger->BaseDamage = 1 + RandomInt(5); // 1 to 5 base damage
 
         return dagger;
     }
@@ -111,6 +111,33 @@ namespace cm
         boots->BaseArmor = 1 + RandomInt(3); // 1 to 3 base armor
 
         return boots;
+    }
+
+    std::unique_ptr<Item> RandomItem()
+    {
+        switch (RandomInt(6))
+        {
+        case 0:
+            return HealthPotion(15);
+            break;
+        case 1:
+            return Torch();
+            break;
+        case 2:
+            return RustyDagger();
+            break;
+        case 3:
+            return Sword();
+            break;
+        case 4:
+            return LeatherBoots();
+            break;
+        case 5:
+            return LeatherHelmet();
+            break;
+        default:
+            return nullptr;
+        }
     }
 
 } // namespace cm

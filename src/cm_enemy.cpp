@@ -44,7 +44,7 @@ namespace cm
         if (playerDistance == 1)
         {
             // attack player
-            return std::make_unique<AttackAction>(*world.GetPlayer());
+            return std::make_unique<AttackAction>(*world.GetPlayer(), world);
         }
 
         else if (playerDistance < 500)

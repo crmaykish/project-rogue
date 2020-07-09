@@ -44,7 +44,7 @@ namespace cm
 
         if (enemy != nullptr)
         {
-            return ActionResult(std::make_unique<AttackAction>(*enemy));
+            return ActionResult(std::make_unique<AttackAction>(*enemy, World));
         }
 
         // Is the tile empty?

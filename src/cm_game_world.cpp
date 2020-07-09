@@ -241,32 +241,7 @@ namespace cm
 
                         for (int i = 0; i < numItems; i++)
                         {
-                            int itemType = RandomInt(1000);
-
-                            if (itemType < 250)
-                            {
-                                t->Items.emplace_back(HealthPotion(15));
-                            }
-                            else if (itemType < 500)
-                            {
-                                t->Items.emplace_back(Torch());
-                            }
-                            else if (itemType < 600)
-                            {
-                                t->Items.emplace_back(RustyDagger());
-                            }
-                            else if (itemType < 700)
-                            {
-                                t->Items.emplace_back(Sword());
-                            }
-                            else if (itemType < 800)
-                            {
-                                t->Items.emplace_back(LeatherBoots());
-                            }
-                            else if (itemType < 900)
-                            {
-                                t->Items.emplace_back(LeatherHelmet());
-                            }
+                            t->Items.emplace_back(RandomItem());
                         }
                     }
                 }

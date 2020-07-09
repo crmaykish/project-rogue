@@ -1,10 +1,11 @@
 #include "cm_attackaction.h"
+#include "cm_random.h"
 #include "cm_logger.h"
 
 namespace cm
 {
-    AttackAction::AttackAction(Actor &target)
-        : Target(target) {}
+    AttackAction::AttackAction(Actor &target, const GameWorld &world)
+        : Target(target), World(world) {}
 
     ActionResult AttackAction::Execute(Actor &executor)
     {
@@ -20,6 +21,16 @@ namespace cm
         {
             Target.HP = 0;
             Target.Active = false;
+
+            // drop loot
+            // TODO: I don't love having loot drops inside the attack action
+            if (!Target.Friendly)
+            {
+                if (RandomInt(100) < 50)
+                {
+                    World.GetTile(Target.TileX, Target.TileY)->Items.emplace_back(RandomItem());
+                }
+            }
         }
 
         // Attack succeeds

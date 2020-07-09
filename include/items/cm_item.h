@@ -63,6 +63,8 @@ namespace cm
     std::unique_ptr<Item> LeatherHelmet();
     std::unique_ptr<Item> LeatherBoots();
 
+    std::unique_ptr<Item> RandomItem();
+
 } // namespace cm
 
 #endif // CM_ITEM_H

@@ -10,9 +10,10 @@ namespace cm
     {
     private:
         Actor &Target;
+        const GameWorld &World;
 
     public:
-        AttackAction(Actor &target);
+        AttackAction(Actor &target, const GameWorld &world);
         ActionResult Execute(Actor &executor) override;
     };
 
