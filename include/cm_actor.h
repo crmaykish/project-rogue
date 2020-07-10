@@ -6,6 +6,7 @@
 #include "cm_renderer.h"
 #include "cm_action.h"
 #include "cm_inventory.h"
+#include "cm_abilities.h"
 
 namespace cm
 {
@@ -49,6 +50,9 @@ namespace cm
 
         // Items
         virtual Inventory *GetInventory() = 0;
+
+        // Abilities
+        virtual AbilitySet *GetAbilitySet() = 0;
 
         virtual int GetViewDistance() { return 0; }
     };

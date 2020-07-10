@@ -164,9 +164,19 @@ namespace cm
         return a;
     }
 
+    std::unique_ptr<Item> Axe()
+    {
+        auto a = std::make_unique<Item>();
+        a->Name = "Axe";
+        a->Type = ItemType::OneHand;
+        a->TextureKey = AssetKey::AxeTexture;
+        a->BaseDamage = 12 + RandomInt(12); // 12-24 base damage
+        return a;
+    }
+
     std::unique_ptr<Item> RandomItem()
     {
-        switch (RandomInt(11))
+        switch (RandomInt(12))
         {
         case 0:
             return HealthPotion(15);
@@ -200,6 +210,9 @@ namespace cm
             break;
         case 10:
             return SpellBook();
+            break;
+        case 11:
+            return Axe();
             break;
         default:
             return nullptr;

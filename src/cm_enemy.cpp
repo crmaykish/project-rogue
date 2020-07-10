@@ -106,6 +106,11 @@ namespace cm
         return nullptr;
     }
 
+    AbilitySet *Enemy::GetAbilitySet()
+    {
+        return nullptr;
+    }
+
     std::unique_ptr<Actor> Ghost(int x, int y, int level)
     {
         auto a = std::make_unique<Enemy>(x, y);

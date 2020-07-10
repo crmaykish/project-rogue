@@ -12,6 +12,7 @@ namespace cm
         const UserInput &Input;
         std::unique_ptr<Action> nextAction;
         Inventory Items;
+        AbilitySet Abilities;
 
         int BaseAttack = 10;
         int BaseDefense = 5;
@@ -33,6 +34,8 @@ namespace cm
         void AddExperience(int killLevel) override;
 
         Inventory *GetInventory() override;
+
+        AbilitySet *GetAbilitySet() override;
 
         int GetViewDistance() override
         {

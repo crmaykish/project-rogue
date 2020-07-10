@@ -276,48 +276,49 @@ namespace cm
         int xAb = 6;
         int yAb = 6;
 
-        MainRenderer->DrawTexture(AssetKey::AbilityOutlineTexture, xAb, yAb, 48, 48, true);
-        MainRenderer->DrawTexture(AssetKey::MeleeIcon, xAb + 6, yAb + 6, TileSize, TileSize, true);
-        MainRenderer->DrawFont("Z",
-                               AssetKey::UIFont,
-                               ColorWhite,
-                               xAb + 6,
-                               yAb,
-                               0.5,
-                               true);
-        xAb += 48 + 6;
+        auto abilities = World->GetPlayer()->GetAbilitySet();
 
-        MainRenderer->DrawTexture(AssetKey::AbilityOutlineTexture, xAb, yAb, 48, 48, true);
-        MainRenderer->DrawTexture(AssetKey::RangeIcon, xAb + 6, yAb + 6, TileSize, TileSize, true);
-        MainRenderer->DrawFont("X",
-                               AssetKey::UIFont,
-                               ColorWhite,
-                               xAb + 6,
-                               yAb,
-                               0.5,
-                               true);
-        xAb += 48 + 6;
+        for (int i = 0; i < 4; i++)
+        {
+            auto a = abilities->AbilityAt(i);
 
-        MainRenderer->DrawTexture(AssetKey::AbilityOutlineTexture, xAb, yAb, 48, 48, true);
-        MainRenderer->DrawTexture(AssetKey::FireballIcon, xAb + 6, yAb + 6, TileSize, TileSize, true);
-        MainRenderer->DrawFont("C",
-                               AssetKey::UIFont,
-                               ColorWhite,
-                               xAb + 6,
-                               yAb,
-                               0.5,
-                               true);
-        xAb += 48 + 6;
+            MainRenderer->DrawTexture(AssetKey::AbilityOutlineTexture, xAb, yAb, 48, 48, true);
 
-        MainRenderer->DrawTexture(AssetKey::AbilityOutlineTexture, xAb, yAb, 48, 48, true);
-        MainRenderer->DrawTexture(AssetKey::HealIcon, xAb + 6, yAb + 6, TileSize, TileSize, true);
-        MainRenderer->DrawFont("V",
-                               AssetKey::UIFont,
-                               ColorWhite,
-                               xAb + 6,
-                               yAb,
-                               0.5,
-                               true);
+            if (a != nullptr)
+            {
+                MainRenderer->DrawTexture(a->GetIcon(), xAb + 6, yAb + 6, TileSize, TileSize, true);
+
+                // TODO: ugly
+                std::string letter;
+                switch (i)
+                {
+                case 0:
+                    letter = "Z";
+                    break;
+                case 1:
+                    letter = "X";
+                    break;
+                case 2:
+                    letter = "C";
+                    break;
+                case 3:
+                    letter = "V";
+                    break;
+                default:
+                    break;
+                }
+
+                MainRenderer->DrawFont(letter, // TODO: show keys instead of numbers
+                                       AssetKey::UIFont,
+                                       ColorWhite,
+                                       xAb + 6,
+                                       yAb,
+                                       0.5,
+                                       true);
+            }
+
+            xAb += 48 + 6;
+        }
     }
 
 } // namespace cm

@@ -167,6 +167,23 @@ namespace cm
         return nullptr;
     }
 
+    std::vector<Tile *> GameWorld::GetNeighbors(int x, int y) const
+    {
+        std::vector<Tile *> neighbors;
+
+        // TODO: This is amazingly inefficient
+        neighbors.push_back(GetTile(x - 1, y - 1));
+        neighbors.push_back(GetTile(x - 1, y));
+        neighbors.push_back(GetTile(x - 1, y + 1));
+        neighbors.push_back(GetTile(x, y - 1));
+        neighbors.push_back(GetTile(x, y + 1));
+        neighbors.push_back(GetTile(x + 1, y - 1));
+        neighbors.push_back(GetTile(x + 1, y));
+        neighbors.push_back(GetTile(x + 1, y + 1));
+
+        return neighbors;
+    }
+
     Actor *GameWorld::GetActor(int x, int y) const
     {
         for (auto const &a : Actors)

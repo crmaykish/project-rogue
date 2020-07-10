@@ -148,7 +148,7 @@ namespace cm
         case AssetKey::SkeletonTexture:
             assetFileName = "skeleton.png";
             break;
-            case AssetKey::SlimeTexture:
+        case AssetKey::SlimeTexture:
             assetFileName = "slime_green.png";
             break;
 
@@ -189,6 +189,9 @@ namespace cm
         case AssetKey::BookBlueTexture:
             assetFileName = "book_blue.png";
             break;
+        case AssetKey::AxeTexture:
+            assetFileName = "axe.png";
+            break;
 
         // Icons
         case AssetKey::MeleeIcon:
@@ -202,6 +205,9 @@ namespace cm
             break;
         case AssetKey::HealIcon:
             assetFileName = "icon_heal.png";
+            break;
+            case AssetKey::CleaveIcon:
+            assetFileName = "icon_cleave.png";
             break;
 
         default:

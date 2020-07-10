@@ -59,11 +59,13 @@ namespace cm
         BowTexture,
         CrossbowTexture,
         BookBlueTexture,
+        AxeTexture,
         // Icons
         MeleeIcon,
         RangeIcon,
         FireballIcon,
         HealIcon,
+        CleaveIcon,
     };
 
     class Assets

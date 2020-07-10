@@ -31,6 +31,11 @@ namespace cm
         Quit.Reset();
         Mouse.Reset();
 
+        for (auto &a : Ability)
+        {
+            a.Reset();
+        }
+
         for (auto &n : Num)
         {
             n.Reset();

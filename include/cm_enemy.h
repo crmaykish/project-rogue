@@ -23,6 +23,7 @@ namespace cm
         int GetDefense() override;
 
         Inventory *GetInventory() override;
+        AbilitySet *GetAbilitySet() override;
     };
 
     // TODO: make these into real factory methods

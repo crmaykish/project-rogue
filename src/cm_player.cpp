@@ -4,6 +4,7 @@
 #include "cm_waitaction.h"
 #include "cm_pickupaction.h"
 #include "cm_useaction.h"
+#include "cm_abilityaction.h"
 
 namespace cm
 {
@@ -24,7 +25,16 @@ namespace cm
 
     std::unique_ptr<Action> Player::NextAction(GameWorld &world)
     {
+        // TODO: find a better place for these incremental actor changes, they run even if an action fails
+        
+        // Drain fuel after every action
         TorchFuel = (TorchFuel == 0) ? 0 : TorchFuel - 1;
+
+        // Regen mana
+        if (Mana < MaxMana)
+        {
+            Mana++;
+        }
 
         return std::move(nextAction);
     }
@@ -95,15 +105,21 @@ namespace cm
         Experience = 0;
 
         Items.Reset();
+
+        // Add some player abilities
+        Abilities.SetAbility(2, std::make_unique<CleaveAbility>());
+        Abilities.SetAbility(3, std::make_unique<HealAbility>());
     }
 
     void Player::DecideNextAction(GameWorld &world)
     {
+        // Wait
         if (Input.Primary.Once())
         {
             nextAction = std::make_unique<WaitAction>();
         }
 
+        // Use Item
         for (int i = 0; i < 10; i++)
         {
             auto n = Input.Num[i];
@@ -113,11 +129,23 @@ namespace cm
             }
         }
 
+        // Use Ability
+        for (int i = 0; i < 4; i++)
+        {
+            auto a = Input.Ability[i];
+            if (a.Once())
+            {
+                nextAction = std::make_unique<AbilityAction>(i, world);
+            }
+        }
+
+        // Pickup
         if (Input.Activate.Once())
         {
             nextAction = std::make_unique<PickupAction>(world);
         }
 
+        // Move
         auto dir = MoveDirection::Unknown;
 
         if (Input.Right.Once())
@@ -146,6 +174,11 @@ namespace cm
     Inventory *Player::GetInventory()
     {
         return &Items;
+    }
+
+    AbilitySet *Player::GetAbilitySet()
+    {
+        return &Abilities;
     }
 
 } // namespace cm

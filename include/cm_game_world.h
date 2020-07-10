@@ -39,8 +39,9 @@ namespace cm
         void AddPlayer(std::shared_ptr<Actor> player);
 
         Tile *GetTile(int x, int y) const;
-        Actor *GetActor(int x, int y) const;
+        std::vector<Tile*> GetNeighbors(int x, int y) const;
 
+        Actor *GetActor(int x, int y) const;
         Actor *GetPlayer() const;
 
         int DistanceToPlayer(int x, int y) const;
