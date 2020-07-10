@@ -36,6 +36,8 @@ namespace cm
         // Actors
         KnightTexture,
         MageTexture,
+        ArcherTexture,
+        PriestTexture,
         GhostTexture,
         FlameTexture,
         SpiderTexture,
@@ -52,6 +54,8 @@ namespace cm
         HelmetLeatherTexture,
         BucklerTexture,
         ShieldTexture,
+        BowTexture,
+        CrossbowTexture
     };
 
     class Assets

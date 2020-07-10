@@ -135,9 +135,29 @@ namespace cm
         return shield;
     }
 
+    std::unique_ptr<Item> Bow()
+    {
+        auto a = std::make_unique<Item>();
+        a->Name = "Bow";
+        a->Type = ItemType::OneHand;
+        a->TextureKey = AssetKey::BowTexture;
+        a->BaseDamage = 10 + RandomInt(5); // 10 to 15 base damage
+        return a;
+    }
+
+    std::unique_ptr<Item> Crossbow()
+    {
+        auto a = std::make_unique<Item>();
+        a->Name = "Crossbow";
+        a->Type = ItemType::OneHand;
+        a->TextureKey = AssetKey::CrossbowTexture;
+        a->BaseDamage = 8 + RandomInt(12); // 8-20 base damage
+        return a;
+    }
+
     std::unique_ptr<Item> RandomItem()
     {
-        switch (RandomInt(8))
+        switch (RandomInt(10))
         {
         case 0:
             return HealthPotion(15);
@@ -162,6 +182,12 @@ namespace cm
             break;
         case 7:
             return Shield();
+            break;
+        case 8:
+            return Bow();
+            break;
+        case 9:
+            return Crossbow();
             break;
         default:
             return nullptr;

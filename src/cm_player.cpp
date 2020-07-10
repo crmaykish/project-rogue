@@ -31,7 +31,7 @@ namespace cm
 
     void Player::Render(const Renderer &renderer)
     {
-        renderer.DrawTexture(AssetKey::MageTexture, TileX * TileSize, TileY * TileSize, TileSize, TileSize);
+        renderer.DrawTexture(AssetKey::PriestTexture, TileX * TileSize, TileY * TileSize, TileSize, TileSize);
     }
 
     int Player::GetAttack()

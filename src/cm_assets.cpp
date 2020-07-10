@@ -97,10 +97,12 @@ namespace cm
         case AssetKey::UIFont:
             assetFileName = "EXEPixelPerfect.ttf";
             break;
+
         // Interface
         case AssetKey::ItemOutlineTexture:
             assetFileName = "item_outline.png";
             break;
+
         // Tiles
         case AssetKey::FloorTexture:
             assetFileName = "floor.png";
@@ -117,12 +119,19 @@ namespace cm
         case AssetKey::ChestTexture:
             assetFileName = "chest.png";
             break;
+
         // Actors
         case AssetKey::KnightTexture:
             assetFileName = "knight.png";
             break;
         case AssetKey::MageTexture:
             assetFileName = "mage.png";
+            break;
+        case AssetKey::ArcherTexture:
+            assetFileName = "archer.png";
+            break;
+        case AssetKey::PriestTexture:
+            assetFileName = "priest.png";
             break;
         case AssetKey::GhostTexture:
             assetFileName = "ghost.png";
@@ -136,6 +145,7 @@ namespace cm
         case AssetKey::SkeletonTexture:
             assetFileName = "skeleton.png";
             break;
+
         // Items
         case AssetKey::HealthPotionTexture:
             assetFileName = "potion_hp.png";
@@ -163,6 +173,12 @@ namespace cm
             break;
         case AssetKey::ShieldTexture:
             assetFileName = "shield.png";
+            break;
+        case AssetKey::BowTexture:
+            assetFileName = "bow.png";
+            break;
+        case AssetKey::CrossbowTexture:
+            assetFileName = "crossbow.png";
             break;
         default:
             Log("No file name found for asset key: " + std::to_string((int)key), LOG_WARNING);
