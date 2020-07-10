@@ -102,6 +102,9 @@ namespace cm
         case AssetKey::ItemOutlineTexture:
             assetFileName = "item_outline.png";
             break;
+        case AssetKey::AbilityOutlineTexture:
+            assetFileName = "ability_outline.png";
+            break;
 
         // Tiles
         case AssetKey::FloorTexture:
@@ -180,6 +183,24 @@ namespace cm
         case AssetKey::CrossbowTexture:
             assetFileName = "crossbow.png";
             break;
+        case AssetKey::BookBlueTexture:
+            assetFileName = "book_blue.png";
+            break;
+
+        // Icons
+        case AssetKey::MeleeIcon:
+            assetFileName = "icon_melee.png";
+            break;
+        case AssetKey::RangeIcon:
+            assetFileName = "icon_range.png";
+            break;
+        case AssetKey::FireballIcon:
+            assetFileName = "icon_fireball.png";
+            break;
+        case AssetKey::HealIcon:
+            assetFileName = "icon_heal.png";
+            break;
+
         default:
             Log("No file name found for asset key: " + std::to_string((int)key), LOG_WARNING);
             break;

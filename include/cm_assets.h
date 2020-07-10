@@ -27,6 +27,7 @@ namespace cm
         UIFont,
         // Interface
         ItemOutlineTexture,
+        AbilityOutlineTexture,
         // Tiles
         FloorTexture,
         WallTexture,
@@ -55,7 +56,13 @@ namespace cm
         BucklerTexture,
         ShieldTexture,
         BowTexture,
-        CrossbowTexture
+        CrossbowTexture,
+        BookBlueTexture,
+        // Icons
+        MeleeIcon,
+        RangeIcon,
+        FireballIcon,
+        HealIcon,
     };
 
     class Assets

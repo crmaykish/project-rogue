@@ -5,8 +5,8 @@
 
 namespace cm
 {
-    const int RESOLUTION_DEFAULT_W = 1024;
-    const int RESOLUTION_DEFAULT_H = 768;
+    const int RESOLUTION_DEFAULT_W = 1280;
+    const int RESOLUTION_DEFAULT_H = 720;
 
     class SDLGPURenderer : public Renderer
     {

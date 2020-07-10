@@ -61,6 +61,10 @@ namespace cm
             MaxHP *= 1.5;
             HP = MaxHP;
 
+            // Scale mana pool
+            MaxMana *= 1.4;
+            Mana = MaxMana;
+
             // Reset experience counter
             Experience -= (Level * 1000);
 
@@ -77,6 +81,9 @@ namespace cm
 
         MaxHP = 100;
         HP = MaxHP;
+
+        MaxMana = 50;
+        Mana = MaxMana;
 
         TileX = 2;
         TileY = 2;

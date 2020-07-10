@@ -162,7 +162,8 @@ namespace cm
 
         yOffset -= 30;
 
-        MainRenderer->DrawFont("ATK: " + std::to_string(World->GetPlayer()->GetAttack()) + " | DEF: " + std::to_string(World->GetPlayer()->GetDefense()),
+        // Mana
+        MainRenderer->DrawFont("MP: " + std::to_string(World->GetPlayer()->Mana) + " / " + std::to_string(World->GetPlayer()->MaxMana),
                                AssetKey::UIFont,
                                ColorBlue,
                                10,
@@ -171,28 +172,40 @@ namespace cm
                                true);
 
         yOffset -= 30;
-        yOffset -= 24;
 
-        // Belt
+        MainRenderer->DrawFont("ATK: " + std::to_string(World->GetPlayer()->GetAttack()) + " | DEF: " + std::to_string(World->GetPlayer()->GetDefense()),
+                               AssetKey::UIFont,
+                               ColorPurple,
+                               10,
+                               yOffset,
+                               0.6,
+                               true);
+
+        yOffset -= 60;
+
+        int bX = MainRenderer->GetResolutionX() - 48 - 6;
+        int bY = 6;
+
         auto items = World->GetPlayer()->GetInventory();
-        for (int i = 0; i < items->ItemCount(); i++)
+
+        for (int i = 9; i > 0; i--)
         {
-            MainRenderer->DrawTexture(AssetKey::ItemOutlineTexture, 10, yOffset, 48, 48, true);
+            MainRenderer->DrawTexture(AssetKey::ItemOutlineTexture, bX, bY, 48, 48, true);
 
-            MainRenderer->DrawTexture(items->ItemAt(i)->GetTextureKey(), 10 + 6, yOffset + 6, TileSize, TileSize, true);
+            if (items->ItemAt(i - 1) != nullptr)
+            {
+                MainRenderer->DrawTexture(items->ItemAt(i - 1)->GetTextureKey(), bX + 6, bY + 6, TileSize, TileSize, true);
+            }
 
-            MainRenderer->DrawFont(std::to_string(i+1),
+            MainRenderer->DrawFont(std::to_string(i),
                                    AssetKey::UIFont,
                                    ColorWhite,
-                                   10+6,
-                                   yOffset + 6,
+                                   bX + 6,
+                                   bY,
                                    0.5,
                                    true);
-
-            yOffset -= (TileSize + 16);
+            bX -= 48 + 6;
         }
-
-        yOffset -= 16;
 
         // Weapon
         auto weapon = items->EquipmentAt(ItemType::OneHand);
@@ -258,6 +271,53 @@ namespace cm
 
             yOffset -= (TileSize + 8);
         }
+
+        // Abilities
+        int xAb = 6;
+        int yAb = 6;
+
+        MainRenderer->DrawTexture(AssetKey::AbilityOutlineTexture, xAb, yAb, 48, 48, true);
+        MainRenderer->DrawTexture(AssetKey::MeleeIcon, xAb + 6, yAb + 6, TileSize, TileSize, true);
+        MainRenderer->DrawFont("Z",
+                               AssetKey::UIFont,
+                               ColorWhite,
+                               xAb + 6,
+                               yAb,
+                               0.5,
+                               true);
+        xAb += 48 + 6;
+
+        MainRenderer->DrawTexture(AssetKey::AbilityOutlineTexture, xAb, yAb, 48, 48, true);
+        MainRenderer->DrawTexture(AssetKey::RangeIcon, xAb + 6, yAb + 6, TileSize, TileSize, true);
+        MainRenderer->DrawFont("X",
+                               AssetKey::UIFont,
+                               ColorWhite,
+                               xAb + 6,
+                               yAb,
+                               0.5,
+                               true);
+        xAb += 48 + 6;
+
+        MainRenderer->DrawTexture(AssetKey::AbilityOutlineTexture, xAb, yAb, 48, 48, true);
+        MainRenderer->DrawTexture(AssetKey::FireballIcon, xAb + 6, yAb + 6, TileSize, TileSize, true);
+        MainRenderer->DrawFont("C",
+                               AssetKey::UIFont,
+                               ColorWhite,
+                               xAb + 6,
+                               yAb,
+                               0.5,
+                               true);
+        xAb += 48 + 6;
+
+        MainRenderer->DrawTexture(AssetKey::AbilityOutlineTexture, xAb, yAb, 48, 48, true);
+        MainRenderer->DrawTexture(AssetKey::HealIcon, xAb + 6, yAb + 6, TileSize, TileSize, true);
+        MainRenderer->DrawFont("V",
+                               AssetKey::UIFont,
+                               ColorWhite,
+                               xAb + 6,
+                               yAb,
+                               0.5,
+                               true);
     }
 
 } // namespace cm

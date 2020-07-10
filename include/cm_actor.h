@@ -24,6 +24,8 @@ namespace cm
         int TileY = 0;
         int MaxHP = 0;
         int HP = 0;
+        int MaxMana = 0;
+        int Mana = 0;
         int Level = 1;
         int Experience = 0;
 
