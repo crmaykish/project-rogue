@@ -66,6 +66,7 @@ namespace cm
     std::unique_ptr<Item> Shield();
     std::unique_ptr<Item> Bow();
     std::unique_ptr<Item> Crossbow();
+    std::unique_ptr<Item> SpellBook();
 
     std::unique_ptr<Item> RandomItem();
 

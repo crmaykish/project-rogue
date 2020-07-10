@@ -155,9 +155,18 @@ namespace cm
         return a;
     }
 
+    std::unique_ptr<Item> SpellBook()
+    {
+        auto a = std::make_unique<Item>();
+        a->Name = "Spellbook";
+        a->Type = ItemType::OffHand;
+        a->TextureKey = AssetKey::BookBlueTexture;
+        return a;
+    }
+
     std::unique_ptr<Item> RandomItem()
     {
-        switch (RandomInt(10))
+        switch (RandomInt(11))
         {
         case 0:
             return HealthPotion(15);
@@ -188,6 +197,9 @@ namespace cm
             break;
         case 9:
             return Crossbow();
+            break;
+        case 10:
+            return SpellBook();
             break;
         default:
             return nullptr;

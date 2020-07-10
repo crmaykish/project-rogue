@@ -178,9 +178,27 @@ namespace cm
         return a;
     }
 
+    std::unique_ptr<Actor> Slime(int x, int y, int level)
+    {
+        auto a = std::make_unique<Enemy>(x, y);
+        a->Name = "Slime";
+        a->Texture = AssetKey::SlimeTexture;
+        a->Visible = true;
+        a->Active = true;
+        a->Level = level;
+
+        // Stats
+        a->MaxHP = level * (12 + RandomInt(4)); // 12-16 health per level
+        a->HP = a->MaxHP;
+        a->BaseAttack = 3;
+        a->BaseDefense = 8;
+
+        return a;
+    }
+
     std::unique_ptr<Actor> RandomEnemy(int x, int y, int level)
     {
-        switch (RandomInt(4))
+        switch (RandomInt(5))
         {
         case 0:
             return Ghost(x, y, level);
@@ -193,6 +211,9 @@ namespace cm
             break;
         case 3:
             return Skeleton(x, y, level);
+            break;
+        case 4:
+            return Slime(x, y, level);
             break;
         default:
             return nullptr;

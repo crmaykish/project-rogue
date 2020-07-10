@@ -43,6 +43,7 @@ namespace cm
         FlameTexture,
         SpiderTexture,
         SkeletonTexture,
+        SlimeTexture,
         // Items
         HealthPotionTexture,
         EnergyPotionTexture,
