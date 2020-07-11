@@ -70,6 +70,7 @@ namespace cm
     std::unique_ptr<Item> Crossbow();
     std::unique_ptr<Item> SpellBook();
     std::unique_ptr<Item> Axe();
+    std::unique_ptr<Item> BattleAxe();
 
     std::unique_ptr<Item> RandomItem();
 

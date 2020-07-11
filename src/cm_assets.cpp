@@ -195,6 +195,9 @@ namespace cm
         case AssetKey::AxeTexture:
             assetFileName = "axe.png";
             break;
+        case AssetKey::BattleAxeTexture:
+            assetFileName = "axe_battle.png";
+            break;
 
         // Icons
         case AssetKey::MeleeIcon:

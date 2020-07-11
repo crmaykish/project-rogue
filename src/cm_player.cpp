@@ -28,7 +28,7 @@ namespace cm
         // TODO: find a better place for these incremental actor changes, they run even if an action fails
 
         // Drain fuel after every action
-        TorchFuel = (TorchFuel == 0) ? 0 : TorchFuel - 1;
+        // TorchFuel = (TorchFuel == 0) ? 0 : TorchFuel - 1;
 
         // Regen mana
         if (Mana < MaxMana)

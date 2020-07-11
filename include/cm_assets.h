@@ -61,6 +61,7 @@ namespace cm
         CrossbowTexture,
         BookBlueTexture,
         AxeTexture,
+        BattleAxeTexture,
         // Icons
         MeleeIcon,
         RangeIcon,

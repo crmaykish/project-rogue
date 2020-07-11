@@ -186,9 +186,20 @@ namespace cm
         return a;
     }
 
+    std::unique_ptr<Item> BattleAxe()
+    {
+        auto a = std::make_unique<Item>();
+        a->Name = "Battle Axe";
+        a->Type = ItemType::OneHand;
+        a->TextureKey = AssetKey::BattleAxeTexture;
+        a->BaseDamage = 15 + RandomInt(20); // 15-35 base damage
+        a->BaseArmor = -1 - (RandomInt(3)); // -1 - -3 base armor
+        return a;
+    }
+
     std::unique_ptr<Item> RandomItem()
     {
-        switch (RandomInt(12))
+        switch (RandomInt(13))
         {
         case 0:
             return HealthPotion(15);
@@ -225,6 +236,9 @@ namespace cm
             break;
         case 11:
             return Axe();
+            break;
+        case 12:
+            return BattleAxe();
             break;
         default:
             return nullptr;
