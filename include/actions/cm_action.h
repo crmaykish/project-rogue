@@ -17,6 +17,7 @@ namespace cm
     enum struct ActionStatus
     {
         Unknown,   // Unknown result
+        Waiting,   // Action requires further input before completing
         Succeeded, // Action succeeded as intended
         Failed,    // Action was valid, but failed to complete
         Invalid,   // Action requested with invalid parameters

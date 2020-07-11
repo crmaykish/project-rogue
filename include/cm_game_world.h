@@ -5,20 +5,32 @@
 #include "cm_tile.h"
 #include "cm_actor.h"
 #include "cm_renderer.h"
+#include "cm_input.h"
 
 namespace cm
 {
+    class Action;
+
     class GameWorld
     {
     private:
+        UserInput &Input;
         bool NextLevel = false;
         int TurnCount = 0;
         int Width = 0;
         int Height = 0;
         int CurrentActorIndex = 0;
+
+        bool TileSelectMode = false;
+        bool TileSelected = false;
+        int SelectedX = 0;
+        int SelectedY = 0;
+
         std::vector<std::unique_ptr<Tile>> Tiles;
         std::vector<std::shared_ptr<Actor>> Actors;
         std::shared_ptr<Actor> PlayerOne;
+
+        std::unique_ptr<Action> CurrentAction;
 
         void CreateLevel();
 
@@ -29,7 +41,7 @@ namespace cm
     public:
         int ViewDistance = 4;
 
-        GameWorld();
+        GameWorld(UserInput &input);
 
         void Init();
 

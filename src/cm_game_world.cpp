@@ -6,6 +6,7 @@
 #include "cm_logger.h"
 #include "cm_random.h"
 #include "cm_item.h"
+#include "cm_action.h"
 
 #include <chrono>
 
@@ -18,7 +19,7 @@ namespace cm
         return std::sqrt(std::pow(xDist, 2) + std::pow(yDist, 2));
     }
 
-    GameWorld::GameWorld() {}
+    GameWorld::GameWorld(UserInput &input) : Input(input) {}
 
     void GameWorld::Init()
     {
@@ -50,13 +51,59 @@ namespace cm
             a->Update(*this);
         }
 
+        if (TileSelectMode)
+        {
+            if (Input.Left.Once())
+            {
+                SelectedX--;
+            }
+            else if (Input.Right.Once())
+            {
+                SelectedX++;
+            }
+            else if (Input.Up.Once())
+            {
+                SelectedY++;
+            }
+            else if (Input.Down.Once())
+            {
+                SelectedY--;
+            }
+
+            if (Input.Primary.Once())
+            {
+                TileSelectMode = false;
+                TileSelected = true;
+            }
+
+            return;
+        }
+
         auto actor = GetCurrentActor();
 
         // Execute each actor's action if they provide one
         while (actor->ActionReady())
         {
-            auto action = actor->NextAction(*this);
-            auto result = action->Execute(*actor);
+            if (TileSelected)
+            {
+                // TODO: give selected tile to action somehow
+
+                TileSelected = false;
+            }
+            else
+            {
+                CurrentAction = actor->NextAction(*this);
+            }
+
+            auto result = CurrentAction->Execute(*actor);
+
+            if (result.Status == ActionStatus::Waiting)
+            {
+                TileSelectMode = true;
+                TileSelected = false;
+
+                return;
+            }
 
             // If the action result suggests an alternate, execute that until there is a concrete result
             while (result.Status == ActionStatus::Alternate)
@@ -140,6 +187,13 @@ namespace cm
         for (auto const &a : Actors)
         {
             a->Render(renderer);
+        }
+
+        // Render selected tile
+
+        if (TileSelectMode)
+        {
+            renderer.DrawTexture(AssetKey::SelectedTileTexture, SelectedX * TileSize, SelectedY * TileSize, TileSize, TileSize);
         }
     }
 

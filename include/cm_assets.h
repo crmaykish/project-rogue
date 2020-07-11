@@ -28,6 +28,7 @@ namespace cm
         // Interface
         ItemOutlineTexture,
         AbilityOutlineTexture,
+        SelectedTileTexture,
         // Tiles
         FloorTexture,
         WallTexture,

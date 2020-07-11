@@ -105,6 +105,9 @@ namespace cm
         case AssetKey::AbilityOutlineTexture:
             assetFileName = "ability_outline.png";
             break;
+        case AssetKey::SelectedTileTexture:
+            assetFileName = "tile_outline.png";
+            break;
 
         // Tiles
         case AssetKey::FloorTexture:
@@ -206,7 +209,7 @@ namespace cm
         case AssetKey::HealIcon:
             assetFileName = "icon_heal.png";
             break;
-            case AssetKey::CleaveIcon:
+        case AssetKey::CleaveIcon:
             assetFileName = "icon_cleave.png";
             break;
 
