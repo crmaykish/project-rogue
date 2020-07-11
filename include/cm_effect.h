@@ -29,6 +29,16 @@ namespace cm
         void Use(Actor &target) override;
     };
 
+    class DamageEffect : public Effect
+    {
+    private:
+        int Damage = 10;
+
+    public:
+        DamageEffect(int damage);
+        void Use(Actor &target) override;
+    };
+
 } // namespace cm
 
 #endif // CM_EFFECT_H

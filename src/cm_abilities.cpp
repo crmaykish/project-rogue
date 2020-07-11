@@ -39,6 +39,73 @@ namespace cm
         return false;
     }
 
+    // Melee
+
+    std::string MeleeAbility::GetName()
+    {
+        return "Attack";
+    }
+
+    std::string MeleeAbility::GetDescription()
+    {
+        return "Perform a basic melee attack";
+    }
+
+    AssetKey MeleeAbility::GetIcon()
+    {
+        return AssetKey::MeleeIcon;
+    }
+
+    bool MeleeAbility::Use(Actor &user, GameWorld &world)
+    {
+        // TODO: range checking
+
+        auto target = world.GetActor(TargetX, TargetY);
+
+        if (target == nullptr)
+        {
+            return false;
+        }
+
+        auto effect = DamageEffect(user.GetAttack());
+        effect.Use(*target);
+
+        return true;
+    }
+
+    // Ranged
+
+    std::string RangedAbility::GetName()
+    {
+        return "Shoot";
+    }
+
+    std::string RangedAbility::GetDescription()
+    {
+        return "Perform a basic attack with a ranged weapon";
+    }
+
+    AssetKey RangedAbility::GetIcon()
+    {
+        return AssetKey::RangeIcon;
+    }
+
+    bool RangedAbility::Use(Actor &user, GameWorld &world)
+    {
+        // TODO: range checking
+        auto target = world.GetActor(TargetX, TargetY);
+
+        if (target == nullptr)
+        {
+            return false;
+        }
+
+        auto effect = DamageEffect(user.GetAttack());
+        effect.Use(*target);
+
+        return true;
+    }
+
     // Heal
 
     std::string HealAbility::GetName()

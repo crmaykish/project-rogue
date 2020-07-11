@@ -26,7 +26,7 @@ namespace cm
     std::unique_ptr<Action> Player::NextAction(GameWorld &world)
     {
         // TODO: find a better place for these incremental actor changes, they run even if an action fails
-        
+
         // Drain fuel after every action
         TorchFuel = (TorchFuel == 0) ? 0 : TorchFuel - 1;
 
@@ -107,6 +107,8 @@ namespace cm
         Items.Reset();
 
         // Add some player abilities
+        Abilities.SetAbility(0, std::make_unique<MeleeAbility>());
+        Abilities.SetAbility(1, std::make_unique<RangedAbility>());
         Abilities.SetAbility(2, std::make_unique<CleaveAbility>());
         Abilities.SetAbility(3, std::make_unique<HealAbility>());
     }
@@ -114,7 +116,7 @@ namespace cm
     void Player::DecideNextAction(GameWorld &world)
     {
         // Wait
-        if (Input.Primary.Once())
+        if (Input.Secondary.Once())
         {
             nextAction = std::make_unique<WaitAction>();
         }

@@ -46,11 +46,6 @@ namespace cm
             }
         }
 
-        for (auto &a : Actors)
-        {
-            a->Update(*this);
-        }
-
         if (TileSelectMode)
         {
             if (Input.Left.Once())
@@ -79,28 +74,37 @@ namespace cm
             return;
         }
 
+        for (auto &a : Actors)
+        {
+            a->Update(*this);
+        }
+
         auto actor = GetCurrentActor();
 
         // Execute each actor's action if they provide one
-        while (actor->ActionReady())
+        while (actor->ActionReady() || TileSelected)
         {
+            ActionResult result(ActionStatus::Unknown);
+
             if (TileSelected)
             {
-                // TODO: give selected tile to action somehow
-
+                CurrentAction->SetTarget(SelectedX, SelectedY);
+                result = CurrentAction->Execute(*actor);
                 TileSelected = false;
             }
             else
             {
                 CurrentAction = actor->NextAction(*this);
+                result = CurrentAction->Execute(*actor);
             }
 
-            auto result = CurrentAction->Execute(*actor);
-
+            // Note: AI actors should never return a Waiting Status
             if (result.Status == ActionStatus::Waiting)
             {
                 TileSelectMode = true;
                 TileSelected = false;
+                SelectedX = actor->TileX;
+                SelectedY = actor->TileY;
 
                 return;
             }
@@ -131,9 +135,33 @@ namespace cm
         // If player is dead, game over
         if (GetPlayer()->HP == 0)
         {
-            GetPlayer()->Reset();
             NextLevel = true;
+            return;
         }
+
+        // Handle any newly dead actors
+        for (auto &a : Actors)
+        {
+            if (!a->Active)
+            {
+                Log(a->Name + " died");
+
+                // Award experience
+                PlayerOne->AddExperience(a->Level);
+
+                // Drop loot
+                if (RandomInt(100) < 20)
+                {
+                    GetTile(a->TileX, a->TileY)->Items.emplace_back(RandomItem());
+                }
+            }
+        }
+
+        // Cleanup dead actors
+        Actors.erase(std::remove_if(Actors.begin(),
+                                    Actors.end(),
+                                    [](auto &a) { return !a->Active; }),
+                     Actors.end());
     }
 
     void GameWorld::SetNextLevel()
@@ -319,9 +347,6 @@ namespace cm
 
                 Tiles.push_back(std::move(t));
             }
-
-            PlayerOne->TileX = 2;
-            PlayerOne->TileY = 2;
         }
 
         // Place the exit door randomly
@@ -333,6 +358,8 @@ namespace cm
         }
 
         Tiles.at(randIndex)->Type = TileType::Door;
+
+        PlayerOne->Reset();
     }
 
     uint8_t GameWorld::TileBrightness(int x, int y) const

@@ -1,10 +1,10 @@
 #include "cm_moveaction.h"
-#include "cm_attackaction.h"
+#include "cm_abilityaction.h"
 #include "cm_logger.h"
 
 namespace cm
 {
-    MoveAction::MoveAction(MoveDirection direction, const GameWorld &world)
+    MoveAction::MoveAction(MoveDirection direction, GameWorld &world)
         : Direction(direction), World(world) {}
 
     ActionResult MoveAction::Execute(Actor &executor)
@@ -39,12 +39,18 @@ namespace cm
             return ActionResult(ActionStatus::Invalid);
         }
 
-        // Is there an enemy on the tile?
-        auto enemy = World.GetActor(targetTile->X, targetTile->Y);
+        // Is there another actor on the tile?
+        auto actor = World.GetActor(targetTile->X, targetTile->Y);
 
-        if (enemy != nullptr)
+        if (actor != nullptr)
         {
-            return ActionResult(std::make_unique<AttackAction>(*enemy, World));
+            if (actor->Friendly != executor.Friendly)
+            {
+                // Attack tile only if the target is not friendly
+                auto attackAbilityAction = std::make_unique<AbilityAction>(0, World);
+                attackAbilityAction->SetTarget(targetTile->X, targetTile->Y);
+                return ActionResult(std::move(attackAbilityAction));
+            }
         }
 
         // Is the tile walkable?

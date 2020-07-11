@@ -32,6 +32,7 @@ namespace cm
     public:
         virtual ~Action() {}
         virtual ActionResult Execute(Actor &executor) = 0;
+        virtual void SetTarget(int x, int y) {}
     };
 
     class ActionResult

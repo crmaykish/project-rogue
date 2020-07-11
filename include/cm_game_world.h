@@ -51,7 +51,7 @@ namespace cm
         void AddPlayer(std::shared_ptr<Actor> player);
 
         Tile *GetTile(int x, int y) const;
-        std::vector<Tile*> GetNeighbors(int x, int y) const;
+        std::vector<Tile *> GetNeighbors(int x, int y) const;
 
         Actor *GetActor(int x, int y) const;
         Actor *GetPlayer() const;
@@ -64,6 +64,11 @@ namespace cm
         void SetNextLevel();
 
         uint8_t TileBrightness(int x, int y) const;
+
+        bool IsTileSelectMode()
+        {
+            return TileSelectMode;
+        }
     };
 
 } // namespace cm

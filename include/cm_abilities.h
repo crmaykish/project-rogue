@@ -14,14 +14,27 @@ namespace cm
 
     const int AbilitiesSetSize = 4;
 
+    // TODO: define ability result enum instead of bool
+
     class Ability
     {
+    protected:
+        int TargetX = 0;
+        int TargetY = 0;
+
     public:
         virtual ~Ability() {}
         virtual std::string GetName() = 0;
         virtual std::string GetDescription() = 0;
-        
         virtual AssetKey GetIcon() = 0;
+
+        virtual bool IsSelfCast() { return false; }
+
+        virtual void SetTarget(int x, int y)
+        {
+            TargetX = x;
+            TargetY = y;
+        }
 
         // Presumably an ability will always effect the user or the game world or both
         virtual bool Use(Actor &user, GameWorld &world) = 0;
@@ -39,9 +52,16 @@ namespace cm
         bool AbilityReady(int slot);
     };
 
-    // TODO: Basic melee and ranged attacks should also be Abilities?
+    class MeleeAbility : public Ability
+    {
+    public:
+        std::string GetName() override;
+        std::string GetDescription() override;
+        AssetKey GetIcon() override;
+        bool Use(Actor &user, GameWorld &world) override;
+    };
 
-    class HealAbility : public Ability
+    class RangedAbility : public Ability
     {
     public:
         std::string GetName() override;
@@ -52,9 +72,21 @@ namespace cm
 
     class CleaveAbility : public Ability
     {
+    public:
         std::string GetName() override;
         std::string GetDescription() override;
         AssetKey GetIcon() override;
+        bool IsSelfCast() override { return true; }
+        bool Use(Actor &user, GameWorld &world) override;
+    };
+
+    class HealAbility : public Ability
+    {
+    public:
+        std::string GetName() override;
+        std::string GetDescription() override;
+        AssetKey GetIcon() override;
+        bool IsSelfCast() override { return true; }
         bool Use(Actor &user, GameWorld &world) override;
     };
 

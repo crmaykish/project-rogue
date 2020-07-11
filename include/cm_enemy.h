@@ -7,6 +7,9 @@ namespace cm
 {
     class Enemy : public Actor
     {
+    private:
+        AbilitySet Abilities;
+
     public:
         AssetKey Texture = AssetKey::Unknown;
         int BaseAttack = 0;

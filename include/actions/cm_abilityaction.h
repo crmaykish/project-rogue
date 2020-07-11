@@ -11,10 +11,13 @@ namespace cm
     private:
         GameWorld &World;
         int AbilitySlot = 0;
+        int TargetX = 0;
+        int TargetY = 0;
 
     public:
         AbilityAction(int abilitySlot, GameWorld &world);
         ActionResult Execute(Actor &executor) override;
+        void SetTarget(int x, int y) override;
     };
 
 } // namespace cm

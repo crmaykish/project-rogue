@@ -100,8 +100,11 @@ namespace cm
         case SDLK_DOWN:
             userInput.Down.On = keyOn;
             break;
-        case SDLK_SPACE:
+        case SDLK_RETURN:
             userInput.Primary.On = keyOn;
+            break;
+        case SDLK_SPACE:
+            userInput.Secondary.On = keyOn;
             break;
         case SDLK_e:
             userInput.Activate.On = keyOn;

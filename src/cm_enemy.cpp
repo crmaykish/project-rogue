@@ -1,7 +1,7 @@
 #include "cm_enemy.h"
 #include "cm_random.h"
 #include "cm_moveaction.h"
-#include "cm_attackaction.h"
+#include "cm_abilityaction.h"
 #include "cm_waitaction.h"
 #include "cm_logger.h"
 
@@ -11,6 +11,9 @@ namespace cm
     {
         TileX = x;
         TileY = y;
+
+        // TODO: all enemies just have a melee attack for now
+        Abilities.SetAbility(0, std::make_unique<MeleeAbility>());
     }
 
     void Enemy::Update(GameWorld &world)
@@ -42,7 +45,9 @@ namespace cm
         if (playerDistance == 1)
         {
             // attack player
-            return std::make_unique<AttackAction>(*world.GetPlayer(), world);
+            auto meleeAction = std::make_unique<AbilityAction>(0, world);
+            meleeAction->SetTarget(player->TileX, player->TileY);
+            return meleeAction;
         }
 
         else if (playerDistance < 500)
@@ -108,7 +113,7 @@ namespace cm
 
     AbilitySet *Enemy::GetAbilitySet()
     {
-        return nullptr;
+        return &Abilities;
     }
 
     std::unique_ptr<Actor> Ghost(int x, int y, int level)

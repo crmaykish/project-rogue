@@ -4,6 +4,25 @@
 
 namespace cm
 {
+    // Damage
+    DamageEffect::DamageEffect(int damage) : Damage(damage) {}
+
+    void DamageEffect::Use(Actor &target)
+    {
+        target.HP -= Damage;
+
+        if (target.HP <= 0)
+        {
+            target.HP = 0;
+
+            if (!target.Friendly)
+            {
+                target.Active = false;
+            }
+        }
+    }
+
+    // Heal
     HealEffect::HealEffect(int health) : Health(health) {}
 
     void HealEffect::Use(Actor &target)
@@ -16,6 +35,7 @@ namespace cm
         }
     }
 
+    // Torch Fuel
     void AddTorchFuelEffect::Use(Actor &target)
     {
         if (target.Friendly)
