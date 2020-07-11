@@ -118,7 +118,7 @@ namespace cm
             // If the actor is in range of the player and the action returns a message, display it
             if (actor->Visible && !result.Message.empty())
             {
-                Log(result.Message);
+                LogEvent(result.Message, actor->Friendly);
             }
 
             // Any successful or failed action moves to the next actor
@@ -136,6 +136,8 @@ namespace cm
         if (GetPlayer()->HP == 0)
         {
             PlayerOne->Reset();
+            EventLogIndex = 1;
+            EventLog.clear();
             NextLevel = true;
             return;
         }
@@ -145,7 +147,7 @@ namespace cm
         {
             if (!a->Active)
             {
-                Log(a->Name + " died");
+                LogEvent(a->Name + " died", a->Friendly);
 
                 // Award experience
                 PlayerOne->AddExperience(a->Level);
@@ -410,6 +412,15 @@ namespace cm
         {
             CurrentActorIndex++;
         }
+    }
+
+    void GameWorld::LogEvent(std::string event, bool friendly)
+    {
+        EventLogElem e;
+        e.event = std::to_string(EventLogIndex) + ": " + event;
+        e.color = friendly ? ColorLightGrey : ColorGrey;
+        EventLog.push_back(e);
+        EventLogIndex++;
     }
 
 } // namespace cm

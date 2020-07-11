@@ -11,6 +11,12 @@ namespace cm
 {
     class Action;
 
+    struct EventLogElem
+    {
+        std::string event;
+        Color color;
+    };
+
     class GameWorld
     {
     private:
@@ -31,6 +37,9 @@ namespace cm
         std::shared_ptr<Actor> PlayerOne;
 
         std::unique_ptr<Action> CurrentAction;
+
+        int EventLogIndex = 1;
+        std::vector<EventLogElem> EventLog;
 
         void CreateLevel();
 
@@ -69,6 +78,9 @@ namespace cm
         {
             return TileSelectMode;
         }
+
+        void LogEvent(std::string event, bool friendly);
+        std::vector<EventLogElem> &GetEventLog() { return EventLog; }
     };
 
 } // namespace cm

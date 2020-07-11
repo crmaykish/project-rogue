@@ -28,7 +28,7 @@ namespace cm
         {
             if (executor.GetInventory()->FreeSlots() > 0)
             {
-                pickupMessage += executor.Name + " picked up " + item->Name + "\n";
+                World.LogEvent(executor.Name + " picked up " + item->Name, executor.Friendly);
 
                 // Activate on-pickup effects
                 item->Pickup(executor);
@@ -43,7 +43,7 @@ namespace cm
             }
             else
             {
-                pickupMessage += executor.Name + " cannot carry " + item->Name + "\n";
+                World.LogEvent(executor.Name + " cannot carry " + item->Name, executor.Friendly);
             }
         }
 
@@ -53,7 +53,7 @@ namespace cm
             tile->Items.erase(tile->Items.begin(), tile->Items.begin() + itemsPickedUp);
         }
 
-        return ActionResult(ActionStatus::Succeeded, pickupMessage);
+        return ActionResult(ActionStatus::Succeeded);
     }
 
 } // namespace cm

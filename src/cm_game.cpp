@@ -207,69 +207,37 @@ namespace cm
             bX -= 48 + 6;
         }
 
-        // Weapon
+        // Equipped items
+
+        int eqX = MainRenderer->GetResolutionX() - 10 - TileSize;
+        int eqY = MainRenderer->GetResolutionY() - 10 - TileSize;
+
         auto weapon = items->EquipmentAt(ItemType::OneHand);
         if (weapon != nullptr)
         {
-            MainRenderer->DrawTexture(weapon->GetTextureKey(), 10, yOffset, TileSize, TileSize, true);
-
-            MainRenderer->DrawFont(weapon->Name,
-                                   AssetKey::UIFont,
-                                   ColorGreen,
-                                   10 + 10 + TileSize,
-                                   yOffset + 4,
-                                   0.6,
-                                   true);
-
-            yOffset -= (TileSize + 8);
+            MainRenderer->DrawTexture(weapon->GetTextureKey(), eqX, eqY, TileSize, TileSize, true);
+            eqY -= (TileSize + 8);
         }
 
         auto offhand = items->EquipmentAt(ItemType::OffHand);
         if (offhand != nullptr)
         {
-            MainRenderer->DrawTexture(offhand->GetTextureKey(), 10, yOffset, TileSize, TileSize, true);
-
-            MainRenderer->DrawFont(offhand->Name,
-                                   AssetKey::UIFont,
-                                   ColorGreen,
-                                   10 + 10 + TileSize,
-                                   yOffset + 4,
-                                   0.6,
-                                   true);
-
-            yOffset -= (TileSize + 8);
+            MainRenderer->DrawTexture(offhand->GetTextureKey(), eqX, eqY, TileSize, TileSize, true);
+            eqY -= (TileSize + 8);
         }
 
         auto helm = items->EquipmentAt(ItemType::Head);
         if (helm != nullptr)
         {
-            MainRenderer->DrawTexture(helm->GetTextureKey(), 10, yOffset, TileSize, TileSize, true);
-
-            MainRenderer->DrawFont(helm->Name,
-                                   AssetKey::UIFont,
-                                   ColorGreen,
-                                   10 + 10 + TileSize,
-                                   yOffset + 4,
-                                   0.6,
-                                   true);
-
-            yOffset -= (TileSize + 8);
+            MainRenderer->DrawTexture(helm->GetTextureKey(), eqX, eqY, TileSize, TileSize, true);
+            eqY -= (TileSize + 8);
         }
 
         auto boots = items->EquipmentAt(ItemType::Boots);
         if (boots != nullptr)
         {
-            MainRenderer->DrawTexture(boots->GetTextureKey(), 10, yOffset, TileSize, TileSize, true);
-
-            MainRenderer->DrawFont(boots->Name,
-                                   AssetKey::UIFont,
-                                   ColorGreen,
-                                   10 + 10 + TileSize,
-                                   yOffset + 4,
-                                   0.6,
-                                   true);
-
-            yOffset -= (TileSize + 8);
+            MainRenderer->DrawTexture(boots->GetTextureKey(), eqX, eqY, TileSize, TileSize, true);
+            eqY -= (TileSize + 8);
         }
 
         // Abilities
@@ -318,6 +286,24 @@ namespace cm
             }
 
             xAb += 48 + 6;
+        }
+
+        // Render combat log
+
+        auto eventLog = World->GetEventLog();
+
+        int eventLogX = 10;
+        int eventLogY = 500;
+        int eventLogMaxLines = 15;
+
+        auto elem = eventLog.size() < eventLogMaxLines ? eventLog.begin() : eventLog.end() - eventLogMaxLines;
+
+        while (elem != eventLog.end())
+        {
+            MainRenderer->DrawFont((*elem).event, AssetKey::UIFont, (*elem).color, eventLogX, eventLogY, 0.5, true);
+            eventLogY -= 28;
+
+            std::advance(elem, 1);
         }
     }
 
