@@ -48,6 +48,11 @@ namespace cm
         return TextureKey;
     }
 
+    std::string Item::DisplayName()
+    {
+        return Name + " (" + std::to_string(BaseDamage) + " | " + std::to_string(BaseArmor) + " | " + std::to_string(BaseResist) + ")";
+    }
+
     std::unique_ptr<Item> HealthPotion(int healing, int stackSize)
     {
         auto hp = std::make_unique<Item>();

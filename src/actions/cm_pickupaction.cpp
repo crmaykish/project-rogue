@@ -28,7 +28,7 @@ namespace cm
         {
             if (executor.GetInventory()->FreeSlots() > 0)
             {
-                World.LogEvent(executor.Name + " picked up " + item->Name, executor.Friendly);
+                World.LogEvent(executor.Name + " picked up " + item->DisplayName(), executor.Friendly);
 
                 // Activate on-pickup effects
                 item->Pickup(executor);
@@ -43,7 +43,7 @@ namespace cm
             }
             else
             {
-                World.LogEvent(executor.Name + " cannot carry " + item->Name, executor.Friendly);
+                World.LogEvent(executor.Name + " cannot carry " + item->DisplayName(), executor.Friendly);
             }
         }
 

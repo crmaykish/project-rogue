@@ -25,7 +25,7 @@ namespace cm
                 executor.GetInventory()->RemoveItem(ItemSlot - 1);
             }
 
-            return ActionResult(ActionStatus::Succeeded, executor.Name + " used " + item->Name);
+            return ActionResult(ActionStatus::Succeeded, executor.Name + " used " + item->DisplayName());
         }
         else
         {

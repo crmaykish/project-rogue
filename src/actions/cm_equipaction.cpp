@@ -7,7 +7,7 @@ namespace cm
 
     ActionResult EquipAction::Execute(Actor &executor)
     {
-        auto itemName = executor.GetInventory()->ItemAt(ItemSlot)->Name;
+        auto itemName = executor.GetInventory()->ItemAt(ItemSlot)->DisplayName();
 
         executor.GetInventory()->EquipItem(ItemSlot);
 

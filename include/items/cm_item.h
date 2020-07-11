@@ -53,6 +53,8 @@ namespace cm
         void AddUseEffect(std::unique_ptr<Effect> effect);
 
         AssetKey GetTextureKey();
+
+        std::string DisplayName();
     };
 
     // Item Creation
