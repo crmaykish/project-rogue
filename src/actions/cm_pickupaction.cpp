@@ -20,25 +20,40 @@ namespace cm
             return ActionResult(ActionStatus::Invalid, executor.Name + " has nothing to pickup");
         }
 
-        auto message = executor.Name + " picked up ";
+        std::string pickupMessage;
+
+        int itemsPickedUp = 0;
 
         for (auto &item : tile->Items)
         {
-            message += item->Name + " | ";
-
-            // Activate on-pickup effects
-            item->Pickup(executor);
-
-            // If the item has charges, add to inventory, otherwise remove it from the tile
-            if (item->Charges > 0 || item->Type != ItemType::Consumable)
+            if (executor.GetInventory()->FreeSlots() > 0)
             {
-                executor.GetInventory()->AddItem(std::move(item));
+                pickupMessage += executor.Name + " picked up " + item->Name + "\n";
+
+                // Activate on-pickup effects
+                item->Pickup(executor);
+
+                // If the item has charges, add to inventory, otherwise remove it from the tile
+                if (item->Charges > 0 || item->Type != ItemType::Consumable)
+                {
+                    executor.GetInventory()->AddItem(std::move(item));
+                }
+
+                itemsPickedUp++;
+            }
+            else
+            {
+                pickupMessage += executor.Name + " cannot carry " + item->Name + "\n";
             }
         }
 
-        tile->Items.clear();
+        // Remove picked-up items from the tile
+        if (itemsPickedUp > 0)
+        {
+            tile->Items.erase(tile->Items.begin(), tile->Items.begin() + itemsPickedUp);
+        }
 
-        return ActionResult(ActionStatus::Succeeded, message);
+        return ActionResult(ActionStatus::Succeeded, pickupMessage);
     }
 
 } // namespace cm

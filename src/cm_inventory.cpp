@@ -4,17 +4,22 @@ namespace cm
 {
     void Inventory::AddItem(std::unique_ptr<Item> item)
     {
-        Items.emplace_back(std::move(item));
+        int firstOpenSlot = FirstOpenSlot();
+
+        if (firstOpenSlot != -1)
+        {
+            Items[firstOpenSlot] = std::move(item);
+        }
     }
 
     void Inventory::RemoveItem(int slot)
     {
-        Items.erase(Items.begin() + slot);
+        Items.at(slot).reset();
     }
 
     Item *Inventory::ItemAt(int slot)
     {
-        if (slot < 0 || slot >= ItemCount())
+        if (slot < 0 || slot >= InventorySize())
         {
             return nullptr;
         }
@@ -26,9 +31,6 @@ namespace cm
     {
         auto newItem = std::move(Items.at(slot));
 
-        // remove empty pointer from Items
-        Items.erase(Items.begin() + slot);
-
         auto itemType = newItem->Type;
 
         auto existingItem = Equipment.find(itemType);
@@ -36,7 +38,7 @@ namespace cm
         if (existingItem != Equipment.end())
         {
             // there is an item already in the slot, move it back to inventory
-            Items.emplace_back(std::move(existingItem->second));
+            AddItem(std::move(existingItem->second));
 
             // erase now null pointer from equipment
             Equipment.erase(itemType);
@@ -58,14 +60,9 @@ namespace cm
         return Equipment.find(type)->second.get();
     }
 
-    int Inventory::ItemCount()
-    {
-        return Items.size();
-    }
-
     int Inventory::InventorySize()
     {
-        return ItemCountMax;
+        return Items.size();
     }
 
     int Inventory::GetAddedAttack()
@@ -93,10 +90,42 @@ namespace cm
 
     void Inventory::Reset()
     {
-        Items.clear();
+        for (auto &b : Items)
+        {
+            b.reset();
+        }
+
         Equipment.clear();
 
         RecalculateTotalStats();
+    }
+
+    int Inventory::FreeSlots()
+    {
+        int freeSlots = 0;
+
+        for (int i = 0; i < InventorySize(); i++)
+        {
+            if (ItemAt(i) == nullptr)
+            {
+                freeSlots++;
+            }
+        }
+
+        return freeSlots;
+    }
+
+    int Inventory::FirstOpenSlot()
+    {
+        for (int i = 0; i < InventorySize(); i++)
+        {
+            if (ItemAt(i) == nullptr)
+            {
+                return i;
+            }
+        }
+
+        return -1;
     }
 
 } // namespace cm

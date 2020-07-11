@@ -7,27 +7,27 @@
 
 namespace cm
 {
-    const int DefaultItemCountMax = 10;
+    const int BeltSize = 9;
 
     class Inventory
     {
     private:
-        int ItemCountMax = DefaultItemCountMax;
-        std::vector<std::unique_ptr<Item>> Items;
+        std::array<std::unique_ptr<Item>, BeltSize> Items;
         std::unordered_map<ItemType, std::unique_ptr<Item>> Equipment;
 
         int AddedAttack = 0;
         int AddedDefense = 0;
 
         void RecalculateTotalStats();
+        int FirstOpenSlot();
 
     public:
         void AddItem(std::unique_ptr<Item> item);
         void RemoveItem(int slot);
         Item *ItemAt(int slot);
 
-        int ItemCount();
         int InventorySize();
+        int FreeSlots();
 
         void EquipItem(int slot);
         Item *EquipmentAt(ItemType type);

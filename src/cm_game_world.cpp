@@ -135,6 +135,7 @@ namespace cm
         // If player is dead, game over
         if (GetPlayer()->HP == 0)
         {
+            PlayerOne->Reset();
             NextLevel = true;
             return;
         }
@@ -359,7 +360,8 @@ namespace cm
 
         Tiles.at(randIndex)->Type = TileType::Door;
 
-        PlayerOne->Reset();
+        PlayerOne->TileX = 2;
+        PlayerOne->TileY = 2;
     }
 
     uint8_t GameWorld::TileBrightness(int x, int y) const
