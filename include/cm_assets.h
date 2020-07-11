@@ -45,6 +45,7 @@ namespace cm
         SpiderTexture,
         SkeletonTexture,
         SlimeTexture,
+        MimicTexture,
         // Items
         HealthPotionTexture,
         EnergyPotionTexture,
