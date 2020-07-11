@@ -51,6 +51,8 @@ namespace cm
                 attackAbilityAction->SetTarget(targetTile->X, targetTile->Y);
                 return ActionResult(std::move(attackAbilityAction));
             }
+
+            return ActionResult(ActionStatus::Invalid);
         }
 
         // Is the tile walkable?
