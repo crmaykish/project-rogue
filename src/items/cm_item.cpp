@@ -50,7 +50,14 @@ namespace cm
 
     std::string Item::DisplayName()
     {
-        return Name + " (" + std::to_string(BaseDamage) + " | " + std::to_string(BaseArmor) + " | " + std::to_string(BaseResist) + ")";
+        auto name = Name;
+
+        if (Type != ItemType::Consumable)
+        {
+            name += " (" + std::to_string(BaseDamage) + " | " + std::to_string(BaseArmor) + " | " + std::to_string(BaseResist) + ")";
+        }
+
+        return name;
     }
 
     std::unique_ptr<Item> HealthPotion(int healing, int stackSize)
