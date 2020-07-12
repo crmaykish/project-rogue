@@ -6,7 +6,6 @@
 #include <vector>
 #include "cm_effect.h"
 #include "cm_assets.h"
-#include "cm_stats.h"
 
 namespace cm
 {

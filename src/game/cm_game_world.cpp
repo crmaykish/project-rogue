@@ -7,8 +7,7 @@
 #include "cm_random.h"
 #include "cm_item.h"
 #include "cm_action.h"
-
-#include <chrono>
+#include "cm_mapgen.h"
 
 namespace cm
 {
@@ -38,7 +37,8 @@ namespace cm
         // Update tiles
         for (auto &t : Tiles)
         {
-            t->Brightness = TileBrightness(t->X, t->Y);
+            // t->Brightness = TileBrightness(t->X, t->Y);
+            t->Brightness = 255;
 
             if (t->Brightness > 0)
             {
@@ -308,62 +308,14 @@ namespace cm
         // Wipe and rebuild the tile map
         Tiles.clear();
 
-        Width = RandomInt(20) + 20;
-        Height = RandomInt(15) + 10;
+        Width = 8 + RandomInt(8);
+        Height = 5 + RandomInt(10);
 
-        int enemies = 0;
+        auto mapgen = std::make_unique<CellularAutomataMapGenerator>(Width, Height);
+        Tiles = mapgen->Generate();
 
-        // Create a map
-        for (int i = 0; i < Width; i++)
-        {
-            for (int j = 0; j < Height; j++)
-            {
-                bool solid = (i == 0) || (i == Width - 1) ||
-                             (j == 0) || (j == Height - 1) ||
-                             ((i % 5 == 0) && (j % 5 == 0));
-
-                auto t = std::make_unique<Tile>();
-
-                // TODO: ugly
-                *t = {i, j, solid ? TileType::Wall : TileType::Empty, false, false};
-
-                if (t->Type == TileType::Empty)
-                {
-                    // 1.5% chance to spawn enemy on empty tile
-                    if (RandomInt(1000) < 15)
-                    {
-                        Actors.emplace_back(RandomEnemy(i, j, PlayerOne->Level));
-                        enemies++;
-                    }
-
-                    // 0.5% chance to spawn a chest on empty tile
-                    if (RandomInt(1000) < 5)
-                    {
-                        int numItems = 1 + RandomInt(4); // 1 to 4 items
-
-                        for (int i = 0; i < numItems; i++)
-                        {
-                            t->Items.emplace_back(RandomItem());
-                        }
-                    }
-                }
-
-                Tiles.push_back(std::move(t));
-            }
-        }
-
-        // Place the exit door randomly
-        int randIndex = RandomInt(Tiles.size() - 2) + 1;
-
-        while (Tiles.at(randIndex)->Type != TileType::Empty)
-        {
-            randIndex = RandomInt(Tiles.size() - 2) + 1;
-        }
-
-        Tiles.at(randIndex)->Type = TileType::Door;
-
-        PlayerOne->TileX = 2;
-        PlayerOne->TileY = 2;
+        PlayerOne->TileX = mapgen->GetPlayerX();
+        PlayerOne->TileY = mapgen->GetPlayerY();
     }
 
     uint8_t GameWorld::TileBrightness(int x, int y) const
