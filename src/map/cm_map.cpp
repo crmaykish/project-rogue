@@ -1,4 +1,5 @@
 #include "cm_map.h"
+#include "cm_game_world.h"
 
 namespace cm
 {
@@ -51,6 +52,42 @@ namespace cm
             }
         }
         return neighbors;
+    }
+
+    void Map::Update(GameWorld &world)
+    {
+        for (auto &t : Tiles)
+        {
+            auto dist = world.DistanceToPlayer(t->X, t->Y);
+
+            int offset = (world.GetPlayer()->TorchFuel + 1) / 5;
+
+            if (dist <= offset + 1)
+            {
+                t->Brightness = 0xFF;
+            }
+            if (dist == offset + 2)
+            {
+                t->Brightness = 0xC0;
+            }
+            if (dist == offset + 3)
+            {
+                t->Brightness = 0xA0;
+            }
+            if (dist == offset + 4)
+            {
+                t->Brightness = 0x60;
+            }
+            else
+            {
+                t->Brightness = 0;
+            }
+
+            if (t->Brightness > 0)
+            {
+                t->Discovered = true;
+            }
+        }
     }
 
     void Map::Render(Renderer &renderer)

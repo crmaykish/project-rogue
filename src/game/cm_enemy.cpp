@@ -24,7 +24,9 @@ namespace cm
         }
 
         // Can the player see this enemy?
-        Visible = world.TileBrightness(TileX, TileY) > 0;
+        // TODO fix this
+        // Visible = world.TileBrightness(TileX, TileY) > 0;
+        Visible = true;
 
         if (HP == 0)
         {

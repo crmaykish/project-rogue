@@ -35,17 +35,10 @@ namespace cm
             return;
         }
 
+#ifdef FOG_OF_WAR
         // Update tiles
-        // for (auto &t : Tiles)
-        // {
-        //     // t->Brightness = TileBrightness(t->X, t->Y);
-        //     t->Brightness = 255;
-
-        //     if (t->Brightness > 0)
-        //     {
-        //         t->Discovered = true;
-        //     }
-        // }
+        Level->Update(*this);
+#endif
 
         if (TileSelectMode)
         {
@@ -231,32 +224,6 @@ namespace cm
         // Get player starting position
         PlayerOne->TileX = Level->GetPlayerX();
         PlayerOne->TileY = Level->GetPlayerY();
-    }
-
-    uint8_t GameWorld::TileBrightness(int x, int y) const
-    {
-        auto dist = DistanceToPlayer(x, y);
-
-        int offset = (PlayerOne->TorchFuel + 1) / 5;
-
-        if (dist <= offset + 1)
-        {
-            return 0xFF;
-        }
-        if (dist == offset + 2)
-        {
-            return 0xC0;
-        }
-        if (dist == offset + 3)
-        {
-            return 0xA0;
-        }
-        if (dist == offset + 4)
-        {
-            return 0x60;
-        }
-
-        return 0;
     }
 
     Actor *GameWorld::GetCurrentActor()

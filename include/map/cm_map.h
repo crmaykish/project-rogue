@@ -8,6 +8,8 @@
 
 namespace cm
 {
+    class GameWorld;
+
     class Map
     {
     protected:
@@ -27,6 +29,7 @@ namespace cm
 
         // TODO: Need another method to return a list of enemies
 
+        void Update(GameWorld &world);
         void Render(Renderer &renderer);
 
         int GetWidth() const;

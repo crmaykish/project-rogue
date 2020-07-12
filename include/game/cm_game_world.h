@@ -62,8 +62,6 @@ namespace cm
 
         void SetNextLevel();
 
-        uint8_t TileBrightness(int x, int y) const;
-
         // TODO: this shouldn't really be necessary. operate on the map directly instead
         Map *GetLevel();
 
