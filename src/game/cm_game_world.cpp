@@ -7,7 +7,7 @@
 #include "cm_random.h"
 #include "cm_item.h"
 #include "cm_action.h"
-#include "cm_mapgen.h"
+#include "cm_cellular_automata_map.h"
 
 namespace cm
 {
@@ -35,16 +35,16 @@ namespace cm
         }
 
         // Update tiles
-        for (auto &t : Tiles)
-        {
-            // t->Brightness = TileBrightness(t->X, t->Y);
-            t->Brightness = 255;
+        // for (auto &t : Tiles)
+        // {
+        //     // t->Brightness = TileBrightness(t->X, t->Y);
+        //     t->Brightness = 255;
 
-            if (t->Brightness > 0)
-            {
-                t->Discovered = true;
-            }
-        }
+        //     if (t->Brightness > 0)
+        //     {
+        //         t->Discovered = true;
+        //     }
+        // }
 
         if (TileSelectMode)
         {
@@ -155,7 +155,7 @@ namespace cm
                 // Drop loot
                 if (RandomInt(100) < 20)
                 {
-                    GetTile(a->TileX, a->TileY)->Items.emplace_back(RandomItem());
+                    Level->GetTile(a->TileX, a->TileY)->Items.emplace_back(RandomItem());
                 }
             }
         }
@@ -174,45 +174,7 @@ namespace cm
 
     void GameWorld::Render(Renderer &renderer)
     {
-        // Render world tiles
-        for (auto &t : Tiles)
-        {
-            if (t->Type == TileType::Wall)
-            {
-                renderer.DrawTexture(AssetKey::WallTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
-            }
-            else if (t->Type == TileType::Empty)
-            {
-                renderer.DrawTexture(AssetKey::FloorTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
-            }
-            else if (t->Type == TileType::Door)
-            {
-                renderer.DrawTexture(AssetKey::DoorTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
-            }
-
-            if (t->Items.size() == 1)
-            {
-                renderer.DrawTexture(t->Items.at(0)->GetTextureKey(), t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
-            }
-            else if (t->Items.size() > 1)
-            {
-                renderer.DrawTexture(AssetKey::ChestTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
-            }
-
-            // draw fog
-            Color overlayColor = ColorBlack;
-
-            if (t->Brightness == 0 && t->Discovered)
-            {
-                overlayColor.alpha = 0xFF - 0x20;
-            }
-            else
-            {
-                overlayColor.alpha = 0xFF - t->Brightness;
-            }
-
-            renderer.DrawRectangle(t->X * TileSize, t->Y * TileSize, TileSize, TileSize, overlayColor);
-        }
+        Level->Render(renderer);
 
         // Render actors
         for (auto const &a : Actors)
@@ -234,41 +196,6 @@ namespace cm
         Actors.push_back(player);
     }
 
-    Tile *GameWorld::GetTile(int x, int y) const
-    {
-        if (x < 0 || x >= Width || y < 0 || y >= Height)
-        {
-            return nullptr;
-        }
-
-        for (auto const &t : Tiles)
-        {
-            if (t->X == x && t->Y == y)
-            {
-                return t.get();
-            }
-        }
-
-        return nullptr;
-    }
-
-    std::vector<Tile *> GameWorld::GetNeighbors(int x, int y) const
-    {
-        std::vector<Tile *> neighbors;
-
-        // TODO: This is amazingly inefficient
-        neighbors.push_back(GetTile(x - 1, y - 1));
-        neighbors.push_back(GetTile(x - 1, y));
-        neighbors.push_back(GetTile(x - 1, y + 1));
-        neighbors.push_back(GetTile(x, y - 1));
-        neighbors.push_back(GetTile(x, y + 1));
-        neighbors.push_back(GetTile(x + 1, y - 1));
-        neighbors.push_back(GetTile(x + 1, y));
-        neighbors.push_back(GetTile(x + 1, y + 1));
-
-        return neighbors;
-    }
-
     Actor *GameWorld::GetActor(int x, int y) const
     {
         for (auto const &a : Actors)
@@ -287,16 +214,6 @@ namespace cm
         return PlayerOne.get();
     }
 
-    int GameWorld::GetWidth()
-    {
-        return Width;
-    }
-
-    int GameWorld::GetHeight()
-    {
-        return Height;
-    }
-
     void GameWorld::CreateLevel()
     {
         // Remove any remaining enemies
@@ -305,17 +222,13 @@ namespace cm
                                     [](auto &a) { return !a->Friendly; }),
                      Actors.end());
 
-        // Wipe and rebuild the tile map
-        Tiles.clear();
+        // Generate a new map
+        Level = std::make_unique<CellularAutomataMap>();
+        Level->Generate();
 
-        Width = 8 + RandomInt(8);
-        Height = 5 + RandomInt(10);
-
-        auto mapgen = std::make_unique<CellularAutomataMapGenerator>(Width, Height);
-        Tiles = mapgen->Generate();
-
-        PlayerOne->TileX = mapgen->GetPlayerX();
-        PlayerOne->TileY = mapgen->GetPlayerY();
+        // Get player starting position
+        PlayerOne->TileX = Level->GetPlayerX();
+        PlayerOne->TileY = Level->GetPlayerY();
     }
 
     uint8_t GameWorld::TileBrightness(int x, int y) const
@@ -373,6 +286,11 @@ namespace cm
         e.color = friendly ? ColorLightGrey : ColorGrey;
         EventLog.push_back(e);
         EventLogIndex++;
+    }
+
+    Map *GameWorld::GetLevel()
+    {
+        return Level.get();
     }
 
 } // namespace cm

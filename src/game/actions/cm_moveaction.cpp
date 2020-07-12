@@ -31,7 +31,7 @@ namespace cm
             break;
         }
 
-        auto targetTile = World.GetTile(executor.TileX + moveX, executor.TileY + moveY);
+        auto targetTile = World.GetLevel()->GetTile(executor.TileX + moveX, executor.TileY + moveY);
 
         // Is there a tile in the move direction?
         if (targetTile == nullptr)

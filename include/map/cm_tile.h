@@ -23,7 +23,7 @@ namespace cm
         int Y = 0;
         TileType Type = TileType::Unknown;
         bool Discovered = false;
-        uint8_t Brightness = 0;
+        uint8_t Brightness = 255;
 
         std::vector<std::unique_ptr<Item>> Items;
     };

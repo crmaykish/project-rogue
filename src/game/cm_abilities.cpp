@@ -162,7 +162,7 @@ namespace cm
     {
         // do damage to everything around the user
 
-        auto neighbors = world.GetNeighbors(user.TileX, user.TileY);
+        auto neighbors = world.GetLevel()->GetNeighbors(user.TileX, user.TileY);
 
         for (auto n : neighbors)
         {

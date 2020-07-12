@@ -6,6 +6,7 @@
 #include "cm_actor.h"
 #include "cm_renderer.h"
 #include "cm_input.h"
+#include "cm_map.h"
 
 namespace cm
 {
@@ -23,8 +24,6 @@ namespace cm
         UserInput &Input;
         bool NextLevel = false;
         int TurnCount = 0;
-        int Width = 0;
-        int Height = 0;
         int CurrentActorIndex = 0;
 
         bool TileSelectMode = false;
@@ -32,7 +31,8 @@ namespace cm
         int SelectedX = 0;
         int SelectedY = 0;
 
-        std::vector<std::unique_ptr<Tile>> Tiles;
+        std::unique_ptr<Map> Level;
+
         std::vector<std::shared_ptr<Actor>> Actors;
         std::shared_ptr<Actor> PlayerOne;
 
@@ -48,31 +48,24 @@ namespace cm
         void NextActor();
 
     public:
-        int ViewDistance = 4;
-
         GameWorld(UserInput &input);
 
         void Init();
-
         void Update();
         void Render(Renderer &renderer);
 
         void AddPlayer(std::shared_ptr<Actor> player);
-
-        Tile *GetTile(int x, int y) const;
-        std::vector<Tile *> GetNeighbors(int x, int y) const;
-
         Actor *GetActor(int x, int y) const;
         Actor *GetPlayer() const;
 
         int DistanceToPlayer(int x, int y) const;
 
-        int GetWidth();
-        int GetHeight();
-
         void SetNextLevel();
 
         uint8_t TileBrightness(int x, int y) const;
+
+        // TODO: this shouldn't really be necessary. operate on the map directly instead
+        Map *GetLevel();
 
         bool IsTileSelectMode()
         {
