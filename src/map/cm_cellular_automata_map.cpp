@@ -6,11 +6,11 @@ namespace cm
 {
     void CellularAutomataMap::Generate()
     {
-        Width = 12;
-        Height = 9;
+        Width = 60;
+        Height = 40;
 
-        int startingPercent = 50;
-        int iterations = 12;
+        int startingPercent = 40;
+        int iterations = 10;
         int upperLimit = 4;
         int lowerLimit = 2;
 
@@ -22,7 +22,7 @@ namespace cm
                 auto t = std::make_unique<Tile>();
                 t->X = i;
                 t->Y = j;
-                t->Type = RandomInt(100) > startingPercent ? TileType::Empty : TileType::Wall;
+                t->Type = startingPercent > RandomInt(100) ? TileType::Empty : TileType::Unknown;
 
                 Tiles.push_back(std::move(t));
             }
@@ -32,17 +32,7 @@ namespace cm
         {
             for (auto &t : Tiles)
             {
-                int floorNeighbors = 0;
-                for (auto a : GetNeighbors(t->X, t->Y))
-                {
-                    if (a != nullptr)
-                    {
-                        if (a->Type == TileType::Empty)
-                        {
-                            floorNeighbors++;
-                        }
-                    }
-                }
+                int floorNeighbors = CountNeighborTiles(t->X, t->Y, TileType::Empty);
 
                 if (floorNeighbors > upperLimit)
                 {
@@ -50,14 +40,14 @@ namespace cm
                 }
                 else if (floorNeighbors < lowerLimit)
                 {
-                    t->Type = TileType::Wall;
+                    t->Type = TileType::Unknown;
                 }
             }
         }
 
         Tiles.erase(std::remove_if(Tiles.begin(),
                                    Tiles.end(),
-                                   [](auto &t) { return t->Type == TileType::Wall; }),
+                                   [](auto &t) { return t->Type == TileType::Unknown; }),
                     Tiles.end());
 
         // Place the exit door randomly

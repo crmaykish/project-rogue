@@ -5,8 +5,8 @@
 
 namespace cm
 {
-    const int TilePixels = 12;
-    const int TileScaling = 1;
+    const int TilePixels = 24;
+    const int TileScaling = 2;
     const int TileSize = TilePixels * TileScaling;
 
     enum struct TileType
@@ -22,7 +22,7 @@ namespace cm
         int X = 0;
         int Y = 0;
         TileType Type = TileType::Unknown;
-        bool Discovered = false;
+        bool Discovered = true;
         uint8_t Brightness = 255;
 
         std::vector<std::unique_ptr<Item>> Items;

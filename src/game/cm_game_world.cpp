@@ -8,6 +8,7 @@
 #include "cm_item.h"
 #include "cm_action.h"
 #include "cm_cellular_automata_map.h"
+#include "cm_room_accretion_map.h"
 
 namespace cm
 {
@@ -223,7 +224,8 @@ namespace cm
                      Actors.end());
 
         // Generate a new map
-        Level = std::make_unique<CellularAutomataMap>();
+        Level = std::make_unique<RoomAccretionMap>();
+        // Level = std::make_unique<CellularAutomataMap>();
         Level->Generate();
 
         // Get player starting position

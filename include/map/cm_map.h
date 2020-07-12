@@ -18,6 +18,9 @@ namespace cm
 
         std::vector<std::unique_ptr<Tile>> Tiles;
 
+        // TODO: this should probably just be a lambda
+        int CountNeighborTiles(int x, int y, TileType type);
+
     public:
         virtual ~Map() {}
         virtual void Generate() = 0;

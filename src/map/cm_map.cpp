@@ -37,6 +37,22 @@ namespace cm
         return neighbors;
     }
 
+    int Map::CountNeighborTiles(int x, int y, TileType type)
+    {
+        int neighbors = 0;
+        for (auto a : GetNeighbors(x, y))
+        {
+            if (a != nullptr)
+            {
+                if (a->Type == type)
+                {
+                    neighbors++;
+                }
+            }
+        }
+        return neighbors;
+    }
+
     void Map::Render(Renderer &renderer)
     {
         // Render world tiles
