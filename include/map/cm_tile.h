@@ -5,8 +5,8 @@
 
 namespace cm
 {
-    const int TilePixels = 24;
-    const int TileScaling = 2;
+    const int TilePixels = 16;
+    const int TileScaling = 1;
     const int TileSize = TilePixels * TileScaling;
 
     enum struct TileType
@@ -24,6 +24,8 @@ namespace cm
         TileType Type = TileType::Unknown;
         bool Discovered = true;
         uint8_t Brightness = 255;
+
+        bool Counted = false;   // TODO: hack, remove this
 
         std::vector<std::unique_ptr<Item>> Items;
     };

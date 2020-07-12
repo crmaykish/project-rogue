@@ -10,6 +10,9 @@ namespace cm
     private:
         void BuildRoom(int x, int y, int width, int height);
 
+        // Return the number of tiles connected to this one
+        int FloodFill(int x, int y);
+
     public:
         void Generate() override;
     };

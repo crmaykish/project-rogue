@@ -1,6 +1,7 @@
 #include <algorithm>
 #include "cm_room_accretion_map.h"
 #include "cm_random.h"
+#include "cm_logger.h"
 
 namespace cm
 {
@@ -9,39 +10,64 @@ namespace cm
         // Total map size
         Width = 40;
         Height = 30;
-        int Rooms = 100;
+        int Rooms = 160; // TODO: this is too high for this map size. 100 is better
 
         // TODO: if the map size goes up, the number (or size) of the rooms needs to go up too
 
-        for (int i = 0; i < Rooms; i++)
+        int connectedTiles = -1;
+
+        // TODO: this is not a good solution, try to connect islands instead of recreating the map
+        while (connectedTiles != Tiles.size())
         {
-            int roomWidth = 2 + RandomInt(3);
-            int roomHeight = 2 + RandomInt(3);
-            int roomX = 1 + RandomInt(Width - roomWidth - 1);
-            int roomY = 1 + RandomInt(Height - roomHeight - 1);
+            Log("Generating a new map", LOG_INFO);
 
-            BuildRoom(roomX, roomY, roomWidth, roomHeight);
-        }
+            Tiles.clear();
 
-        // Smooth over room corners
-        int smoothingIterations = 10;
-
-        for (int i = 0; i < smoothingIterations; i++)
-        {
-            for (auto &t : Tiles)
+            for (int i = 0; i < Rooms; i++)
             {
-                if (CountNeighborTiles(t->X, t->Y, TileType::Empty) <= 3)
+                int roomWidth = 2 + RandomInt(3);
+                int roomHeight = 2 + RandomInt(3);
+                int roomX = 1 + RandomInt(Width - roomWidth - 1);
+                int roomY = 1 + RandomInt(Height - roomHeight - 1);
+
+                BuildRoom(roomX, roomY, roomWidth, roomHeight);
+            }
+
+            // Smooth over room corners
+            int smoothingIterations = 10;
+
+            for (int i = 0; i < smoothingIterations; i++)
+            {
+                for (auto &t : Tiles)
                 {
-                    t->Type = TileType::Unknown;
+                    if (CountNeighborTiles(t->X, t->Y, TileType::Empty) <= 3)
+                    {
+                        t->Type = TileType::Unknown;
+                    }
                 }
             }
-        }
 
-        // Clean up any unknown tiles
-        Tiles.erase(std::remove_if(Tiles.begin(),
-                                   Tiles.end(),
-                                   [](auto &t) { return t->Type == TileType::Unknown; }),
-                    Tiles.end());
+            // Clean up any unknown tiles
+            Tiles.erase(std::remove_if(Tiles.begin(),
+                                       Tiles.end(),
+                                       [](auto &t) { return t->Type == TileType::Unknown; }),
+                        Tiles.end());
+
+            // TODO: identify and connect any islands
+
+            int randomEmptyIndex = RandomInt(Tiles.size() - 2) + 1;
+
+            while (Tiles.at(randomEmptyIndex)->Type != TileType::Empty)
+            {
+                randomEmptyIndex = RandomInt(Tiles.size() - 2) + 1;
+            }
+
+            auto &tile = Tiles.at(randomEmptyIndex);
+
+            connectedTiles = FloodFill(tile->X, tile->X);
+
+            Log("Tiles connected: " + std::to_string(connectedTiles) + " / " + std::to_string(Tiles.size()));
+        }
 
         // wrap the map with walls
         for (int i = 0; i < Width; i++)
@@ -64,7 +90,11 @@ namespace cm
         // Place the exit door randomly
         int randIndex = RandomInt(Tiles.size() - 2) + 1;
 
-        while (Tiles.at(randIndex)->Type != TileType::Empty)
+        // TODO: this is pretty gross
+        // Place the exit door in a wall with at least 3 floor tiles and 2 wall tiles around it
+        while (Tiles.at(randIndex)->Type != TileType::Wall ||
+               CountNeighborTiles(Tiles.at(randIndex)->X, Tiles.at(randIndex)->Y, TileType::Empty) < 4 ||
+               CountNeighborTiles(Tiles.at(randIndex)->X, Tiles.at(randIndex)->Y, TileType::Wall) < 2)
         {
             randIndex = RandomInt(Tiles.size() - 2) + 1;
         }
@@ -101,6 +131,34 @@ namespace cm
                 }
             }
         }
+    }
+
+    int RoomAccretionMap::FloodFill(int x, int y)
+    {
+        // TODO: this sometimes returns 0, why?
+
+        auto t = GetTile(x, y);
+
+        if (t == nullptr)
+        {
+            return 0;
+        }
+
+        if (t->Counted)
+        {
+            return 0;
+        }
+
+        t->Counted = true;
+
+        int total = 1;
+
+        total += FloodFill(x + 1, y);
+        total += FloodFill(x - 1, y);
+        total += FloodFill(x, y + 1);
+        total += FloodFill(x, y - 1);
+
+        return total;
     }
 
 } // namespace cm
