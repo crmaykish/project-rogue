@@ -29,8 +29,6 @@ namespace cm
         virtual void Generate() = 0;
         virtual std::vector<std::unique_ptr<Actor>> SpawnNPCs(int playerLevel) = 0;
 
-        // TODO: Need another method to return a list of enemies
-
         void Update(GameWorld &world);
         void Render(Renderer &renderer) const;
 

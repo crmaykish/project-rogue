@@ -3,7 +3,7 @@
 
 #include "cm_item.h"
 
-// #define FOG_OF_WAR
+#define FOG_OF_WAR
 
 namespace cm
 {
