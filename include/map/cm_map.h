@@ -27,7 +27,7 @@ namespace cm
     public:
         virtual ~Map() {}
         virtual void Generate() = 0;
-        virtual std::vector<std::unique_ptr<Actor>> SpawnNPCs() = 0;
+        virtual std::vector<std::unique_ptr<Actor>> SpawnNPCs(int playerLevel) = 0;
 
         // TODO: Need another method to return a list of enemies
 

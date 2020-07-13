@@ -9,7 +9,7 @@ namespace cm
     {
     public:
         void Generate() override;
-        std::vector<std::unique_ptr<Actor>> SpawnNPCs() override;
+        std::vector<std::unique_ptr<Actor>> SpawnNPCs(int playerLevel) override;
     };
 
 } // namespace cm

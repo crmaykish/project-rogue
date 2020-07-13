@@ -68,7 +68,7 @@ namespace cm
         PlacePlayer();
     }
 
-    std::vector<std::unique_ptr<Actor>> RoomAccretionMap::SpawnNPCs()
+    std::vector<std::unique_ptr<Actor>> RoomAccretionMap::SpawnNPCs(int playerLevel)
     {
         std::vector<std::unique_ptr<Actor>> npcs;
 
@@ -87,7 +87,7 @@ namespace cm
 
             auto &t = Tiles.at(randIndex);
 
-            npcs.emplace_back(RandomEnemy(t->X, t->Y, 1));
+            npcs.emplace_back(RandomEnemy(t->X, t->Y, playerLevel));
         }
 
         return npcs;

@@ -223,7 +223,7 @@ namespace cm
         Level->Generate();
 
         // Have the map generate NPCs and add them to the list of actors
-        auto npcs = Level->SpawnNPCs();
+        auto npcs = Level->SpawnNPCs(PlayerOne->Level);
         Actors.insert(Actors.end(), std::make_move_iterator(npcs.begin()), std::make_move_iterator(npcs.end()));
 
         // Get player starting position

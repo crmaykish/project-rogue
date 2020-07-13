@@ -72,7 +72,7 @@ namespace cm
         PlayerY = Tiles.at(randIndex)->Y;
     }
 
-    std::vector<std::unique_ptr<Actor>> CellularAutomataMap::SpawnNPCs()
+    std::vector<std::unique_ptr<Actor>> CellularAutomataMap::SpawnNPCs(int playerLevel)
     {
         return std::vector<std::unique_ptr<Actor>>();
     }
