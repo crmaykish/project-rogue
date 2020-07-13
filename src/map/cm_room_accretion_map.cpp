@@ -227,7 +227,7 @@ namespace cm
                     auto t = std::make_unique<Tile>();
                     t->X = i;
                     t->Y = j;
-                    t->Type = TileType::Wall;
+                    t->Type = RandomInt(100) < 5 ? TileType::WallCracked : TileType::Wall;
 
                     Tiles.push_back(std::move(t));
                 }

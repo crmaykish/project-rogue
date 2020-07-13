@@ -16,6 +16,7 @@ namespace cm
         Unknown,
         Empty,
         Wall,
+        WallCracked,
         Door
     };
 

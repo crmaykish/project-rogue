@@ -32,6 +32,7 @@ namespace cm
         // Tiles
         FloorTexture,
         WallTexture,
+        WallCrackedTexture,
         DoorTexture,
         TreeTexture,
         ChestTexture,

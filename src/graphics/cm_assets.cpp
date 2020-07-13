@@ -116,6 +116,9 @@ namespace cm
         case AssetKey::WallTexture:
             assetFileName = "wall.png";
             break;
+            case AssetKey::WallCrackedTexture:
+            assetFileName = "wall_cracked.png";
+            break;
         case AssetKey::DoorTexture:
             assetFileName = "door.png";
             break;

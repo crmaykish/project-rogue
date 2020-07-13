@@ -95,6 +95,10 @@ namespace cm
             {
                 renderer.DrawTexture(AssetKey::WallTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
             }
+            else if (t->Type == TileType::WallCracked)
+            {
+                renderer.DrawTexture(AssetKey::WallCrackedTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
+            }
             else if (t->Type == TileType::Empty)
             {
                 renderer.DrawTexture(AssetKey::FloorTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);

@@ -56,7 +56,7 @@ namespace cm
         }
 
         // Is the tile walkable?
-        if (targetTile->Type != TileType::Wall)
+        if (targetTile->Type == TileType::Empty)
         {
             executor.TileX += moveX;
             executor.TileY += moveY;
