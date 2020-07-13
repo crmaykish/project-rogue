@@ -103,6 +103,11 @@ namespace cm
             {
                 renderer.DrawTexture(AssetKey::DoorTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
             }
+            else
+            {
+                // Unrecognized tile type
+                renderer.DrawTexture(AssetKey::Unknown, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
+            }
 
             if (t->Items.size() == 1)
             {

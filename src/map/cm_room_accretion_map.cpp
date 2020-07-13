@@ -10,16 +10,17 @@ namespace cm
         // Total map size
         Width = 40;
         Height = 30;
-        int Rooms = 40;
+        int Rooms = 40; // TODO: randomize number of rooms
 
         // TODO: if the map size goes up, the number (or size) of the rooms needs to go up too
 
-        Log("Generating a new map", LOG_INFO);
+        Log("Generating a new map with room accretion", LOG_INFO);
 
         Tiles.clear();
 
         for (int i = 0; i < Rooms; i++)
         {
+            // TODO: parameterize all of this
             int roomWidth = 3 + RandomInt(3);
             int roomHeight = 3 + RandomInt(3);
             int roomX = 1 + RandomInt(Width - roomWidth - 1);
@@ -28,40 +29,11 @@ namespace cm
             BuildRoom(roomX, roomY, roomWidth, roomHeight);
         }
 
-        // Smooth over room corners
-        int smoothingIterations = 5;
+        RoundCorners();
 
-        for (int i = 0; i < smoothingIterations; i++)
-        {
-            for (auto &t : Tiles)
-            {
-                if (CountNeighborTiles(t->X, t->Y, TileType::Empty) <= 3)
-                {
-                    t->Type = TileType::Unknown;
-                }
-            }
-        }
+        RemoveUnknownTiles();
 
-        // Clean up any unknown tiles
-        Tiles.erase(std::remove_if(Tiles.begin(),
-                                   Tiles.end(),
-                                   [](auto &t) { return t->Type == TileType::Unknown; }),
-                    Tiles.end());
-
-        // TODO: find and connect any islands
-
-        // x, y, size
-        std::vector<std::tuple<int, int, int>> islands;
-
-        for (auto &a : Tiles)
-        {
-            int islandSize = FloodFill(a->X, a->Y);
-
-            if (islandSize > 0)
-            {
-                islands.emplace_back(std::make_tuple(a->X, a->Y, islandSize));
-            }
-        }
+        auto islands = FindIslands();
 
         Log("Islands: " + std::to_string(islands.size()));
 
@@ -71,6 +43,7 @@ namespace cm
             auto a = islands.at(i);
             auto b = islands.at(0);
 
+            // TODO: is it even necessary to connect the last back to the first?
             if (i != islands.size() - 1)
             {
                 b = islands.at(i + 1);
@@ -78,101 +51,17 @@ namespace cm
 
             // TODO: pick a starting point for the corridors that is more in the middle of the islands, not the first tile
             // This is actually kind of hard to do
+            // Have to label each tile as part of an island?
 
-            int diffX = std::get<0>(b) - std::get<0>(a);
-            int diffY = std::get<1>(a) - std::get<1>(b);
-
-            // build horizontal corridor
-            for (auto j = 0; j < std::abs(diffX) + 1; j++)
-            {
-                // build horizontal corridor
-
-                auto x = std::get<0>(a);
-                auto y = std::get<1>(a);
-
-                if (diffX > 0)
-                {
-                    x += j;
-                }
-                else
-                {
-                    x -= j;
-                }
-
-                // add walkable tile if it doesn't exist
-                if (GetTile(x, y) == nullptr)
-                {
-                    auto t = std::make_unique<Tile>();
-                    t->X = x;
-                    t->Y = y;
-                    t->Type = TileType::Empty;
-
-                    Tiles.push_back(std::move(t));
-                }
-            }
-
-            // build vertical corridor
-            // TODO: start from the other island this time
-            for (auto j = 0; j < std::abs(diffY) + 1; j++)
-            {
-                // build horizontal corridor
-
-                auto x = std::get<0>(b);
-                auto y = std::get<1>(b);
-
-                if (diffY > 0)
-                {
-                    y += j;
-                }
-                else
-                {
-                    y -= j;
-                }
-
-                // add walkable tile if it doesn't exist
-                if (GetTile(x, y) == nullptr)
-                {
-                    auto t = std::make_unique<Tile>();
-                    t->X = x;
-                    t->Y = y;
-                    t->Type = TileType::Empty;
-
-                    Tiles.push_back(std::move(t));
-                }
-            }
+            BuildBridge(a.X, a.Y, b.X, b.Y);
         }
 
-        int randomEmptyIndex = RandomInt(Tiles.size() - 2) + 1;
-
-        while (Tiles.at(randomEmptyIndex)->Type != TileType::Empty)
-        {
-            randomEmptyIndex = RandomInt(Tiles.size() - 2) + 1;
-        }
-
-        auto &tile = Tiles.at(randomEmptyIndex);
-
-        // wrap the map with walls
-        for (int i = 0; i < Width; i++)
-        {
-            for (int j = 0; j < Height; j++)
-            {
-
-                if (GetTile(i, j) == nullptr && CountNeighborTiles(i, j, TileType::Empty) > 0)
-                {
-                    auto t = std::make_unique<Tile>();
-                    t->X = i;
-                    t->Y = j;
-                    t->Type = TileType::Wall;
-
-                    Tiles.push_back(std::move(t));
-                }
-            }
-        }
+        WrapWalls();
 
         // Place the exit door randomly
         int randIndex = RandomInt(Tiles.size() - 2) + 1;
 
-        // TODO: this is pretty gross
+        // TODO: this is pretty gross, without walls, this will loop forever
         // Place the exit door in a wall with at least 3 floor tiles and 2 wall tiles around it
         while (Tiles.at(randIndex)->Type != TileType::Wall ||
                CountNeighborTiles(Tiles.at(randIndex)->X, Tiles.at(randIndex)->Y, TileType::Empty) < 4 ||
@@ -209,6 +98,128 @@ namespace cm
                 // if tile does not already exist in the map, add it
                 if (GetTile(t->X, t->Y) == nullptr)
                 {
+                    Tiles.push_back(std::move(t));
+                }
+            }
+        }
+    }
+
+    void RoomAccretionMap::BuildBridge(int x1, int y1, int x2, int y2)
+    {
+        int diffX = x2 - x1;
+        int diffY = y1 - y2;
+
+        // build horizontal corridor
+        for (auto j = 0; j < std::abs(diffX) + 1; j++)
+        {
+            auto x = x1;
+            auto y = y1;
+
+            if (diffX > 0)
+            {
+                x += j;
+            }
+            else
+            {
+                x -= j;
+            }
+
+            // add walkable tile if it doesn't exist
+            if (GetTile(x, y) == nullptr)
+            {
+                auto t = std::make_unique<Tile>();
+                t->X = x;
+                t->Y = y;
+                t->Type = TileType::Empty;
+
+                Tiles.push_back(std::move(t));
+            }
+        }
+
+        // build vertical corridor
+        for (auto j = 0; j < std::abs(diffY) + 1; j++)
+        {
+            auto x = x2;
+            auto y = y2;
+
+            if (diffY > 0)
+            {
+                y += j;
+            }
+            else
+            {
+                y -= j;
+            }
+
+            // add walkable tile if it doesn't exist
+            if (GetTile(x, y) == nullptr)
+            {
+                auto t = std::make_unique<Tile>();
+                t->X = x;
+                t->Y = y;
+                t->Type = TileType::Empty;
+
+                Tiles.push_back(std::move(t));
+            }
+        }
+    }
+
+    void RoomAccretionMap::RoundCorners()
+    {
+        // Smooth over room corners
+        int smoothingIterations = 5;
+
+        for (int i = 0; i < smoothingIterations; i++)
+        {
+            for (auto &t : Tiles)
+            {
+                if (CountNeighborTiles(t->X, t->Y, TileType::Empty) <= 3)
+                {
+                    t->Type = TileType::Unknown;
+                }
+            }
+        }
+    }
+
+    void RoomAccretionMap::RemoveUnknownTiles()
+    {
+        Tiles.erase(std::remove_if(Tiles.begin(),
+                                   Tiles.end(),
+                                   [](auto &t) { return t->Type == TileType::Unknown; }),
+                    Tiles.end());
+    }
+
+    std::vector<Island> RoomAccretionMap::FindIslands()
+    {
+        std::vector<Island> islands;
+
+        for (auto &a : Tiles)
+        {
+            int islandSize = FloodFill(a->X, a->Y);
+
+            if (islandSize > 0)
+            {
+                islands.emplace_back(Island{a->X, a->Y, islandSize});
+            }
+        }
+
+        return islands;
+    }
+
+    void RoomAccretionMap::WrapWalls()
+    {
+        for (int i = 0; i < Width; i++)
+        {
+            for (int j = 0; j < Height; j++)
+            {
+
+                if (GetTile(i, j) == nullptr && CountNeighborTiles(i, j, TileType::Empty) > 0)
+                {
+                    auto t = std::make_unique<Tile>();
+                    t->X = i;
+                    t->Y = j;
+                    t->Type = TileType::Wall;
+
                     Tiles.push_back(std::move(t));
                 }
             }
