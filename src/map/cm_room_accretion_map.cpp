@@ -10,19 +10,23 @@ namespace cm
         // Total map size
         Width = 40;
         Height = 30;
-        int Rooms = 40; // TODO: randomize number of rooms
 
-        // TODO: if the map size goes up, the number (or size) of the rooms needs to go up too
+        // Generator options
+        int roomsCountMin = 20;
+        int roomsCountMax = 30;
+        int roomSizeMin = 4;
+        int roomSizeMax = 6;
 
         Log("Generating a new map with room accretion", LOG_INFO);
 
         Tiles.clear();
 
-        for (int i = 0; i < Rooms; i++)
+        int rooms = roomsCountMin + RandomInt(roomsCountMax - roomsCountMin);
+
+        for (int i = 0; i < rooms; i++)
         {
-            // TODO: parameterize all of this
-            int roomWidth = 3 + RandomInt(3);
-            int roomHeight = 3 + RandomInt(3);
+            int roomWidth = roomSizeMin + RandomInt(roomSizeMax - roomSizeMin);
+            int roomHeight = roomSizeMin + RandomInt(roomSizeMax - roomSizeMin);
             int roomX = 1 + RandomInt(Width - roomWidth - 1);
             int roomY = 1 + RandomInt(Height - roomHeight - 1);
 
@@ -37,17 +41,17 @@ namespace cm
 
         Log("Islands: " + std::to_string(islands.size()));
 
-        for (auto i = 0; i < islands.size(); i++)
+        for (auto i = 0; i < islands.size() - 1; i++)
         {
             // make a corridor between this island and the next one
             auto a = islands.at(i);
-            auto b = islands.at(0);
+            auto b = islands.at(i + 1);
 
             // TODO: is it even necessary to connect the last back to the first?
-            if (i != islands.size() - 1)
-            {
-                b = islands.at(i + 1);
-            }
+            // if (i != islands.size() - 1)
+            // {
+            //     b = islands.at(i + 1);
+            // }
 
             // TODO: pick a starting point for the corridors that is more in the middle of the islands, not the first tile
             // This is actually kind of hard to do
