@@ -129,6 +129,15 @@ namespace cm
     {
         int yOffset = MainRenderer->GetResolutionY() - 50;
 
+        // Level number
+        MainRenderer->DrawFont("Floor: " + std::to_string(World->GetLevelNumber()),
+                               AssetKey::UIFont,
+                               ColorWhite,
+                               MainRenderer->GetResolutionX() - 120,
+                               yOffset + 20,
+                               0.6,
+                               true);
+
         // Player name
         MainRenderer->DrawFont(World->GetPlayer()->Name,
                                AssetKey::UIFont,

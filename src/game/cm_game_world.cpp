@@ -37,6 +37,7 @@ namespace cm
 
 #ifdef FOG_OF_WAR
         // Update tiles
+        // TODO: Only run this after an actor moves
         Level->Update(*this);
 #endif
 
@@ -132,6 +133,7 @@ namespace cm
             PlayerOne->Reset();
             EventLogIndex = 1;
             EventLog.clear();
+            LevelNumber = 0;
             NextLevel = true;
             return;
         }
@@ -224,6 +226,8 @@ namespace cm
         // Get player starting position
         PlayerOne->TileX = Level->GetPlayerX();
         PlayerOne->TileY = Level->GetPlayerY();
+
+        LevelNumber++;
     }
 
     Actor *GameWorld::GetCurrentActor()

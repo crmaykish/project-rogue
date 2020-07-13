@@ -31,6 +31,8 @@ namespace cm
         int SelectedX = 0;
         int SelectedY = 0;
 
+        int LevelNumber = 0;
+
         std::unique_ptr<Map> Level;
 
         std::vector<std::shared_ptr<Actor>> Actors;
@@ -64,6 +66,8 @@ namespace cm
 
         // TODO: this shouldn't really be necessary. operate on the map directly instead
         Map *GetLevel();
+
+        int GetLevelNumber() { return LevelNumber; }
 
         bool IsTileSelectMode()
         {
