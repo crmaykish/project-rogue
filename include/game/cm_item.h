@@ -70,7 +70,22 @@ namespace cm
     std::unique_ptr<Item> SpellBook();
     std::unique_ptr<Item> Axe();
     std::unique_ptr<Item> BattleAxe();
+    std::unique_ptr<Item> Beer();
+    std::unique_ptr<Item> Wine();
+    std::unique_ptr<Item> Club();
+    std::unique_ptr<Item> Falchion();
+    std::unique_ptr<Item> Hammer();
+    std::unique_ptr<Item> TowerShield();
+    std::unique_ptr<Item> Staff();
+    std::unique_ptr<Item> Wand();
+    // std::unique_ptr<Item> Bone();
+    // std::unique_ptr<Item> Bottle();
 
+    std::unique_ptr<Item> Charm();
+
+    std::unique_ptr<Item> RandomConsumable();
+    std::unique_ptr<Item> RandomWeapon();
+    std::unique_ptr<Item> RandomArmor();
     std::unique_ptr<Item> RandomItem();
 
 } // namespace cm

@@ -116,7 +116,7 @@ namespace cm
         case AssetKey::WallTexture:
             assetFileName = "wall.png";
             break;
-            case AssetKey::WallCrackedTexture:
+        case AssetKey::WallCrackedTexture:
             assetFileName = "wall_cracked.png";
             break;
         case AssetKey::DoorTexture:
@@ -203,6 +203,51 @@ namespace cm
             break;
         case AssetKey::BattleAxeTexture:
             assetFileName = "axe_battle.png";
+            break;
+        case AssetKey::BeerTexture:
+            assetFileName = "beer.png";
+            break;
+        case AssetKey::BoneTexture:
+            assetFileName = "bone.png";
+            break;
+        case AssetKey::BottleTexture:
+            assetFileName = "bottle.png";
+            break;
+        case AssetKey::ClubTexture:
+            assetFileName = "club.png";
+            break;
+        case AssetKey::FalchionTexture:
+            assetFileName = "falchion.png";
+            break;
+        case AssetKey::HammerTexture:
+            assetFileName = "hammer.png";
+            break;
+        case AssetKey::ShieldTowerTexture:
+            assetFileName = "shield_tower.png";
+            break;
+        case AssetKey::StaffTexture:
+            assetFileName = "staff.png";
+            break;
+        case AssetKey::WandBlueTexture:
+            assetFileName = "wand_blue.png";
+            break;
+        case AssetKey::WandGreenTexture:
+            assetFileName = "wand_green.png";
+            break;
+        case AssetKey::WandRedTexture:
+            assetFileName = "wand_red.png";
+            break;
+        case AssetKey::WineTexture:
+            assetFileName = "wine.png";
+            break;
+        case AssetKey::CharmRedTexture:
+            assetFileName = "charm_red.png";
+            break;
+        case AssetKey::CharmBlueTexture:
+            assetFileName = "charm_blue.png";
+            break;
+        case AssetKey::CharmGreenTexture:
+            assetFileName = "charm_green.png";
             break;
 
         // Icons

@@ -197,9 +197,99 @@ namespace cm
         return a;
     }
 
-    std::unique_ptr<Item> RandomItem()
+    std::unique_ptr<Item> Beer()
     {
-        switch (RandomInt(13))
+        auto a = std::make_unique<Item>();
+        a->Name = "Beer";
+        a->Type = ItemType::Consumable;
+        a->TextureKey = AssetKey::BeerTexture;
+        a->Charges = 1;
+        return a;
+    }
+
+    std::unique_ptr<Item> Wine()
+    {
+        auto a = std::make_unique<Item>();
+        a->Name = "Wine";
+        a->Type = ItemType::Consumable;
+        a->TextureKey = AssetKey::WineTexture;
+        a->Charges = 1;
+        return a;
+    }
+
+    std::unique_ptr<Item> Club()
+    {
+        auto a = std::make_unique<Item>();
+        a->Name = "Club";
+        a->Type = ItemType::OneHand;
+        a->TextureKey = AssetKey::ClubTexture;
+        a->BaseDamage = 4;
+        return a;
+    }
+
+    std::unique_ptr<Item> Falchion()
+    {
+        auto a = std::make_unique<Item>();
+        a->Name = "Falchion";
+        a->Type = ItemType::OneHand;
+        a->TextureKey = AssetKey::FalchionTexture;
+        a->BaseDamage = 10;
+        return a;
+    }
+
+    std::unique_ptr<Item> Hammer()
+    {
+        auto a = std::make_unique<Item>();
+        a->Name = "Hammer";
+        a->Type = ItemType::OneHand;
+        a->TextureKey = AssetKey::HammerTexture;
+        a->BaseDamage = 12;
+        return a;
+    }
+
+    std::unique_ptr<Item> TowerShield()
+    {
+        auto shield = std::make_unique<Item>();
+        shield->Name = "Tower Shield";
+        shield->Type = ItemType::OffHand;
+        shield->TextureKey = AssetKey::ShieldTowerTexture;
+        shield->BaseArmor = 20 + RandomInt(20);
+
+        return shield;
+    }
+
+    std::unique_ptr<Item> Staff()
+    {
+        auto a = std::make_unique<Item>();
+        a->Name = "Staff";
+        a->Type = ItemType::OneHand;
+        a->TextureKey = AssetKey::StaffTexture;
+        a->BaseDamage = 2;
+        return a;
+    }
+
+    std::unique_ptr<Item> Wand()
+    {
+        auto a = std::make_unique<Item>();
+        a->Name = "Wand";
+        a->Type = ItemType::OneHand;
+        a->TextureKey = AssetKey::WandBlueTexture;
+        a->BaseDamage = 4;
+        return a;
+    }
+
+    std::unique_ptr<Item> Charm()
+    {
+        auto a = std::make_unique<Item>();
+        a->Name = "Charm";
+        a->Type = ItemType::Charm;
+        a->TextureKey = AssetKey::CharmBlueTexture;
+        return a;
+    }
+
+    std::unique_ptr<Item> RandomConsumable()
+    {
+        switch (RandomInt(4))
         {
         case 0:
             return HealthPotion(15);
@@ -208,37 +298,100 @@ namespace cm
             return Torch();
             break;
         case 2:
-            return RustyDagger();
+            return Wine();
             break;
         case 3:
+            return Beer();
+            break;
+        default:
+            return nullptr;
+        }
+    }
+
+    std::unique_ptr<Item> RandomWeapon()
+    {
+        switch (RandomInt(12))
+        {
+        case 0:
+            return RustyDagger();
+            break;
+        case 1:
             return Sword();
             break;
-        case 4:
-            return LeatherBoots();
-            break;
-        case 5:
-            return LeatherHelmet();
-            break;
-        case 6:
-            return Buckler();
-            break;
-        case 7:
-            return Shield();
-            break;
-        case 8:
+        case 2:
             return Bow();
             break;
-        case 9:
+        case 3:
             return Crossbow();
             break;
-        case 10:
+        case 4:
             return SpellBook();
             break;
-        case 11:
+        case 5:
             return Axe();
             break;
-        case 12:
+        case 6:
             return BattleAxe();
+            break;
+        case 7:
+            return Club();
+            break;
+        case 8:
+            return Falchion();
+            break;
+        case 9:
+            return Hammer();
+            break;
+        case 10:
+            return Staff();
+            break;
+        case 11:
+            return Wand();
+            break;
+        default:
+            return nullptr;
+        }
+    }
+
+    std::unique_ptr<Item> RandomArmor()
+    {
+        switch (RandomInt(6))
+        {
+        case 0:
+            return LeatherBoots();
+            break;
+        case 1:
+            return LeatherHelmet();
+            break;
+        case 2:
+            return Buckler();
+            break;
+        case 3:
+            return Shield();
+            break;
+        case 4:
+            return TowerShield();
+            break;
+        case 5:
+            return Charm();
+            break;
+        default:
+            return nullptr;
+        }
+    }
+
+    std::unique_ptr<Item> RandomItem()
+    {
+        switch (RandomInt(3))
+        {
+        case 0:
+            return RandomConsumable();
+            break;
+        case 1:
+            return RandomWeapon();
+            break;
+        case 2:
+            return RandomArmor();
             break;
         default:
             return nullptr;
