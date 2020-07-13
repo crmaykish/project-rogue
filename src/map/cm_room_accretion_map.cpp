@@ -10,7 +10,7 @@ namespace cm
         // Total map size
         Width = 40;
         Height = 30;
-        int Rooms = 80;
+        int Rooms = 40;
 
         // TODO: if the map size goes up, the number (or size) of the rooms needs to go up too
 
@@ -20,8 +20,8 @@ namespace cm
 
         for (int i = 0; i < Rooms; i++)
         {
-            int roomWidth = 2 + RandomInt(3);
-            int roomHeight = 2 + RandomInt(3);
+            int roomWidth = 3 + RandomInt(3);
+            int roomHeight = 3 + RandomInt(3);
             int roomX = 1 + RandomInt(Width - roomWidth - 1);
             int roomY = 1 + RandomInt(Height - roomHeight - 1);
 
@@ -69,7 +69,6 @@ namespace cm
         {
             // make a corridor between this island and the next one
             auto a = islands.at(i);
-
             auto b = islands.at(0);
 
             if (i != islands.size() - 1)
@@ -78,6 +77,7 @@ namespace cm
             }
 
             // TODO: pick a starting point for the corridors that is more in the middle of the islands, not the first tile
+            // This is actually kind of hard to do
 
             int diffX = std::get<0>(b) - std::get<0>(a);
             int diffY = std::get<1>(a) - std::get<1>(b);
@@ -142,46 +142,46 @@ namespace cm
             }
         }
 
-        // int randomEmptyIndex = RandomInt(Tiles.size() - 2) + 1;
+        int randomEmptyIndex = RandomInt(Tiles.size() - 2) + 1;
 
-        // while (Tiles.at(randomEmptyIndex)->Type != TileType::Empty)
-        // {
-        //     randomEmptyIndex = RandomInt(Tiles.size() - 2) + 1;
-        // }
+        while (Tiles.at(randomEmptyIndex)->Type != TileType::Empty)
+        {
+            randomEmptyIndex = RandomInt(Tiles.size() - 2) + 1;
+        }
 
-        // auto &tile = Tiles.at(randomEmptyIndex);
+        auto &tile = Tiles.at(randomEmptyIndex);
 
         // wrap the map with walls
-        // for (int i = 0; i < Width; i++)
-        // {
-        //     for (int j = 0; j < Height; j++)
-        //     {
+        for (int i = 0; i < Width; i++)
+        {
+            for (int j = 0; j < Height; j++)
+            {
 
-        //         if (GetTile(i, j) == nullptr && CountNeighborTiles(i, j, TileType::Empty) > 0)
-        //         {
-        //             auto t = std::make_unique<Tile>();
-        //             t->X = i;
-        //             t->Y = j;
-        //             t->Type = TileType::Wall;
+                if (GetTile(i, j) == nullptr && CountNeighborTiles(i, j, TileType::Empty) > 0)
+                {
+                    auto t = std::make_unique<Tile>();
+                    t->X = i;
+                    t->Y = j;
+                    t->Type = TileType::Wall;
 
-        //             Tiles.push_back(std::move(t));
-        //         }
-        //     }
-        // }
+                    Tiles.push_back(std::move(t));
+                }
+            }
+        }
 
         // Place the exit door randomly
         int randIndex = RandomInt(Tiles.size() - 2) + 1;
 
-        // // TODO: this is pretty gross
-        // // Place the exit door in a wall with at least 3 floor tiles and 2 wall tiles around it
-        // while (Tiles.at(randIndex)->Type != TileType::Wall ||
-        //        CountNeighborTiles(Tiles.at(randIndex)->X, Tiles.at(randIndex)->Y, TileType::Empty) < 4 ||
-        //        CountNeighborTiles(Tiles.at(randIndex)->X, Tiles.at(randIndex)->Y, TileType::Wall) < 2)
-        // {
-        //     randIndex = RandomInt(Tiles.size() - 2) + 1;
-        // }
+        // TODO: this is pretty gross
+        // Place the exit door in a wall with at least 3 floor tiles and 2 wall tiles around it
+        while (Tiles.at(randIndex)->Type != TileType::Wall ||
+               CountNeighborTiles(Tiles.at(randIndex)->X, Tiles.at(randIndex)->Y, TileType::Empty) < 4 ||
+               CountNeighborTiles(Tiles.at(randIndex)->X, Tiles.at(randIndex)->Y, TileType::Wall) < 2)
+        {
+            randIndex = RandomInt(Tiles.size() - 2) + 1;
+        }
 
-        // Tiles.at(randIndex)->Type = TileType::Door;
+        Tiles.at(randIndex)->Type = TileType::Door;
 
         // Place the player randomly
         randIndex = RandomInt(Tiles.size() - 2) + 1;
