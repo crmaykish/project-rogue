@@ -8,7 +8,7 @@
 namespace cm
 {
     const int TilePixels = 24;
-    const int TileScaling = 2;
+    const int TileScaling = 1;
     const int TileSize = TilePixels * TileScaling;
 
     enum struct TileType
