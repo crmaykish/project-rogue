@@ -11,6 +11,7 @@
 namespace cm
 {
     class Action;
+    class Map;
 
     struct EventLogElem
     {

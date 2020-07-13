@@ -5,7 +5,14 @@ namespace cm
 {
     ActionResult WaitAction::Execute(Actor &executor)
     {
-        return ActionResult(ActionStatus::Succeeded, executor.Name + " is waiting");
+        if (executor.Friendly)
+        {
+            return ActionResult(ActionStatus::Succeeded, executor.Name + " is waiting");
+        }
+        else
+        {
+            return ActionResult(ActionStatus::Succeeded);
+        }
     }
 
 } // namespace cm

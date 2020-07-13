@@ -86,7 +86,7 @@ namespace cm
         }
     }
 
-    void Map::Render(Renderer &renderer)
+    void Map::Render(Renderer &renderer) const
     {
         // Render world tiles
         for (auto &t : Tiles)

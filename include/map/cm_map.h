@@ -5,6 +5,7 @@
 #include <vector>
 #include "cm_tile.h"
 #include "cm_renderer.h"
+#include "cm_actor.h"
 
 namespace cm
 {
@@ -26,11 +27,12 @@ namespace cm
     public:
         virtual ~Map() {}
         virtual void Generate() = 0;
+        virtual std::vector<std::unique_ptr<Actor>> SpawnNPCs() = 0;
 
         // TODO: Need another method to return a list of enemies
 
         void Update(GameWorld &world);
-        void Render(Renderer &renderer);
+        void Render(Renderer &renderer) const;
 
         int GetWidth() const;
         int GetHeight() const;

@@ -95,9 +95,6 @@ namespace cm
         MaxMana = 50;
         Mana = MaxMana;
 
-        TileX = 2;
-        TileY = 2;
-
         Active = true;
         Visible = true;
 

@@ -5,12 +5,7 @@
 
 namespace cm
 {
-    struct Island
-    {
-        int X = 0;
-        int Y = 0;
-        int Area = 0;
-    };
+    struct Island;
 
     class RoomAccretionMap : public Map
     {
@@ -20,14 +15,18 @@ namespace cm
 
         void RoundCorners();
         void RemoveUnknownTiles();
-        std::vector<Island> FindIslands();
         void WrapWalls();
+        void PlaceExit();
+        void PlacePlayer();
+        void PlaceTreasure();
+        std::vector<Island> FindIslands();
 
         // Return the number of tiles connected to this one
         int FloodFill(int x, int y);
 
     public:
         void Generate() override;
+        std::vector<std::unique_ptr<Actor>> SpawnNPCs() override;
     };
 } // namespace cm
 

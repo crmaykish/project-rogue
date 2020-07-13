@@ -52,7 +52,7 @@ namespace cm
             return meleeAction;
         }
 
-        else if (playerDistance < 500)
+        else if (playerDistance < 6 || HP < MaxHP)
         {
             // really bad pathfinding to player
             auto diffX = player->TileX - TileX;

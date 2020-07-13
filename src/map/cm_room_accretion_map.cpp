@@ -2,9 +2,17 @@
 #include "cm_room_accretion_map.h"
 #include "cm_random.h"
 #include "cm_logger.h"
+#include "cm_enemy.h"
 
 namespace cm
 {
+    struct Island
+    {
+        int X = 0;
+        int Y = 0;
+        int Area = 0;
+    };
+
     void RoomAccretionMap::Generate()
     {
         // Total map size
@@ -39,53 +47,50 @@ namespace cm
 
         auto islands = FindIslands();
 
-        Log("Islands: " + std::to_string(islands.size()));
-
         for (auto i = 0; i < islands.size() - 1; i++)
         {
+            // TODO: pick a starting point for the corridors that is more in the middle of the islands, not the first tile
+            // This is actually kind of hard to do - Have to label each tile as part of an island?
+
             // make a corridor between this island and the next one
             auto a = islands.at(i);
             auto b = islands.at(i + 1);
-
-            // TODO: is it even necessary to connect the last back to the first?
-            // if (i != islands.size() - 1)
-            // {
-            //     b = islands.at(i + 1);
-            // }
-
-            // TODO: pick a starting point for the corridors that is more in the middle of the islands, not the first tile
-            // This is actually kind of hard to do
-            // Have to label each tile as part of an island?
 
             BuildBridge(a.X, a.Y, b.X, b.Y);
         }
 
         WrapWalls();
 
-        // Place the exit door randomly
-        int randIndex = RandomInt(Tiles.size() - 2) + 1;
+        PlaceTreasure();
 
-        // TODO: this is pretty gross, without walls, this will loop forever
-        // Place the exit door in a wall with at least 3 floor tiles and 2 wall tiles around it
-        while (Tiles.at(randIndex)->Type != TileType::Wall ||
-               CountNeighborTiles(Tiles.at(randIndex)->X, Tiles.at(randIndex)->Y, TileType::Empty) < 4 ||
-               CountNeighborTiles(Tiles.at(randIndex)->X, Tiles.at(randIndex)->Y, TileType::Wall) < 2)
+        PlaceExit();
+
+        PlacePlayer();
+    }
+
+    std::vector<std::unique_ptr<Actor>> RoomAccretionMap::SpawnNPCs()
+    {
+        std::vector<std::unique_ptr<Actor>> npcs;
+
+        // TODO: configurable/dynamic enemy level, number of enemies, types, grouping, etc
+
+        int enemyCount = 10;
+
+        for (int i = 0; i < enemyCount; i++)
         {
-            randIndex = RandomInt(Tiles.size() - 2) + 1;
+            int randIndex = RandomInt(Tiles.size() - 2) + 1;
+
+            while (Tiles.at(randIndex)->Type != TileType::Empty)
+            {
+                randIndex = RandomInt(Tiles.size() - 2) + 1;
+            }
+
+            auto &t = Tiles.at(randIndex);
+
+            npcs.emplace_back(RandomEnemy(t->X, t->Y, 1));
         }
 
-        Tiles.at(randIndex)->Type = TileType::Door;
-
-        // Place the player randomly
-        randIndex = RandomInt(Tiles.size() - 2) + 1;
-
-        while (Tiles.at(randIndex)->Type != TileType::Empty)
-        {
-            randIndex = RandomInt(Tiles.size() - 2) + 1;
-        }
-
-        PlayerX = Tiles.at(randIndex)->X;
-        PlayerY = Tiles.at(randIndex)->Y;
+        return npcs;
     }
 
     void RoomAccretionMap::BuildRoom(int x, int y, int width, int height)
@@ -226,6 +231,62 @@ namespace cm
 
                     Tiles.push_back(std::move(t));
                 }
+            }
+        }
+    }
+
+    void RoomAccretionMap::PlaceExit()
+    {
+        // TODO: this will loop forever if the map has no walls
+
+        int randIndex = RandomInt(Tiles.size() - 2) + 1;
+
+        // Place the exit door in a wall tile with at least 3 floor tiles and 2 wall tiles around it
+        while (Tiles.at(randIndex)->Type != TileType::Wall ||
+               CountNeighborTiles(Tiles.at(randIndex)->X, Tiles.at(randIndex)->Y, TileType::Empty) < 4 ||
+               CountNeighborTiles(Tiles.at(randIndex)->X, Tiles.at(randIndex)->Y, TileType::Wall) < 2)
+        {
+            randIndex = RandomInt(Tiles.size() - 2) + 1;
+        }
+
+        Tiles.at(randIndex)->Type = TileType::Door;
+    }
+
+    void RoomAccretionMap::PlacePlayer()
+    {
+        // Place the player on a random empty tile
+
+        int randIndex = RandomInt(Tiles.size() - 2) + 1;
+
+        while (Tiles.at(randIndex)->Type != TileType::Empty)
+        {
+            randIndex = RandomInt(Tiles.size() - 2) + 1;
+        }
+
+        PlayerX = Tiles.at(randIndex)->X;
+        PlayerY = Tiles.at(randIndex)->Y;
+    }
+
+    void RoomAccretionMap::PlaceTreasure()
+    {
+        // place chests randomly around the map
+
+        int chestCount = 3;
+
+        for (int i = 0; i < chestCount; i++)
+        {
+            int randIndex = RandomInt(Tiles.size() - 2) + 1;
+
+            while (Tiles.at(randIndex)->Type != TileType::Empty)
+            {
+                randIndex = RandomInt(Tiles.size() - 2) + 1;
+            }
+
+            int itemCount = 1 + RandomInt(2);
+
+            for (int j = 0; j < itemCount; j++)
+            {
+                Tiles.at(randIndex)->Items.emplace_back(RandomItem());
             }
         }
     }
