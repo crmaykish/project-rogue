@@ -28,6 +28,7 @@ namespace cm
         Primary.Reset();
         Secondary.Reset();
         Activate.Reset();
+        Escape.Reset();
         Quit.Reset();
         Mouse.Reset();
 

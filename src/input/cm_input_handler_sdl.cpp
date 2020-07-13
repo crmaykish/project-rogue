@@ -106,6 +106,9 @@ namespace cm
         case SDLK_SPACE:
             userInput.Secondary.On = keyOn;
             break;
+        case SDLK_ESCAPE:
+            userInput.Escape.On = keyOn;
+            break;
         case SDLK_e:
             userInput.Activate.On = keyOn;
             break;

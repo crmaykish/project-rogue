@@ -33,6 +33,7 @@ namespace cm
         InputState Primary;
         InputState Secondary;
         InputState Activate;
+        InputState Escape;
         InputState Quit;
         InputState Ability[4];
         InputState Num[10];

@@ -66,6 +66,12 @@ namespace cm
                 TileSelected = true;
             }
 
+            if (Input.Escape.Once())
+            {
+                TileSelectMode = false;
+                TileSelected = false;
+            }
+
             return;
         }
 
