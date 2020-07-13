@@ -78,10 +78,6 @@ namespace cm
             {
                 t->Brightness = 0x60;
             }
-            else
-            {
-                t->Brightness = 0;
-            }
 
             if (t->Brightness > 0)
             {

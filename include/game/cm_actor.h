@@ -30,7 +30,7 @@ namespace cm
         int Level = 1;
         int Experience = 0;
 
-        int TorchFuel = 20;
+        int TorchFuel = 0;
 
         virtual ~Actor() {}
 
