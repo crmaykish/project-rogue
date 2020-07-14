@@ -6,6 +6,9 @@
 
 namespace cm
 {
+    static const int chestCount = 40;
+    static const int enemyCount = 10;
+
     struct Island
     {
         int X = 0;
@@ -74,7 +77,7 @@ namespace cm
 
         // TODO: configurable/dynamic enemy level, number of enemies, types, grouping, etc
 
-        int enemyCount = 10;
+        
 
         for (int i = 0; i < enemyCount; i++)
         {
@@ -270,9 +273,6 @@ namespace cm
     void RoomAccretionMap::PlaceTreasure()
     {
         // place chests randomly around the map
-
-        int chestCount = 3;
-
         for (int i = 0; i < chestCount; i++)
         {
             int randIndex = RandomInt(Tiles.size() - 2) + 1;

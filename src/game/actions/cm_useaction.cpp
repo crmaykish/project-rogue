@@ -16,6 +16,8 @@ namespace cm
             return ActionResult(ActionStatus::Invalid, "No item in slot: " + std::to_string(ItemSlot));
         }
 
+        auto itemName = item->DisplayName();
+
         if (item->Type == ItemType::Consumable)
         {
             // Use the item
@@ -26,7 +28,7 @@ namespace cm
                 executor.GetInventory()->RemoveItem(ItemSlot - 1);
             }
 
-            return ActionResult(ActionStatus::Succeeded, executor.Name + " used " + item->DisplayName());
+            return ActionResult(ActionStatus::Succeeded, executor.Name + " used " + itemName);
         }
         else
         {

@@ -52,9 +52,14 @@ namespace cm
     {
         auto name = Name;
 
-        if (Type != ItemType::Consumable)
+        if (UseEffects.size() > 0)
         {
-            name += " (" + std::to_string(BaseDamage) + " | " + std::to_string(BaseArmor) + " | " + std::to_string(BaseResist) + ")";
+            name += " of";
+
+            for (auto &e : UseEffects)
+            {
+                name += " " + e->GetName();
+            }
         }
 
         return name;
@@ -62,89 +67,89 @@ namespace cm
 
     std::unique_ptr<Item> HealthPotion(int healing, int stackSize)
     {
-        auto hp = std::make_unique<Item>();
-        hp->Name = "Health Potion";
-        hp->TextureKey = AssetKey::HealthPotionTexture;
-        hp->Charges = stackSize;
-        hp->AddUseEffect(std::make_unique<HealEffect>(healing));
+        auto a = std::make_unique<Item>();
+        a->Name = "Potion";
+        a->TextureKey = AssetKey::HealthPotionTexture;
+        a->Charges = stackSize;
+        a->AddUseEffect(std::make_unique<HealEffect>(healing));
 
-        return hp;
+        return a;
     }
 
     std::unique_ptr<Item> Torch()
     {
-        auto torch = std::make_unique<Item>();
-        torch->Name = "Torch";
-        torch->TextureKey = AssetKey::TorchTexture;
-        torch->AddPickupEffect(std::make_unique<AddTorchFuelEffect>());
+        auto a = std::make_unique<Item>();
+        a->Name = "Torch";
+        a->TextureKey = AssetKey::TorchTexture;
+        a->AddPickupEffect(std::make_unique<AddTorchFuelEffect>());
 
-        return torch;
+        return a;
     }
 
     std::unique_ptr<Item> RustyDagger()
     {
-        auto dagger = std::make_unique<Item>();
-        dagger->Name = "Rusty Dagger";
-        dagger->Type = ItemType::OneHand;
-        dagger->TextureKey = AssetKey::DaggerTexture;
-        dagger->BaseDamage = 1 + RandomInt(5); // 1 to 5 base damage
+        auto a = std::make_unique<Item>();
+        a->Name = "Rusty Dagger";
+        a->Type = ItemType::OneHand;
+        a->TextureKey = AssetKey::DaggerTexture;
+        a->BaseDamage = 1 + RandomInt(5); // 1 to 5 base damage
 
-        return dagger;
+        return a;
     }
 
     std::unique_ptr<Item> Sword()
     {
-        auto sword = std::make_unique<Item>();
-        sword->Name = "Longsword";
-        sword->Type = ItemType::OneHand;
-        sword->TextureKey = AssetKey::SwordGreyTexture;
-        sword->BaseDamage = 5 + RandomInt(7); // 5 to 12 base damage
+        auto a = std::make_unique<Item>();
+        a->Name = "Longsword";
+        a->Type = ItemType::OneHand;
+        a->TextureKey = AssetKey::SwordGreyTexture;
+        a->BaseDamage = 5 + RandomInt(7); // 5 to 12 base damage
 
-        return sword;
+        return a;
     }
 
     std::unique_ptr<Item> LeatherHelmet()
     {
-        auto helmet = std::make_unique<Item>();
-        helmet->Name = "Leather Helmet";
-        helmet->Type = ItemType::Head;
-        helmet->TextureKey = AssetKey::HelmetLeatherTexture;
-        helmet->BaseArmor = 3 + RandomInt(3); // 3 to 6 base armor
+        auto a = std::make_unique<Item>();
+        a->Name = "Leather Helmet";
+        a->Type = ItemType::Head;
+        a->TextureKey = AssetKey::HelmetLeatherTexture;
+        a->BaseArmor = 3 + RandomInt(3); // 3 to 6 base armor
 
-        return helmet;
+        return a;
     }
 
     std::unique_ptr<Item> LeatherBoots()
     {
-        auto boots = std::make_unique<Item>();
-        boots->Name = "Leather Boots";
-        boots->Type = ItemType::Boots;
-        boots->TextureKey = AssetKey::BootsLeatherTexture;
-        boots->BaseArmor = 1 + RandomInt(3); // 1 to 3 base armor
+        auto a = std::make_unique<Item>();
+        a->Name = "Leather Boots";
+        a->Type = ItemType::Boots;
+        a->TextureKey = AssetKey::BootsLeatherTexture;
+        a->BaseArmor = 1 + RandomInt(3); // 1 to 3 base armor
 
-        return boots;
+        return a;
     }
 
     std::unique_ptr<Item> Buckler()
     {
-        auto buckler = std::make_unique<Item>();
-        buckler->Name = "Buckler";
-        buckler->Type = ItemType::OffHand;
-        buckler->TextureKey = AssetKey::BucklerTexture;
-        buckler->BaseArmor = 8 + RandomInt(5); // 8 to 13 base armor
+        auto a = std::make_unique<Item>();
+        a->Name = "Buckler";
+        a->Type = ItemType::OffHand;
+        a->TextureKey = AssetKey::BucklerTexture;
+        a->BaseArmor = 8 + RandomInt(5); // 8 to 13 base armor
 
-        return buckler;
+        return a;
     }
 
     std::unique_ptr<Item> Shield()
     {
-        auto shield = std::make_unique<Item>();
-        shield->Name = "Shield";
-        shield->Type = ItemType::OffHand;
-        shield->TextureKey = AssetKey::ShieldTexture;
-        shield->BaseArmor = 15 + RandomInt(10); // 15 to 25 base armor
+        auto a = std::make_unique<Item>();
+        a->Name = "Shield";
+        a->Type = ItemType::OffHand;
+        a->TextureKey = AssetKey::ShieldTexture;
+        a->BaseArmor = 15 + RandomInt(10); // 15 to 25 base armor
 
-        return shield;
+        return a;
     }
 
     std::unique_ptr<Item> Bow()
@@ -249,13 +254,13 @@ namespace cm
 
     std::unique_ptr<Item> TowerShield()
     {
-        auto shield = std::make_unique<Item>();
-        shield->Name = "Tower Shield";
-        shield->Type = ItemType::OffHand;
-        shield->TextureKey = AssetKey::ShieldTowerTexture;
-        shield->BaseArmor = 20 + RandomInt(20);
+        auto a = std::make_unique<Item>();
+        a->Name = "Tower Shield";
+        a->Type = ItemType::OffHand;
+        a->TextureKey = AssetKey::ShieldTowerTexture;
+        a->BaseArmor = 20 + RandomInt(20);
 
-        return shield;
+        return a;
     }
 
     std::unique_ptr<Item> Staff()
@@ -275,9 +280,10 @@ namespace cm
         a->Type = ItemType::OneHand;
         a->TextureKey = AssetKey::WandBlueTexture;
         a->BaseDamage = 4;
-        a->Charges = 999;
+        a->Charges = 999; // TODO: make charges optional
 
         a->AddUseEffect(std::make_unique<HealEffect>(5));
+        a->AddUseEffect(std::make_unique<RandomPotionSpawnEffect>());
 
         return a;
     }
