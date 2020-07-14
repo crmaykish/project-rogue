@@ -35,6 +35,17 @@ namespace cm
             return;
         }
 
+        // Update combat text
+        for (auto &d : ScrollingCombatText)
+        {
+            d.Age++;
+        }
+
+        ScrollingCombatText.erase(std::remove_if(ScrollingCombatText.begin(),
+                                                 ScrollingCombatText.end(),
+                                                 [](auto &a) { return a.Age == 60; }),
+                                  ScrollingCombatText.end());
+
 #ifdef FOG_OF_WAR
         // Update tiles
         // TODO: Only run this after an actor moves
@@ -80,17 +91,6 @@ namespace cm
         {
             a->Update(*this);
         }
-
-        // Update combat text
-        for (auto &d : ScrollingCombatText)
-        {
-            d.Age++;
-        }
-
-        ScrollingCombatText.erase(std::remove_if(ScrollingCombatText.begin(),
-                                                 ScrollingCombatText.end(),
-                                                 [](auto &a) { return a.Age == 60; }),
-                                  ScrollingCombatText.end());
 
         // Handle actor turns
 
