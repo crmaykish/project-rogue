@@ -70,7 +70,6 @@ namespace cm
         auto effect = DamageEffect(user.GetAttack());
         effect.Use(*target);
 
-        // Activate any on-use effects of the equipped weapon
         auto inventory = user.GetInventory();
         if (inventory != nullptr)
         {
@@ -78,7 +77,11 @@ namespace cm
 
             if (weapon != nullptr)
             {
+                // u
                 weapon->Use(user);
+
+
+
             }
         }
 

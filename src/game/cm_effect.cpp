@@ -7,17 +7,17 @@ namespace cm
     // Damage
     DamageEffect::DamageEffect(int damage) : Damage(damage) {}
 
-    void DamageEffect::Use(Actor &target)
+    void DamageEffect::Use(Actor *source, Actor *dest, GameWorld *world)
     {
-        target.HP -= Damage;
+        source->HP -= Damage;
 
-        if (target.HP <= 0)
+        if (source->HP <= 0)
         {
-            target.HP = 0;
+            source->HP = 0;
 
-            if (!target.Friendly)
+            if (!source->Friendly)
             {
-                target.Active = false;
+                source->Active = false;
             }
         }
     }
@@ -25,24 +25,24 @@ namespace cm
     // Heal
     HealEffect::HealEffect(int health) : Health(health) {}
 
-    void HealEffect::Use(Actor &target)
+    void HealEffect::Use(Actor *source, Actor *dest, GameWorld *world)
     {
         Log("healing for: " + std::to_string(Health), LOG_INFO);
 
-        target.HP += Health;
+        source->HP += Health;
 
-        if (target.HP > target.MaxHP)
+        if (source->HP > source->MaxHP)
         {
-            target.HP = target.MaxHP;
+            source->HP = source->MaxHP;
         }
     }
 
     // Torch Fuel
-    void AddTorchFuelEffect::Use(Actor &target)
+    void AddTorchFuelEffect::Use(Actor *source, Actor *dest, GameWorld *world)
     {
-        if (target.Friendly)
+        if (source->Friendly)
         {
-            target.TorchFuel += 10;
+            source->TorchFuel += 10;
         }
     }
 

@@ -43,6 +43,11 @@ namespace cm
         UseEffects.emplace_back(std::move(effect));
     }
 
+    void Item::AddModifier(std::unique_ptr<Modifier> modifier)
+    {
+        Modifiers.emplace_back(std::move(modifier));
+    }
+
     AssetKey Item::GetTextureKey()
     {
         return TextureKey;
@@ -278,6 +283,8 @@ namespace cm
         a->Charges = 999;
 
         a->AddUseEffect(std::make_unique<HealEffect>(5));
+
+        a->AddModifier(std::make_unique<RandomPotionSpawnModifier>());
 
         return a;
     }

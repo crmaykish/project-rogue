@@ -4,13 +4,13 @@
 namespace cm
 {
     class Actor;
-    class Item;
+    class GameWorld;
 
     class Effect
     {
     public:
         virtual ~Effect() {}
-        virtual void Use(Actor &target) = 0;
+        virtual void Use(Actor *source, Actor *dest, GameWorld *world) = 0;
     };
 
     class HealEffect : public Effect
@@ -20,13 +20,13 @@ namespace cm
 
     public:
         HealEffect(int health);
-        void Use(Actor &target) override;
+        void Use(Actor *source, Actor *dest, GameWorld *world) override;
     };
 
     class AddTorchFuelEffect : public Effect
     {
     public:
-        void Use(Actor &target) override;
+        void Use(Actor *source, Actor *dest, GameWorld *world) override;
     };
 
     class DamageEffect : public Effect
@@ -36,7 +36,7 @@ namespace cm
 
     public:
         DamageEffect(int damage);
-        void Use(Actor &target) override;
+        void Use(Actor *source, Actor *dest, GameWorld *world) override;
     };
 
 } // namespace cm

@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include "cm_effect.h"
+#include "cm_modifier.h"
 #include "cm_assets.h"
 
 namespace cm
@@ -23,17 +24,13 @@ namespace cm
         Charm
     };
 
-    // TODO:
-    // Passive
-    // Chance on Hit
-    // Chance on Defend
-
     class Item
     {
     private:
         std::vector<std::unique_ptr<Effect>> PickupEffects;
         std::vector<std::unique_ptr<Effect>> UseEffects;
 
+        std::vector<std::unique_ptr<Modifier>> Modifiers;
 
     public:
         std::string Name;
@@ -51,6 +48,8 @@ namespace cm
 
         void AddPickupEffect(std::unique_ptr<Effect> effect);
         void AddUseEffect(std::unique_ptr<Effect> effect);
+
+        void AddModifier(std::unique_ptr<Modifier> modifier);
 
         AssetKey GetTextureKey();
 

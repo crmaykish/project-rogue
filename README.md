@@ -12,4 +12,35 @@
 5. Modifier - 
 6. Item - An actor can pickup, use, and equip items. Items can have base stats (damage, armor, resist, etc.), effects and modifiers.
 
- 
+Items:
+
+Item options:
+1. Stat increases - HP, mana, light radius, etc
+2. Chance on damage
+3. Chance on take damage
+
+weird stuff items could do:
+spawn potions
+destroy itself
+double a stat temporarily
+blind user or target
+steal ability from target
+grant an ability (permanent or charges)
+invisibility
+cursed item, cannot remove from inventory
+life steal
+
+Ability ideas:
+regenerating health shield
+reflect damage
+knock back
+stun
+poison/bleed damage
+chain lightning
+piercing shot
+spreading diseases
+
+TODO:
+
+Duplicating a lot of effort here. Maybe just have effects take user, target, and world.
+Then make abilities/modifiers/etc just a collection of effects.
