@@ -1,5 +1,6 @@
 #include "cm_effect.h"
 #include "cm_actor.h"
+#include "cm_game_world.h"
 #include "cm_random.h"
 #include "cm_logger.h"
 
@@ -129,6 +130,50 @@ namespace cm
     std::string LifeStealEffect::GetName()
     {
         return "Life Steal";
+    }
+
+    // Experience
+    ExperienceEffect::ExperienceEffect(int exp) : Experience(exp) {}
+
+    void ExperienceEffect::Use(Actor &target, GameWorld &world)
+    {
+        target.Experience += Experience;
+
+        world.AddCombatText(CombatText{
+                std::to_string(Experience),
+                target.TileX,
+                target.TileY,
+                ColorBlue,
+                0});
+
+        if (target.Experience >= (target.Level * 1000))
+        {
+            // Scale health pool
+            target.MaxHP *= 1.5;
+            target.HP = target.MaxHP;
+
+            // Scale mana pool
+            target.MaxMana *= 1.4;
+            target.Mana = target.MaxMana;
+
+            // Reset experience counter
+            Experience -= (target.Level * 1000);
+
+            // Level up
+            target.Level++;
+
+            world.AddCombatText(CombatText{
+                "Level Up!",
+                target.TileX,
+                target.TileY,
+                ColorBlue,
+                0});
+        }
+    }
+
+    std::string ExperienceEffect::GetName()
+    {
+        return "Experience";
     }
 
 } // namespace cm

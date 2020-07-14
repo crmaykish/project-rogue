@@ -2,7 +2,6 @@
 #define CM_ACTOR_H
 
 #include <memory>
-#include "cm_game_world.h"
 #include "cm_renderer.h"
 #include "cm_action.h"
 #include "cm_inventory.h"
@@ -29,9 +28,9 @@ namespace cm
         int HP = 0;
         int MaxMana = 0;
         int Mana = 0;
+        int TorchFuel = 0;
         int Level = 1;
         int Experience = 0;
-        int TorchFuel = 0;
 
         virtual ~Actor() {}
 
@@ -47,7 +46,6 @@ namespace cm
         // Combat
         virtual int GetAttack() = 0;
         virtual int GetDefense() = 0;
-        virtual void AddExperience(int killLevel){};
 
         // Items
         virtual Inventory *GetInventory() = 0;

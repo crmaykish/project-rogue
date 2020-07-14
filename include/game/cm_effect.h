@@ -67,6 +67,17 @@ namespace cm
         std::string GetName() override;
     };
 
+    class ExperienceEffect : public Effect
+    {
+    private:
+        int Experience;
+
+    public:
+        ExperienceEffect(int exp);
+        void Use(Actor &target, GameWorld &world) override;
+        std::string GetName() override;
+    };
+
 } // namespace cm
 
 #endif // CM_EFFECT_H

@@ -31,8 +31,6 @@ namespace cm
         int GetAttack() override;
         int GetDefense() override;
 
-        void AddExperience(int killLevel) override;
-
         Inventory *GetInventory() override;
 
         AbilitySet *GetAbilitySet() override;

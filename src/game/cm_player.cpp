@@ -54,35 +54,6 @@ namespace cm
         return (Level * BaseDefense) + Items.GetAddedDefense();
     }
 
-    void Player::AddExperience(int killLevel)
-    {
-        int expReward = killLevel * 100;
-
-        if (killLevel < Level)
-        {
-            expReward /= (Level - killLevel + 1);
-        }
-
-        Experience += expReward;
-
-        if (Experience >= (Level * 1000))
-        {
-            // Scale health pool
-            MaxHP *= 1.5;
-            HP = MaxHP;
-
-            // Scale mana pool
-            MaxMana *= 1.4;
-            Mana = MaxMana;
-
-            // Reset experience counter
-            Experience -= (Level * 1000);
-
-            // Level up
-            Level++;
-        }
-    }
-
     void Player::Reset()
     {
         Name = "Colin";
