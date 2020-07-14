@@ -1,6 +1,6 @@
 #include "cm_effect.h"
-
 #include "cm_actor.h"
+#include "cm_logger.h"
 
 namespace cm
 {
@@ -27,6 +27,8 @@ namespace cm
 
     void HealEffect::Use(Actor &target)
     {
+        Log("healing for: " + std::to_string(Health), LOG_INFO);
+
         target.HP += Health;
 
         if (target.HP > target.MaxHP)

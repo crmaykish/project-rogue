@@ -275,6 +275,10 @@ namespace cm
         a->Type = ItemType::OneHand;
         a->TextureKey = AssetKey::WandBlueTexture;
         a->BaseDamage = 4;
+        a->Charges = 999;
+
+        a->AddUseEffect(std::make_unique<HealEffect>(5));
+
         return a;
     }
 

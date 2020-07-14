@@ -70,6 +70,18 @@ namespace cm
         auto effect = DamageEffect(user.GetAttack());
         effect.Use(*target);
 
+        // Activate any on-use effects of the equipped weapon
+        auto inventory = user.GetInventory();
+        if (inventory != nullptr)
+        {
+            auto weapon = user.GetInventory()->EquipmentAt(ItemType::OneHand);
+
+            if (weapon != nullptr)
+            {
+                weapon->Use(user);
+            }
+        }
+
         return true;
     }
 

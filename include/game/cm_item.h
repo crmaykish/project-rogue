@@ -34,6 +34,7 @@ namespace cm
         std::vector<std::unique_ptr<Effect>> PickupEffects;
         std::vector<std::unique_ptr<Effect>> UseEffects;
 
+
     public:
         std::string Name;
         bool PickedUp = false;
