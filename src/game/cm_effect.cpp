@@ -31,6 +31,13 @@ namespace cm
                 target.Active = false;
             }
         }
+
+        world.AddCombatText(CombatText{
+            std::to_string(Damage),
+            target.TileX,
+            target.TileY,
+            ColorRed,
+            0});
     }
 
     std::string DamageEffect::GetName()
@@ -49,6 +56,13 @@ namespace cm
         {
             target.HP = target.MaxHP;
         }
+
+        world.AddCombatText(CombatText{
+            std::to_string(Health),
+            target.TileX,
+            target.TileY,
+            ColorGreen,
+            0});
     }
 
     std::string HealEffect::GetName()

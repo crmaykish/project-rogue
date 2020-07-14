@@ -75,10 +75,24 @@ namespace cm
             return;
         }
 
+        // Update actors
         for (auto &a : Actors)
         {
             a->Update(*this);
         }
+
+        // Update combat text
+        for (auto &d : ScrollingCombatText)
+        {
+            d.Age++;
+        }
+
+        ScrollingCombatText.erase(std::remove_if(ScrollingCombatText.begin(),
+                                                 ScrollingCombatText.end(),
+                                                 [](auto &a) { return a.Age == 60; }),
+                                  ScrollingCombatText.end());
+
+        // Handle actor turns
 
         auto actor = GetCurrentActor();
 
@@ -195,6 +209,29 @@ namespace cm
         {
             renderer.DrawTexture(AssetKey::SelectedTileTexture, SelectedX * TileSize, SelectedY * TileSize, TileSize, TileSize);
         }
+
+        // Render scrolling combat text
+        {
+            int lastAge = -1;
+            for (auto &d : ScrollingCombatText)
+            {
+
+                float x = d.X * TileSize + d.Age;
+                float y = d.Y * TileSize + TileSize + d.Age;
+
+                if (d.Age == lastAge)
+                {
+                    y += 24;
+                }
+
+                auto color = d.RenderColor;
+                color.alpha -= (d.Age);
+
+                renderer.DrawFont(d.Text, AssetKey::UIFont, color, x, y, 0.6);
+
+                lastAge = d.Age;
+            }
+        }
     }
 
     void GameWorld::AddPlayer(std::shared_ptr<Actor> player)
@@ -273,6 +310,11 @@ namespace cm
         e.color = friendly ? ColorLightGrey : ColorGrey;
         EventLog.push_back(e);
         EventLogIndex++;
+    }
+
+    void GameWorld::AddCombatText(CombatText combatText)
+    {
+        ScrollingCombatText.push_back(combatText);
     }
 
     Map *GameWorld::GetLevel()

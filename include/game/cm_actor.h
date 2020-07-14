@@ -31,7 +31,6 @@ namespace cm
         int Mana = 0;
         int Level = 1;
         int Experience = 0;
-
         int TorchFuel = 0;
 
         virtual ~Actor() {}

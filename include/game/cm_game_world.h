@@ -19,6 +19,15 @@ namespace cm
         Color color;
     };
 
+    struct CombatText
+    {
+        std::string Text;
+        int X = 0;
+        int Y = 0;
+        Color RenderColor = ColorRed;
+        int Age = 0;
+    };
+
     class GameWorld
     {
     private:
@@ -43,6 +52,8 @@ namespace cm
 
         int EventLogIndex = 1;
         std::vector<EventLogElem> EventLog;
+
+        std::vector<CombatText> ScrollingCombatText;
 
         void CreateLevel();
 
@@ -77,6 +88,8 @@ namespace cm
 
         void LogEvent(std::string event, bool friendly);
         std::vector<EventLogElem> &GetEventLog() { return EventLog; }
+
+        void AddCombatText(CombatText combatText);
     };
 
 } // namespace cm
