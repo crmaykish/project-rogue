@@ -68,7 +68,7 @@ namespace cm
         }
 
         auto effect = DamageEffect(user.GetAttack());
-        effect.Use(*target);
+        effect.Use(*target, world);
 
         auto inventory = user.GetInventory();
         if (inventory != nullptr)
@@ -78,7 +78,7 @@ namespace cm
             if (weapon != nullptr)
             {
                 // u
-                weapon->Use(user);
+                weapon->Use(user, world);
 
 
 
@@ -116,7 +116,7 @@ namespace cm
         }
 
         auto effect = DamageEffect(user.GetAttack());
-        effect.Use(*target);
+        effect.Use(*target, world);
 
         return true;
     }
@@ -151,7 +151,7 @@ namespace cm
 
         auto effect = HealEffect(user.MaxHP * 0.4);
 
-        effect.Use(user);
+        effect.Use(user, world);
 
         return true;
     }

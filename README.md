@@ -44,3 +44,12 @@ TODO:
 
 Duplicating a lot of effort here. Maybe just have effects take user, target, and world.
 Then make abilities/modifiers/etc just a collection of effects.
+
+Keep the world/targets/etc out of items, store effects at the actor level?
+
+Items and abilities will have a collection of effects
+
+Need some concept of buff/debuff too (probably just stats)
+
+Abilities and effects are pretty similar. Interface for something that modifies an 
+actor and the world?

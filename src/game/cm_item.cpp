@@ -3,7 +3,7 @@
 
 namespace cm
 {
-    void Item::Pickup(Actor &owner)
+    void Item::Pickup(Actor &owner, GameWorld &world)
     {
         if (PickedUp)
         {
@@ -12,13 +12,13 @@ namespace cm
 
         for (auto const &e : PickupEffects)
         {
-            e->Use(owner);
+            e->Use(owner, world);
         }
 
         PickedUp = true;
     }
 
-    void Item::Use(Actor &owner)
+    void Item::Use(Actor &owner, GameWorld &world)
     {
         if (Charges == 0)
         {
@@ -27,7 +27,7 @@ namespace cm
 
         for (auto const &e : UseEffects)
         {
-            e->Use(owner);
+            e->Use(owner, world);
         }
 
         Charges--;
@@ -41,11 +41,6 @@ namespace cm
     void Item::AddUseEffect(std::unique_ptr<Effect> effect)
     {
         UseEffects.emplace_back(std::move(effect));
-    }
-
-    void Item::AddModifier(std::unique_ptr<Modifier> modifier)
-    {
-        Modifiers.emplace_back(std::move(modifier));
     }
 
     AssetKey Item::GetTextureKey()
@@ -283,8 +278,6 @@ namespace cm
         a->Charges = 999;
 
         a->AddUseEffect(std::make_unique<HealEffect>(5));
-
-        a->AddModifier(std::make_unique<RandomPotionSpawnModifier>());
 
         return a;
     }

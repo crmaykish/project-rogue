@@ -4,7 +4,8 @@
 
 namespace cm
 {
-    UseAction::UseAction(int itemSlot) : ItemSlot(itemSlot) {}
+    UseAction::UseAction(int itemSlot, GameWorld &world)
+        : ItemSlot(itemSlot), World(world) {}
 
     ActionResult UseAction::Execute(Actor &executor)
     {
@@ -18,7 +19,7 @@ namespace cm
         if (item->Type == ItemType::Consumable)
         {
             // Use the item
-            item->Use(executor);
+            item->Use(executor, World);
 
             if (item->Charges == 0)
             {

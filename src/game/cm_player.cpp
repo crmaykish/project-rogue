@@ -124,7 +124,7 @@ namespace cm
             auto n = Input.Num[i];
             if (n.Once())
             {
-                nextAction = std::make_unique<UseAction>(i);
+                nextAction = std::make_unique<UseAction>(i, world);
             }
         }
 

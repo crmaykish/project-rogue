@@ -5,7 +5,6 @@
 #include <string>
 #include <vector>
 #include "cm_effect.h"
-#include "cm_modifier.h"
 #include "cm_assets.h"
 
 namespace cm
@@ -30,8 +29,6 @@ namespace cm
         std::vector<std::unique_ptr<Effect>> PickupEffects;
         std::vector<std::unique_ptr<Effect>> UseEffects;
 
-        std::vector<std::unique_ptr<Modifier>> Modifiers;
-
     public:
         std::string Name;
         bool PickedUp = false;
@@ -43,13 +40,11 @@ namespace cm
         int BaseArmor = 0;
         int BaseResist = 0;
 
-        void Pickup(Actor &owner);
-        void Use(Actor &owner);
+        void Pickup(Actor &owner, GameWorld &world);
+        void Use(Actor &owner, GameWorld &world);
 
         void AddPickupEffect(std::unique_ptr<Effect> effect);
         void AddUseEffect(std::unique_ptr<Effect> effect);
-
-        void AddModifier(std::unique_ptr<Modifier> modifier);
 
         AssetKey GetTextureKey();
 

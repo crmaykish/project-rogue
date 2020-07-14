@@ -2,6 +2,7 @@
 #define CM_USEACTION_H
 
 #include "cm_action.h"
+#include "cm_game_world.h"
 
 namespace cm
 {
@@ -9,9 +10,10 @@ namespace cm
     {
     private:
         int ItemSlot = 0;
+        GameWorld &World;
 
     public:
-        UseAction(int itemSlot);
+        UseAction(int itemSlot, GameWorld &world);
         ActionResult Execute(Actor &executor) override;
     };
 
