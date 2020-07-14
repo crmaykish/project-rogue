@@ -211,26 +211,30 @@ namespace cm
         }
 
         // Render scrolling combat text
+        int lastAge = -1;
+        int lastAgeCount = 0;
+
+        for (auto &d : ScrollingCombatText)
         {
-            int lastAge = -1;
-            for (auto &d : ScrollingCombatText)
+            float x = d.X * TileSize + d.Age;
+            float y = d.Y * TileSize + TileSize + d.Age;
+
+            if (d.Age == lastAge)
             {
-
-                float x = d.X * TileSize + d.Age;
-                float y = d.Y * TileSize + TileSize + d.Age;
-
-                if (d.Age == lastAge)
-                {
-                    y += 24;
-                }
-
-                auto color = d.RenderColor;
-                color.alpha -= (d.Age);
-
-                renderer.DrawFont(d.Text, AssetKey::UIFont, color, x, y, 0.6);
-
-                lastAge = d.Age;
+                lastAgeCount++;
+                y += (24 * lastAgeCount);
             }
+            else
+            {
+                lastAgeCount = 0;
+            }
+
+            auto color = d.RenderColor;
+            color.alpha -= (d.Age);
+
+            renderer.DrawFont(d.Text, AssetKey::UIFont, color, x, y, 0.6);
+
+            lastAge = d.Age;
         }
     }
 
