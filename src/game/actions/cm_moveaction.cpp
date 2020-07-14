@@ -31,7 +31,11 @@ namespace cm
             break;
         }
 
-        auto targetTile = World.GetLevel()->GetTile(executor.TileX + moveX, executor.TileY + moveY);
+        // Set the actor's target
+        executor.TargetX = executor.TileX + moveX;
+        executor.TargetY = executor.TileY + moveY;
+
+        auto targetTile = World.GetLevel()->GetTile(executor.TargetX, executor.TargetY);
 
         // Is there a tile in the move direction?
         if (targetTile == nullptr)
@@ -48,7 +52,6 @@ namespace cm
             {
                 // Attack tile only if the target is not friendly
                 auto attackAbilityAction = std::make_unique<AbilityAction>(0, World);
-                attackAbilityAction->SetTarget(targetTile->X, targetTile->Y);
                 return ActionResult(std::move(attackAbilityAction));
             }
 

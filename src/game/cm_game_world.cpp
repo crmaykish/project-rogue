@@ -89,7 +89,8 @@ namespace cm
 
             if (TileSelected)
             {
-                CurrentAction->SetTarget(SelectedX, SelectedY);
+                actor->TargetX = SelectedX;
+                actor->TargetY = SelectedY;
                 result = CurrentAction->Execute(*actor);
                 TileSelected = false;
             }
@@ -128,6 +129,10 @@ namespace cm
                 result.Status == ActionStatus::Failed ||
                 !actor->Friendly)
             {
+                // Reset actor's target
+                actor->TargetX = 0;
+                actor->TargetY = 0;
+
                 NextActor();
                 actor = GetCurrentActor();
             }

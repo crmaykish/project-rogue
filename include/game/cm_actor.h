@@ -23,6 +23,8 @@ namespace cm
         bool Friendly = false;
         int TileX = 0;
         int TileY = 0;
+        int TargetX = 0;
+        int TargetY = 0;
         int MaxHP = 0;
         int HP = 0;
         int MaxMana = 0;

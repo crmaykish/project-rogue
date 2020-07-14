@@ -91,4 +91,30 @@ namespace cm
         return "Many Potions";
     }
 
+    void LifeStealEffect::Use(Actor &target, GameWorld &world)
+    {
+        int life = 2;
+
+        auto targetOfTarget = world.GetActor(target.TargetX, target.TargetY);
+
+        if (targetOfTarget == nullptr)
+        {
+            return;
+        }
+
+        // damage the target of target
+        // TODO: can't steal more life than target of target has
+        auto damage = DamageEffect(life);
+        damage.Use(*targetOfTarget, world);
+
+        // heal the target
+        auto heal = HealEffect(life);
+        heal.Use(target, world);
+    }
+
+    std::string LifeStealEffect::GetName()
+    {
+        return "Life Steal";
+    }
+
 } // namespace cm

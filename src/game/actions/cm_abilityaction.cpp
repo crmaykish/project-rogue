@@ -17,13 +17,9 @@ namespace cm
 
         if (!ability->IsSelfCast())
         {
-            if (TargetX == 0 && TargetY == 0)
+            if (executor.TargetX == 0 && executor.TargetY == 0)
             {
                 return ActionResult(ActionStatus::Waiting, "Pick a target");
-            }
-            else
-            {
-                ability->SetTarget(TargetX, TargetY);
             }
         }
 
@@ -37,12 +33,6 @@ namespace cm
         {
             return ActionResult(ActionStatus::Invalid, executor.Name + " failed to use " + ability->GetName());
         }
-    }
-
-    void AbilityAction::SetTarget(int x, int y)
-    {
-        TargetX = x;
-        TargetY = y;
     }
 
 } // namespace cm

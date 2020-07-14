@@ -18,10 +18,6 @@ namespace cm
 
     class Ability
     {
-    protected:
-        int TargetX = 0;
-        int TargetY = 0;
-
     public:
         virtual ~Ability() {}
         virtual std::string GetName() = 0;
@@ -29,12 +25,6 @@ namespace cm
         virtual AssetKey GetIcon() = 0;
 
         virtual bool IsSelfCast() { return false; }
-
-        virtual void SetTarget(int x, int y)
-        {
-            TargetX = x;
-            TargetY = y;
-        }
 
         // Presumably an ability will always effect the user or the game world or both
         virtual bool Use(Actor &user, GameWorld &world) = 0;

@@ -282,8 +282,9 @@ namespace cm
         a->BaseDamage = 4;
         a->Charges = 999; // TODO: make charges optional
 
-        a->AddUseEffect(std::make_unique<HealEffect>(5));
+        // a->AddUseEffect(std::make_unique<HealEffect>(5));
         a->AddUseEffect(std::make_unique<RandomPotionSpawnEffect>());
+        a->AddUseEffect(std::make_unique<LifeStealEffect>());
 
         return a;
     }
@@ -320,47 +321,49 @@ namespace cm
 
     std::unique_ptr<Item> RandomWeapon()
     {
-        switch (RandomInt(12))
-        {
-        case 0:
-            return RustyDagger();
-            break;
-        case 1:
-            return Sword();
-            break;
-        case 2:
-            return Bow();
-            break;
-        case 3:
-            return Crossbow();
-            break;
-        case 4:
-            return SpellBook();
-            break;
-        case 5:
-            return Axe();
-            break;
-        case 6:
-            return BattleAxe();
-            break;
-        case 7:
-            return Club();
-            break;
-        case 8:
-            return Falchion();
-            break;
-        case 9:
-            return Hammer();
-            break;
-        case 10:
-            return Staff();
-            break;
-        case 11:
-            return Wand();
-            break;
-        default:
-            return nullptr;
-        }
+        return Wand();
+
+        // switch (RandomInt(12))
+        // {
+        // case 0:
+        //     return RustyDagger();
+        //     break;
+        // case 1:
+        //     return Sword();
+        //     break;
+        // case 2:
+        //     return Bow();
+        //     break;
+        // case 3:
+        //     return Crossbow();
+        //     break;
+        // case 4:
+        //     return SpellBook();
+        //     break;
+        // case 5:
+        //     return Axe();
+        //     break;
+        // case 6:
+        //     return BattleAxe();
+        //     break;
+        // case 7:
+        //     return Club();
+        //     break;
+        // case 8:
+        //     return Falchion();
+        //     break;
+        // case 9:
+        //     return Hammer();
+        //     break;
+        // case 10:
+        //     return Staff();
+        //     break;
+        // case 11:
+        //     return Wand();
+        //     break;
+        // default:
+        //     return nullptr;
+        // }
     }
 
     std::unique_ptr<Item> RandomArmor()

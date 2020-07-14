@@ -44,9 +44,12 @@ namespace cm
 
         if (playerDistance == 1)
         {
-            // attack player
+            // Set enemy's target to player
+            TargetX = player->TileX;
+            TargetY = player->TileY;
+
+            // Melee attack the player
             auto meleeAction = std::make_unique<AbilityAction>(0, world);
-            meleeAction->SetTarget(player->TileX, player->TileY);
             return meleeAction;
         }
 

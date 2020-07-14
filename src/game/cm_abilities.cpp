@@ -6,6 +6,8 @@
 
 namespace cm
 {
+    void TriggerWeaponUseEffects(Actor &user, GameWorld &world);
+
     // AbilitySet
 
     void AbilitySet::SetAbility(int slot, std::unique_ptr<Ability> ability)
@@ -60,7 +62,7 @@ namespace cm
     {
         // TODO: range checking
 
-        auto target = world.GetActor(TargetX, TargetY);
+        auto target = world.GetActor(user.TargetX, user.TargetY);
 
         if (target == nullptr)
         {
@@ -70,20 +72,7 @@ namespace cm
         auto effect = DamageEffect(user.GetAttack());
         effect.Use(*target, world);
 
-        auto inventory = user.GetInventory();
-        if (inventory != nullptr)
-        {
-            auto weapon = user.GetInventory()->EquipmentAt(ItemType::OneHand);
-
-            if (weapon != nullptr)
-            {
-                // u
-                weapon->Use(user, world);
-
-
-
-            }
-        }
+        TriggerWeaponUseEffects(user, world);
 
         return true;
     }
@@ -108,7 +97,7 @@ namespace cm
     bool RangedAbility::Use(Actor &user, GameWorld &world)
     {
         // TODO: range checking
-        auto target = world.GetActor(TargetX, TargetY);
+        auto target = world.GetActor(user.TargetX, user.TargetY);
 
         if (target == nullptr)
         {
@@ -117,6 +106,8 @@ namespace cm
 
         auto effect = DamageEffect(user.GetAttack());
         effect.Use(*target, world);
+
+        TriggerWeaponUseEffects(user, world);
 
         return true;
     }
@@ -176,7 +167,6 @@ namespace cm
     bool CleaveAbility::Use(Actor &user, GameWorld &world)
     {
         // do damage to everything around the user
-
         auto neighbors = world.GetLevel()->GetNeighbors(user.TileX, user.TileY);
 
         for (auto n : neighbors)
@@ -185,20 +175,34 @@ namespace cm
 
             if (enemy != nullptr && !enemy->Friendly)
             {
-                // TODO: wrap up actors taking damage in an Effect
-
                 // TODO: scale with weapon damage
-                enemy->HP -= 12;
+                auto damage = DamageEffect(12);
+                damage.Use(*enemy, world);
 
-                if (enemy->HP <= 0)
-                {
-                    enemy->HP = 0;
-                    enemy->Active = false;
-                }
+                user.TargetX = enemy->TileX;
+                user.TargetY = enemy->TileY;
+
+                // Cleave will trigger weapon effects for every target it hits
+                TriggerWeaponUseEffects(user, world);
             }
         }
 
         return true;
+    }
+
+    void TriggerWeaponUseEffects(Actor &user, GameWorld &world)
+    {
+        // If the actor has a weapon, trigger any on-use effects it has
+        auto inventory = user.GetInventory();
+        if (inventory != nullptr)
+        {
+            auto weapon = user.GetInventory()->EquipmentAt(ItemType::OneHand);
+
+            if (weapon != nullptr)
+            {
+                weapon->Use(user, world);
+            }
+        }
     }
 
 } // namespace cm
