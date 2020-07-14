@@ -8,65 +8,107 @@ namespace cm
     class Actor;
     class GameWorld;
 
-    // TODO: effects should have some way of accessing their status for event logging
-
+    /**
+     * @brief An Effect is the preferred way to update the state of an Actor
+     * Effects can change actor properties, e.g. HP, mana. They can also impact
+     * the target's target (e.g. life-steal) or the world (e.g. AoE damage).
+     */
     class Effect
     {
     public:
         virtual ~Effect() {}
-        virtual void Use(Actor &target, GameWorld &world) = 0;
+        virtual void Use(Actor &actor, GameWorld &world) = 0;
         virtual std::string GetName() = 0;
     };
 
-    class NullEffect : public Effect
-    {
-    public:
-        void Use(Actor &target, GameWorld &world) override;
-        std::string GetName() override;
-    };
-
+    /**
+     * @brief Heal the actor
+     */
     class HealEffect : public Effect
     {
     private:
-        int Health = 10;
+        int Health = 0;
 
     public:
         HealEffect(int health);
-        void Use(Actor &target, GameWorld &world) override;
+        void Use(Actor &actor, GameWorld &world) override;
         std::string GetName() override;
     };
 
+    /**
+     * @brief Restore the actor's mana
+     */
+    class ManaEffect : public Effect
+    {
+    private:
+        int Mana = 0;
+
+    public:
+        ManaEffect(int mana);
+        void Use(Actor &actor, GameWorld &world) override;
+        std::string GetName() override;
+    };
+
+    /**
+     * @brief Increase the actor's torch fuel level
+     */
     class AddTorchFuelEffect : public Effect
     {
     public:
-        void Use(Actor &target, GameWorld &world) override;
+        void Use(Actor &actor, GameWorld &world) override;
         std::string GetName() override;
     };
 
+    /**
+     * @brief Damage the actor
+     */
     class DamageEffect : public Effect
     {
     private:
-        int Damage = 10;
+        int Damage = 0;
 
     public:
         DamageEffect(int damage);
-        void Use(Actor &target, GameWorld &world) override;
+        void Use(Actor &actor, GameWorld &world) override;
         std::string GetName() override;
     };
 
-    class RandomPotionSpawnEffect : public Effect
+    /**
+     * @brief Damage the actor's target
+     */
+    class DamageTargetEffect : public Effect
     {
-        void Use(Actor &target, GameWorld &world) override;
+    private:
+        int Damage = 0;
+
+    public:
+        DamageTargetEffect(int damage);
+        void Use(Actor &actor, GameWorld &world) override;
         std::string GetName() override;
     };
 
+    /**
+     * @brief Spawn a random consumable in the actor's inventory
+     */
+    class RandomConsumableEffect : public Effect
+    {
+        void Use(Actor &actor, GameWorld &world) override;
+        std::string GetName() override;
+    };
+
+    /**
+     * @brief Steal life from the actor's target to the actor
+     */
     class LifeStealEffect : public Effect
     {
     public:
-        void Use(Actor &target, GameWorld &world) override;
+        void Use(Actor &actor, GameWorld &world) override;
         std::string GetName() override;
     };
 
+    /**
+     * @brief Grant experience to the target actor
+     */
     class ExperienceEffect : public Effect
     {
     private:
@@ -74,7 +116,7 @@ namespace cm
 
     public:
         ExperienceEffect(int exp);
-        void Use(Actor &target, GameWorld &world) override;
+        void Use(Actor &actor, GameWorld &world) override;
         std::string GetName() override;
     };
 

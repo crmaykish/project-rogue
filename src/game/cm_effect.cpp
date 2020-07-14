@@ -1,42 +1,33 @@
 #include "cm_effect.h"
 #include "cm_actor.h"
 #include "cm_game_world.h"
+#include "cm_item.h"
 #include "cm_random.h"
 #include "cm_logger.h"
 
 namespace cm
 {
-    // Null
-    void NullEffect::Use(Actor &target, GameWorld &world)
-    {
-    }
-
-    std::string NullEffect::GetName()
-    {
-        return "Null Effect";
-    }
-
     // Damage
     DamageEffect::DamageEffect(int damage) : Damage(damage) {}
 
-    void DamageEffect::Use(Actor &target, GameWorld &world)
+    void DamageEffect::Use(Actor &actor, GameWorld &world)
     {
-        target.HP -= Damage;
+        actor.HP -= Damage;
 
-        if (target.HP <= 0)
+        if (actor.HP <= 0)
         {
-            target.HP = 0;
+            actor.HP = 0;
 
-            if (!target.Friendly)
+            if (!actor.Friendly)
             {
-                target.Active = false;
+                actor.Active = false;
             }
         }
 
         world.AddCombatText(CombatText{
             std::to_string(Damage),
-            target.TileX,
-            target.TileY,
+            actor.TileX,
+            actor.TileY,
             ColorRed,
             0});
     }
@@ -46,22 +37,41 @@ namespace cm
         return "Damage";
     }
 
+    // Damage Target
+    DamageTargetEffect::DamageTargetEffect(int damage) : Damage(damage) {}
+
+    void DamageTargetEffect::Use(Actor &actor, GameWorld &world)
+    {
+        auto target = world.GetActor(actor.TargetX, actor.TargetY);
+
+        if (target != nullptr)
+        {
+            auto damage = DamageEffect(Damage);
+            damage.Use(*target, world);
+        }
+    }
+
+    std::string DamageTargetEffect::GetName()
+    {
+        return "Damage";
+    }
+
     // Heal
     HealEffect::HealEffect(int health) : Health(health) {}
 
-    void HealEffect::Use(Actor &target, GameWorld &world)
+    void HealEffect::Use(Actor &actor, GameWorld &world)
     {
-        target.HP += Health;
+        actor.HP += Health;
 
-        if (target.HP > target.MaxHP)
+        if (actor.HP > actor.MaxHP)
         {
-            target.HP = target.MaxHP;
+            actor.HP = actor.MaxHP;
         }
 
         world.AddCombatText(CombatText{
             std::to_string(Health),
-            target.TileX,
-            target.TileY,
+            actor.TileX,
+            actor.TileY,
             ColorGreen,
             0});
     }
@@ -71,12 +81,37 @@ namespace cm
         return "Healing";
     }
 
-    // Torch Fuel
-    void AddTorchFuelEffect::Use(Actor &target, GameWorld &world)
+    // Mana
+    ManaEffect::ManaEffect(int mana) : Mana(mana) {}
+
+    void ManaEffect::Use(Actor &actor, GameWorld &world)
     {
-        if (target.Friendly)
+        actor.Mana += Mana;
+
+        if (actor.Mana > actor.MaxMana)
         {
-            target.TorchFuel += 10;
+            actor.Mana = actor.MaxMana;
+        }
+
+        world.AddCombatText(CombatText{
+            std::to_string(Mana),
+            actor.TileX,
+            actor.TileY,
+            ColorPurple,
+            0});
+    }
+
+    std::string ManaEffect::GetName()
+    {
+        return "Mana";
+    }
+
+    // Torch Fuel
+    void AddTorchFuelEffect::Use(Actor &actor, GameWorld &world)
+    {
+        if (actor.Friendly)
+        {
+            actor.TorchFuel += 10;
         }
     }
 
@@ -86,45 +121,40 @@ namespace cm
     }
 
     // Random Potions
-    void RandomPotionSpawnEffect::Use(Actor &target, GameWorld &world)
+    void RandomConsumableEffect::Use(Actor &actor, GameWorld &world)
     {
-        int percentChance = 10; // TODO: make this a parameter
-
-        auto inv = target.GetInventory();
+        auto inv = actor.GetInventory();
 
         if (inv != nullptr)
         {
-            if (RandomInt(100) < percentChance)
-            {
-                inv->AddItem(RandomConsumable());
-            }
+            inv->AddItem(RandomConsumable());
         }
     }
 
-    std::string RandomPotionSpawnEffect::GetName()
+    std::string RandomConsumableEffect::GetName()
     {
         return "Many Potions";
     }
 
-    void LifeStealEffect::Use(Actor &target, GameWorld &world)
+    void LifeStealEffect::Use(Actor &actor, GameWorld &world)
     {
         int life = 2;
 
-        auto targetOfTarget = world.GetActor(target.TargetX, target.TargetY);
+        auto targetOfTarget = world.GetActor(actor.TargetX, actor.TargetY);
 
         if (targetOfTarget == nullptr)
         {
             return;
         }
 
-        // damage the target of target
+        // damage the actor's of target
         // TODO: can't steal more life than target of target has
         auto damage = DamageEffect(life);
         damage.Use(*targetOfTarget, world);
 
-        // heal the target
+        // heal the actor
         auto heal = HealEffect(life);
-        heal.Use(target, world);
+        heal.Use(actor, world);
     }
 
     std::string LifeStealEffect::GetName()
@@ -135,37 +165,37 @@ namespace cm
     // Experience
     ExperienceEffect::ExperienceEffect(int exp) : Experience(exp) {}
 
-    void ExperienceEffect::Use(Actor &target, GameWorld &world)
+    void ExperienceEffect::Use(Actor &actor, GameWorld &world)
     {
-        target.Experience += Experience;
+        actor.Experience += Experience;
 
         world.AddCombatText(CombatText{
-                std::to_string(Experience),
-                target.TileX,
-                target.TileY,
-                ColorBlue,
-                0});
+            std::to_string(Experience),
+            actor.TileX,
+            actor.TileY,
+            ColorBlue,
+            0});
 
-        if (target.Experience >= (target.Level * 1000))
+        if (actor.Experience >= (actor.Level * 1000))
         {
             // Scale health pool
-            target.MaxHP *= 1.5;
-            target.HP = target.MaxHP;
+            actor.MaxHP *= 1.5;
+            actor.HP = actor.MaxHP;
 
             // Scale mana pool
-            target.MaxMana *= 1.4;
-            target.Mana = target.MaxMana;
+            actor.MaxMana *= 1.4;
+            actor.Mana = actor.MaxMana;
 
             // Reset experience counter
-            Experience -= (target.Level * 1000);
+            Experience -= (actor.Level * 1000);
 
             // Level up
-            target.Level++;
+            actor.Level++;
 
             world.AddCombatText(CombatText{
                 "Level Up!",
-                target.TileX,
-                target.TileY,
+                actor.TileX,
+                actor.TileY,
                 ColorBlue,
                 0});
         }

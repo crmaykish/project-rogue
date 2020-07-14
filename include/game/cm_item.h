@@ -23,18 +23,48 @@ namespace cm
         Charm
     };
 
+    struct ItemModifier
+    {
+        std::string Name;
+        int PercentChance = 100;
+        std::unique_ptr<Effect> MainEffect;
+    };
+
     class Item
     {
     private:
+        // TODO: Item stat modifiers
+
+        // TODO: Actor stat modifiers
+
+        /**
+         * @brief Effects that trigger when an actor picks up the item
+         */
         std::vector<std::unique_ptr<Effect>> PickupEffects;
-        std::vector<std::unique_ptr<Effect>> UseEffects;
+
+        /**
+         * @brief Modifiers that trigger when an actor uses the item.
+         * 
+         * For consumables, this means activating the item in inventory.
+         * 
+         * For weapons, this means attacking an enemy.
+         * 
+         * For armor, this means taking damage.
+         */
+        std::vector<ItemModifier> OnUseModifiers;
+
+        // TODO: OnKillModifiers
 
     public:
         std::string Name;
-        bool PickedUp = false;
-        int Charges = 0;
+        std::string Description;
         ItemType Type = ItemType::Consumable;
         AssetKey TextureKey;
+
+        bool PickedUp = false;
+
+        bool LimitedCharge = false;
+        int Charges = 0;
 
         int BaseDamage = 0;
         int BaseArmor = 0;
@@ -44,43 +74,27 @@ namespace cm
         void Use(Actor &owner, GameWorld &world);
 
         void AddPickupEffect(std::unique_ptr<Effect> effect);
-        void AddUseEffect(std::unique_ptr<Effect> effect);
+
+        void AddOnUseModifier(std::string name, std::unique_ptr<Effect> effect, int percentChance = 100);
 
         AssetKey GetTextureKey();
 
         std::string DisplayName();
     };
 
-    // Item Creation
-    std::unique_ptr<Item> HealthPotion(int healing, int stackSize = 1);
-    std::unique_ptr<Item> Torch();
-    std::unique_ptr<Item> RustyDagger();
-    std::unique_ptr<Item> Sword();
-    std::unique_ptr<Item> LeatherHelmet();
-    std::unique_ptr<Item> LeatherBoots();
-    std::unique_ptr<Item> Buckler();
-    std::unique_ptr<Item> Shield();
-    std::unique_ptr<Item> Bow();
-    std::unique_ptr<Item> Crossbow();
-    std::unique_ptr<Item> SpellBook();
-    std::unique_ptr<Item> Axe();
-    std::unique_ptr<Item> BattleAxe();
-    std::unique_ptr<Item> Beer();
-    std::unique_ptr<Item> Wine();
-    std::unique_ptr<Item> Club();
-    std::unique_ptr<Item> Falchion();
-    std::unique_ptr<Item> Hammer();
-    std::unique_ptr<Item> TowerShield();
-    std::unique_ptr<Item> Staff();
-    std::unique_ptr<Item> Wand();
-    // std::unique_ptr<Item> Bone();
-    // std::unique_ptr<Item> Bottle();
+    // Weapons
+    std::unique_ptr<Item> Dagger();
+    std::unique_ptr<Item> ShortSword();
+    std::unique_ptr<Item> LongSword();
 
-    std::unique_ptr<Item> Charm();
+    // Armor
 
+    // Consumables
+    std::unique_ptr<Item> HealingPotion();
+    std::unique_ptr<Item> ManaPotion();
+
+    // Random
     std::unique_ptr<Item> RandomConsumable();
-    std::unique_ptr<Item> RandomWeapon();
-    std::unique_ptr<Item> RandomArmor();
     std::unique_ptr<Item> RandomItem();
 
 } // namespace cm
