@@ -6,8 +6,8 @@
 
 namespace cm
 {
-    static const int chestCount = 40;
-    static const int enemyCount = 10;
+    static const int chestCount = RandomInt(3);
+    static const int enemyCount = RandomInt(6, 12);
 
     struct Island
     {
@@ -32,14 +32,12 @@ namespace cm
 
         Tiles.clear();
 
-        int rooms = roomsCountMin + RandomInt(roomsCountMax - roomsCountMin);
-
-        for (int i = 0; i < rooms; i++)
+        for (int i = 0; i < RandomInt(roomsCountMin, roomsCountMax); i++)
         {
-            int roomWidth = roomSizeMin + RandomInt(roomSizeMax - roomSizeMin);
-            int roomHeight = roomSizeMin + RandomInt(roomSizeMax - roomSizeMin);
-            int roomX = 1 + RandomInt(Width - roomWidth - 1);
-            int roomY = 1 + RandomInt(Height - roomHeight - 1);
+            int roomWidth = RandomInt(roomSizeMin, roomSizeMax);
+            int roomHeight = RandomInt(roomSizeMin, roomSizeMax);
+            int roomX = RandomInt(1, Width - roomWidth - 1);
+            int roomY = RandomInt(1, Height - roomHeight - 1);
 
             BuildRoom(roomX, roomY, roomWidth, roomHeight);
         }
@@ -48,10 +46,10 @@ namespace cm
 
         RemoveUnknownTiles();
 
-        for (int i = 0; i < RandomInt(4); i++)
-        {
-            PlaceRandomLake();
-        }
+        // for (int i = 0; i < RandomInt(4); i++)
+        // {
+        //     PlaceRandomLake();
+        // }
 
         auto islands = FindIslands();
 
@@ -86,11 +84,11 @@ namespace cm
 
         for (int i = 0; i < enemyCount; i++)
         {
-            int randIndex = RandomInt(Tiles.size() - 2) + 1;
+            int randIndex = RandomInt(Tiles.size());
 
             while (Tiles.at(randIndex)->Type != TileType::Empty)
             {
-                randIndex = RandomInt(Tiles.size() - 2) + 1;
+                randIndex = RandomInt(Tiles.size());
             }
 
             auto &t = Tiles.at(randIndex);
@@ -239,7 +237,7 @@ namespace cm
                     auto t = std::make_unique<Tile>();
                     t->X = i;
                     t->Y = j;
-                    t->Type = RandomInt(100) < 5 ? TileType::WallCracked : TileType::Wall;
+                    t->Type = RandomPercentCheck(5) ? TileType::WallCracked : TileType::Wall;
 
                     Tiles.push_back(std::move(t));
                 }
@@ -251,14 +249,14 @@ namespace cm
     {
         // TODO: this will loop forever if the map has no walls
 
-        int randIndex = RandomInt(Tiles.size() - 2) + 1;
+        int randIndex = RandomInt(Tiles.size());
 
         // Place the exit door in a wall tile with at least 3 floor tiles and 2 wall tiles around it
         while (Tiles.at(randIndex)->Type != TileType::Wall ||
                CountNeighborTiles(Tiles.at(randIndex)->X, Tiles.at(randIndex)->Y, TileType::Empty) < 4 ||
                CountNeighborTiles(Tiles.at(randIndex)->X, Tiles.at(randIndex)->Y, TileType::Wall) < 2)
         {
-            randIndex = RandomInt(Tiles.size() - 2) + 1;
+            randIndex = RandomInt(Tiles.size());
         }
 
         Tiles.at(randIndex)->Type = TileType::Door;
@@ -268,11 +266,11 @@ namespace cm
     {
         // Place the player on a random empty tile
 
-        int randIndex = RandomInt(Tiles.size() - 2) + 1;
+        int randIndex = RandomInt(Tiles.size());
 
         while (Tiles.at(randIndex)->Type != TileType::Empty)
         {
-            randIndex = RandomInt(Tiles.size() - 2) + 1;
+            randIndex = RandomInt(Tiles.size());
         }
 
         PlayerX = Tiles.at(randIndex)->X;
@@ -284,11 +282,11 @@ namespace cm
         // place chests randomly around the map
         for (int i = 0; i < chestCount; i++)
         {
-            int randIndex = RandomInt(Tiles.size() - 2) + 1;
+            int randIndex = RandomInt(Tiles.size());
 
             while (Tiles.at(randIndex)->Type != TileType::Empty)
             {
-                randIndex = RandomInt(Tiles.size() - 2) + 1;
+                randIndex = RandomInt(Tiles.size());
             }
 
             int itemCount = 1 + RandomInt(2);
@@ -302,19 +300,19 @@ namespace cm
 
     void RoomAccretionMap::PlaceRandomLake()
     {
-        int randIndex = RandomInt(Tiles.size() - 2) + 1;
+        int randIndex = RandomInt(Tiles.size());
 
         while (Tiles.at(randIndex)->Type != TileType::Empty)
         {
-            randIndex = RandomInt(Tiles.size() - 2) + 1;
+            randIndex = RandomInt(Tiles.size());
         }
 
         auto &start = Tiles.at(randIndex);
 
         start->Type = TileType::Water;
 
-        int lakeRadiusW = 2 + RandomInt(4);
-        int lakeRadiusH = 2 + RandomInt(4);
+        int lakeRadiusW = RandomInt(3, 6);
+        int lakeRadiusH = RandomInt(3, 6);
 
         for (int i = -lakeRadiusW; i < lakeRadiusW; i++)
         {

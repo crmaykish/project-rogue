@@ -35,6 +35,7 @@ namespace cm
     std::unique_ptr<Actor> Spider(int x, int y, int level);
     std::unique_ptr<Actor> Slime(int x, int y, int level);
     std::unique_ptr<Actor> Mimic(int x, int y, int level);
+    std::unique_ptr<Actor> Squid(int x, int y, int level);
 
     std::unique_ptr<Actor> RandomEnemy(int x, int y, int level);
 

@@ -163,6 +163,9 @@ namespace cm
         case AssetKey::MimicTexture:
             assetFileName = "mimic.png";
             break;
+        case AssetKey::SquidTexture:
+            assetFileName = "squid.png";
+            break;
 
         // Items
         case AssetKey::HealthPotionTexture:

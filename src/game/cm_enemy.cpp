@@ -227,9 +227,27 @@ namespace cm
         return a;
     }
 
+    std::unique_ptr<Actor> Squid(int x, int y, int level)
+    {
+        auto a = std::make_unique<Enemy>(x, y);
+        a->Name = "Squid";
+        a->Texture = AssetKey::SquidTexture;
+        a->Visible = true;
+        a->Active = true;
+        a->Level = level;
+
+        // Stats
+        a->MaxHP = level * (20 + RandomInt(20)); // 20-40 health per level
+        a->HP = a->MaxHP;
+        a->BaseAttack = 15;
+        a->BaseDefense = 10;
+
+        return a;
+    }
+
     std::unique_ptr<Actor> RandomEnemy(int x, int y, int level)
     {
-        switch (RandomInt(6))
+        switch (RandomInt(7))
         {
         case 0:
             return Ghost(x, y, level);
@@ -248,6 +266,9 @@ namespace cm
             break;
         case 5:
             return Mimic(x, y, level);
+            break;
+        case 6:
+            return Squid(x, y, level + 1);
             break;
         default:
             return nullptr;
