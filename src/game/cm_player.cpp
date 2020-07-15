@@ -5,6 +5,7 @@
 #include "cm_pickupaction.h"
 #include "cm_useaction.h"
 #include "cm_abilityaction.h"
+#include "cm_random.h"
 
 namespace cm
 {
@@ -41,17 +42,7 @@ namespace cm
 
     void Player::Render(const Renderer &renderer)
     {
-        renderer.DrawTexture(AssetKey::PriestTexture, TileX * TileSize, TileY * TileSize, TileSize, TileSize);
-    }
-
-    int Player::GetAttack()
-    {
-        return (Level * BaseAttack) + Items.GetAddedAttack();
-    }
-
-    int Player::GetDefense()
-    {
-        return (Level * BaseDefense) + Items.GetAddedDefense();
+        renderer.DrawTexture(AssetKey::KnightTexture, TileX * TileSize, TileY * TileSize, TileSize, TileSize);
     }
 
     void Player::Reset()
@@ -60,11 +51,12 @@ namespace cm
 
         Friendly = true;
 
-        MaxHP = 100;
-        HP = MaxHP;
+        Strength = RandomInt(18, 22);
+        Vitality = RandomInt(15, 20);
+        Dexterity = RandomInt(8, 14);
+        Intellect = RandomInt(6, 12);
 
-        MaxMana = 50;
-        Mana = MaxMana;
+        InitStats();
 
         Active = true;
         Visible = true;
@@ -76,9 +68,7 @@ namespace cm
 
         // Add some player abilities
         Abilities.SetAbility(0, std::make_unique<MeleeAbility>());
-        Abilities.SetAbility(1, std::make_unique<RangedAbility>());
-        Abilities.SetAbility(2, std::make_unique<CleaveAbility>());
-        Abilities.SetAbility(3, std::make_unique<HealAbility>());
+        Abilities.SetAbility(1, std::make_unique<CleaveAbility>());
     }
 
     void Player::DecideNextAction(GameWorld &world)

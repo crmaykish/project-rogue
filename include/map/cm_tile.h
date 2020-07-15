@@ -3,12 +3,12 @@
 
 #include "cm_item.h"
 
-// #define FOG_OF_WAR
+#define FOG_OF_WAR
 
 namespace cm
 {
     const int TilePixels = 12;
-    const int TileScaling = 2;
+    const int TileScaling = 3;
     const int TileSize = TilePixels * TileScaling;
 
     enum struct TileType

@@ -99,16 +99,6 @@ namespace cm
         }
     }
 
-    int Enemy::GetAttack()
-    {
-        return BaseAttack * Level;
-    }
-
-    int Enemy::GetDefense()
-    {
-        return BaseDefense * Level;
-    }
-
     Inventory *Enemy::GetInventory()
     {
         return nullptr;
@@ -128,151 +118,19 @@ namespace cm
         a->Active = true;
         a->Level = level;
 
-        // Stats
-        a->MaxHP = level * (15 + RandomInt(10)); // 15-25 health per level
-        a->HP = a->MaxHP;
-        a->BaseAttack = 5;
-        a->BaseDefense = 2;
-
-        return a;
-    }
-
-    std::unique_ptr<Actor> Flame(int x, int y, int level)
-    {
-        auto a = std::make_unique<Enemy>(x, y);
-        a->Name = "Flame";
-        a->Texture = AssetKey::FlameTexture;
-        a->Visible = true;
-        a->Active = true;
-        a->Level = level;
-
-        // Stats
-        a->MaxHP = level * (10 + RandomInt(8)); // 10-18 health per level
-        a->HP = a->MaxHP;
-        a->BaseAttack = 10;
-        a->BaseDefense = 1;
-
-        return a;
-    }
-
-    std::unique_ptr<Actor> Skeleton(int x, int y, int level)
-    {
-        auto a = std::make_unique<Enemy>(x, y);
-        a->Name = "Skeleton";
-        a->Texture = AssetKey::SkeletonTexture;
-        a->Visible = true;
-        a->Active = true;
-        a->Level = level;
-
-        // Stats
-        a->MaxHP = level * (20 + RandomInt(10)); // 20-30 health per level
-        a->HP = a->MaxHP;
-        a->BaseAttack = 12;
-        a->BaseDefense = 20;
-
-        return a;
-    }
-
-    std::unique_ptr<Actor> Spider(int x, int y, int level)
-    {
-        auto a = std::make_unique<Enemy>(x, y);
-        a->Name = "Spider";
-        a->Texture = AssetKey::SpiderTexture;
-        a->Visible = true;
-        a->Active = true;
-        a->Level = level;
-
-        // Stats
-        a->MaxHP = level * (6 + RandomInt(30)); // 6-36 health per level
-        a->HP = a->MaxHP;
-        a->BaseAttack = 4;
-        a->BaseDefense = 5;
-
-        return a;
-    }
-
-    std::unique_ptr<Actor> Slime(int x, int y, int level)
-    {
-        auto a = std::make_unique<Enemy>(x, y);
-        a->Name = "Slime";
-        a->Texture = AssetKey::SlimeTexture;
-        a->Visible = true;
-        a->Active = true;
-        a->Level = level;
-
-        // Stats
-        a->MaxHP = level * (12 + RandomInt(4)); // 12-16 health per level
-        a->HP = a->MaxHP;
-        a->BaseAttack = 3;
-        a->BaseDefense = 8;
-
-        return a;
-    }
-
-    std::unique_ptr<Actor> Mimic(int x, int y, int level)
-    {
-        auto a = std::make_unique<Enemy>(x, y);
-        a->Name = "Mimic";
-        a->Texture = AssetKey::MimicTexture;
-        a->Visible = true;
-        a->Active = true;
-        a->Level = level;
-
-        // Stats
-        a->MaxHP = level * (20 + RandomInt(20)); // 20-40 health per level
-        a->HP = a->MaxHP;
-        a->BaseAttack = 15;
-        a->BaseDefense = 10;
-
-        return a;
-    }
-
-    std::unique_ptr<Actor> Squid(int x, int y, int level)
-    {
-        auto a = std::make_unique<Enemy>(x, y);
-        a->Name = "Squid";
-        a->Texture = AssetKey::SquidTexture;
-        a->Visible = true;
-        a->Active = true;
-        a->Level = level;
-
-        // Stats
-        a->MaxHP = level * (20 + RandomInt(20)); // 20-40 health per level
-        a->HP = a->MaxHP;
-        a->BaseAttack = 15;
-        a->BaseDefense = 10;
+        a->Strength = 6;
+        a->Vitality = 5;
+        a->Dexterity = 3;
+        a->Intellect = 2;
+        
+        a->InitStats();
 
         return a;
     }
 
     std::unique_ptr<Actor> RandomEnemy(int x, int y, int level)
     {
-        switch (RandomInt(7))
-        {
-        case 0:
-            return Ghost(x, y, level);
-            break;
-        case 1:
-            return Flame(x, y, level);
-            break;
-        case 2:
-            return Spider(x, y, level);
-            break;
-        case 3:
-            return Skeleton(x, y, level);
-            break;
-        case 4:
-            return Slime(x, y, level);
-            break;
-        case 5:
-            return Mimic(x, y, level);
-            break;
-        case 6:
-            return Squid(x, y, level + 1);
-            break;
-        default:
-            return nullptr;
-        }
+        return Ghost(x, y, level);
     }
 
 } // namespace cm

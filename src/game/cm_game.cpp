@@ -182,7 +182,29 @@ namespace cm
 
         yOffset -= 30;
 
-        MainRenderer->DrawFont("ATK: " + std::to_string(World->GetPlayer()->GetAttack()) + " | DEF: " + std::to_string(World->GetPlayer()->GetDefense()),
+        MainRenderer->DrawFont("VIT: " + std::to_string(World->GetPlayer()->Vitality) +
+                                   " | STR: " + std::to_string(World->GetPlayer()->Strength),
+                               AssetKey::UIFont,
+                               ColorYellow,
+                               10,
+                               yOffset,
+                               0.6,
+                               true);
+
+        yOffset -= 30;
+
+        MainRenderer->DrawFont("DEX: " + std::to_string(World->GetPlayer()->Dexterity) +
+                                   " | INT: " + std::to_string(World->GetPlayer()->Intellect),
+                               AssetKey::UIFont,
+                               ColorYellow,
+                               10,
+                               yOffset,
+                               0.6,
+                               true);
+
+        yOffset -= 30;
+
+        MainRenderer->DrawFont("ATK: " + std::to_string(World->GetPlayer()->MeleeAttackRating()) + " | DEF: " + std::to_string(World->GetPlayer()->DefenseRating()),
                                AssetKey::UIFont,
                                ColorPurple,
                                10,
@@ -219,7 +241,7 @@ namespace cm
         // Equipped items
 
         int eqX = MainRenderer->GetResolutionX() - 10 - TileSize;
-        int eqY = MainRenderer->GetResolutionY() - 10 - TileSize;
+        int eqY = MainRenderer->GetResolutionY() - TileSize * 2;
 
         auto weapon = items->EquipmentAt(ItemType::OneHand);
         if (weapon != nullptr)

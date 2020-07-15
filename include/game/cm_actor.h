@@ -25,13 +25,20 @@ namespace cm
         int TileY = 0;
         int TargetX = 0;
         int TargetY = 0;
+        int TorchFuel = 0;
+        int Level = 1;
+        int Experience = 0;
+
+        // Stats
         int MaxHP = 0;
         int HP = 0;
         int MaxMana = 0;
         int Mana = 0;
-        int TorchFuel = 0;
-        int Level = 1;
-        int Experience = 0;
+
+        int Vitality = 0;
+        int Strength = 0;
+        int Dexterity = 0;
+        int Intellect = 0;
 
         virtual ~Actor() {}
 
@@ -45,8 +52,29 @@ namespace cm
         virtual std::unique_ptr<Action> NextAction(GameWorld &world) = 0;
 
         // Combat
-        virtual int GetAttack() = 0;
-        virtual int GetDefense() = 0;
+        int MeleeAttackRating()
+        {
+            return Level * Strength;
+        }
+
+        int RangedAttackRating()
+        {
+            return Level * Dexterity;
+        }
+
+        int DefenseRating()
+        {
+            return Level * Vitality;
+        }
+
+        void InitStats()
+        {
+            MaxHP = Level * Vitality * 1.2;
+            HP = MaxHP;
+
+            MaxMana = Level * Intellect * 0.8;
+            Mana = MaxMana;
+        }
 
         // Items
         virtual Inventory *GetInventory() = 0;

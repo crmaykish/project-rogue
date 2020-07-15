@@ -14,9 +14,6 @@ namespace cm
         Inventory Items;
         AbilitySet Abilities;
 
-        int BaseAttack = 10;
-        int BaseDefense = 5;
-
         void DecideNextAction(GameWorld &world);
 
     public:
@@ -27,9 +24,6 @@ namespace cm
 
         bool ActionReady() override;
         std::unique_ptr<Action> NextAction(GameWorld &world) override;
-
-        int GetAttack() override;
-        int GetDefense() override;
 
         Inventory *GetInventory() override;
 

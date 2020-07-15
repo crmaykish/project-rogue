@@ -69,7 +69,7 @@ namespace cm
             return false;
         }
 
-        auto effect = DamageEffect(user.GetAttack());
+        auto effect = DamageEffect(user.MeleeAttackRating());
         effect.Use(*target, world);
 
         TriggerWeaponUseEffects(user, world);
@@ -104,7 +104,7 @@ namespace cm
             return false;
         }
 
-        auto effect = DamageEffect(user.GetAttack());
+        auto effect = DamageEffect(user.RangedAttackRating());
         effect.Use(*target, world);
 
         TriggerWeaponUseEffects(user, world);

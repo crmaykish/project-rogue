@@ -155,19 +155,13 @@ namespace cm
 
         if (actor.Experience >= (actor.Level * 1000))
         {
-            // Scale health pool
-            actor.MaxHP *= 1.5;
-            actor.HP = actor.MaxHP;
-
-            // Scale mana pool
-            actor.MaxMana *= 1.4;
-            actor.Mana = actor.MaxMana;
+            // Level up
+            actor.Level++;
 
             // Reset experience counter
             Experience -= (actor.Level * 1000);
 
-            // Level up
-            actor.Level++;
+            actor.InitStats();
 
             world.AddCombatText(CombatText{
                 "Level Up!",
