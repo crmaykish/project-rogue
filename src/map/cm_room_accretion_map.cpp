@@ -6,8 +6,18 @@
 
 namespace cm
 {
-    static const int chestCount = RandomInt(3);
-    static const int enemyCount = RandomInt(6, 12);
+    // Generator options
+    static const int mapWidth = 40;
+    static const int mapHeight = 30;
+    static const int roomsCountMin = 20;
+    static const int roomsCountMax = 30;
+    static const int roomSizeMin = 4;
+    static const int roomSizeMax = 6;
+    static const int chestMin = 0;
+    static const int chestMax = 3;
+    static const int enemyMin = 6;
+    static const int enemyMax = 12;
+    static const int floodChance = 30;
 
     struct Island
     {
@@ -18,20 +28,11 @@ namespace cm
 
     void RoomAccretionMap::Generate()
     {
-        // Total map size
-        Width = 40;
-        Height = 30;
+        // Set total map size
+        Width = mapWidth;
+        Height = mapHeight;
 
-        // Generator options
-        int roomsCountMin = 20;
-        int roomsCountMax = 30;
-        int roomSizeMin = 4;
-        int roomSizeMax = 6;
-
-        Log("Generating a new map with room accretion", LOG_INFO);
-
-        Tiles.clear();
-
+        // Build random rooms around the map
         for (int i = 0; i < RandomInt(roomsCountMin, roomsCountMax); i++)
         {
             int roomWidth = RandomInt(roomSizeMin, roomSizeMax);
@@ -67,7 +68,10 @@ namespace cm
 
         WrapWalls();
 
-        // PlaceWaterOpenAreas();
+        if (RandomPercentCheck(floodChance))
+        {
+            PlaceWaterOpenAreas();
+        }
 
         PlaceTreasure();
 
@@ -82,7 +86,7 @@ namespace cm
 
         // TODO: configurable/dynamic enemy level, number of enemies, types, grouping, etc
 
-        for (int i = 0; i < enemyCount; i++)
+        for (int i = 0; i < RandomInt(enemyMin, enemyMax); i++)
         {
             auto t = RandomTile(TileType::Empty);
             npcs.emplace_back(RandomEnemy(t->X, t->Y, playerLevel));
@@ -264,7 +268,7 @@ namespace cm
     void RoomAccretionMap::PlaceTreasure()
     {
         // place chests randomly around the map
-        for (int i = 0; i < chestCount; i++)
+        for (int i = 0; i < RandomInt(chestMin, chestMax); i++)
         {
             auto t = RandomTile(TileType::Empty);
             int itemCount = RandomInt(1, 3);

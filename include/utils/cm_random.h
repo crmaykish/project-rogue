@@ -20,7 +20,7 @@ namespace cm
     /**
      * @brief Return true or false at random
      */
-    int RandomBool();
+    bool RandomBool();
 
     /**
      * @brief Return true randomly at the given percentage

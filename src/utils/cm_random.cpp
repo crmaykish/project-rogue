@@ -12,7 +12,7 @@ namespace cm
         return min + (rand() % (max - min + 1));
     }
 
-    int RandomBool()
+    bool RandomBool()
     {
         return RandomInt(2) == 0;
     }
