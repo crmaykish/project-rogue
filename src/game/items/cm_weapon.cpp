@@ -4,6 +4,8 @@
 
 namespace cm
 {
+    static const int ModifierChance = 20;
+
     std::unique_ptr<Item> Dagger()
     {
         auto item = std::make_unique<Item>();
@@ -12,7 +14,10 @@ namespace cm
         item->TextureKey = AssetKey::DaggerTexture;
         item->BaseDamage = 1;
 
-        item->AddModifier(ItemModifierTrigger::Attack, ItemModifierSacrifice());
+        if (RandomInt(100) < ModifierChance)
+        {
+            item->AddModifier(ItemModifierTrigger::Attack, RandomAttackModifier());
+        }
 
         return item;
     }
@@ -25,7 +30,10 @@ namespace cm
         item->TextureKey = AssetKey::SwordGreyTexture;
         item->BaseDamage = 5;
 
-        item->AddModifier(ItemModifierTrigger::Attack, ItemModifierLifeLeech());
+        if (RandomInt(100) < ModifierChance)
+        {
+            item->AddModifier(ItemModifierTrigger::Attack, RandomAttackModifier());
+        }
 
         return item;
     }
@@ -38,7 +46,13 @@ namespace cm
         item->TextureKey = AssetKey::SwordBlueTexture;
         item->BaseDamage = 8;
 
-        item->AddModifier(ItemModifierTrigger::Attack, ItemModifierExtraHit());
+        if (RandomInt(100) < ModifierChance)
+        {
+            for (int i = 0; i <= RandomInt(3); i++)
+            {
+                item->AddModifier(ItemModifierTrigger::Attack, RandomAttackModifier());
+            }
+        }
 
         return item;
     }

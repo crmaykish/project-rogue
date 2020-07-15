@@ -10,11 +10,14 @@ namespace cm
             return;
         }
 
-        for (auto const &mod : Modifiers.at(trigger))
+        if (Modifiers.find(trigger) != Modifiers.end())
         {
-            if (RandomInt(100) < mod.PercentChance)
+            for (auto const &mod : Modifiers.at(trigger))
             {
-                mod.MainEffect->Use(owner, world);
+                if (RandomInt(100) < mod.PercentChance)
+                {
+                    mod.MainEffect->Use(owner, world);
+                }
             }
         }
 

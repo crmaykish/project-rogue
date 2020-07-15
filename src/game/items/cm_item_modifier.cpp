@@ -1,7 +1,28 @@
 #include "cm_item_modifier.h"
+#include "cm_random.h"
+#include "cm_logger.h"
 
 namespace cm
 {
+    ItemModifier RandomAttackModifier()
+    {
+        switch (RandomInt(3))
+        {
+        case 0:
+            return ItemModifierSacrifice();
+            break;
+        case 1:
+            return ItemModifierExtraHit();
+            break;
+        case 2:
+            return ItemModifierLifeLeech();
+            break;
+        }
+
+        Log("No item modifier found", LOG_WARNING);
+        return ItemModifier{};
+    }
+
     ItemModifier ItemModifierHeal()
     {
         return ItemModifier{"Health",
