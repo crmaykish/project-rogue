@@ -23,8 +23,15 @@ namespace cm
         void PlaceRandomLake();
         std::vector<Island> FindIslands();
 
-        // Return the number of tiles connected to this one
+        /**
+         * @brief Count the number of tiles connected to the tile at [x, y]
+         */
         int FloodFill(int x, int y);
+
+        /**
+         * @brief Return a random tile of the given type or nullptr if no tile is found of that type
+         */
+        Tile *RandomTile(TileType type);
 
     public:
         void Generate() override;

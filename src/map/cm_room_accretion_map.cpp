@@ -84,15 +84,7 @@ namespace cm
 
         for (int i = 0; i < enemyCount; i++)
         {
-            int randIndex = RandomInt(Tiles.size());
-
-            while (Tiles.at(randIndex)->Type != TileType::Empty)
-            {
-                randIndex = RandomInt(Tiles.size());
-            }
-
-            auto &t = Tiles.at(randIndex);
-
+            auto t = RandomTile(TileType::Empty);
             npcs.emplace_back(RandomEnemy(t->X, t->Y, playerLevel));
         }
 
@@ -247,34 +239,26 @@ namespace cm
 
     void RoomAccretionMap::PlaceExit()
     {
-        // TODO: this will loop forever if the map has no walls
-
-        int randIndex = RandomInt(Tiles.size());
+        auto t = RandomTile(TileType::Wall);
 
         // Place the exit door in a wall tile with at least 3 floor tiles and 2 wall tiles around it
-        while (Tiles.at(randIndex)->Type != TileType::Wall ||
-               CountNeighborTiles(Tiles.at(randIndex)->X, Tiles.at(randIndex)->Y, TileType::Empty) < 4 ||
-               CountNeighborTiles(Tiles.at(randIndex)->X, Tiles.at(randIndex)->Y, TileType::Wall) < 2)
+        while (
+            CountNeighborTiles(t->X, t->Y, TileType::Empty) < 4 ||
+            CountNeighborTiles(t->X, t->Y, TileType::Wall) < 2)
         {
-            randIndex = RandomInt(Tiles.size());
+            // TODO: this will loop forever if the map has no walls
+            t = RandomTile(TileType::Wall);
         }
 
-        Tiles.at(randIndex)->Type = TileType::Door;
+        t->Type = TileType::Door;
     }
 
     void RoomAccretionMap::PlacePlayer()
     {
         // Place the player on a random empty tile
-
-        int randIndex = RandomInt(Tiles.size());
-
-        while (Tiles.at(randIndex)->Type != TileType::Empty)
-        {
-            randIndex = RandomInt(Tiles.size());
-        }
-
-        PlayerX = Tiles.at(randIndex)->X;
-        PlayerY = Tiles.at(randIndex)->Y;
+        auto t = RandomTile(TileType::Empty);
+        PlayerX = t->X;
+        PlayerY = t->Y;
     }
 
     void RoomAccretionMap::PlaceTreasure()
@@ -282,32 +266,19 @@ namespace cm
         // place chests randomly around the map
         for (int i = 0; i < chestCount; i++)
         {
-            int randIndex = RandomInt(Tiles.size());
-
-            while (Tiles.at(randIndex)->Type != TileType::Empty)
-            {
-                randIndex = RandomInt(Tiles.size());
-            }
-
-            int itemCount = 1 + RandomInt(2);
+            auto t = RandomTile(TileType::Empty);
+            int itemCount = RandomInt(1, 3);
 
             for (int j = 0; j < itemCount; j++)
             {
-                Tiles.at(randIndex)->Items.emplace_back(RandomItem());
+                t->Items.emplace_back(RandomItem());
             }
         }
     }
 
     void RoomAccretionMap::PlaceRandomLake()
     {
-        int randIndex = RandomInt(Tiles.size());
-
-        while (Tiles.at(randIndex)->Type != TileType::Empty)
-        {
-            randIndex = RandomInt(Tiles.size());
-        }
-
-        auto &start = Tiles.at(randIndex);
+        auto start = RandomTile(TileType::Empty);
 
         start->Type = TileType::Water;
 
@@ -389,6 +360,34 @@ namespace cm
         total += FloodFill(x, y - 1);
 
         return total;
+    }
+
+    Tile *RoomAccretionMap::RandomTile(TileType type)
+    {
+        bool containsType = false;
+
+        for (auto &t : Tiles)
+        {
+            if (t->Type == type)
+            {
+                containsType = true;
+                break;
+            }
+        }
+
+        if (!containsType)
+        {
+            return nullptr;
+        }
+
+        int randIndex = RandomInt(Tiles.size());
+
+        while (Tiles.at(randIndex)->Type != type)
+        {
+            randIndex = RandomInt(Tiles.size());
+        }
+
+        return Tiles.at(randIndex).get();
     }
 
 } // namespace cm
