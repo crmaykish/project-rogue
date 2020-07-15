@@ -3,6 +3,7 @@
 #include "cm_game_world.h"
 #include "cm_logger.h"
 #include "cm_effect.h"
+#include "cm_random.h"
 
 namespace cm
 {
@@ -69,7 +70,14 @@ namespace cm
             return false;
         }
 
-        auto effect = DamageEffect(user.MeleeAttackRating());
+        int damage = RandomInt(user.MeleeAttackRating() / 2, user.MeleeAttackRating()) - target->DefenseRating();
+
+        if (damage < 1)
+        {
+            damage = 1;
+        }
+
+        auto effect = DamageEffect(damage);
         effect.Use(*target, world);
 
         TriggerWeaponUseEffects(user, world);

@@ -118,8 +118,8 @@ namespace cm
         a->Active = true;
         a->Level = level;
 
-        a->Strength = 6;
-        a->Vitality = 5;
+        a->Strength = RandomInt(5, 12);
+        a->Vitality = RandomInt(8, 12);
         a->Dexterity = 3;
         a->Intellect = 2;
         
