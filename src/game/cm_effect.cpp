@@ -82,7 +82,7 @@ namespace cm
             std::to_string(Mana),
             actor.TileX,
             actor.TileY,
-            ColorPurple,
+            ColorBlue,
             0});
     }
 
@@ -150,7 +150,7 @@ namespace cm
             std::to_string(Experience),
             actor.TileX,
             actor.TileY,
-            ColorBlue,
+            ColorPurple,
             0});
 
         if (actor.Experience >= (actor.Level * 1000))
