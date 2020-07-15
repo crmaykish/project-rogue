@@ -118,12 +118,13 @@ namespace cm
         a->Active = true;
         a->Level = level;
 
-        a->Strength = RandomInt(5, 12);
-        a->Vitality = RandomInt(8, 12);
-        a->Dexterity = 3;
-        a->Intellect = 2;
-        
-        a->InitStats();
+        a->MaxHP = 15;
+        a->HP = 15;
+
+        a->Stats.SetStatBaseValue(ActorStatType::Vitality, RandomInt(8, 12));
+        a->Stats.SetStatBaseValue(ActorStatType::Strength, RandomInt(5, 12));
+        a->Stats.SetStatBaseValue(ActorStatType::Dexterity, 5);
+        a->Stats.SetStatBaseValue(ActorStatType::Intellect, 5);
 
         return a;
     }

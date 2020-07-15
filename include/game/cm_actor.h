@@ -6,6 +6,7 @@
 #include "cm_action.h"
 #include "cm_inventory.h"
 #include "cm_abilities.h"
+#include "cm_actor_stat.h"
 
 namespace cm
 {
@@ -30,15 +31,14 @@ namespace cm
         int Experience = 0;
 
         // Stats
+        // TODO: move hp and mana into the stats system
         int MaxHP = 0;
         int HP = 0;
         int MaxMana = 0;
         int Mana = 0;
 
-        int Vitality = 0;
-        int Strength = 0;
-        int Dexterity = 0;
-        int Intellect = 0;
+        // TODO: hide this behind a virtual function if any actors don't have stats
+        ActorStatSet Stats;
 
         virtual ~Actor() {}
 
@@ -50,49 +50,6 @@ namespace cm
         // Actions
         virtual bool ActionReady() = 0;
         virtual std::unique_ptr<Action> NextAction(GameWorld &world) = 0;
-
-        // Combat
-        int MeleeAttackRating()
-        {
-            int attackRating = Level * Strength;
-
-            auto inv = GetInventory();
-
-            if (inv != nullptr)
-            {
-                attackRating += inv->GetAddedAttack();
-            }
-
-            return attackRating;
-        }
-
-        int RangedAttackRating()
-        {
-            return Level * Dexterity;
-        }
-
-        int DefenseRating()
-        {
-            int defenseRating = Level * Vitality;
-
-            auto inv = GetInventory();
-
-            if (inv != nullptr)
-            {
-                defenseRating += inv->GetAddedDefense();
-            }
-
-            return defenseRating;
-        }
-
-        void InitStats()
-        {
-            MaxHP = Level * Vitality * 1.2;
-            HP = MaxHP;
-
-            MaxMana = Level * Intellect * 0.8;
-            Mana = MaxMana;
-        }
 
         // Items
         virtual Inventory *GetInventory() = 0;

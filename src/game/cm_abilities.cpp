@@ -70,12 +70,7 @@ namespace cm
             return false;
         }
 
-        int damage = RandomInt(user.MeleeAttackRating() / 2, user.MeleeAttackRating()) - target->DefenseRating();
-
-        if (damage < 1)
-        {
-            damage = 1;
-        }
+        int damage = 5;
 
         auto effect = DamageEffect(damage);
         effect.Use(*target, world);
@@ -112,7 +107,7 @@ namespace cm
             return false;
         }
 
-        auto effect = DamageEffect(user.RangedAttackRating());
+        auto effect = DamageEffect(5);
         effect.Use(*target, world);
 
         TriggerWeaponUseEffects(user, world);

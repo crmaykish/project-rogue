@@ -5,8 +5,9 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
-#include "cm_item_modifier.h"
 #include "cm_assets.h"
+#include "cm_item_modifier.h"
+#include "cm_actor_stat.h"
 
 namespace cm
 {
@@ -27,15 +28,18 @@ namespace cm
     class Item
     {
     private:
-        // TODO: Item stat modifiers
+        // TODO: Item stat modifiers, e.g. extra base damage/armor
 
-        // TODO: Actor stat modifiers
+        /**
+         * @brief Modifiers that directly change the owning actor's stats when the item is equipped
+         */
+        std::vector<ActorStatModifier> StatModifiers;
 
         /**
          * @brief Modifiers that trigger when an item is used. The usage condition
          * depends on the trigger type.
          */
-        std::unordered_map<ItemModifierTrigger, std::vector<ItemModifier>> Modifiers;
+        std::unordered_map<ItemModifierTrigger, std::vector<ItemModifier>> Modifiers; // TODO: rename to BehaviorModifiers?
 
     public:
         std::string Name;
@@ -60,6 +64,8 @@ namespace cm
 
         void Use(ItemModifierTrigger trigger, Actor &owner, GameWorld &world);
 
+        void AddStatModifier(ActorStatModifier statModifier);
+        std::vector<ActorStatModifier> &GetStatModifiers();
         void AddModifier(ItemModifierTrigger trigger, ItemModifier modifier);
 
         AssetKey GetTextureKey();

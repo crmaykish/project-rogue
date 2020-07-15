@@ -11,7 +11,7 @@ namespace cm
     private:
         const UserInput &Input;
         std::unique_ptr<Action> nextAction;
-        Inventory Items;
+        std::unique_ptr<Inventory> Items;
         AbilitySet Abilities;
 
         void DecideNextAction(GameWorld &world);

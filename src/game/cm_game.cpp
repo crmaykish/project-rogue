@@ -182,8 +182,8 @@ namespace cm
 
         yOffset -= 30;
 
-        MainRenderer->DrawFont("VIT: " + std::to_string(World->GetPlayer()->Vitality) +
-                                   " | STR: " + std::to_string(World->GetPlayer()->Strength),
+        MainRenderer->DrawFont("VIT: " + std::to_string(World->GetPlayer()->Stats.GetStatValue(ActorStatType::Vitality)) +
+                                   " | STR: " + std::to_string(World->GetPlayer()->Stats.GetStatValue(ActorStatType::Strength)),
                                AssetKey::UIFont,
                                ColorYellow,
                                10,
@@ -193,8 +193,8 @@ namespace cm
 
         yOffset -= 30;
 
-        MainRenderer->DrawFont("DEX: " + std::to_string(World->GetPlayer()->Dexterity) +
-                                   " | INT: " + std::to_string(World->GetPlayer()->Intellect),
+        MainRenderer->DrawFont("DEX: " + std::to_string(World->GetPlayer()->Stats.GetStatValue(ActorStatType::Dexterity)) +
+                                   " | INT: " + std::to_string(World->GetPlayer()->Stats.GetStatValue(ActorStatType::Intellect)),
                                AssetKey::UIFont,
                                ColorYellow,
                                10,
@@ -204,13 +204,13 @@ namespace cm
 
         yOffset -= 30;
 
-        MainRenderer->DrawFont("ATK: " + std::to_string(World->GetPlayer()->MeleeAttackRating()) + " | DEF: " + std::to_string(World->GetPlayer()->DefenseRating()),
-                               AssetKey::UIFont,
-                               ColorPurple,
-                               10,
-                               yOffset,
-                               0.6,
-                               true);
+        // MainRenderer->DrawFont("ATK: " + std::to_string(World->GetPlayer()->MeleeAttackRating()) + " | DEF: " + std::to_string(World->GetPlayer()->DefenseRating()),
+        //                        AssetKey::UIFont,
+        //                        ColorPurple,
+        //                        10,
+        //                        yOffset,
+        //                        0.6,
+        //                        true);
 
         yOffset -= 60;
 

@@ -2,6 +2,8 @@
 
 namespace cm
 {
+    Inventory::Inventory(ActorStatSet &ownerStats) : OwnerStats(ownerStats) {}
+
     void Inventory::AddItem(std::unique_ptr<Item> item)
     {
         int firstOpenSlot = FirstOpenSlot();
@@ -29,25 +31,46 @@ namespace cm
 
     void Inventory::EquipItem(int slot)
     {
+        // Note: move this here instead of take a reference so the inventory slot frees up immediately
         auto newItem = std::move(Items.at(slot));
 
-        auto itemType = newItem->Type;
+        // Unequip any existing item in the slot
+        UnequipItem(newItem->Type);
 
-        auto existingItem = Equipment.find(itemType);
-
-        if (existingItem != Equipment.end())
+        // Add item stat modifiers to actor
+        for (auto const &mod : newItem->GetStatModifiers())
         {
-            // there is an item already in the slot, move it back to inventory
-            AddItem(std::move(existingItem->second));
-
-            // erase now null pointer from equipment
-            Equipment.erase(itemType);
+            OwnerStats.AddStatModifier(mod.GetStatType(), mod);
         }
 
-        // equip new item
-        Equipment.emplace(itemType, std::move(newItem));
+        // Equip new item
+        Equipment.emplace(newItem->Type, std::move(newItem));
+    }
 
-        RecalculateTotalStats();
+    void Inventory::UnequipItem(ItemType type)
+    {
+        auto equipped = EquipmentAt(type);
+
+        if (equipped == nullptr)
+        {
+            return;
+        }
+
+        if (FreeSlots() == 0)
+        {
+            // TODO: drop item on the ground instead
+            return;
+        }
+
+        // Remove any item stat modifiers from the actor that came from this item
+        for (auto &mod : equipped->GetStatModifiers())
+        {
+            OwnerStats.RemoveStatModifier(mod.GetId());
+        }
+
+        // Move the item back to the inventory and erase it from the equipment map
+        AddItem(std::move(Equipment.at(type)));
+        Equipment.erase(type);
     }
 
     Item *Inventory::EquipmentAt(ItemType type)
@@ -56,8 +79,8 @@ namespace cm
         {
             return nullptr;
         }
-        // TODO: this is kind of redundant
-        return Equipment.find(type)->second.get();
+
+        return Equipment.at(type).get();
     }
 
     int Inventory::InventorySize()
@@ -65,39 +88,16 @@ namespace cm
         return Items.size();
     }
 
-    int Inventory::GetAddedAttack()
-    {
-        return AddedAttack;
-    }
-
-    int Inventory::GetAddedDefense()
-    {
-        return AddedDefense;
-    }
-
-    void Inventory::RecalculateTotalStats()
-    {
-        // recalculate added attack and defense
-        AddedAttack = 0;
-        AddedDefense = 0;
-
-        for (auto &e : Equipment)
-        {
-            AddedAttack += e.second->BaseAttack;
-            AddedDefense += e.second->BaseDefense;
-        }
-    }
-
     void Inventory::Reset()
     {
+        // TODO: remove all item stat modifiers from actor
+
         for (auto &b : Items)
         {
             b.reset();
         }
 
         Equipment.clear();
-
-        RecalculateTotalStats();
     }
 
     int Inventory::FreeSlots()

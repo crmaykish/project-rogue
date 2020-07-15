@@ -161,8 +161,6 @@ namespace cm
             // Reset experience counter
             Experience -= (actor.Level * 1000);
 
-            actor.InitStats();
-
             world.AddCombatText(CombatText{
                 "Level Up!",
                 actor.TileX,

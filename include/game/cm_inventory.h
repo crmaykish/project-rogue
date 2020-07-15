@@ -4,6 +4,7 @@
 #include <memory>
 #include <unordered_map>
 #include "cm_item.h"
+#include "cm_actor_stat.h"
 
 namespace cm
 {
@@ -12,16 +13,19 @@ namespace cm
     class Inventory
     {
     private:
+        /**
+         * @brief A reference to the Inventory owner's stat set
+         */
+        ActorStatSet &OwnerStats;
+
         std::array<std::unique_ptr<Item>, BeltSize> Items;
         std::unordered_map<ItemType, std::unique_ptr<Item>> Equipment;
 
-        int AddedAttack = 0;
-        int AddedDefense = 0;
-
-        void RecalculateTotalStats();
         int FirstOpenSlot();
 
     public:
+        Inventory(ActorStatSet &ownerStats);
+
         void AddItem(std::unique_ptr<Item> item);
         void RemoveItem(int slot);
         Item *ItemAt(int slot);
@@ -30,10 +34,8 @@ namespace cm
         int FreeSlots();
 
         void EquipItem(int slot);
+        void UnequipItem(ItemType type);
         Item *EquipmentAt(ItemType type);
-
-        int GetAddedAttack();
-        int GetAddedDefense();
 
         void Reset();
     };

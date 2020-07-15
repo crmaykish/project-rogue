@@ -11,6 +11,7 @@ namespace cm
 {
     Player::Player(const UserInput &input) : Input(input)
     {
+        Items = std::make_unique<Inventory>(Stats);
         Reset();
     }
 
@@ -51,12 +52,15 @@ namespace cm
 
         Friendly = true;
 
-        Strength = RandomInt(18, 22);
-        Vitality = RandomInt(15, 20);
-        Dexterity = RandomInt(8, 14);
-        Intellect = RandomInt(6, 12);
+        MaxHP = 30;
+        HP = MaxHP;
+        MaxMana = 20;
+        Mana = MaxMana;
 
-        InitStats();
+        Stats.SetStatBaseValue(ActorStatType::Vitality, RandomInt(18, 22));
+        Stats.SetStatBaseValue(ActorStatType::Strength, RandomInt(15, 18));
+        Stats.SetStatBaseValue(ActorStatType::Dexterity, RandomInt(8, 14));
+        Stats.SetStatBaseValue(ActorStatType::Intellect, RandomInt(5, 9));
 
         Active = true;
         Visible = true;
@@ -64,7 +68,7 @@ namespace cm
         Level = 1;
         Experience = 0;
 
-        Items.Reset();
+        Items->Reset();
 
         // Add some player abilities
         Abilities.SetAbility(0, std::make_unique<MeleeAbility>());
@@ -133,7 +137,7 @@ namespace cm
 
     Inventory *Player::GetInventory()
     {
-        return &Items;
+        return Items.get();
     }
 
     AbilitySet *Player::GetAbilitySet()

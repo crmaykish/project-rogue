@@ -24,6 +24,11 @@ namespace cm
         Charges--;
     }
 
+    void Item::AddStatModifier(ActorStatModifier statModifier)
+    {
+        StatModifiers.emplace_back(statModifier);
+    }
+
     void Item::AddModifier(ItemModifierTrigger trigger, ItemModifier modifier)
     {
         if (Modifiers.find(trigger) == Modifiers.end())
@@ -33,6 +38,11 @@ namespace cm
         }
 
         Modifiers.at(trigger).push_back(std::move(modifier));
+    }
+
+    std::vector<ActorStatModifier> &Item::GetStatModifiers()
+    {
+        return StatModifiers;
     }
 
     AssetKey Item::GetTextureKey()
