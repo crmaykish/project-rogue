@@ -36,6 +36,7 @@ namespace cm
         DoorTexture,
         TreeTexture,
         ChestTexture,
+        WaterTexture,
         // Actors
         KnightTexture,
         MageTexture,

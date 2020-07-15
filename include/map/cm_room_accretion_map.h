@@ -19,6 +19,8 @@ namespace cm
         void PlaceExit();
         void PlacePlayer();
         void PlaceTreasure();
+        void PlaceWaterOpenAreas();
+        void PlaceRandomLake();
         std::vector<Island> FindIslands();
 
         // Return the number of tiles connected to this one

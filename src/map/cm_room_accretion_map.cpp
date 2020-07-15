@@ -48,6 +48,11 @@ namespace cm
 
         RemoveUnknownTiles();
 
+        for (int i = 0; i < RandomInt(4); i++)
+        {
+            PlaceRandomLake();
+        }
+
         auto islands = FindIslands();
 
         for (auto i = 0; i < islands.size() - 1; i++)
@@ -64,6 +69,8 @@ namespace cm
 
         WrapWalls();
 
+        // PlaceWaterOpenAreas();
+
         PlaceTreasure();
 
         PlaceExit();
@@ -76,8 +83,6 @@ namespace cm
         std::vector<std::unique_ptr<Actor>> npcs;
 
         // TODO: configurable/dynamic enemy level, number of enemies, types, grouping, etc
-
-        
 
         for (int i = 0; i < enemyCount; i++)
         {
@@ -207,11 +212,15 @@ namespace cm
 
         for (auto &a : Tiles)
         {
-            int islandSize = FloodFill(a->X, a->Y);
-
-            if (islandSize > 0)
+            if (a->Type == TileType::Empty)
             {
-                islands.emplace_back(Island{a->X, a->Y, islandSize});
+
+                int islandSize = FloodFill(a->X, a->Y);
+
+                if (islandSize > 0)
+                {
+                    islands.emplace_back(Island{a->X, a->Y, islandSize});
+                }
             }
         }
 
@@ -291,6 +300,66 @@ namespace cm
         }
     }
 
+    void RoomAccretionMap::PlaceRandomLake()
+    {
+        int randIndex = RandomInt(Tiles.size() - 2) + 1;
+
+        while (Tiles.at(randIndex)->Type != TileType::Empty)
+        {
+            randIndex = RandomInt(Tiles.size() - 2) + 1;
+        }
+
+        auto &start = Tiles.at(randIndex);
+
+        start->Type = TileType::Water;
+
+        int lakeRadiusW = 2 + RandomInt(4);
+        int lakeRadiusH = 2 + RandomInt(4);
+
+        for (int i = -lakeRadiusW; i < lakeRadiusW; i++)
+        {
+            for (int j = -lakeRadiusH; j < lakeRadiusH; j++)
+            {
+                auto t = GetTile(start->X + i, start->Y + j);
+                if (t == nullptr)
+                {
+                    auto n = std::make_unique<Tile>();
+                    n->X = start->X + i;
+                    n->Y = start->Y + j;
+                    n->Type = TileType::Water;
+
+                    Tiles.push_back(std::move(n));
+                }
+                else
+                {
+                    t->Type = TileType::Water;
+                }
+            }
+        }
+    }
+
+    void RoomAccretionMap::PlaceWaterOpenAreas()
+    {
+        for (auto &t : Tiles)
+        {
+            if (CountNeighborTiles(t->X, t->Y, TileType::Empty) + CountNeighborTiles(t->X, t->Y, TileType::Water) == 8)
+            {
+                int clear = true;
+                for (auto &s : GetNeighbors(t->X, t->Y))
+                {
+                    if (CountNeighborTiles(s->X, s->Y, TileType::Empty) + CountNeighborTiles(s->X, s->Y, TileType::Water) < 5)
+                    {
+                        clear = false;
+                    }
+                }
+                if (clear)
+                {
+                    t->Type = TileType::Water;
+                }
+            }
+        }
+    }
+
     int RoomAccretionMap::FloodFill(int x, int y)
     {
         // TODO: this sometimes returns 0, why?
@@ -298,6 +367,11 @@ namespace cm
         auto t = GetTile(x, y);
 
         if (t == nullptr)
+        {
+            return 0;
+        }
+
+        if (t->Type != TileType::Empty)
         {
             return 0;
         }

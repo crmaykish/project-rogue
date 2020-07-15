@@ -91,6 +91,7 @@ namespace cm
         // Render world tiles
         for (auto &t : Tiles)
         {
+            // TODO: should be a switch
             if (t->Type == TileType::Wall)
             {
                 renderer.DrawTexture(AssetKey::WallTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
@@ -106,6 +107,10 @@ namespace cm
             else if (t->Type == TileType::Door)
             {
                 renderer.DrawTexture(AssetKey::DoorTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
+            }
+            else if (t->Type == TileType::Water)
+            {
+                renderer.DrawTexture(AssetKey::WaterTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
             }
             else
             {
