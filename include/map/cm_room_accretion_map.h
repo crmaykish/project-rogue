@@ -19,8 +19,7 @@ namespace cm
         void PlaceExit();
         void PlacePlayer();
         void PlaceTreasure();
-        void PlaceWaterOpenAreas();
-        void PlaceRandomLake();
+        void FloodOpenAreas();
         std::vector<Island> FindIslands();
 
         /**

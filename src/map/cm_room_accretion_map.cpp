@@ -47,11 +47,6 @@ namespace cm
 
         RemoveUnknownTiles();
 
-        // for (int i = 0; i < RandomInt(4); i++)
-        // {
-        //     PlaceRandomLake();
-        // }
-
         auto islands = FindIslands();
 
         for (auto i = 0; i < islands.size() - 1; i++)
@@ -70,7 +65,7 @@ namespace cm
 
         if (RandomPercentCheck(floodChance))
         {
-            PlaceWaterOpenAreas();
+            FloodOpenAreas();
         }
 
         PlaceTreasure();
@@ -280,38 +275,7 @@ namespace cm
         }
     }
 
-    void RoomAccretionMap::PlaceRandomLake()
-    {
-        auto start = RandomTile(TileType::Empty);
-
-        start->Type = TileType::Water;
-
-        int lakeRadiusW = RandomInt(3, 6);
-        int lakeRadiusH = RandomInt(3, 6);
-
-        for (int i = -lakeRadiusW; i < lakeRadiusW; i++)
-        {
-            for (int j = -lakeRadiusH; j < lakeRadiusH; j++)
-            {
-                auto t = GetTile(start->X + i, start->Y + j);
-                if (t == nullptr)
-                {
-                    auto n = std::make_unique<Tile>();
-                    n->X = start->X + i;
-                    n->Y = start->Y + j;
-                    n->Type = TileType::Water;
-
-                    Tiles.push_back(std::move(n));
-                }
-                else
-                {
-                    t->Type = TileType::Water;
-                }
-            }
-        }
-    }
-
-    void RoomAccretionMap::PlaceWaterOpenAreas()
+    void RoomAccretionMap::FloodOpenAreas()
     {
         for (auto &t : Tiles)
         {
