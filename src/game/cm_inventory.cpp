@@ -83,8 +83,8 @@ namespace cm
 
         for (auto &e : Equipment)
         {
-            AddedAttack += e.second->BaseDamage;
-            AddedDefense += e.second->BaseArmor;
+            AddedAttack += e.second->BaseAttack;
+            AddedDefense += e.second->BaseDefense;
         }
     }
 

@@ -54,7 +54,16 @@ namespace cm
         // Combat
         int MeleeAttackRating()
         {
-            return Level * Strength;
+            int attackRating = Level * Strength;
+
+            auto inv = GetInventory();
+
+            if (inv != nullptr)
+            {
+                attackRating += inv->GetAddedAttack();
+            }
+
+            return attackRating;
         }
 
         int RangedAttackRating()
@@ -64,7 +73,16 @@ namespace cm
 
         int DefenseRating()
         {
-            return Level * Vitality;
+            int defenseRating = Level * Vitality;
+
+            auto inv = GetInventory();
+
+            if (inv != nullptr)
+            {
+                defenseRating += inv->GetAddedDefense();
+            }
+
+            return defenseRating;
         }
 
         void InitStats()

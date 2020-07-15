@@ -48,9 +48,15 @@ namespace cm
         bool LimitedCharge = false;
         int Charges = 0;
 
-        int BaseDamage = 0;
-        int BaseArmor = 0;
-        int BaseResist = 0;
+        /**
+         * @brief The base attack rating that an actor receives by equipping this item
+         */
+        int BaseAttack = 0;
+
+        /**
+         * @brief The base defense rating that an actor receives by equipping this item
+         */
+        int BaseDefense = 0;
 
         void Use(ItemModifierTrigger trigger, Actor &owner, GameWorld &world);
 

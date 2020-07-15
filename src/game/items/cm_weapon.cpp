@@ -12,7 +12,7 @@ namespace cm
         item->Name = "Dagger";
         item->Type = ItemType::OneHand;
         item->TextureKey = AssetKey::DaggerTexture;
-        item->BaseDamage = 1;
+        item->BaseAttack = 1;
 
         if (RandomInt(100) < ModifierChance)
         {
@@ -28,7 +28,7 @@ namespace cm
         item->Name = "Short Sword";
         item->Type = ItemType::OneHand;
         item->TextureKey = AssetKey::SwordGreyTexture;
-        item->BaseDamage = 5;
+        item->BaseAttack = 3;
 
         if (RandomInt(100) < ModifierChance)
         {
@@ -44,7 +44,7 @@ namespace cm
         item->Name = "Long Sword";
         item->Type = ItemType::OneHand;
         item->TextureKey = AssetKey::SwordBlueTexture;
-        item->BaseDamage = 8;
+        item->BaseAttack = 5;
 
         if (RandomInt(100) < ModifierChance)
         {
