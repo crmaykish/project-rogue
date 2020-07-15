@@ -165,6 +165,12 @@ namespace cm
         case AssetKey::HealthPotionTexture:
             assetFileName = "potion_hp.png";
             break;
+        case AssetKey::EnergyPotionTexture:
+            assetFileName = "potion_mp.png";
+            break;
+        case AssetKey::RejuvPotionTexture:
+            assetFileName = "potion_rj.png";
+            break;
         case AssetKey::TorchTexture:
             assetFileName = "torch.png";
             break;

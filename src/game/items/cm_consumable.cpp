@@ -8,7 +8,10 @@ namespace cm
         item->Name = "Potion";
         item->Type = ItemType::Consumable;
         item->TextureKey = AssetKey::HealthPotionTexture;
-        item->AddOnUseModifier("of Healing", std::make_unique<HealEffect>(40));
+        item->LimitedCharge = true;
+        item->Charges = 1;
+
+        item->AddModifier(ItemModifierTrigger::Use, ItemModifierHeal());
 
         return item;
     }
@@ -19,7 +22,24 @@ namespace cm
         item->Name = "Potion";
         item->Type = ItemType::Consumable;
         item->TextureKey = AssetKey::EnergyPotionTexture;
-        item->AddOnUseModifier("of Mana", std::make_unique<ManaEffect>(20));
+        item->LimitedCharge = true;
+        item->Charges = 1;
+
+        item->AddModifier(ItemModifierTrigger::Use, ItemModifierMana());
+
+        return item;
+    }
+
+    std::unique_ptr<Item> RejuvPotion()
+    {
+        auto item = std::make_unique<Item>();
+        item->Name = "Potion";
+        item->Type = ItemType::Consumable;
+        item->TextureKey = AssetKey::RejuvPotionTexture;
+        item->LimitedCharge = true;
+        item->Charges = 1;
+
+        item->AddModifier(ItemModifierTrigger::Use, ItemModifierRejuv());
 
         return item;
     }

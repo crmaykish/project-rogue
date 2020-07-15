@@ -29,7 +29,6 @@ namespace cm
         AbilitySet *GetAbilitySet() override;
     };
 
-    // TODO: make these into real factory methods
     std::unique_ptr<Actor> Ghost(int x, int y, int level);
     std::unique_ptr<Actor> Flame(int x, int y, int level);
     std::unique_ptr<Actor> Skeleton(int x, int y, int level);

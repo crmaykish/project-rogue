@@ -1,5 +1,6 @@
 #include "cm_item.h"
 #include "cm_random.h"
+#include "cm_effect.h"
 
 namespace cm
 {
@@ -11,25 +12,7 @@ namespace cm
         item->TextureKey = AssetKey::DaggerTexture;
         item->BaseDamage = 1;
 
-        item->AddOnUseModifier("of the Leech",
-                               std::make_unique<LifeStealEffect>(),
-                               10 + RandomInt(20));
-
-        item->AddOnUseModifier("of Ages",
-                               std::make_unique<ExperienceEffect>(20),
-                               5 + RandomInt(5));
-
-        item->AddOnUseModifier("of Vision",
-                               std::make_unique<AddTorchFuelEffect>(),
-                               5 + RandomInt(5));
-
-        item->AddOnUseModifier("of Persistence",
-                               std::make_unique<DamageTargetEffect>(5),
-                               30 + RandomInt(20));
-
-        item->AddOnUseModifier("of Gluttony",
-                               std::make_unique<RandomConsumableEffect>(),
-                               2 + RandomInt(3));
+        item->AddModifier(ItemModifierTrigger::Attack, ItemModifierSacrifice());
 
         return item;
     }
@@ -42,6 +25,8 @@ namespace cm
         item->TextureKey = AssetKey::SwordGreyTexture;
         item->BaseDamage = 5;
 
+        item->AddModifier(ItemModifierTrigger::Attack, ItemModifierLifeLeech());
+
         return item;
     }
 
@@ -52,6 +37,8 @@ namespace cm
         item->Type = ItemType::OneHand;
         item->TextureKey = AssetKey::SwordBlueTexture;
         item->BaseDamage = 8;
+
+        item->AddModifier(ItemModifierTrigger::Attack, ItemModifierExtraHit());
 
         return item;
     }

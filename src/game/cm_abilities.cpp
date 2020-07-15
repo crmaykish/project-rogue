@@ -200,7 +200,7 @@ namespace cm
 
             if (weapon != nullptr)
             {
-                weapon->Use(user, world);
+                weapon->Use(ItemModifierTrigger::Attack, user, world);
             }
         }
     }

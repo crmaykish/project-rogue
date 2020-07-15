@@ -21,7 +21,7 @@ namespace cm
         if (item->Type == ItemType::Consumable)
         {
             // Use the item
-            item->Use(executor, World);
+            item->Use(ItemModifierTrigger::Use, executor, World);
 
             if (item->Charges == 0)
             {

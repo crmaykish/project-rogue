@@ -4,7 +4,8 @@
 #include <memory>
 #include <string>
 #include <vector>
-#include "cm_effect.h"
+#include <unordered_map>
+#include "cm_item_modifier.h"
 #include "cm_assets.h"
 
 namespace cm
@@ -23,13 +24,6 @@ namespace cm
         Charm
     };
 
-    struct ItemModifier
-    {
-        std::string Name;
-        int PercentChance = 100;
-        std::unique_ptr<Effect> MainEffect;
-    };
-
     class Item
     {
     private:
@@ -38,22 +32,10 @@ namespace cm
         // TODO: Actor stat modifiers
 
         /**
-         * @brief Effects that trigger when an actor picks up the item
+         * @brief Modifiers that trigger when an item is used. The usage condition
+         * depends on the trigger type.
          */
-        std::vector<std::unique_ptr<Effect>> PickupEffects;
-
-        /**
-         * @brief Modifiers that trigger when an actor uses the item.
-         * 
-         * For consumables, this means activating the item in inventory.
-         * 
-         * For weapons, this means attacking an enemy.
-         * 
-         * For armor, this means taking damage.
-         */
-        std::vector<ItemModifier> OnUseModifiers;
-
-        // TODO: OnKillModifiers
+        std::unordered_map<ItemModifierTrigger, std::vector<ItemModifier>> Modifiers;
 
     public:
         std::string Name;
@@ -70,12 +52,9 @@ namespace cm
         int BaseArmor = 0;
         int BaseResist = 0;
 
-        void Pickup(Actor &owner, GameWorld &world);
-        void Use(Actor &owner, GameWorld &world);
+        void Use(ItemModifierTrigger trigger, Actor &owner, GameWorld &world);
 
-        void AddPickupEffect(std::unique_ptr<Effect> effect);
-
-        void AddOnUseModifier(std::string name, std::unique_ptr<Effect> effect, int percentChance = 100);
+        void AddModifier(ItemModifierTrigger trigger, ItemModifier modifier);
 
         AssetKey GetTextureKey();
 
@@ -92,6 +71,7 @@ namespace cm
     // Consumables
     std::unique_ptr<Item> HealingPotion();
     std::unique_ptr<Item> ManaPotion();
+    std::unique_ptr<Item> RejuvPotion();
 
     // Random
     std::unique_ptr<Item> RandomConsumable();

@@ -13,6 +13,7 @@ file(COPY config DESTINATION ${CMAKE_BINARY_DIR})
 
 include_directories(include/game)
 include_directories(include/game/actions)
+include_directories(include/game/items)
 include_directories(include/graphics)
 include_directories(include/input)
 include_directories(include/map)

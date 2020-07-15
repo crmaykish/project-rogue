@@ -30,9 +30,6 @@ namespace cm
             {
                 World.LogEvent(executor.Name + " picked up " + item->DisplayName(), executor.Friendly);
 
-                // Activate on-pickup effects
-                item->Pickup(executor, World);
-
                 // If the item has charges, add to inventory, otherwise remove it from the tile
                 if (item->Charges > 0 || item->Type != ItemType::Consumable)
                 {

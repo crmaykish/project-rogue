@@ -18,7 +18,6 @@ namespace cm
     public:
         virtual ~Effect() {}
         virtual void Use(Actor &actor, GameWorld &world) = 0;
-        virtual std::string GetName() = 0;
     };
 
     /**
@@ -32,7 +31,6 @@ namespace cm
     public:
         HealEffect(int health);
         void Use(Actor &actor, GameWorld &world) override;
-        std::string GetName() override;
     };
 
     /**
@@ -46,7 +44,20 @@ namespace cm
     public:
         ManaEffect(int mana);
         void Use(Actor &actor, GameWorld &world) override;
-        std::string GetName() override;
+    };
+
+    /**
+     * @brief Restore the actor's health and mana
+     */
+    class RejuvEffect : public Effect
+    {
+    private:
+        int Health = 0;
+        int Mana = 0;
+
+    public:
+        RejuvEffect(int health, int mana);
+        void Use(Actor &actor, GameWorld &world) override;
     };
 
     /**
@@ -56,7 +67,6 @@ namespace cm
     {
     public:
         void Use(Actor &actor, GameWorld &world) override;
-        std::string GetName() override;
     };
 
     /**
@@ -70,7 +80,6 @@ namespace cm
     public:
         DamageEffect(int damage);
         void Use(Actor &actor, GameWorld &world) override;
-        std::string GetName() override;
     };
 
     /**
@@ -84,7 +93,6 @@ namespace cm
     public:
         DamageTargetEffect(int damage);
         void Use(Actor &actor, GameWorld &world) override;
-        std::string GetName() override;
     };
 
     /**
@@ -93,7 +101,6 @@ namespace cm
     class RandomConsumableEffect : public Effect
     {
         void Use(Actor &actor, GameWorld &world) override;
-        std::string GetName() override;
     };
 
     /**
@@ -103,7 +110,6 @@ namespace cm
     {
     public:
         void Use(Actor &actor, GameWorld &world) override;
-        std::string GetName() override;
     };
 
     /**
@@ -117,7 +123,6 @@ namespace cm
     public:
         ExperienceEffect(int exp);
         void Use(Actor &actor, GameWorld &world) override;
-        std::string GetName() override;
     };
 
 } // namespace cm

@@ -3,47 +3,33 @@
 
 namespace cm
 {
-    void Item::Pickup(Actor &owner, GameWorld &world)
-    {
-        if (PickedUp)
-        {
-            return;
-        }
-
-        for (auto const &e : PickupEffects)
-        {
-            e->Use(owner, world);
-        }
-
-        PickedUp = true;
-    }
-
-    void Item::Use(Actor &owner, GameWorld &world)
+    void Item::Use(ItemModifierTrigger trigger, Actor &owner, GameWorld &world)
     {
         if (LimitedCharge && Charges == 0)
         {
             return;
         }
 
-        for (auto const &e : OnUseModifiers)
+        for (auto const &mod : Modifiers.at(trigger))
         {
-            if (RandomInt(100) < e.PercentChance)
+            if (RandomInt(100) < mod.PercentChance)
             {
-                e.MainEffect->Use(owner, world);
+                mod.MainEffect->Use(owner, world);
             }
         }
 
         Charges--;
     }
 
-    void Item::AddPickupEffect(std::unique_ptr<Effect> effect)
+    void Item::AddModifier(ItemModifierTrigger trigger, ItemModifier modifier)
     {
-        PickupEffects.emplace_back(std::move(effect));
-    }
+        if (Modifiers.find(trigger) == Modifiers.end())
+        {
+            // Vector at this trigger is empty, create it before trying to insert a new modifier
+            Modifiers.emplace(trigger, std::vector<ItemModifier>());
+        }
 
-    void Item::AddOnUseModifier(std::string name, std::unique_ptr<Effect> effect, int percentChance)
-    {
-        OnUseModifiers.emplace_back(ItemModifier{name, percentChance, std::move(effect)});
+        Modifiers.at(trigger).push_back(std::move(modifier));
     }
 
     AssetKey Item::GetTextureKey()
@@ -53,13 +39,37 @@ namespace cm
 
     std::string Item::DisplayName()
     {
+        // TODO: cache this display name once its generated, it will never change
         auto name = Name;
 
-        if (OnUseModifiers.size() > 0)
+        if (Type == ItemType::Consumable)
         {
-            for (auto &e : OnUseModifiers)
+            if (Modifiers.find(ItemModifierTrigger::Use) != Modifiers.end())
             {
-                name += " " + e.Name;
+                for (auto &m : Modifiers.at(ItemModifierTrigger::Use))
+                {
+                    name = m.Name + " " + name;
+                }
+            }
+        }
+        else if (Type == ItemType::OneHand || Type == ItemType::OffHand)
+        {
+            if (Modifiers.find(ItemModifierTrigger::Attack) != Modifiers.end())
+            {
+                for (auto &m : Modifiers.at(ItemModifierTrigger::Attack))
+                {
+                    name += " of " + m.Name;
+                }
+            }
+        }
+        else
+        {
+            if (Modifiers.find(ItemModifierTrigger::Defend) != Modifiers.end())
+            {
+                for (auto &m : Modifiers.at(ItemModifierTrigger::Defend))
+                {
+                    name += " of " + m.Name;
+                }
             }
         }
 
@@ -68,27 +78,41 @@ namespace cm
 
     std::unique_ptr<Item> RandomConsumable()
     {
-        return HealingPotion();
+        switch (RandomInt(3))
+        {
+        case 0:
+            return HealingPotion();
+            break;
+        case 1:
+            return ManaPotion();
+            break;
+        case 2:
+            return RejuvPotion();
+            break;
+        default:
+            return nullptr;
+        }
     }
 
     std::unique_ptr<Item> RandomItem()
     {
-        return Dagger();
-
-        // switch (RandomInt(3))
-        // {
-        // case 0:
-        //     return Dagger();
-        //     break;
-        // case 1:
-        //     return ShortSword();
-        //     break;
-        // case 2:
-        //     return LongSword();
-        //     break;
-        // default:
-        //     return nullptr;
-        // }
+        switch (RandomInt(4))
+        {
+        case 0:
+            return Dagger();
+            break;
+        case 1:
+            return ShortSword();
+            break;
+        case 2:
+            return LongSword();
+            break;
+        case 3:
+            return RandomConsumable();
+            break;
+        default:
+            return nullptr;
+        }
     }
 
 } // namespace cm

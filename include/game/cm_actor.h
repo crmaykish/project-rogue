@@ -16,6 +16,7 @@ namespace cm
     class Actor
     {
     public:
+        // TODO: This class is overdue for some smaller components
         std::string Name;
         bool Active = false;
         bool Visible = false;

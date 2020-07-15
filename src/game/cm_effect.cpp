@@ -32,11 +32,6 @@ namespace cm
             0});
     }
 
-    std::string DamageEffect::GetName()
-    {
-        return "Damage";
-    }
-
     // Damage Target
     DamageTargetEffect::DamageTargetEffect(int damage) : Damage(damage) {}
 
@@ -49,11 +44,6 @@ namespace cm
             auto damage = DamageEffect(Damage);
             damage.Use(*target, world);
         }
-    }
-
-    std::string DamageTargetEffect::GetName()
-    {
-        return "Damage";
     }
 
     // Heal
@@ -76,11 +66,6 @@ namespace cm
             0});
     }
 
-    std::string HealEffect::GetName()
-    {
-        return "Healing";
-    }
-
     // Mana
     ManaEffect::ManaEffect(int mana) : Mana(mana) {}
 
@@ -101,9 +86,16 @@ namespace cm
             0});
     }
 
-    std::string ManaEffect::GetName()
+    // Mana
+    RejuvEffect::RejuvEffect(int health, int mana) : Health(health), Mana(mana) {}
+
+    void RejuvEffect::Use(Actor &actor, GameWorld &world)
     {
-        return "Mana";
+        auto hp = HealEffect(Health);
+        auto mp = ManaEffect(Mana);
+
+        hp.Use(actor, world);
+        mp.Use(actor, world);
     }
 
     // Torch Fuel
@@ -115,11 +107,6 @@ namespace cm
         }
     }
 
-    std::string AddTorchFuelEffect::GetName()
-    {
-        return "Torch Light";
-    }
-
     // Random Potions
     void RandomConsumableEffect::Use(Actor &actor, GameWorld &world)
     {
@@ -129,11 +116,6 @@ namespace cm
         {
             inv->AddItem(RandomConsumable());
         }
-    }
-
-    std::string RandomConsumableEffect::GetName()
-    {
-        return "Many Potions";
     }
 
     void LifeStealEffect::Use(Actor &actor, GameWorld &world)
@@ -155,11 +137,6 @@ namespace cm
         // heal the actor
         auto heal = HealEffect(life);
         heal.Use(actor, world);
-    }
-
-    std::string LifeStealEffect::GetName()
-    {
-        return "Life Steal";
     }
 
     // Experience
@@ -199,11 +176,6 @@ namespace cm
                 ColorBlue,
                 0});
         }
-    }
-
-    std::string ExperienceEffect::GetName()
-    {
-        return "Experience";
     }
 
 } // namespace cm
