@@ -1,7 +1,5 @@
 # Project Rogue
 
-![Mimic](/assets/mimic.gif) ![Mimic](/assets/mimic.gif) ![Mimic](/assets/mimic.gif)
-
 ![Screenshot](/assets/screenshot.png)
 
 ## Definitions
@@ -11,19 +9,15 @@
 4. Effect - Changes something about a specific actor, e.g. Damage, Heal, RefillMana. This is something active, not a passive buff to stats.
 5. Item - An actor can pickup, use, and equip items. Items can have base stats (damage, armor, resist, etc.) and effects.
 
-TODO:
+## v0.1 Release Features
+[ ] Ten levels to descend with a final boss
+[ ] Warrior class stats and abilities
+[ ] Three enemy types with distinct stats and AI behavior
+[ ] Five weapons
+[ ] Two shields
+[ ] Two armor types for each of: head, chest, boots
+[ ] Inventory management (show item stats, drop items, etc.)
+[ ] Pure SDL2 implementation (remove SDL2_gpu)
 
-Items can:
-1. Increase their own stats (damage, armor, resist, etc.)
-2. Buff the actor's stats (HP, mana, light radius, etc.)
-3. Chance on hit effects (give damage)
-4. Chance on block effects (take damage)
-5. Chance on kill effects
-6. Grant abilities (or charges of abilities)
-
-Abilities can:
-1. Damage
-2. Heal
-3. Apply Buffs/debuffs
-4. Change actor flags (blind, stun, freeze, fear, etc.)
-5. Manipulate the world (change tiles)
+## v0.1 Stretch Goals
+[ ] Build a WASM version playable in the browser
