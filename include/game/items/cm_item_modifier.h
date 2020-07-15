@@ -11,11 +11,11 @@ namespace cm
 
     enum struct ItemModifierTrigger
     {
-        Any,    /**< Triggered when the owner makes any action */
+        Any,    /**< TODO: Triggered when the owner makes any action */
         Use,    /**< Triggered when the actor activates the item from inventory */
         Attack, /**< Triggered when the owner attacks */
-        Defend, /**< Triggered when the owner receives damage */
-        Kill,   /**< Triggered when owner kills another actor */
+        Defend, /**< TODO: Triggered when the owner receives damage */
+        Kill,   /**< TODO: Triggered when owner kills another actor */
     };
 
     struct ItemModifier
