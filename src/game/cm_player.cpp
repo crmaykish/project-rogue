@@ -27,14 +27,6 @@ namespace cm
 
     std::unique_ptr<Action> Player::NextAction(GameWorld &world)
     {
-        // TODO: find a better place for these incremental actor changes, they run even if an action fails
-
-        // Drain fuel after every action
-        // TorchFuel = (TorchFuel == 0) ? 0 : TorchFuel - 1;
-
-        // Restore energy
-        Energy = MaxEnergy;
-
         return std::move(nextAction);
     }
 
@@ -51,7 +43,7 @@ namespace cm
 
         MaxHP = 30;
         HP = MaxHP;
-        MaxEnergy = 20;
+        MaxEnergy = 3;
         Energy = MaxEnergy;
 
         Stats.SetStatBaseValue(ActorStatType::Vitality, RandomInt(18, 22));
@@ -77,6 +69,7 @@ namespace cm
         // Wait
         if (Input.Secondary.Once())
         {
+            // Note: A player waiting is effectively skipping to the end of their turn with no more actions
             nextAction = std::make_unique<WaitAction>();
         }
 
@@ -96,7 +89,7 @@ namespace cm
             auto a = Input.Ability[i];
             if (a.Once())
             {
-                nextAction = std::make_unique<AbilityAction>(i, world);
+                nextAction = std::make_unique<AbilityAction>(*this, i, world);
             }
         }
 

@@ -23,8 +23,8 @@ namespace cm
         virtual std::string GetName() = 0;
         virtual std::string GetDescription() = 0;
         virtual AssetKey GetIcon() = 0;
-
         virtual bool IsSelfCast() { return false; }
+        virtual int EnergyCost() { return 1; }
 
         // Presumably an ability will always effect the user or the game world or both
         virtual bool Use(Actor &user, GameWorld &world) = 0;
@@ -49,6 +49,7 @@ namespace cm
         std::string GetDescription() override;
         AssetKey GetIcon() override;
         bool Use(Actor &user, GameWorld &world) override;
+        int EnergyCost() override { return 2; }
     };
 
     class RangedAbility : public Ability
@@ -58,6 +59,7 @@ namespace cm
         std::string GetDescription() override;
         AssetKey GetIcon() override;
         bool Use(Actor &user, GameWorld &world) override;
+        int EnergyCost() override { return 2; }
     };
 
     class CleaveAbility : public Ability
@@ -68,6 +70,7 @@ namespace cm
         AssetKey GetIcon() override;
         bool IsSelfCast() override { return true; }
         bool Use(Actor &user, GameWorld &world) override;
+        int EnergyCost() override { return 3; }
     };
 
     class HealAbility : public Ability
@@ -78,6 +81,7 @@ namespace cm
         AssetKey GetIcon() override;
         bool IsSelfCast() override { return true; }
         bool Use(Actor &user, GameWorld &world) override;
+        int EnergyCost() override { return 3; }
     };
 
 } // namespace cm

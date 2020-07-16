@@ -138,6 +138,15 @@ namespace cm
                                0.6,
                                true);
 
+        // Turn number
+        MainRenderer->DrawFont("Turn: " + std::to_string(World->GetTurnNumber()),
+                               AssetKey::UIFont,
+                               ColorWhite,
+                               MainRenderer->GetResolutionX() - 120,
+                               yOffset - 20,
+                               0.6,
+                               true);
+
         // Player name
         MainRenderer->DrawFont(World->GetPlayer()->Name,
                                AssetKey::UIFont,
@@ -146,6 +155,24 @@ namespace cm
                                yOffset,
                                1.0,
                                true);
+
+        yOffset -= 30;
+
+        // Energy
+        int energyX = 10;
+        int energyY = yOffset;
+
+        for (auto i = 0; i < World->GetPlayer()->Energy; i++)
+        {
+            MainRenderer->DrawTexture(AssetKey::EnergyIcon, energyX, energyY, 24, 24, true);
+            energyX += 32;
+        }
+
+        for (auto i = 0; i < World->GetPlayer()->MaxEnergy - World->GetPlayer()->Energy; i++)
+        {
+            MainRenderer->DrawTexture(AssetKey::EnergyEmptyIcon, energyX, energyY, 24, 24, true);
+            energyX += 32;
+        }
 
         yOffset -= 30;
 
@@ -164,17 +191,6 @@ namespace cm
         MainRenderer->DrawFont("HP: " + std::to_string(World->GetPlayer()->HP) + " / " + std::to_string(World->GetPlayer()->MaxHP),
                                AssetKey::UIFont,
                                ColorRed,
-                               10,
-                               yOffset,
-                               0.6,
-                               true);
-
-        yOffset -= 30;
-
-        // Energy
-        MainRenderer->DrawFont("MP: " + std::to_string(World->GetPlayer()->Energy) + " / " + std::to_string(World->GetPlayer()->MaxEnergy),
-                               AssetKey::UIFont,
-                               ColorBlue,
                                10,
                                yOffset,
                                0.6,

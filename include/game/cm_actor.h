@@ -36,6 +36,8 @@ namespace cm
         int MaxEnergy = 0;
         int Energy = 0;
 
+        bool TurnFinished = false;
+
         // TODO: hide this behind a virtual function if any actors don't have stats
         ActorStatSet Stats;
 

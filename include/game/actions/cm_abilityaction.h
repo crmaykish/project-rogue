@@ -10,11 +10,13 @@ namespace cm
     {
     private:
         GameWorld &World;
+        Ability *ExecutorAbility;
         int AbilitySlot = 0;
 
     public:
-        AbilityAction(int abilitySlot, GameWorld &world);
+        AbilityAction(Actor &actor, int abilitySlot, GameWorld &world);
         ActionResult Execute(Actor &executor) override;
+        int EnergyCost() override;
     };
 
 } // namespace cm

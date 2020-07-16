@@ -279,6 +279,12 @@ namespace cm
         case AssetKey::CleaveIcon:
             assetFileName = "icon_cleave.png";
             break;
+        case AssetKey::EnergyIcon:
+            assetFileName = "icon_energy.png";
+            break;
+        case AssetKey::EnergyEmptyIcon:
+            assetFileName = "icon_energy_empty.png";
+            break;
 
         default:
             Log("No file name found for asset key: " + std::to_string((int)key), LOG_WARNING);

@@ -48,9 +48,12 @@ namespace cm
             // Set enemy's target to player
             Target = player->Position;
 
-            // Melee attack the player
-            auto meleeAction = std::make_unique<AbilityAction>(0, world);
-            return meleeAction;
+            auto abilityAction = std::make_unique<AbilityAction>(*this, 0, world);
+
+            if (Energy >= abilityAction->EnergyCost())
+            {
+                return abilityAction;
+            }
         }
 
         else if (playerDistance < 6 || HP < MaxHP)
@@ -78,7 +81,12 @@ namespace cm
                 dir = MoveDirection::Down;
             }
 
-            return std::make_unique<MoveAction>(dir, world);
+            auto moveAction = std::make_unique<MoveAction>(dir, world);
+
+            if (Energy >= moveAction->EnergyCost())
+            {
+                return moveAction;
+            }
         }
 
         return std::make_unique<WaitAction>();
@@ -120,6 +128,9 @@ namespace cm
 
         a->MaxHP = 15;
         a->HP = 15;
+
+        a->MaxEnergy = 2;
+        a->Energy = 2;
 
         a->Stats.SetStatBaseValue(ActorStatType::Vitality, RandomInt(8, 12));
         a->Stats.SetStatBaseValue(ActorStatType::Strength, RandomInt(5, 12));

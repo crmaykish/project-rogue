@@ -33,7 +33,7 @@ namespace cm
     private:
         UserInput &Input;
         bool NextLevel = false;
-        int TurnCount = 0;
+        int TurnNumber = 0;
         int CurrentActorIndex = 0;
 
         bool TileSelectMode = false;
@@ -76,6 +76,7 @@ namespace cm
         // TODO: this shouldn't really be necessary. operate on the map directly instead
         Map *GetLevel();
 
+        int GetTurnNumber() { return TurnNumber; }
         int GetLevelNumber() { return LevelNumber; }
 
         bool IsTileSelectMode()

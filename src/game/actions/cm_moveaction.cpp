@@ -51,7 +51,7 @@ namespace cm
             if (actor->Friendly != executor.Friendly)
             {
                 // Attack tile only if the target is not friendly
-                auto attackAbilityAction = std::make_unique<AbilityAction>(0, World);
+                auto attackAbilityAction = std::make_unique<AbilityAction>(executor, 0, World);
                 return ActionResult(std::move(attackAbilityAction));
             }
 
@@ -68,6 +68,11 @@ namespace cm
         }
 
         return ActionResult(ActionStatus::Invalid);
+    }
+
+    int MoveAction::EnergyCost()
+    {
+        return MoveActionBaseEnergy;
     }
 
 } // namespace cm

@@ -31,7 +31,19 @@ namespace cm
     {
     public:
         virtual ~Action() {}
+
+        /**
+         * @brief Attempt to execute the action on the given actor
+         * 
+         * @param executor The actor that is executing the action
+         * @return ActionResult A result object detailing the outcome of the action attempt
+         */
         virtual ActionResult Execute(Actor &executor) = 0;
+
+        /**
+         * @brief The energy cost required to complete this action
+         */
+        virtual int EnergyCost() { return 0; };
     };
 
     class ActionResult

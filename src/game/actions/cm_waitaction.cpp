@@ -5,6 +5,8 @@ namespace cm
 {
     ActionResult WaitAction::Execute(Actor &executor)
     {
+        executor.TurnFinished = true;
+
         if (executor.Friendly)
         {
             return ActionResult(ActionStatus::Succeeded, executor.Name + " is waiting");

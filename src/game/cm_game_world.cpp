@@ -97,14 +97,20 @@ namespace cm
             if (TileSelected)
             {
                 actor->Target = SelectedTile;
-                result = CurrentAction->Execute(*actor);
                 TileSelected = false;
             }
             else
             {
                 CurrentAction = actor->NextAction(*this);
-                result = CurrentAction->Execute(*actor);
             }
+
+            if (actor->Energy < CurrentAction->EnergyCost())
+            {
+                LogEvent(actor->Name + " requires more energy", actor->Friendly);
+                return;
+            }
+
+            result = CurrentAction->Execute(*actor);
 
             // Note: AI actors should never return a Waiting Status
             if (result.Status == ActionStatus::Waiting)
@@ -119,7 +125,16 @@ namespace cm
             // If the action result suggests an alternate, execute that until there is a concrete result
             while (result.Status == ActionStatus::Alternate)
             {
-                result = result.AlternateAction->Execute(*actor);
+                CurrentAction = std::move(result.AlternateAction);
+
+                // TODO: would be nice to restructure this so this energy check is not duplicated from above
+                if (actor->Energy < CurrentAction->EnergyCost())
+                {
+                    LogEvent(actor->Name + " requires more energy", actor->Friendly);
+                    return;
+                }
+
+                result = CurrentAction->Execute(*actor);
             }
 
             // If the actor is in range of the player and the action returns a message, display it
@@ -134,12 +149,34 @@ namespace cm
                 result.Status == ActionStatus::Failed ||
                 !actor->Friendly)
             {
-                // Reset actor's target
-                actor->Target.X = 0;
-                actor->Target.Y = 0;
+                // Action was completed, subtract energy cost from actor who executed it
+                actor->Energy -= CurrentAction->EnergyCost();
 
-                NextActor();
-                actor = GetCurrentActor();
+                // TODO: this turn finished logic code is getting ugly. Review this structure
+                // Maybe an actor->CompleteAction() method to spend mana, cleanup flags, etc.
+
+                if (actor->Energy == 0)
+                {
+                    actor->TurnFinished = true;
+                }
+
+                if (actor->TurnFinished)
+                {
+                    // Reset actor's target
+                    actor->Target.X = 0;
+                    actor->Target.Y = 0;
+
+                    NextActor();
+                    actor = GetCurrentActor();
+                    actor->TurnFinished = false;
+                    actor->Energy = actor->MaxEnergy;
+
+                    if (actor->Friendly)
+                    {
+                        // Increment the turn counter whenever the human player takes a turn
+                        TurnNumber++;
+                    }
+                }
             }
         }
 

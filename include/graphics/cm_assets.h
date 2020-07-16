@@ -81,6 +81,8 @@ namespace cm
         FireballIcon,
         HealIcon,
         CleaveIcon,
+        EnergyIcon,
+        EnergyEmptyIcon,
     };
 
     class Assets

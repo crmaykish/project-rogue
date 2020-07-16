@@ -6,6 +6,8 @@
 
 namespace cm
 {
+    static const int MoveActionBaseEnergy = 1;
+
     enum struct MoveDirection
     {
         Unknown,
@@ -28,6 +30,7 @@ namespace cm
     public:
         MoveAction(MoveDirection direction, GameWorld &world);
         ActionResult Execute(Actor &executor) override;
+        int EnergyCost() override;
     };
 
 } // namespace cm
