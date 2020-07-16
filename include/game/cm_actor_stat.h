@@ -80,6 +80,11 @@ namespace cm
          * @brief Remove the modifier of the given ID from the stats list
          */
         void RemoveStatModifier(int modifierId);
+
+        // Derived stats
+
+        int GetAttackRating();
+        int GetDefenseRating();
     };
 
 } // namespace cm

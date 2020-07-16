@@ -204,13 +204,13 @@ namespace cm
 
         yOffset -= 30;
 
-        // MainRenderer->DrawFont("ATK: " + std::to_string(World->GetPlayer()->MeleeAttackRating()) + " | DEF: " + std::to_string(World->GetPlayer()->DefenseRating()),
-        //                        AssetKey::UIFont,
-        //                        ColorPurple,
-        //                        10,
-        //                        yOffset,
-        //                        0.6,
-        //                        true);
+        MainRenderer->DrawFont("ATK: " + std::to_string(World->GetPlayer()->Stats.GetAttackRating()) + " | DEF: " + std::to_string(World->GetPlayer()->Stats.GetDefenseRating()),
+                               AssetKey::UIFont,
+                               ColorPurple,
+                               10,
+                               yOffset,
+                               0.6,
+                               true);
 
         yOffset -= 60;
 

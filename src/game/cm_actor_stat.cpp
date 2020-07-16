@@ -111,6 +111,16 @@ namespace cm
         }
     }
 
+    int ActorStatSet::GetAttackRating()
+    {
+        return GetStatValue(ActorStatType::Strength) * 1.5;
+    }
+
+    int ActorStatSet::GetDefenseRating()
+    {
+        return GetStatValue(ActorStatType::Dexterity) * 1.4;
+    }
+
     ActorStat *ActorStatSet::GetStat(ActorStatType statType)
     {
         if (Stats.find(statType) == Stats.end())

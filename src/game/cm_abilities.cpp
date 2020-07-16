@@ -70,9 +70,10 @@ namespace cm
             return false;
         }
 
-        int damage = 5;
-
-        auto effect = DamageEffect(damage);
+        // TODO: consider target's defense rating
+        auto baseDamage = user.Stats.GetAttackRating() / 4;
+        int actualDamage = RandomInt(baseDamage / 2, baseDamage * 1.25);
+        auto effect = DamageEffect(actualDamage);
         effect.Use(*target, world);
 
         TriggerWeaponUseEffects(user, world);
@@ -107,7 +108,10 @@ namespace cm
             return false;
         }
 
-        auto effect = DamageEffect(5);
+        // TODO: consider target's defense rating
+        auto baseDamage = user.Stats.GetAttackRating() / 4;
+        int actualDamage = RandomInt(baseDamage / 2, baseDamage * 1.25);
+        auto effect = DamageEffect(actualDamage);
         effect.Use(*target, world);
 
         TriggerWeaponUseEffects(user, world);
