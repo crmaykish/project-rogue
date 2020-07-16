@@ -1,3 +1,4 @@
+#include <SDL_image.h>
 #include "cm_assets.h"
 #include "cm_logger.h"
 
@@ -27,7 +28,7 @@ namespace cm
 
         for (auto texture : TextureMap)
         {
-            GPU_FreeImage(texture.second);
+            SDL_FreeSurface(texture.second);
         }
     }
 
@@ -59,7 +60,7 @@ namespace cm
         return FontMap.find(key)->second;
     }
 
-    GPU_Image *Assets::GetTexture(AssetKey key)
+    SDL_Surface *Assets::GetTexture(AssetKey key)
     {
         auto textureIt = TextureMap.find(key);
 
@@ -79,7 +80,7 @@ namespace cm
         assetFileName = FontsPath + assetFileName;
 
         Log("Loading texture from file: " + assetFileName, LOG_INFO);
-        auto t = GPU_LoadImage(assetFileName.c_str());
+        auto t = IMG_Load(assetFileName.c_str());
 
         TextureMap.insert({key, t});
         return TextureMap.find(key)->second;

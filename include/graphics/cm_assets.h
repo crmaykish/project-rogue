@@ -4,12 +4,6 @@
 #include <memory>
 #include <map>
 #include <string>
-
-// It would be nice if the asset manager was independent of the SDL implementation,
-// but that's probably over-designing at this point
-// If that's ever a need, refactor this class into an interface and implement an
-// SDLAssetManager class
-#include <SDL_gpu.h>
 #include <SDL_ttf.h>
 
 namespace cm
@@ -93,14 +87,14 @@ namespace cm
     {
     private:
         std::map<AssetKey, TTF_Font *> FontMap;
-        std::map<AssetKey, GPU_Image *> TextureMap;
+        std::map<AssetKey, SDL_Surface *> TextureMap;
 
     public:
         void Init();
         void Close();
 
         TTF_Font *GetFont(AssetKey key);
-        GPU_Image *GetTexture(AssetKey key);
+        SDL_Surface *GetTexture(AssetKey key);
     };
 
 } // namespace cm

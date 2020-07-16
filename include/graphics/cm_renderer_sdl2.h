@@ -1,5 +1,7 @@
-#include <SDL_gpu.h>
-#include <SDL_ttf.h>
+#ifndef CM_RENDERER_SDL2_H
+#define CM_RENDERER_SDL2_H
+
+#include <SDL2/SDL.h>
 #include "cm_renderer.h"
 #include "cm_assets.h"
 
@@ -8,20 +10,21 @@ namespace cm
     const int RESOLUTION_DEFAULT_W = 1280;
     const int RESOLUTION_DEFAULT_H = 800;
 
-    class SDLGPURenderer : public Renderer
+    class SDL2Renderer : public Renderer
     {
     private:
-        GPU_Target *gpu;
+        SDL_Window *SDLWindow;
+        SDL_Renderer *SDLRenderer;
         Assets &AssetManager;
         int ResolutionW = RESOLUTION_DEFAULT_W;
         int ResolutionH = RESOLUTION_DEFAULT_H;
         float CameraOffsetX = 0.0;
         float CameraOffsetY = 0.0;
 
-        GPU_Rect TransformRect(const GPU_Rect r, bool absolute = false) const;
+        SDL_Rect TransformRect(float x, float y, float w, float h, bool absolute = false) const;
 
     public:
-        SDLGPURenderer(Assets &assetManager);
+        SDL2Renderer(Assets &assetManager);
         void Init() override;
         void Close() override;
         void Prepare() override;
@@ -36,4 +39,7 @@ namespace cm
         void DrawTexture(AssetKey textureKey, float x, float y, float w, float h, bool absolute = true) const override;
         void DrawFont(std::string text, AssetKey fontKey, Color color, float x, float y, float scale = 1.0, bool absolute = false) const override;
     };
+
 } // namespace cm
+
+#endif /* CM_RENDERER_SDL2_H */

@@ -1,7 +1,7 @@
 #include "cm_game.h"
 #include "cm_logger.h"
 #include "cm_player.h"
-#include "cm_renderer_sdl_gpu.h"
+#include "cm_renderer_sdl2.h"
 #include "cm_input_handler_sdl.h"
 
 namespace cm
@@ -23,7 +23,7 @@ namespace cm
         AssetManager->Init();
 
         // Setup renderer
-        SetMainRenderer(std::make_unique<cm::SDLGPURenderer>(*AssetManager));
+        SetMainRenderer(std::make_unique<cm::SDL2Renderer>(*AssetManager));
         MainRenderer->Init();
 
         // Create a player
