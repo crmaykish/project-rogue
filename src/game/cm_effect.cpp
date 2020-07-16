@@ -26,8 +26,8 @@ namespace cm
 
         world.AddCombatText(CombatText{
             std::to_string(Damage),
-            actor.TileX,
-            actor.TileY,
+            actor.Position.X,
+            actor.Position.Y,
             ColorRed,
             0});
     }
@@ -37,7 +37,7 @@ namespace cm
 
     void DamageTargetEffect::Use(Actor &actor, GameWorld &world)
     {
-        auto target = world.GetActor(actor.TargetX, actor.TargetY);
+        auto target = world.GetActor(actor.Target.X, actor.Target.Y);
 
         if (target != nullptr)
         {
@@ -60,8 +60,8 @@ namespace cm
 
         world.AddCombatText(CombatText{
             std::to_string(Health),
-            actor.TileX,
-            actor.TileY,
+            actor.Position.X,
+            actor.Position.Y,
             ColorGreen,
             0});
     }
@@ -80,8 +80,8 @@ namespace cm
 
         world.AddCombatText(CombatText{
             std::to_string(Mana),
-            actor.TileX,
-            actor.TileY,
+            actor.Position.X,
+            actor.Position.Y,
             ColorBlue,
             0});
     }
@@ -122,7 +122,7 @@ namespace cm
     {
         int life = 2;
 
-        auto targetOfTarget = world.GetActor(actor.TargetX, actor.TargetY);
+        auto targetOfTarget = world.GetActor(actor.Target.X, actor.Target.Y);
 
         if (targetOfTarget == nullptr)
         {
@@ -148,8 +148,8 @@ namespace cm
 
         world.AddCombatText(CombatText{
             std::to_string(Experience),
-            actor.TileX,
-            actor.TileY,
+            actor.Position.X,
+            actor.Position.Y,
             ColorPurple,
             0});
 
@@ -163,8 +163,8 @@ namespace cm
 
             world.AddCombatText(CombatText{
                 "Level Up!",
-                actor.TileX,
-                actor.TileY,
+                actor.Position.X,
+                actor.Position.Y,
                 ColorBlue,
                 0});
         }

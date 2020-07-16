@@ -17,7 +17,7 @@ namespace cm
 
         if (!ability->IsSelfCast())
         {
-            if (executor.TargetX == 0 && executor.TargetY == 0)
+            if (executor.Target.X == 0 && executor.Target.Y == 0)
             {
                 return ActionResult(ActionStatus::Waiting, "Pick a target");
             }

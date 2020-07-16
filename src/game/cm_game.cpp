@@ -120,8 +120,8 @@ namespace cm
 
     void Game::SnapCameraToPlayer()
     {
-        float camX = (World->GetPlayer()->TileX * TileSize) - (MainRenderer->GetResolutionX() / 2) + (TileSize / 2);
-        float camY = (MainRenderer->GetResolutionY() / 2) - (World->GetPlayer()->TileY * TileSize) - (TileSize / 2);
+        float camX = (World->GetPlayer()->Position.X * TileSize) - (MainRenderer->GetResolutionX() / 2) + (TileSize / 2);
+        float camY = (MainRenderer->GetResolutionY() / 2) - (World->GetPlayer()->Position.Y * TileSize) - (TileSize / 2);
         MainRenderer->SetCameraPosition(camX, camY);
     }
 

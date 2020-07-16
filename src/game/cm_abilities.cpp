@@ -63,12 +63,14 @@ namespace cm
     {
         // TODO: range checking
 
-        auto target = world.GetActor(user.TargetX, user.TargetY);
+        auto target = world.GetActor(user.Target.X, user.Target.Y);
 
         if (target == nullptr)
         {
             return false;
         }
+
+        // if (TileDistance()
 
         // TODO: consider target's defense rating
         auto baseDamage = user.Stats.GetAttackRating() / 4;
@@ -101,7 +103,7 @@ namespace cm
     bool RangedAbility::Use(Actor &user, GameWorld &world)
     {
         // TODO: range checking
-        auto target = world.GetActor(user.TargetX, user.TargetY);
+        auto target = world.GetActor(user.Target.X, user.Target.Y);
 
         if (target == nullptr)
         {
@@ -174,7 +176,7 @@ namespace cm
     bool CleaveAbility::Use(Actor &user, GameWorld &world)
     {
         // do damage to everything around the user
-        auto neighbors = world.GetLevel()->GetNeighbors(user.TileX, user.TileY);
+        auto neighbors = world.GetLevel()->GetNeighbors(user.Position.X, user.Position.Y);
 
         for (auto n : neighbors)
         {
@@ -186,8 +188,7 @@ namespace cm
                 auto damage = DamageEffect(12);
                 damage.Use(*enemy, world);
 
-                user.TargetX = enemy->TileX;
-                user.TargetY = enemy->TileY;
+                user.Target = enemy->Position;
 
                 // Cleave will trigger weapon effects for every target it hits
                 TriggerWeaponUseEffects(user, world);

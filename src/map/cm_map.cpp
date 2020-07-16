@@ -58,7 +58,8 @@ namespace cm
     {
         for (auto &t : Tiles)
         {
-            auto dist = world.DistanceToPlayer(t->X, t->Y);
+            // Distance to player
+            auto dist = Distance({t->X, t->Y}, world.GetPlayer()->Position);
 
             int offset = (world.GetPlayer()->TorchFuel + 1) / 5;
 

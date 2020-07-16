@@ -7,6 +7,7 @@
 #include "cm_inventory.h"
 #include "cm_abilities.h"
 #include "cm_actor_stat.h"
+#include "cm_math.h"
 
 namespace cm
 {
@@ -22,10 +23,8 @@ namespace cm
         bool Active = false;
         bool Visible = false;
         bool Friendly = false;
-        int TileX = 0;
-        int TileY = 0;
-        int TargetX = 0;
-        int TargetY = 0;
+        Point Position;
+        Point Target;
         int TorchFuel = 0;
         int Level = 1;
         int Experience = 0;
@@ -59,6 +58,8 @@ namespace cm
 
         virtual int GetViewDistance() { return 0; }
     };
+
+    int ActorDistance(Actor &a, Actor &b);
 
 } // namespace cm
 

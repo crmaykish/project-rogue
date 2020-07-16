@@ -43,7 +43,7 @@ namespace cm
 
     void Player::Render(const Renderer &renderer)
     {
-        renderer.DrawTexture(AssetKey::KnightTexture, TileX * TileSize, TileY * TileSize, TileSize, TileSize);
+        renderer.DrawTexture(AssetKey::KnightTexture, Position.X * TileSize, Position.Y * TileSize, TileSize, TileSize);
     }
 
     void Player::Reset()

@@ -39,6 +39,7 @@ namespace cm
 
         std::vector<std::unique_ptr<Item>> Items;
     };
+
 } // namespace cm
 
 #endif // CM_TILE_H

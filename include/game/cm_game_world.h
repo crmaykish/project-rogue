@@ -38,8 +38,7 @@ namespace cm
 
         bool TileSelectMode = false;
         bool TileSelected = false;
-        int SelectedX = 0;
-        int SelectedY = 0;
+        Point SelectedTile;
 
         int LevelNumber = 0;
 
@@ -72,8 +71,6 @@ namespace cm
         Actor *GetActor(int x, int y) const;
         Actor *GetPlayer() const;
 
-        int DistanceToPlayer(int x, int y) const;
-
         void SetNextLevel();
 
         // TODO: this shouldn't really be necessary. operate on the map directly instead
@@ -91,6 +88,8 @@ namespace cm
 
         void AddCombatText(CombatText combatText);
     };
+
+    int ActorDistance(Actor &a, Actor &b);
 
 } // namespace cm
 

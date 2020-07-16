@@ -12,13 +12,6 @@
 
 namespace cm
 {
-    int GameWorld::DistanceToPlayer(int x, int y) const
-    {
-        int xDist = std::abs(GetPlayer()->TileX - x);
-        int yDist = std::abs(GetPlayer()->TileY - y);
-        return std::sqrt(std::pow(xDist, 2) + std::pow(yDist, 2));
-    }
-
     GameWorld::GameWorld(UserInput &input) : Input(input) {}
 
     void GameWorld::Init()
@@ -56,19 +49,19 @@ namespace cm
         {
             if (Input.Left.Once())
             {
-                SelectedX--;
+                SelectedTile.X--;
             }
             else if (Input.Right.Once())
             {
-                SelectedX++;
+                SelectedTile.X++;
             }
             else if (Input.Up.Once())
             {
-                SelectedY++;
+                SelectedTile.Y++;
             }
             else if (Input.Down.Once())
             {
-                SelectedY--;
+                SelectedTile.Y--;
             }
 
             if (Input.Primary.Once())
@@ -103,8 +96,7 @@ namespace cm
 
             if (TileSelected)
             {
-                actor->TargetX = SelectedX;
-                actor->TargetY = SelectedY;
+                actor->Target = SelectedTile;
                 result = CurrentAction->Execute(*actor);
                 TileSelected = false;
             }
@@ -119,8 +111,7 @@ namespace cm
             {
                 TileSelectMode = true;
                 TileSelected = false;
-                SelectedX = actor->TileX;
-                SelectedY = actor->TileY;
+                SelectedTile = actor->Position;
 
                 return;
             }
@@ -144,8 +135,8 @@ namespace cm
                 !actor->Friendly)
             {
                 // Reset actor's target
-                actor->TargetX = 0;
-                actor->TargetY = 0;
+                actor->Target.X = 0;
+                actor->Target.Y = 0;
 
                 NextActor();
                 actor = GetCurrentActor();
@@ -177,7 +168,7 @@ namespace cm
                 // Drop loot
                 if (RandomInt(100) < 20)
                 {
-                    Level->GetTile(a->TileX, a->TileY)->Items.emplace_back(RandomItem());
+                    Level->GetTile(a->Position.X, a->Position.Y)->Items.emplace_back(RandomItem());
                 }
             }
         }
@@ -208,7 +199,7 @@ namespace cm
 
         if (TileSelectMode)
         {
-            renderer.DrawTexture(AssetKey::SelectedTileTexture, SelectedX * TileSize, SelectedY * TileSize, TileSize, TileSize);
+            renderer.DrawTexture(AssetKey::SelectedTileTexture, SelectedTile.X * TileSize, SelectedTile.Y * TileSize, TileSize, TileSize);
         }
 
         // Render scrolling combat text
@@ -249,7 +240,7 @@ namespace cm
     {
         for (auto const &a : Actors)
         {
-            if (a->Active && a->TileX == x && a->TileY == y)
+            if (a->Active && a->Position.X == x && a->Position.Y == y)
             {
                 return a.get();
             }
@@ -280,8 +271,8 @@ namespace cm
         Actors.insert(Actors.end(), std::make_move_iterator(npcs.begin()), std::make_move_iterator(npcs.end()));
 
         // Get player starting position
-        PlayerOne->TileX = Level->GetPlayerX();
-        PlayerOne->TileY = Level->GetPlayerY();
+        PlayerOne->Position.X = Level->GetPlayerX();
+        PlayerOne->Position.Y = Level->GetPlayerY();
 
         LevelNumber++;
     }

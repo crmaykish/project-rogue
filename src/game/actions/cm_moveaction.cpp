@@ -32,10 +32,10 @@ namespace cm
         }
 
         // Set the actor's target
-        executor.TargetX = executor.TileX + moveX;
-        executor.TargetY = executor.TileY + moveY;
+        executor.Target.X = executor.Position.X + moveX;
+        executor.Target.Y = executor.Position.Y + moveY;
 
-        auto targetTile = World.GetLevel()->GetTile(executor.TargetX, executor.TargetY);
+        auto targetTile = World.GetLevel()->GetTile(executor.Target.X, executor.Target.Y);
 
         // Is there a tile in the move direction?
         if (targetTile == nullptr)
@@ -61,8 +61,8 @@ namespace cm
         // Is the tile walkable?
         if (targetTile->Type == TileType::Empty || targetTile->Type == TileType::Door)
         {
-            executor.TileX += moveX;
-            executor.TileY += moveY;
+            executor.Position.X += moveX;
+            executor.Position.Y += moveY;
 
             return ActionResult(ActionStatus::Succeeded);
         }
