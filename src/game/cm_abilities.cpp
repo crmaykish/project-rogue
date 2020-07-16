@@ -145,16 +145,7 @@ namespace cm
 
     bool HealAbility::Use(Actor &user, GameWorld &world)
     {
-        int manaCost = 20;
-
-        if (user.Energy < manaCost || user.HP == user.MaxHP)
-        {
-            return false;
-        }
-
-        user.Energy -= manaCost;
-
-        auto effect = HealEffect(user.MaxHP * 0.4);
+        auto effect = HealEffect(user.Stats.MaxHP() * 0.4);
 
         effect.Use(user, world);
 

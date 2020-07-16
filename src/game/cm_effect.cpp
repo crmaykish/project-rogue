@@ -12,12 +12,10 @@ namespace cm
 
     void DamageEffect::Use(Actor &actor, GameWorld &world)
     {
-        actor.HP -= Damage;
+        actor.Stats.AdjustHP(-Damage);
 
-        if (actor.HP <= 0)
+        if (actor.Stats.HP() == 0)
         {
-            actor.HP = 0;
-
             if (!actor.Friendly)
             {
                 actor.Active = false;
@@ -51,12 +49,7 @@ namespace cm
 
     void HealEffect::Use(Actor &actor, GameWorld &world)
     {
-        actor.HP += Health;
-
-        if (actor.HP > actor.MaxHP)
-        {
-            actor.HP = actor.MaxHP;
-        }
+        actor.Stats.AdjustEnergy(Health);
 
         world.AddCombatText(CombatText{
             std::to_string(Health),
@@ -71,12 +64,7 @@ namespace cm
 
     void EnergyEffect::Use(Actor &actor, GameWorld &world)
     {
-        actor.Energy += Energy;
-
-        if (actor.Energy > actor.MaxEnergy)
-        {
-            actor.Energy = actor.MaxEnergy;
-        }
+        actor.Stats.AdjustEnergy(Energy);
 
         world.AddCombatText(CombatText{
             std::to_string(Energy),

@@ -162,13 +162,13 @@ namespace cm
         int energyX = 10;
         int energyY = yOffset;
 
-        for (auto i = 0; i < World->GetPlayer()->Energy; i++)
+        for (auto i = 0; i < World->GetPlayer()->Stats.Energy(); i++)
         {
             MainRenderer->DrawTexture(AssetKey::EnergyIcon, energyX, energyY, 24, 24, true);
             energyX += 32;
         }
 
-        for (auto i = 0; i < World->GetPlayer()->MaxEnergy - World->GetPlayer()->Energy; i++)
+        for (auto i = 0; i < World->GetPlayer()->Stats.MaxEnergy() - World->GetPlayer()->Stats.Energy(); i++)
         {
             MainRenderer->DrawTexture(AssetKey::EnergyEmptyIcon, energyX, energyY, 24, 24, true);
             energyX += 32;
@@ -188,7 +188,7 @@ namespace cm
         yOffset -= 30;
 
         // HP
-        MainRenderer->DrawFont("HP: " + std::to_string(World->GetPlayer()->HP) + " / " + std::to_string(World->GetPlayer()->MaxHP),
+        MainRenderer->DrawFont("HP: " + std::to_string(World->GetPlayer()->Stats.HP()) + " / " + std::to_string(World->GetPlayer()->Stats.MaxHP()),
                                AssetKey::UIFont,
                                ColorRed,
                                10,

@@ -90,8 +90,6 @@ namespace cm
         void AddCombatText(CombatText combatText);
     };
 
-    int ActorDistance(Actor &a, Actor &b);
-
 } // namespace cm
 
 #endif // CM_WORLD_H

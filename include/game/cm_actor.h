@@ -11,35 +11,29 @@
 
 namespace cm
 {
-    // Forward Declarations
     class GameWorld;
     class Action;
 
     class Actor
     {
     public:
-        // TODO: This class is overdue for some smaller components
         std::string Name;
+
+        // Flags
         bool Active = false;
         bool Visible = false;
         bool Friendly = false;
+        bool TurnFinished = false;
+
+        // Location
         Point Position;
         Point Target;
+
+        // Stats
+        ActorStatSet Stats;
         int TorchFuel = 0;
         int Level = 1;
         int Experience = 0;
-
-        // Stats
-        // TODO: move hp and energy into the stats system
-        int MaxHP = 0;
-        int HP = 0;
-        int MaxEnergy = 0;
-        int Energy = 0;
-
-        bool TurnFinished = false;
-
-        // TODO: hide this behind a virtual function if any actors don't have stats
-        ActorStatSet Stats;
 
         virtual ~Actor() {}
 
@@ -60,8 +54,6 @@ namespace cm
 
         virtual int GetViewDistance() { return 0; }
     };
-
-    int ActorDistance(Actor &a, Actor &b);
 
 } // namespace cm
 

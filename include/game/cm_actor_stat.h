@@ -10,7 +10,9 @@ namespace cm
     enum struct ActorStatType
     {
         Health,
+        MaxHealth,
         Energy,
+        MaxEnergy,
         Vitality,
         Strength,
         Dexterity,
@@ -85,6 +87,15 @@ namespace cm
 
         int GetAttackRating();
         int GetDefenseRating();
+
+        // Convenience Methods
+        int HP();
+        int MaxHP();
+        int Energy();
+        int MaxEnergy();
+
+        void AdjustEnergy(int energy);
+        void AdjustHP(int hp);
     };
 
 } // namespace cm

@@ -104,7 +104,7 @@ namespace cm
                 CurrentAction = actor->NextAction(*this);
             }
 
-            if (actor->Energy < CurrentAction->EnergyCost())
+            if (actor->Stats.Energy() < CurrentAction->EnergyCost())
             {
                 LogEvent(actor->Name + " requires more energy", actor->Friendly);
                 return;
@@ -128,7 +128,7 @@ namespace cm
                 CurrentAction = std::move(result.AlternateAction);
 
                 // TODO: would be nice to restructure this so this energy check is not duplicated from above
-                if (actor->Energy < CurrentAction->EnergyCost())
+                if (actor->Stats.Energy() < CurrentAction->EnergyCost())
                 {
                     LogEvent(actor->Name + " requires more energy", actor->Friendly);
                     return;
@@ -150,12 +150,12 @@ namespace cm
                 !actor->Friendly)
             {
                 // Action was completed, subtract energy cost from actor who executed it
-                actor->Energy -= CurrentAction->EnergyCost();
+                actor->Stats.SetStatBaseValue(ActorStatType::Energy, actor->Stats.Energy() - CurrentAction->EnergyCost());
 
                 // TODO: this turn finished logic code is getting ugly. Review this structure
                 // Maybe an actor->CompleteAction() method to spend mana, cleanup flags, etc.
 
-                if (actor->Energy == 0)
+                if (actor->Stats.Energy() == 0)
                 {
                     actor->TurnFinished = true;
                 }
@@ -169,7 +169,7 @@ namespace cm
                     NextActor();
                     actor = GetCurrentActor();
                     actor->TurnFinished = false;
-                    actor->Energy = actor->MaxEnergy;
+                    actor->Stats.SetStatBaseValue(ActorStatType::Energy, actor->Stats.MaxEnergy());
 
                     if (actor->Friendly)
                     {
@@ -181,7 +181,7 @@ namespace cm
         }
 
         // If player is dead, game over
-        if (GetPlayer()->HP == 0)
+        if (GetPlayer()->Stats.HP() == 0)
         {
             PlayerOne->Reset();
             EventLogIndex = 1;

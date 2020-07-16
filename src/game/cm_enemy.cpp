@@ -27,7 +27,7 @@ namespace cm
         // Can the player see this enemy?
         Visible = world.GetLevel()->GetTile(Position.X, Position.Y)->Brightness > 0;
 
-        if (HP == 0)
+        if (Stats.HP() == 0)
         {
             Active = false;
         }
@@ -50,13 +50,13 @@ namespace cm
 
             auto abilityAction = std::make_unique<AbilityAction>(*this, 0, world);
 
-            if (Energy >= abilityAction->EnergyCost())
+            if (Stats.Energy() >= abilityAction->EnergyCost())
             {
                 return abilityAction;
             }
         }
 
-        else if (playerDistance < 6 || HP < MaxHP)
+        else if (playerDistance < 6 || Stats.HP() < Stats.MaxHP())
         {
             // really bad pathfinding to player
             auto diffX = player->Position.X - Position.X;
@@ -83,7 +83,7 @@ namespace cm
 
             auto moveAction = std::make_unique<MoveAction>(dir, world);
 
-            if (Energy >= moveAction->EnergyCost())
+            if (Stats.Energy() >= moveAction->EnergyCost())
             {
                 return moveAction;
             }
@@ -98,7 +98,7 @@ namespace cm
         {
             renderer.DrawTexture(Texture, Position.X * TileSize, Position.Y * TileSize, TileSize, TileSize);
 
-            renderer.DrawFont(std::to_string(HP) + " / " + std::to_string(MaxHP),
+            renderer.DrawFont(std::to_string(Stats.HP()) + " / " + std::to_string(Stats.MaxHP()),
                               AssetKey::UIFont,
                               ColorWhite,
                               Position.X * TileSize,
@@ -126,12 +126,10 @@ namespace cm
         a->Active = true;
         a->Level = level;
 
-        a->MaxHP = 15;
-        a->HP = 15;
-
-        a->MaxEnergy = 2;
-        a->Energy = 2;
-
+        a->Stats.SetStatBaseValue(ActorStatType::MaxHealth, RandomInt(15, 20));
+        a->Stats.SetStatBaseValue(ActorStatType::Health, a->Stats.MaxHP());
+        a->Stats.SetStatBaseValue(ActorStatType::MaxEnergy, 2);
+        a->Stats.SetStatBaseValue(ActorStatType::Energy, 2);
         a->Stats.SetStatBaseValue(ActorStatType::Vitality, RandomInt(8, 12));
         a->Stats.SetStatBaseValue(ActorStatType::Strength, RandomInt(5, 12));
         a->Stats.SetStatBaseValue(ActorStatType::Dexterity, 5);

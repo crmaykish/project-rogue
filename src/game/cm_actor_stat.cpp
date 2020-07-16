@@ -121,6 +121,54 @@ namespace cm
         return GetStatValue(ActorStatType::Dexterity) * 1.4;
     }
 
+    int ActorStatSet::HP()
+    {
+        return GetStatValue(ActorStatType::Health);
+    }
+
+    int ActorStatSet::MaxHP()
+    {
+        return GetStatValue(ActorStatType::MaxHealth);
+    }
+
+    int ActorStatSet::Energy()
+    {
+        return GetStatValue(ActorStatType::Energy);
+    }
+
+    int ActorStatSet::MaxEnergy()
+    {
+        return GetStatValue(ActorStatType::MaxEnergy);
+    }
+
+    void ActorStatSet::AdjustEnergy(int energy)
+    {
+        SetStatBaseValue(ActorStatType::Energy, GetStatValue(ActorStatType::Energy) + energy);
+
+        if (GetStatValue(ActorStatType::Energy) < 0)
+        {
+            SetStatBaseValue(ActorStatType::Energy, 0);
+        }
+        else if (GetStatValue(ActorStatType::Energy) > GetStatValue(ActorStatType::MaxEnergy))
+        {
+            SetStatBaseValue(ActorStatType::Energy, GetStatValue(ActorStatType::MaxEnergy));
+        }
+    }
+
+    void ActorStatSet::AdjustHP(int hp)
+    {
+        SetStatBaseValue(ActorStatType::Health, GetStatValue(ActorStatType::Health) + hp);
+
+        if (GetStatValue(ActorStatType::Health) < 0)
+        {
+            SetStatBaseValue(ActorStatType::Health, 0);
+        }
+        else if (GetStatValue(ActorStatType::Health) > GetStatValue(ActorStatType::MaxHealth))
+        {
+            SetStatBaseValue(ActorStatType::Health, GetStatValue(ActorStatType::MaxHealth));
+        }
+    }
+
     ActorStat *ActorStatSet::GetStat(ActorStatType statType)
     {
         if (Stats.find(statType) == Stats.end())
