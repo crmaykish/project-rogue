@@ -61,8 +61,6 @@ namespace cm
 
     bool MeleeAbility::Use(Actor &user, GameWorld &world)
     {
-        // TODO: range checking
-
         auto target = world.GetActor(user.Target.X, user.Target.Y);
 
         if (target == nullptr)
@@ -70,7 +68,10 @@ namespace cm
             return false;
         }
 
-        // if (TileDistance()
+        if (Distance(user.Position, target->Position) > 1)
+        {
+            return false;
+        }
 
         // TODO: consider target's defense rating
         auto baseDamage = user.Stats.GetAttackRating() / 4;
@@ -102,10 +103,14 @@ namespace cm
 
     bool RangedAbility::Use(Actor &user, GameWorld &world)
     {
-        // TODO: range checking
         auto target = world.GetActor(user.Target.X, user.Target.Y);
 
         if (target == nullptr)
+        {
+            return false;
+        }
+
+        if (Distance(user.Position, target->Position) > 4)
         {
             return false;
         }
