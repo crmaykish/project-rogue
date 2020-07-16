@@ -10,14 +10,14 @@
 5. Item - An actor can pickup, use, and equip items. Items can have base stats (damage, armor, resist, etc.) and effects.
 
 ## v0.1 Release Features
-[ ] Ten levels to descend with a final boss
-[ ] Warrior class stats and abilities
-[ ] Three enemy types with distinct stats and AI behavior
-[ ] Five weapons
-[ ] Two shields
-[ ] Two armor types for each of: head, chest, boots
-[ ] Inventory management (show item stats, drop items, etc.)
-[ ] Pure SDL2 implementation (remove SDL2_gpu)
+- [ ] Ten levels to descend with a final boss
+- [ ] Warrior class stats and abilities
+- [ ] Three enemy types with distinct stats and AI behavior
+- [ ] Five weapons
+- [ ] Two shields
+- [ ] Two armor types for each of: head, chest, boots
+- [ ] Inventory management (show item stats, drop items, etc.)
+- [x] Pure SDL2 implementation (remove SDL2_gpu)
 
 ## v0.1 Stretch Goals
 [ ] Build a WASM version playable in the browser
