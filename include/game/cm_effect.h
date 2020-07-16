@@ -10,7 +10,7 @@ namespace cm
 
     /**
      * @brief An Effect is the preferred way to update the state of an Actor
-     * Effects can change actor properties, e.g. HP, mana. They can also impact
+     * Effects can change actor properties, e.g. HP, energy. They can also impact
      * the target's target (e.g. life-steal) or the world (e.g. AoE damage).
      */
     class Effect
@@ -34,29 +34,29 @@ namespace cm
     };
 
     /**
-     * @brief Restore the actor's mana
+     * @brief Restore the actor's energy
      */
-    class ManaEffect : public Effect
+    class EnergyEffect : public Effect
     {
     private:
-        int Mana = 0;
+        int Energy = 0;
 
     public:
-        ManaEffect(int mana);
+        EnergyEffect(int energy);
         void Use(Actor &actor, GameWorld &world) override;
     };
 
     /**
-     * @brief Restore the actor's health and mana
+     * @brief Restore the actor's health and energy
      */
     class RejuvEffect : public Effect
     {
     private:
         int Health = 0;
-        int Mana = 0;
+        int Energy = 0;
 
     public:
-        RejuvEffect(int health, int mana);
+        RejuvEffect(int health, int energy);
         void Use(Actor &actor, GameWorld &world) override;
     };
 

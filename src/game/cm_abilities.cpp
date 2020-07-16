@@ -147,12 +147,12 @@ namespace cm
     {
         int manaCost = 20;
 
-        if (user.Mana < manaCost || user.HP == user.MaxHP)
+        if (user.Energy < manaCost || user.HP == user.MaxHP)
         {
             return false;
         }
 
-        user.Mana -= manaCost;
+        user.Energy -= manaCost;
 
         auto effect = HealEffect(user.MaxHP * 0.4);
 
@@ -182,8 +182,6 @@ namespace cm
     {
         // Damage all targets within one tile of the user
         auto neighbors = world.GetLevel()->GetNeighbors(user.Position.X, user.Position.Y);
-
-        // TODO: mana cost
 
         for (auto n : neighbors)
         {

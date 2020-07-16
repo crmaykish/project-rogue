@@ -171,8 +171,8 @@ namespace cm
 
         yOffset -= 30;
 
-        // Mana
-        MainRenderer->DrawFont("MP: " + std::to_string(World->GetPlayer()->Mana) + " / " + std::to_string(World->GetPlayer()->MaxMana),
+        // Energy
+        MainRenderer->DrawFont("MP: " + std::to_string(World->GetPlayer()->Energy) + " / " + std::to_string(World->GetPlayer()->MaxEnergy),
                                AssetKey::UIFont,
                                ColorBlue,
                                10,

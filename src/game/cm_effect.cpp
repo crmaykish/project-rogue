@@ -66,33 +66,33 @@ namespace cm
             0});
     }
 
-    // Mana
-    ManaEffect::ManaEffect(int mana) : Mana(mana) {}
+    // Energy
+    EnergyEffect::EnergyEffect(int energy) : Energy(energy) {}
 
-    void ManaEffect::Use(Actor &actor, GameWorld &world)
+    void EnergyEffect::Use(Actor &actor, GameWorld &world)
     {
-        actor.Mana += Mana;
+        actor.Energy += Energy;
 
-        if (actor.Mana > actor.MaxMana)
+        if (actor.Energy > actor.MaxEnergy)
         {
-            actor.Mana = actor.MaxMana;
+            actor.Energy = actor.MaxEnergy;
         }
 
         world.AddCombatText(CombatText{
-            std::to_string(Mana),
+            std::to_string(Energy),
             actor.Position.X,
             actor.Position.Y,
             ColorBlue,
             0});
     }
 
-    // Mana
-    RejuvEffect::RejuvEffect(int health, int mana) : Health(health), Mana(mana) {}
+    // Energy
+    RejuvEffect::RejuvEffect(int health, int energy) : Health(health), Energy(energy) {}
 
     void RejuvEffect::Use(Actor &actor, GameWorld &world)
     {
         auto hp = HealEffect(Health);
-        auto mp = ManaEffect(Mana);
+        auto mp = EnergyEffect(Energy);
 
         hp.Use(actor, world);
         mp.Use(actor, world);

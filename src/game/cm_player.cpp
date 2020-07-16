@@ -32,11 +32,8 @@ namespace cm
         // Drain fuel after every action
         // TorchFuel = (TorchFuel == 0) ? 0 : TorchFuel - 1;
 
-        // Regen mana
-        if (Mana < MaxMana)
-        {
-            Mana++;
-        }
+        // Restore energy
+        Energy = MaxEnergy;
 
         return std::move(nextAction);
     }
@@ -54,8 +51,8 @@ namespace cm
 
         MaxHP = 30;
         HP = MaxHP;
-        MaxMana = 20;
-        Mana = MaxMana;
+        MaxEnergy = 20;
+        Energy = MaxEnergy;
 
         Stats.SetStatBaseValue(ActorStatType::Vitality, RandomInt(18, 22));
         Stats.SetStatBaseValue(ActorStatType::Strength, RandomInt(15, 18));

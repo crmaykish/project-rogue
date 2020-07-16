@@ -30,11 +30,11 @@ namespace cm
         int Experience = 0;
 
         // Stats
-        // TODO: move hp and mana into the stats system
+        // TODO: move hp and energy into the stats system
         int MaxHP = 0;
         int HP = 0;
-        int MaxMana = 0;
-        int Mana = 0;
+        int MaxEnergy = 0;
+        int Energy = 0;
 
         // TODO: hide this behind a virtual function if any actors don't have stats
         ActorStatSet Stats;

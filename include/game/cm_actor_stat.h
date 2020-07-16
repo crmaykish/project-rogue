@@ -10,7 +10,7 @@ namespace cm
     enum struct ActorStatType
     {
         Health,
-        Mana,
+        Energy,
         Vitality,
         Strength,
         Dexterity,

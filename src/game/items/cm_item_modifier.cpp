@@ -32,8 +32,8 @@ namespace cm
 
     ItemModifier ItemModifierMana()
     {
-        return ItemModifier{"Mana",
-                            std::make_unique<ManaEffect>(60),
+        return ItemModifier{"Energy",
+                            std::make_unique<EnergyEffect>(60),
                             100};
     }
 
