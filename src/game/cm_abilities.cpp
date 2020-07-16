@@ -180,8 +180,10 @@ namespace cm
 
     bool CleaveAbility::Use(Actor &user, GameWorld &world)
     {
-        // do damage to everything around the user
+        // Damage all targets within one tile of the user
         auto neighbors = world.GetLevel()->GetNeighbors(user.Position.X, user.Position.Y);
+
+        // TODO: mana cost
 
         for (auto n : neighbors)
         {
@@ -189,9 +191,11 @@ namespace cm
 
             if (enemy != nullptr && !enemy->Friendly)
             {
-                // TODO: scale with weapon damage
-                auto damage = DamageEffect(12);
-                damage.Use(*enemy, world);
+                // TODO: consider target's defense rating
+                auto baseDamage = user.Stats.GetAttackRating() / 5;
+                int actualDamage = RandomInt(baseDamage / 2, baseDamage);
+                auto effect = DamageEffect(actualDamage);
+                effect.Use(*enemy, world);
 
                 user.Target = enemy->Position;
 
