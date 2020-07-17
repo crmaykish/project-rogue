@@ -5,7 +5,7 @@
 #include "cm_enemy.h"
 #include "cm_logger.h"
 #include "cm_random.h"
-#include "cm_item.h"
+#include "cm_item_builder.h"
 #include "cm_action.h"
 #include "cm_cellular_automata_map.h"
 #include "cm_room_accretion_map.h"
@@ -205,7 +205,7 @@ namespace cm
                 // Drop loot
                 if (RandomInt(100) < 20)
                 {
-                    Level->GetTile(a->Position.X, a->Position.Y)->Items.emplace_back(RandomItem());
+                    Level->GetTile(a->Position.X, a->Position.Y)->Items.emplace_back(BuildItem());
                 }
             }
         }

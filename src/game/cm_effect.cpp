@@ -103,7 +103,7 @@ namespace cm
 
         if (inv != nullptr)
         {
-            inv->AddItem(RandomConsumable());
+            // inv->AddItem(RandomConsumable());
         }
     }
 

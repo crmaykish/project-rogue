@@ -1,5 +1,6 @@
 #include <algorithm>
 #include "cm_room_accretion_map.h"
+#include "cm_item_builder.h"
 #include "cm_random.h"
 #include "cm_logger.h"
 #include "cm_enemy.h"
@@ -270,7 +271,8 @@ namespace cm
 
             for (int j = 0; j < itemCount; j++)
             {
-                t->Items.emplace_back(RandomItem());
+                t->Items.emplace_back(BuildItem());
+
             }
         }
     }
