@@ -42,6 +42,11 @@ namespace cm
         return false;
     }
 
+    void AbilitySet::Reset()
+    {
+        std::fill(Abilities.begin(), Abilities.end(), nullptr);
+    }
+
     // Melee
 
     std::string MeleeAbility::GetName()

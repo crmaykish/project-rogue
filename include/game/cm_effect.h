@@ -1,12 +1,14 @@
 #ifndef CM_EFFECT_H
 #define CM_EFFECT_H
 
+#include <memory>
 #include <string>
 
 namespace cm
 {
     class Actor;
     class GameWorld;
+    class Ability;
 
     /**
      * @brief An Effect is the preferred way to update the state of an Actor
@@ -122,6 +124,21 @@ namespace cm
 
     public:
         ExperienceEffect(int exp);
+        void Use(Actor &actor, GameWorld &world) override;
+    };
+
+    /**
+     * @brief Give the actor access to a new ability
+     */
+    class LearnAbilityEffect : public Effect
+    {
+    private:
+        // TODO: may be better to define ability keys and levels so we don't have to create
+        // them until the actor tries to actually use this effect
+        std::unique_ptr<Ability> LearnAbility;
+
+    public:
+        LearnAbilityEffect(std::unique_ptr<Ability> learnAbility);
         void Use(Actor &actor, GameWorld &world) override;
     };
 

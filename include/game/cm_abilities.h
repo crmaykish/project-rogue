@@ -40,6 +40,7 @@ namespace cm
         bool UseAbility(int slot, Actor &user, GameWorld &world);
         Ability *AbilityAt(int slot);
         bool AbilityReady(int slot);
+        void Reset();
     };
 
     class MeleeAbility : public Ability

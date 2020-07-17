@@ -44,4 +44,18 @@ namespace cm
         return item;
     }
 
+    std::unique_ptr<Item> SkillBook()
+    {
+        auto item = std::make_unique<Item>();
+        item->Name = "Book";
+        item->Type = ItemType::Consumable;
+        item->TextureKey = AssetKey::BookBlueTexture;
+        item->LimitedCharge = true;
+        item->Charges = 1;
+
+        item->AddModifier(ItemModifierTrigger::Use, ItemModifierLearnAbility());
+
+        return item;
+    }
+
 } // namespace cm

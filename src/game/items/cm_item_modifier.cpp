@@ -1,4 +1,5 @@
 #include "cm_item_modifier.h"
+#include "cm_abilities.h"
 #include "cm_random.h"
 #include "cm_logger.h"
 
@@ -41,6 +42,16 @@ namespace cm
     {
         return ItemModifier{"Rejuvenation",
                             std::make_unique<RejuvEffect>(40, 40),
+                            100};
+    }
+
+    ItemModifier ItemModifierLearnAbility()
+    {
+        // TODO: pass in random ability
+
+        return ItemModifier{"Guide",
+                            std::make_unique<LearnAbilityEffect>(
+                                std::make_unique<CleaveAbility>()),
                             100};
     }
 

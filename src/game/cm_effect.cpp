@@ -4,6 +4,7 @@
 #include "cm_item.h"
 #include "cm_random.h"
 #include "cm_logger.h"
+#include "cm_abilities.h"
 
 namespace cm
 {
@@ -156,6 +157,32 @@ namespace cm
                 ColorBlue,
                 0});
         }
+    }
+
+    LearnAbilityEffect::LearnAbilityEffect(std::unique_ptr<Ability> learnAbility)
+        : LearnAbility(std::move(learnAbility)) {}
+
+    void LearnAbilityEffect::Use(Actor &actor, GameWorld &world)
+    {
+
+        auto abilitySet = actor.GetAbilitySet();
+
+        int freeSlot = 0;
+
+        // while loop, moron
+        for (int i = 0; i < 4; i++)
+        {
+            if (abilitySet->AbilityAt(freeSlot) != nullptr)
+            {
+                freeSlot++;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        abilitySet->SetAbility(freeSlot, std::move(LearnAbility));
     }
 
 } // namespace cm

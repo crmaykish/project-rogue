@@ -63,6 +63,29 @@ namespace cm
         std::string DisplayName();
     };
 
+    // TODO: design a better way to define specific items or remove the need for specifics
+    // Some kind of mapping of item types to texture keys and possible stats and modifiers
+    // Possible to do this generically?
+    // Item database? Is that overkill?
+
+    // For example:
+    /*
+
+    item type: one handed
+    possible assets: sword, axe, mace
+    possible stat mods: any
+    possible number of stat mods: 1-3
+    possible behavior mods: any
+    possible behavior mod triggers: on hit
+    possible number of modifiers: 0-5
+
+
+    */
+
+    std::string StatPrefixes(ActorStatType statType);
+
+    std::unique_ptr<Item> BuildItem(ItemType type);
+
     // Weapons
     std::unique_ptr<Item> Dagger();
     std::unique_ptr<Item> ShortSword();
@@ -74,6 +97,7 @@ namespace cm
     std::unique_ptr<Item> HealingPotion();
     std::unique_ptr<Item> ManaPotion();
     std::unique_ptr<Item> RejuvPotion();
+    std::unique_ptr<Item> SkillBook();
 
     // Random
     std::unique_ptr<Item> RandomConsumable();

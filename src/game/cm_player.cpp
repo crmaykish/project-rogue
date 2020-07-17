@@ -59,8 +59,8 @@ namespace cm
         Items->Reset();
 
         // Add some player abilities
+        Abilities.Reset();
         Abilities.SetAbility(0, std::make_unique<MeleeAbility>());
-        Abilities.SetAbility(1, std::make_unique<CleaveAbility>());
     }
 
     void Player::DecideNextAction(GameWorld &world)

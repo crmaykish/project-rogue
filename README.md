@@ -11,7 +11,8 @@
 
 ## v0.1 Release Features
 - [ ] Ten levels to descend with a final boss
-- [ ] Warrior class stats and abilities
+- [ ] One generic randomized class
+- [ ] Learn abilities from books
 - [ ] Three enemy types with distinct stats and AI behavior
 - [ ] Five weapons
 - [ ] Two shields

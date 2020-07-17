@@ -30,6 +30,7 @@ namespace cm
     ItemModifier ItemModifierHeal();
     ItemModifier ItemModifierMana();
     ItemModifier ItemModifierRejuv();
+    ItemModifier ItemModifierLearnAbility();
 
     ItemModifier ItemModifierLifeLeech();
     ItemModifier ItemModifierExtraHit();
