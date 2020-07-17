@@ -49,7 +49,7 @@ namespace cm
     {
         // TODO: pass in random ability
 
-        return ItemModifier{"Guide",
+        return ItemModifier{"Skill",
                             std::make_unique<LearnAbilityEffect>(
                                 std::make_unique<CleaveAbility>()),
                             100};

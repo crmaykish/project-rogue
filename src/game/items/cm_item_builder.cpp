@@ -5,7 +5,9 @@ namespace cm
 {
     struct ItemAsset
     {
+        // TODO: Make this a vector of possible assets
         AssetKey key;
+        // TODO: these names should indicate the item level
         std::vector<std::string> names;
     };
 
@@ -14,12 +16,13 @@ namespace cm
         std::vector<ItemAsset> assets;
 
         std::vector<ActorStatType> statModTypes;
-        int minStatMods;
-        int maxStatMods;
+        int minStatMods = 0;
+        int maxStatMods = 0;
 
         std::vector<ItemModifier (*)()> itemModTypes;
-        int minItemMods;
-        int maxItemMods;
+        std::vector<ItemModifierTrigger> itemModTriggers;
+        int minItemMods = 0;
+        int maxItemMods = 0;
     };
 
     ItemAsset SwordAsset = {
@@ -30,6 +33,16 @@ namespace cm
     ItemAsset AxeAsset = {
         AssetKey::AxeTexture,
         {"Hatchet", "Axe", "Heavy Axe", "Broad Axe"},
+    };
+
+    ItemAsset BookAsset = {
+        AssetKey::BookBlueTexture,
+        {"Text", "Book", "Manual", "Tome"},
+    };
+
+    ItemAsset PotionAsset = {
+        AssetKey::HealthPotionTexture,
+        {"Potion", "Phial", "Flask", "Decanter"},
     };
 
     auto AllStatModTypes = {
@@ -47,24 +60,41 @@ namespace cm
         &ItemModifierSacrifice,
     };
 
+    auto OnUseItemModifiers = {
+        &ItemModifierHeal,
+        &ItemModifierMana,
+        &ItemModifierRejuv,
+        &ItemModifierLearnAbility,
+    };
+
     ItemBuilder WeaponBuilder = {
         .assets = {SwordAsset, AxeAsset},
         .statModTypes = AllStatModTypes,
         .minStatMods = 1,
         .maxStatMods = 4,
         .itemModTypes = AllItemModifiers,
+        .itemModTriggers = {ItemModifierTrigger::Attack},
         .minItemMods = 0,
         .maxItemMods = 2,
     };
 
+    ItemBuilder ConsumableBuilder = {
+        .assets = {BookAsset, PotionAsset},
+        .itemModTypes = OnUseItemModifiers,
+        .itemModTriggers = {ItemModifierTrigger::Use},
+        .minItemMods = 1,
+        .maxItemMods = 3,
+    };
+
     std::unordered_map<ItemType, ItemBuilder> ItemBuilders = {
         {ItemType::OneHand, WeaponBuilder},
+        {ItemType::Consumable, ConsumableBuilder},
     };
 
     std::unique_ptr<Item> BuildItem()
     {
         // Randomize type
-        return BuildItem(ItemType::OneHand);
+        return BuildItem(ItemType::Consumable);
     }
 
     std::unique_ptr<Item> BuildItem(ItemType type)
@@ -77,6 +107,13 @@ namespace cm
         item->Type = type;
         item->Name = asset.names.at(RandomInt(asset.names.size()));
         item->TextureKey = asset.key;
+
+        // Consumables need charges
+        if (type == ItemType::Consumable)
+        {
+            item->LimitedCharge = true;
+            item->Charges = 1;
+        }
 
         // Add stat modifiers
         for (int i = 0; i < RandomInt(builder.minStatMods, builder.maxStatMods); i++)
@@ -95,7 +132,8 @@ namespace cm
             // TODO: don't repeat modifiers
             // TODO: define triggers in the builder
             auto itemMod = builder.itemModTypes.at(RandomInt(builder.itemModTypes.size()));
-            item->AddModifier(ItemModifierTrigger::Attack, itemMod());
+            auto triggerType = builder.itemModTriggers.at(RandomInt(builder.itemModTriggers.size()));
+            item->AddModifier(triggerType, itemMod());
         }
 
         return item;
