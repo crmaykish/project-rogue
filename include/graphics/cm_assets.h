@@ -31,6 +31,7 @@ namespace cm
         TreeTexture,
         ChestTexture,
         WaterTexture,
+        BridgeTexture,
         // Actors
         KnightTexture,
         MageTexture,

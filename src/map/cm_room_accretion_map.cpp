@@ -10,10 +10,10 @@ namespace cm
     // Generator options
     static const int mapWidth = 40;
     static const int mapHeight = 30;
-    static const int roomsCountMin = 20;
-    static const int roomsCountMax = 30;
-    static const int roomSizeMin = 4;
-    static const int roomSizeMax = 6;
+    static const int roomsCountMin = 5;
+    static const int roomsCountMax = 7;
+    static const int roomSizeMin = 6;
+    static const int roomSizeMax = 10;
     static const int chestMin = 0;
     static const int chestMax = 3;
     static const int enemyMin = 6;
@@ -137,7 +137,7 @@ namespace cm
                 auto t = std::make_unique<Tile>();
                 t->X = x;
                 t->Y = y;
-                t->Type = TileType::Empty;
+                t->Type = TileType::Bridge;
 
                 Tiles.push_back(std::move(t));
             }
@@ -164,7 +164,7 @@ namespace cm
                 auto t = std::make_unique<Tile>();
                 t->X = x;
                 t->Y = y;
-                t->Type = TileType::Empty;
+                t->Type = TileType::Bridge;
 
                 Tiles.push_back(std::move(t));
             }

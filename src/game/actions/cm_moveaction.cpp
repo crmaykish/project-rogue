@@ -59,7 +59,8 @@ namespace cm
         }
 
         // Is the tile walkable?
-        if (targetTile->Type == TileType::Empty || targetTile->Type == TileType::Door)
+        // TODO: walkable should be based on a flag, not the tiletype
+        if (targetTile->Type == TileType::Empty || targetTile->Type == TileType::Door|| targetTile->Type == TileType::Bridge)
         {
             executor.Position.X += moveX;
             executor.Position.Y += moveY;

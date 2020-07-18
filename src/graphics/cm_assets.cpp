@@ -132,6 +132,9 @@ namespace cm
         case AssetKey::WaterTexture:
             assetFileName = "water.png";
             break;
+        case AssetKey::BridgeTexture:
+            assetFileName = "bridge.png";
+            break;
 
         // Actors
         case AssetKey::KnightTexture:

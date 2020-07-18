@@ -18,7 +18,8 @@ namespace cm
         Wall,
         WallCracked,
         Water,
-        Door
+        Door,
+        Bridge
     };
 
     struct Tile

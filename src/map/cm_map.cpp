@@ -113,6 +113,10 @@ namespace cm
             {
                 renderer.DrawTexture(AssetKey::WaterTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
             }
+            else if (t->Type == TileType::Bridge)
+            {
+                renderer.DrawTexture(AssetKey::BridgeTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
+            }
             else
             {
                 // Unrecognized tile type
