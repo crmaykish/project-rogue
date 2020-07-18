@@ -27,21 +27,21 @@ namespace cm
     ItemModifier ItemModifierHeal()
     {
         return ItemModifier{"Health",
-                            std::make_unique<HealEffect>(50),
+                            std::make_unique<HealEffect>(20),
                             100};
     }
 
     ItemModifier ItemModifierMana()
     {
         return ItemModifier{"Energy",
-                            std::make_unique<EnergyEffect>(60),
+                            std::make_unique<EnergyEffect>(3),
                             100};
     }
 
     ItemModifier ItemModifierRejuv()
     {
         return ItemModifier{"Rejuvenation",
-                            std::make_unique<RejuvEffect>(40, 40),
+                            std::make_unique<RejuvEffect>(10, 2),
                             100};
     }
 

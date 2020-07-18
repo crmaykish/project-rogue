@@ -35,6 +35,11 @@ namespace cm
         {"Hatchet", "Axe", "Heavy Axe", "Broad Axe"},
     };
 
+    ItemAsset HelmetAsset = {
+        AssetKey::HelmetLeatherTexture,
+        {"Hood", "Cowl", "Coif", "Helm"},
+    };
+
     ItemAsset BookAsset = {
         AssetKey::BookBlueTexture,
         {"Text", "Book", "Manual", "Tome"},
@@ -60,35 +65,49 @@ namespace cm
         &ItemModifierSacrifice,
     };
 
-    auto OnUseItemModifiers = {
-        &ItemModifierHeal,
-        &ItemModifierMana,
-        &ItemModifierRejuv,
-        &ItemModifierLearnAbility,
-    };
-
     ItemBuilder WeaponBuilder = {
         .assets = {SwordAsset, AxeAsset},
         .statModTypes = AllStatModTypes,
         .minStatMods = 1,
-        .maxStatMods = 4,
+        .maxStatMods = 2,
         .itemModTypes = AllItemModifiers,
         .itemModTriggers = {ItemModifierTrigger::Attack},
         .minItemMods = 0,
-        .maxItemMods = 2,
+        .maxItemMods = 1,
     };
 
-    ItemBuilder ConsumableBuilder = {
-        .assets = {BookAsset, PotionAsset},
-        .itemModTypes = OnUseItemModifiers,
+    ItemBuilder HelmetBuilder = {
+        .assets = {HelmetAsset},
+        .statModTypes = AllStatModTypes,
+        .minStatMods = 1,
+        .maxStatMods = 3,
+        .itemModTypes = AllItemModifiers,
+        // TODO: Item modifiers might not work with defend. have to use the attacker as defender and vice-versa
+        .itemModTriggers = {ItemModifierTrigger::Defend},
+        .minItemMods = 0,
+        .maxItemMods = 1,
+    };
+
+    ItemBuilder PotionBuilder = {
+        .assets = {PotionAsset},
+        .statModTypes = {},
+        .minStatMods = 0,
+        .maxStatMods = 0,
+        .itemModTypes = {
+            &ItemModifierHeal,
+            &ItemModifierMana,
+            &ItemModifierRejuv,
+        },
         .itemModTriggers = {ItemModifierTrigger::Use},
         .minItemMods = 1,
-        .maxItemMods = 3,
+        .maxItemMods = 1,
     };
 
-    std::unordered_map<ItemType, ItemBuilder> ItemBuilders = {
-        {ItemType::OneHand, WeaponBuilder},
-        {ItemType::Consumable, ConsumableBuilder},
+    std::unordered_map<ItemType, ItemBuilder>
+        ItemBuilders = {
+            {ItemType::OneHand, WeaponBuilder},
+            {ItemType::Consumable, PotionBuilder},
+            {ItemType::Head, HelmetBuilder},
     };
 
     std::unique_ptr<Item> BuildItem()
