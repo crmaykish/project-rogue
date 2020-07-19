@@ -152,6 +152,12 @@ namespace cm
         void Use(Actor &actor, GameWorld &world) override;
     };
 
+    // TODO: we have no way to know who the attacker was
+    class RetaliateEffect : public Effect
+    {
+        void Use(Actor &actor, GameWorld &world) override;
+    };
+
 } // namespace cm
 
 #endif // CM_EFFECT_H

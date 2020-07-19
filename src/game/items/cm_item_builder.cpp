@@ -35,12 +35,17 @@ namespace cm
         {"Hatchet", "Axe", "Heavy Axe", "Broad Axe"},
     };
 
-    ItemAsset HelmetAsset = {
+    ItemAsset HelmetLeatherAsset = {
         AssetKey::HelmetLeatherTexture,
-        {"Hood", "Cowl", "Coif", "Helm"},
+        {"Hood", "Cowl", "Coif"},
     };
 
-    ItemAsset BookAsset = {
+    ItemAsset HelmetSteelAsset = {
+        AssetKey::HelmetSteelTexture,
+        {"Cap", "Helm"},
+    };
+
+        ItemAsset BookAsset = {
         AssetKey::BookBlueTexture,
         {"Text", "Book", "Manual", "Tome"},
     };
@@ -78,7 +83,7 @@ namespace cm
     };
 
     ItemBuilder HelmetBuilder = {
-        .assets = {HelmetAsset},
+        .assets = {HelmetLeatherAsset, HelmetSteelAsset},
         .statModTypes = AllStatModTypes,
         .minStatMods = 1,
         .maxStatMods = 3,

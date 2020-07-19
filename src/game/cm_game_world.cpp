@@ -339,7 +339,7 @@ namespace cm
     {
         EventLogElem e;
         e.event = std::to_string(EventLogIndex) + ": " + event;
-        e.color = friendly ? ColorLightGrey : ColorGrey;
+        e.color = friendly ? ColorGreen : ColorRed;
         EventLog.push_back(e);
         EventLogIndex++;
     }

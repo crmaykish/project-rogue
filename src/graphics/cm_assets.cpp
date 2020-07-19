@@ -265,6 +265,9 @@ namespace cm
         case AssetKey::CharmGreenTexture:
             assetFileName = "charm_green.png";
             break;
+        case AssetKey::HelmetSteelTexture:
+            assetFileName = "helmet_steel.png";
+            break;
 
         // Icons
         case AssetKey::MeleeIcon:
