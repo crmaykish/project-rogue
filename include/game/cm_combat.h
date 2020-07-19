@@ -4,6 +4,7 @@
 namespace cm
 {
     class Actor;
+    class GameWorld;
 
     struct ActorDamage
     {
@@ -18,7 +19,7 @@ namespace cm
 
     public:
         Combat(Actor &owner);
-        void Damage(ActorDamage damage);
+        void Damage(ActorDamage damage, GameWorld &world);
     };
 
 } // namespace cm

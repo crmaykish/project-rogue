@@ -78,7 +78,15 @@ namespace cm
             OwnerStats.RemoveStatModifier(mod.GetId());
         }
 
-        // TODO: remove any effects from the actor that came from this item
+        // Remove any effects from the actor that came from this item
+
+        for (auto &p : equipped->Effects.Effects)
+        {
+            for (auto &effect : p.second)
+            {
+                OwnerEffects.Remove(effect->GetId());
+            }
+        }
 
         // Move the item back to the inventory and erase it from the equipment map
         AddItem(std::move(Equipment.at(type)));

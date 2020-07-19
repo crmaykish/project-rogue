@@ -81,7 +81,7 @@ namespace cm
         int actualDamage = RandomInt(baseDamage / 2, baseDamage * 1.25);
 
         // Damage the target
-        target->CombatComp->Damage({actualDamage, &user});
+        target->CombatComp->Damage({actualDamage, &user}, world);
 
         return true;
     }

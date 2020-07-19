@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "cm_effect.h"
 #include "cm_logger.h"
 #include "cm_actor.h"
@@ -26,7 +27,13 @@ namespace cm
     {
         Log("Remove effect: " + std::to_string(effectId));
 
-        // TODO:
+        for (auto &e : Effects)
+        {
+            e.second.erase(std::remove_if(e.second.begin(),
+                                          e.second.end(),
+                                          [=](auto &a) { return a->GetId() == effectId; }),
+                           e.second.end());
+        }
     }
 
     // Effect Component
@@ -48,13 +55,15 @@ namespace cm
 
     Effect::Effect() : Id(EffectID++) {}
 
+    uint32_t Effect::GetId() { return Id; }
+
     // Effect Implementations
 
     void RetaliationEffect::Use(Actor *source, Actor *target, GameWorld *world)
     {
-        Log("retaliate", LOG_INFO);
+        Log(source->Name + " retaliates", LOG_INFO);
 
-        target->CombatComp->Damage({2, source});
+        target->CombatComp->Damage({2, source}, *world);
     }
 
 } // namespace cm

@@ -29,6 +29,7 @@ namespace cm
         Effect();
         virtual ~Effect() {}
         virtual void Use(Actor *source, Actor *target, GameWorld *world) = 0;
+        uint32_t GetId();
     };
 
     class EffectMap
