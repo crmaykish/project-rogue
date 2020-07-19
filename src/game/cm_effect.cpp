@@ -8,8 +8,13 @@
 
 namespace cm
 {
+    /**
+     * @brief Triggers any on-attack item modifiers for all items the actor has equpped
+     */
+    void TriggerItemModifiers(ItemModifierTrigger trigger, Actor &user, GameWorld &world);
+
     // Damage
-    DamageEffect::DamageEffect(int damage) : Damage(damage) {}
+    DamageEffect::DamageEffect(int damage, bool triggers) : Damage(damage), Triggers(triggers) {}
 
     void DamageEffect::Use(Actor &actor, GameWorld &world)
     {
@@ -29,6 +34,12 @@ namespace cm
             actor.Position.Y,
             ColorRed,
             0});
+
+        // Actor took damage, trigger on-defend item modifiers
+        if (Triggers)
+        {
+            TriggerItemModifiers(ItemModifierTrigger::Defend, actor, world);
+        }
     }
 
     // Damage Target
@@ -43,6 +54,9 @@ namespace cm
             auto damage = DamageEffect(Damage);
             damage.Use(*target, world);
         }
+
+        // Damaged the target, trigger on-attack item modifiers
+        TriggerItemModifiers(ItemModifierTrigger::Attack, actor, world);
     }
 
     // Heal
@@ -182,6 +196,67 @@ namespace cm
         }
 
         abilitySet->SetAbility(freeSlot, std::move(LearnAbility));
+    }
+
+    void ExplosionEffect::Use(Actor &actor, GameWorld &world)
+    {
+        Log("EXPLODE");
+
+        auto fireDamage = 5; // TODO parameterize
+
+        auto tile = world.GetLevel()->GetTile(actor.Position.X, actor.Position.Y);
+        auto neighbors = world.GetLevel()->GetNeighbors(tile->X, tile->Y);
+
+        // Note: explosion damage cannot trigger further on-defend effects
+        // TODO: might have to revisit this: need a way to limit recursive damage
+        // loops without disabling it entirely
+        // Maybe do less in these effects and push more to the game loop and actor state
+        auto damageEffect = DamageEffect(fireDamage, false);
+
+        // TODO: set anything flammable on fire
+
+        // damage actor
+        damageEffect.Use(actor, world);
+
+        // damage neighbors
+        for (auto &n : neighbors)
+        {
+            auto actor = world.GetActor(n->X, n->Y);
+
+            if (actor != nullptr)
+            {
+                damageEffect.Use(*actor, world);
+            }
+        }
+    }
+
+    void TriggerItemModifiers(ItemModifierTrigger trigger, Actor &user, GameWorld &world)
+    {
+        auto inventory = user.GetInventory();
+
+        if (inventory == nullptr)
+        {
+            return;
+        }
+
+        auto equippedItems = {
+            inventory->EquipmentAt(ItemType::Head),
+            inventory->EquipmentAt(ItemType::Chest),
+            inventory->EquipmentAt(ItemType::Gloves),
+            inventory->EquipmentAt(ItemType::Legs),
+            inventory->EquipmentAt(ItemType::Boots),
+            inventory->EquipmentAt(ItemType::OneHand),
+            inventory->EquipmentAt(ItemType::OffHand),
+            // TODO: charms
+        };
+
+        for (auto e : equippedItems)
+        {
+            if (e != nullptr)
+            {
+                e->Use(trigger, user, world);
+            }
+        }
     }
 
 } // namespace cm

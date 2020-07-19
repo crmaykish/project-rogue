@@ -25,8 +25,6 @@ namespace cm
         int PercentChance = 100;
     };
 
-    ItemModifier RandomAttackModifier();
-
     ItemModifier ItemModifierHeal();
     ItemModifier ItemModifierMana();
     ItemModifier ItemModifierRejuv();
@@ -35,6 +33,8 @@ namespace cm
     ItemModifier ItemModifierLifeLeech();
     ItemModifier ItemModifierExtraHit();
     ItemModifier ItemModifierSacrifice();
+
+    ItemModifier ItemModifierExplosion();
 
 } // namespace cm
 

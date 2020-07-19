@@ -14,8 +14,8 @@ namespace cm
     static const int roomsCountMax = 7;
     static const int roomSizeMin = 6;
     static const int roomSizeMax = 10;
-    static const int chestMin = 0;
-    static const int chestMax = 3;
+    static const int chestMin = 20;
+    static const int chestMax = 20;
     static const int enemyMin = 6;
     static const int enemyMax = 12;
     static const int floodChance = 30;

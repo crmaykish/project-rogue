@@ -63,6 +63,7 @@ namespace cm
         &ItemModifierExtraHit,
         &ItemModifierLifeLeech,
         &ItemModifierSacrifice,
+        &ItemModifierExplosion,
     };
 
     ItemBuilder WeaponBuilder = {
@@ -81,10 +82,11 @@ namespace cm
         .statModTypes = AllStatModTypes,
         .minStatMods = 1,
         .maxStatMods = 3,
-        .itemModTypes = AllItemModifiers,
-        // TODO: Item modifiers might not work with defend. have to use the attacker as defender and vice-versa
+        .itemModTypes = {
+            &ItemModifierExplosion,
+        },
         .itemModTriggers = {ItemModifierTrigger::Defend},
-        .minItemMods = 0,
+        .minItemMods = 1,
         .maxItemMods = 1,
     };
 
@@ -112,8 +114,21 @@ namespace cm
 
     std::unique_ptr<Item> BuildItem()
     {
-        // Randomize type
-        return BuildItem(ItemType::Consumable);
+        switch (RandomInt(3))
+        {
+        case 0:
+            return BuildItem(ItemType::Consumable);
+            break;
+        case 1:
+            return BuildItem(ItemType::OneHand);
+            break;
+        case 2:
+            return BuildItem(ItemType::Head);
+            break;
+        default:
+            return nullptr;
+            break;
+        }
     }
 
     std::unique_ptr<Item> BuildItem(ItemType type)

@@ -57,4 +57,11 @@ namespace cm
                             25};
     }
 
+    ItemModifier ItemModifierExplosion()
+    {
+        return ItemModifier{"Explosion",
+                            std::make_unique<ExplosionEffect>(),
+                            25};
+    }
+
 } // namespace cm

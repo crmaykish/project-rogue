@@ -78,9 +78,10 @@ namespace cm
     {
     private:
         int Damage = 0;
+        bool Triggers = false;
 
     public:
-        DamageEffect(int damage);
+        DamageEffect(int damage, bool triggers = true);
         void Use(Actor &actor, GameWorld &world) override;
     };
 
@@ -139,6 +140,15 @@ namespace cm
 
     public:
         LearnAbilityEffect(std::unique_ptr<Ability> learnAbility);
+        void Use(Actor &actor, GameWorld &world) override;
+    };
+
+    /**
+     * @brief Cause an explosion on the actor's tile, damaging the actor and everything
+     * within one tile of it
+     */
+    class ExplosionEffect : public Effect
+    {
         void Use(Actor &actor, GameWorld &world) override;
     };
 

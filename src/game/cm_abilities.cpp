@@ -7,8 +7,6 @@
 
 namespace cm
 {
-    void TriggerWeaponUseEffects(Actor &user, GameWorld &world);
-
     // AbilitySet
 
     void AbilitySet::SetAbility(int slot, std::unique_ptr<Ability> ability)
@@ -84,8 +82,6 @@ namespace cm
         auto effect = DamageEffect(actualDamage);
         effect.Use(*target, world);
 
-        TriggerWeaponUseEffects(user, world);
-
         return true;
     }
 
@@ -125,8 +121,6 @@ namespace cm
         int actualDamage = RandomInt(baseDamage / 2, baseDamage * 1.25);
         auto effect = DamageEffect(actualDamage);
         effect.Use(*target, world);
-
-        TriggerWeaponUseEffects(user, world);
 
         return true;
     }
@@ -192,28 +186,10 @@ namespace cm
                 effect.Use(*enemy, world);
 
                 user.Target = enemy->Position;
-
-                // Cleave will trigger weapon effects for every target it hits
-                TriggerWeaponUseEffects(user, world);
             }
         }
 
         return true;
-    }
-
-    void TriggerWeaponUseEffects(Actor &user, GameWorld &world)
-    {
-        // If the actor has a weapon, trigger any on-use effects it has
-        auto inventory = user.GetInventory();
-        if (inventory != nullptr)
-        {
-            auto weapon = user.GetInventory()->EquipmentAt(ItemType::OneHand);
-
-            if (weapon != nullptr)
-            {
-                weapon->Use(ItemModifierTrigger::Attack, user, world);
-            }
-        }
     }
 
 } // namespace cm
