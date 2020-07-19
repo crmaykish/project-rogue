@@ -19,10 +19,10 @@ namespace cm
         int minStatMods = 0;
         int maxStatMods = 0;
 
-        std::vector<ItemModifier (*)()> itemModTypes;
-        std::vector<ItemModifierTrigger> itemModTriggers;
-        int minItemMods = 0;
-        int maxItemMods = 0;
+        // std::vector<ItemModifier (*)()> itemModTypes;
+        // std::vector<ItemModifierTrigger> itemModTriggers;
+        // int minItemMods = 0;
+        // int maxItemMods = 0;
     };
 
     ItemAsset SwordAsset = {
@@ -64,22 +64,22 @@ namespace cm
         ActorStatType::Intellect,
     };
 
-    auto AllItemModifiers = {
-        &ItemModifierExtraHit,
-        &ItemModifierLifeLeech,
-        &ItemModifierSacrifice,
-        &ItemModifierExplosion,
-    };
+    // auto AllItemModifiers = {
+    //     &ItemModifierExtraHit,
+    //     &ItemModifierLifeLeech,
+    //     &ItemModifierSacrifice,
+    //     &ItemModifierExplosion,
+    // };
 
     ItemBuilder WeaponBuilder = {
         .assets = {SwordAsset, AxeAsset},
         .statModTypes = AllStatModTypes,
         .minStatMods = 1,
         .maxStatMods = 2,
-        .itemModTypes = AllItemModifiers,
-        .itemModTriggers = {ItemModifierTrigger::Attack},
-        .minItemMods = 0,
-        .maxItemMods = 1,
+        // .itemModTypes = AllItemModifiers,
+        // .itemModTriggers = {ItemModifierTrigger::Attack},
+        // .minItemMods = 0,
+        // .maxItemMods = 1,
     };
 
     ItemBuilder HelmetBuilder = {
@@ -87,12 +87,12 @@ namespace cm
         .statModTypes = AllStatModTypes,
         .minStatMods = 1,
         .maxStatMods = 3,
-        .itemModTypes = {
-            &ItemModifierExplosion,
-        },
-        .itemModTriggers = {ItemModifierTrigger::Defend},
-        .minItemMods = 1,
-        .maxItemMods = 1,
+        // .itemModTypes = {
+        //     &ItemModifierExplosion,
+        // },
+        // .itemModTriggers = {ItemModifierTrigger::Defend},
+        // .minItemMods = 1,
+        // .maxItemMods = 1,
     };
 
     ItemBuilder PotionBuilder = {
@@ -100,14 +100,14 @@ namespace cm
         .statModTypes = {},
         .minStatMods = 0,
         .maxStatMods = 0,
-        .itemModTypes = {
-            &ItemModifierHeal,
-            &ItemModifierMana,
-            &ItemModifierRejuv,
-        },
-        .itemModTriggers = {ItemModifierTrigger::Use},
-        .minItemMods = 1,
-        .maxItemMods = 1,
+        // .itemModTypes = {
+        //     &ItemModifierHeal,
+        //     &ItemModifierMana,
+        //     &ItemModifierRejuv,
+        // },
+        // .itemModTriggers = {ItemModifierTrigger::Use},
+        // .minItemMods = 1,
+        // .maxItemMods = 1,
     };
 
     std::unordered_map<ItemType, ItemBuilder>
@@ -162,18 +162,12 @@ namespace cm
             // TODO: define value ranges in the builder
             auto statMod = builder.statModTypes.at(RandomInt(builder.statModTypes.size()));
             auto value = RandomInt(1, 10);
-            item->AddStatModifier(ActorStatModifier(statMod, value, ActorStatModifierType::Add));
+            item->StatModifiers.emplace_back(ActorStatModifier(statMod, value, ActorStatModifierType::Add));
         }
 
-        // Add behavior modifiers
-        for (int i = 0; i < RandomInt(builder.minItemMods, builder.maxItemMods); i++)
-        {
-            // TODO: don't repeat modifiers
-            // TODO: define triggers in the builder
-            auto itemMod = builder.itemModTypes.at(RandomInt(builder.itemModTypes.size()));
-            auto triggerType = builder.itemModTriggers.at(RandomInt(builder.itemModTriggers.size()));
-            item->AddModifier(triggerType, itemMod());
-        }
+        item->Effects.Add(EffectTrigger::Defend, std::make_unique<RetaliationEffect>());
+
+        // TODO: randomize effects
 
         return item;
     }

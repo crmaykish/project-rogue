@@ -26,14 +26,14 @@ namespace cm
 
         for (auto &item : tile->Items)
         {
-            if (executor.GetInventory()->FreeSlots() > 0)
+            if (executor.InventoryComp->FreeSlots() > 0)
             {
                 World.LogEvent(executor.Name + " picked up " + item->DisplayName(), executor.Friendly);
 
                 // If the item has charges, add to inventory, otherwise remove it from the tile
                 if (item->Charges > 0 || item->Type != ItemType::Consumable)
                 {
-                    executor.GetInventory()->AddItem(std::move(item));
+                    executor.InventoryComp->AddItem(std::move(item));
                 }
 
                 itemsPickedUp++;

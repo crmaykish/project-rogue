@@ -198,8 +198,8 @@ namespace cm
                 LogEvent(a->Name + " died", a->Friendly);
 
                 // Award experience
-                auto exp = ExperienceEffect(a->Level * 100);
-                exp.Use(*PlayerOne, *this);
+                // auto exp = ExperienceEffect(a->Level * 100);
+                // exp.Use(*PlayerOne, *this);
 
                 // Drop loot
                 if (RandomInt(100) < 20)

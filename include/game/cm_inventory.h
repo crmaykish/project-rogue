@@ -17,6 +17,7 @@ namespace cm
          * @brief A reference to the Inventory owner's stat set
          */
         ActorStatSet &OwnerStats;
+        EffectComponent &OwnerEffects;
 
         std::array<std::unique_ptr<Item>, BeltSize> Items;
         std::unordered_map<ItemType, std::unique_ptr<Item>> Equipment;
@@ -24,7 +25,7 @@ namespace cm
         int FirstOpenSlot();
 
     public:
-        Inventory(ActorStatSet &ownerStats);
+        Inventory(ActorStatSet &ownerStats, EffectComponent &ownerEffects);
 
         void AddItem(std::unique_ptr<Item> item);
         void RemoveItem(int slot);

@@ -5,7 +5,7 @@ namespace cm
 {
     AbilityAction::AbilityAction(Actor &actor, int abilitySlot, GameWorld &world) : World(world), AbilitySlot(abilitySlot)
     {
-        auto abilitySet = actor.GetAbilitySet();
+        auto abilitySet = actor.AbilitiesComp.get();
         ExecutorAbility = abilitySet->AbilityAt(abilitySlot);
     }
 

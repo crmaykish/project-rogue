@@ -9,14 +9,10 @@ namespace cm
      * @brief Global modifier ID counter. Whenever a new modifier is created, use this value as the ID and increment
      * Note: 0 is not a valid id and is reserved for errors
      */
-    static uint32_t ModifierID = 1;
+    static uint32_t ModifierID = 0;
 
     ActorStatModifier::ActorStatModifier(ActorStatType statType, float value, ActorStatModifierType modifierType)
-        : StatType(statType), Value(value), ModifierType(modifierType)
-    {
-        Id = ModifierID;
-        ModifierID++;
-    }
+        : StatType(statType), Value(value), ModifierType(modifierType), Id(ModifierID++) {}
 
     uint32_t ActorStatModifier::GetId() const
     {

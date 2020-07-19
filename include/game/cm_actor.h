@@ -7,6 +7,8 @@
 #include "cm_inventory.h"
 #include "cm_abilities.h"
 #include "cm_actor_stat.h"
+#include "cm_effect.h"
+#include "cm_combat.h"
 #include "cm_math.h"
 
 namespace cm
@@ -35,6 +37,12 @@ namespace cm
         int Level = 1;
         int Experience = 0;
 
+        // Components
+        std::unique_ptr<Inventory> InventoryComp = nullptr;
+        std::unique_ptr<AbilitySet> AbilitiesComp = nullptr;
+        std::unique_ptr<EffectComponent> EffectsComp = nullptr;
+        std::unique_ptr<Combat> CombatComp = nullptr;
+
         virtual ~Actor() {}
 
         // Game state changes
@@ -45,12 +53,6 @@ namespace cm
         // Actions
         virtual bool ActionReady() = 0;
         virtual std::unique_ptr<Action> NextAction(GameWorld &world) = 0;
-
-        // Items
-        virtual Inventory *GetInventory() = 0;
-
-        // Abilities
-        virtual AbilitySet *GetAbilitySet() = 0;
 
         virtual int GetViewDistance() { return 0; }
     };

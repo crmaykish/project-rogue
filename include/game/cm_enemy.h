@@ -7,9 +7,6 @@ namespace cm
 {
     class Enemy : public Actor
     {
-    private:
-        AbilitySet Abilities;
-
     public:
         AssetKey Texture = AssetKey::Unknown;
 
@@ -19,9 +16,6 @@ namespace cm
 
         bool ActionReady() override;
         std::unique_ptr<Action> NextAction(GameWorld &world) override;
-
-        Inventory *GetInventory() override;
-        AbilitySet *GetAbilitySet() override;
     };
 
     std::unique_ptr<Actor> Ghost(int x, int y, int level);

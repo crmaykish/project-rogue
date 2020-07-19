@@ -3,159 +3,54 @@
 
 #include <memory>
 #include <string>
+#include <vector>
+#include <unordered_map>
 
 namespace cm
 {
     class Actor;
     class GameWorld;
-    class Ability;
 
-    /**
-     * @brief An Effect is the preferred way to update the state of an Actor
-     * Effects can change actor properties, e.g. HP, energy. They can also impact
-     * the target's target (e.g. life-steal) or the world (e.g. AoE damage).
-     */
+    enum struct EffectTrigger
+    {
+        Action, /**< Effect is triggered when the owner makes any action */
+        Attack, /**< Effect is triggered when the owner attacks a target */
+        Defend, /**< Effect is triggered when the owner takes damage */
+        Kill,   /**< Effect is triggered when the owner kills a target */
+        Die,    /**< Effect is triggered when the owner dies */
+    };
+
     class Effect
     {
+    protected:
+        uint32_t Id = 0;
+
     public:
+        Effect();
         virtual ~Effect() {}
-        virtual void Use(Actor &actor, GameWorld &world) = 0;
+        virtual void Use(Actor *source, Actor *target, GameWorld *world) = 0;
     };
 
-    /**
-     * @brief Heal the actor
-     */
-    class HealEffect : public Effect
-    {
-    private:
-        int Health = 0;
-
-    public:
-        HealEffect(int health);
-        void Use(Actor &actor, GameWorld &world) override;
-    };
-
-    /**
-     * @brief Restore the actor's energy
-     */
-    class EnergyEffect : public Effect
-    {
-    private:
-        int Energy = 0;
-
-    public:
-        EnergyEffect(int energy);
-        void Use(Actor &actor, GameWorld &world) override;
-    };
-
-    /**
-     * @brief Restore the actor's health and energy
-     */
-    class RejuvEffect : public Effect
-    {
-    private:
-        int Health = 0;
-        int Energy = 0;
-
-    public:
-        RejuvEffect(int health, int energy);
-        void Use(Actor &actor, GameWorld &world) override;
-    };
-
-    /**
-     * @brief Increase the actor's torch fuel level
-     */
-    class AddTorchFuelEffect : public Effect
+    class EffectMap
     {
     public:
-        void Use(Actor &actor, GameWorld &world) override;
+        std::unordered_map<EffectTrigger, std::vector<std::shared_ptr<Effect>>> Effects;
+        void Add(EffectTrigger trigger, std::shared_ptr<Effect> effect);
+        void Remove(uint32_t effectId);
     };
 
-    /**
-     * @brief Damage the actor
-     */
-    class DamageEffect : public Effect
-    {
-    private:
-        int Damage = 0;
-        bool Triggers = false;
-
-    public:
-        DamageEffect(int damage, bool triggers = true);
-        void Use(Actor &actor, GameWorld &world) override;
-    };
-
-    /**
-     * @brief Damage the actor's target
-     */
-    class DamageTargetEffect : public Effect
-    {
-    private:
-        int Damage = 0;
-
-    public:
-        DamageTargetEffect(int damage);
-        void Use(Actor &actor, GameWorld &world) override;
-    };
-
-    /**
-     * @brief Spawn a random consumable in the actor's inventory
-     */
-    class RandomConsumableEffect : public Effect
-    {
-        void Use(Actor &actor, GameWorld &world) override;
-    };
-
-    /**
-     * @brief Steal life from the actor's target to the actor
-     */
-    class LifeStealEffect : public Effect
+    class EffectComponent : public EffectMap
     {
     public:
-        void Use(Actor &actor, GameWorld &world) override;
+        void TriggerEffects(EffectTrigger trigger, Actor *source, Actor *target, GameWorld *world);
     };
 
-    /**
-     * @brief Grant experience to the target actor
-     */
-    class ExperienceEffect : public Effect
-    {
-    private:
-        int Experience;
+    // Effects
 
+    class RetaliationEffect : public Effect
+    {
     public:
-        ExperienceEffect(int exp);
-        void Use(Actor &actor, GameWorld &world) override;
-    };
-
-    /**
-     * @brief Give the actor access to a new ability
-     */
-    class LearnAbilityEffect : public Effect
-    {
-    private:
-        // TODO: may be better to define ability keys and levels so we don't have to create
-        // them until the actor tries to actually use this effect
-        std::unique_ptr<Ability> LearnAbility;
-
-    public:
-        LearnAbilityEffect(std::unique_ptr<Ability> learnAbility);
-        void Use(Actor &actor, GameWorld &world) override;
-    };
-
-    /**
-     * @brief Cause an explosion on the actor's tile, damaging the actor and everything
-     * within one tile of it
-     */
-    class ExplosionEffect : public Effect
-    {
-        void Use(Actor &actor, GameWorld &world) override;
-    };
-
-    // TODO: we have no way to know who the attacker was
-    class RetaliateEffect : public Effect
-    {
-        void Use(Actor &actor, GameWorld &world) override;
+        void Use(Actor *source, Actor *target, GameWorld *world) override;
     };
 
 } // namespace cm

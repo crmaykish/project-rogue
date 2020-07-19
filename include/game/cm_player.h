@@ -11,8 +11,6 @@ namespace cm
     private:
         const UserInput &Input;
         std::unique_ptr<Action> nextAction;
-        std::unique_ptr<Inventory> Items;
-        AbilitySet Abilities;
 
         void DecideNextAction(GameWorld &world);
 
@@ -24,10 +22,6 @@ namespace cm
 
         bool ActionReady() override;
         std::unique_ptr<Action> NextAction(GameWorld &world) override;
-
-        Inventory *GetInventory() override;
-
-        AbilitySet *GetAbilitySet() override;
 
         int GetViewDistance() override
         {

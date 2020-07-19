@@ -79,8 +79,9 @@ namespace cm
         // TODO: consider target's defense rating
         auto baseDamage = user.Stats.GetAttackRating() / 4;
         int actualDamage = RandomInt(baseDamage / 2, baseDamage * 1.25);
-        auto effect = DamageEffect(actualDamage);
-        effect.Use(*target, world);
+
+        // Damage the target
+        target->CombatComp->Damage({actualDamage, &user});
 
         return true;
     }
@@ -119,8 +120,8 @@ namespace cm
         // TODO: consider target's defense rating
         auto baseDamage = user.Stats.GetAttackRating() / 4;
         int actualDamage = RandomInt(baseDamage / 2, baseDamage * 1.25);
-        auto effect = DamageEffect(actualDamage);
-        effect.Use(*target, world);
+        // auto effect = DamageEffect({actualDamage, &user});
+        // effect.Use(*target, world);
 
         return true;
     }
@@ -144,9 +145,9 @@ namespace cm
 
     bool HealAbility::Use(Actor &user, GameWorld &world)
     {
-        auto effect = HealEffect(user.Stats.MaxHP() * 0.4);
+        // auto effect = HealEffect(user.Stats.MaxHP() * 0.4);
 
-        effect.Use(user, world);
+        // effect.Use(user, world);
 
         return true;
     }
@@ -182,8 +183,8 @@ namespace cm
                 // TODO: consider target's defense rating
                 auto baseDamage = user.Stats.GetAttackRating() / 5;
                 int actualDamage = RandomInt(baseDamage / 2, baseDamage);
-                auto effect = DamageEffect(actualDamage);
-                effect.Use(*enemy, world);
+                // auto effect = DamageEffect({actualDamage, &user});
+                // effect.Use(*enemy, world);
 
                 user.Target = enemy->Position;
             }

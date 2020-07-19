@@ -2,7 +2,8 @@
 
 namespace cm
 {
-    Inventory::Inventory(ActorStatSet &ownerStats) : OwnerStats(ownerStats) {}
+    Inventory::Inventory(ActorStatSet &ownerStats, EffectComponent &ownerEffects)
+        : OwnerStats(ownerStats), OwnerEffects(ownerEffects) {}
 
     void Inventory::AddItem(std::unique_ptr<Item> item)
     {
@@ -38,9 +39,18 @@ namespace cm
         UnequipItem(newItem->Type);
 
         // Add item stat modifiers to actor
-        for (auto const &mod : newItem->GetStatModifiers())
+        for (auto const &mod : newItem->StatModifiers)
         {
             OwnerStats.AddStatModifier(mod.GetStatType(), mod);
+        }
+
+        // Add item effects to actor
+        for (auto &a : newItem->Effects.Effects)
+        {
+            for (auto &b : a.second)
+            {
+                OwnerEffects.Add(a.first, b);
+            }
         }
 
         // Equip new item
@@ -63,10 +73,12 @@ namespace cm
         }
 
         // Remove any item stat modifiers from the actor that came from this item
-        for (auto &mod : equipped->GetStatModifiers())
+        for (auto &mod : equipped->StatModifiers)
         {
             OwnerStats.RemoveStatModifier(mod.GetId());
         }
+
+        // TODO: remove any effects from the actor that came from this item
 
         // Move the item back to the inventory and erase it from the equipment map
         AddItem(std::move(Equipment.at(type)));
@@ -91,7 +103,8 @@ namespace cm
     void Inventory::Reset()
     {
         // TODO: remove all item stat modifiers from actor
-
+        // TODO: remove all item effects from actor
+        
         for (auto &b : Items)
         {
             b.reset();

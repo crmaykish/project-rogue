@@ -22,3 +22,25 @@
 
 ## v0.1 Stretch Goals
 [ ] Build a WASM version playable in the browser
+
+
+### Notes
+
+Overcomplicated effects system
+
+Start with a simple combat component for actors
+
+When actors take damage, they trigger defend effects on the world or on their attacker
+
+When actors do damage, they trigger attack effects on their target
+
+Item effects will end up having know their owner? Unless we set the owner right before
+we actually use the effect...
+
+Make Effect only for secondary things, not the main mechanism of combat
+
+Thought: Create a system like the stats system for Effects. Let the actor maintain a map of
+trigger types to effects. The other subsystems can just attach or detach Effects when something
+changes. Then an actor has a full list of effects for every trigger at the ready
+
+Items, equipment, buffs, environment can all add/remove Effects to the actors with the same interface

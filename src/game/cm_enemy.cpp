@@ -13,8 +13,15 @@ namespace cm
         Position.X = x;
         Position.Y = y;
 
+        // Initialize components
+
+        AbilitiesComp = std::make_unique<AbilitySet>();
+        EffectsComp = std::make_unique<EffectComponent>();
+        CombatComp = std::make_unique<Combat>(*this);
+        InventoryComp = std::make_unique<Inventory>(Stats, *EffectsComp);
+
         // TODO: all enemies just have a melee attack for now
-        Abilities.SetAbility(0, std::make_unique<MeleeAbility>());
+        AbilitiesComp->SetAbility(0, std::make_unique<MeleeAbility>());
     }
 
     void Enemy::Update(GameWorld &world)
@@ -105,16 +112,6 @@ namespace cm
                               (Position.Y + 1) * TileSize,
                               0.5);
         }
-    }
-
-    Inventory *Enemy::GetInventory()
-    {
-        return nullptr;
-    }
-
-    AbilitySet *Enemy::GetAbilitySet()
-    {
-        return &Abilities;
     }
 
     std::unique_ptr<Actor> Ghost(int x, int y, int level)

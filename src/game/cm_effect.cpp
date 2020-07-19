@@ -1,262 +1,60 @@
 #include "cm_effect.h"
-#include "cm_actor.h"
-#include "cm_game_world.h"
-#include "cm_item.h"
-#include "cm_random.h"
 #include "cm_logger.h"
-#include "cm_abilities.h"
+#include "cm_actor.h"
 
 namespace cm
 {
-    /**
-     * @brief Triggers any on-attack item modifiers for all items the actor has equpped
-     */
-    void TriggerItemModifiers(ItemModifierTrigger trigger, Actor &user, GameWorld &world);
+    static uint32_t EffectID = 0;
 
-    // Damage
-    DamageEffect::DamageEffect(int damage, bool triggers) : Damage(damage), Triggers(triggers) {}
+    // Effect Map
 
-    void DamageEffect::Use(Actor &actor, GameWorld &world)
+    void EffectMap::Add(EffectTrigger trigger, std::shared_ptr<Effect> effect)
     {
-        actor.Stats.AdjustHP(-Damage);
+        Log("Adding effect", LOG_INFO);
 
-        if (actor.Stats.HP() == 0)
+        if (Effects.find(trigger) == Effects.end())
         {
-            if (!actor.Friendly)
-            {
-                actor.Active = false;
-            }
+            // Create the vector
+            Effects.emplace(trigger, std::vector<std::shared_ptr<Effect>>());
         }
 
-        world.AddCombatText(CombatText{
-            std::to_string(Damage),
-            actor.Position.X,
-            actor.Position.Y,
-            ColorRed,
-            0});
-
-        // Actor took damage, trigger on-defend item modifiers
-        if (Triggers)
-        {
-            TriggerItemModifiers(ItemModifierTrigger::Defend, actor, world);
-        }
+        // insert the effect
+        Effects.at(trigger).emplace_back(std::move(effect));
     }
 
-    // Damage Target
-    DamageTargetEffect::DamageTargetEffect(int damage) : Damage(damage) {}
-
-    void DamageTargetEffect::Use(Actor &actor, GameWorld &world)
+    void EffectMap::Remove(uint32_t effectId)
     {
-        auto target = world.GetActor(actor.Target.X, actor.Target.Y);
+        Log("Remove effect: " + std::to_string(effectId));
 
-        if (target != nullptr)
-        {
-            auto damage = DamageEffect(Damage);
-            damage.Use(*target, world);
-        }
-
-        // Damaged the target, trigger on-attack item modifiers
-        TriggerItemModifiers(ItemModifierTrigger::Attack, actor, world);
+        // TODO:
     }
 
-    // Heal
-    HealEffect::HealEffect(int health) : Health(health) {}
+    // Effect Component
 
-    void HealEffect::Use(Actor &actor, GameWorld &world)
+    void EffectComponent::TriggerEffects(EffectTrigger trigger, Actor *source, Actor *target, GameWorld *world)
     {
-        actor.Stats.AdjustEnergy(Health);
-
-        world.AddCombatText(CombatText{
-            std::to_string(Health),
-            actor.Position.X,
-            actor.Position.Y,
-            ColorGreen,
-            0});
-    }
-
-    // Energy
-    EnergyEffect::EnergyEffect(int energy) : Energy(energy) {}
-
-    void EnergyEffect::Use(Actor &actor, GameWorld &world)
-    {
-        actor.Stats.AdjustEnergy(Energy);
-
-        world.AddCombatText(CombatText{
-            std::to_string(Energy),
-            actor.Position.X,
-            actor.Position.Y,
-            ColorBlue,
-            0});
-    }
-
-    // Energy
-    RejuvEffect::RejuvEffect(int health, int energy) : Health(health), Energy(energy) {}
-
-    void RejuvEffect::Use(Actor &actor, GameWorld &world)
-    {
-        auto hp = HealEffect(Health);
-        auto mp = EnergyEffect(Energy);
-
-        hp.Use(actor, world);
-        mp.Use(actor, world);
-    }
-
-    // Torch Fuel
-    void AddTorchFuelEffect::Use(Actor &actor, GameWorld &world)
-    {
-        if (actor.Friendly)
-        {
-            actor.TorchFuel += 10;
-        }
-    }
-
-    // Random Potions
-    void RandomConsumableEffect::Use(Actor &actor, GameWorld &world)
-    {
-        auto inv = actor.GetInventory();
-
-        if (inv != nullptr)
-        {
-            // inv->AddItem(RandomConsumable());
-        }
-    }
-
-    void LifeStealEffect::Use(Actor &actor, GameWorld &world)
-    {
-        int life = 2;
-
-        auto targetOfTarget = world.GetActor(actor.Target.X, actor.Target.Y);
-
-        if (targetOfTarget == nullptr)
+        if (Effects.find(trigger) == Effects.end())
         {
             return;
         }
 
-        // damage the actor's target
-        // TODO: can't steal more life than target of target has
-        auto damage = DamageEffect(life);
-        damage.Use(*targetOfTarget, world);
-
-        // heal the actor
-        auto heal = HealEffect(life);
-        heal.Use(actor, world);
-    }
-
-    // Experience
-    ExperienceEffect::ExperienceEffect(int exp) : Experience(exp) {}
-
-    void ExperienceEffect::Use(Actor &actor, GameWorld &world)
-    {
-        actor.Experience += Experience;
-
-        world.AddCombatText(CombatText{
-            std::to_string(Experience),
-            actor.Position.X,
-            actor.Position.Y,
-            ColorPurple,
-            0});
-
-        if (actor.Experience >= (actor.Level * 1000))
+        for (const auto &e : Effects.at(trigger))
         {
-            // Level up
-            actor.Level++;
-
-            // Reset experience counter
-            Experience -= (actor.Level * 1000);
-
-            world.AddCombatText(CombatText{
-                "Level Up!",
-                actor.Position.X,
-                actor.Position.Y,
-                ColorBlue,
-                0});
+            e->Use(source, target, world);
         }
     }
 
-    LearnAbilityEffect::LearnAbilityEffect(std::unique_ptr<Ability> learnAbility)
-        : LearnAbility(std::move(learnAbility)) {}
+    // Effect Base Class
 
-    void LearnAbilityEffect::Use(Actor &actor, GameWorld &world)
+    Effect::Effect() : Id(EffectID++) {}
+
+    // Effect Implementations
+
+    void RetaliationEffect::Use(Actor *source, Actor *target, GameWorld *world)
     {
-        auto abilitySet = actor.GetAbilitySet();
+        Log("retaliate", LOG_INFO);
 
-        int freeSlot = 0;
-
-        // while loop, moron
-        for (int i = 0; i < 4; i++)
-        {
-            if (abilitySet->AbilityAt(freeSlot) != nullptr)
-            {
-                freeSlot++;
-            }
-            else
-            {
-                break;
-            }
-        }
-
-        abilitySet->SetAbility(freeSlot, std::move(LearnAbility));
-    }
-
-    void ExplosionEffect::Use(Actor &actor, GameWorld &world)
-    {
-        Log("EXPLODE");
-
-        auto fireDamage = 5; // TODO parameterize
-
-        auto tile = world.GetLevel()->GetTile(actor.Position.X, actor.Position.Y);
-        auto neighbors = world.GetLevel()->GetNeighbors(tile->X, tile->Y);
-
-        // Note: explosion damage cannot trigger further on-defend effects
-        // TODO: might have to revisit this: need a way to limit recursive damage
-        // loops without disabling it entirely
-        // Maybe do less in these effects and push more to the game loop and actor state
-        auto damageEffect = DamageEffect(fireDamage, false);
-
-        // TODO: set anything flammable on fire
-
-        // damage actor
-        damageEffect.Use(actor, world);
-
-        // damage neighbors
-        for (auto &n : neighbors)
-        {
-            auto actor = world.GetActor(n->X, n->Y);
-
-            if (actor != nullptr)
-            {
-                damageEffect.Use(*actor, world);
-            }
-        }
-    }
-
-    void TriggerItemModifiers(ItemModifierTrigger trigger, Actor &user, GameWorld &world)
-    {
-        auto inventory = user.GetInventory();
-
-        if (inventory == nullptr)
-        {
-            return;
-        }
-
-        auto equippedItems = {
-            inventory->EquipmentAt(ItemType::Head),
-            inventory->EquipmentAt(ItemType::Chest),
-            inventory->EquipmentAt(ItemType::Gloves),
-            inventory->EquipmentAt(ItemType::Legs),
-            inventory->EquipmentAt(ItemType::Boots),
-            inventory->EquipmentAt(ItemType::OneHand),
-            inventory->EquipmentAt(ItemType::OffHand),
-            // TODO: charms
-        };
-
-        for (auto e : equippedItems)
-        {
-            if (e != nullptr)
-            {
-                e->Use(trigger, user, world);
-            }
-        }
+        target->CombatComp->Damage({2, source});
     }
 
 } // namespace cm

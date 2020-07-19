@@ -233,7 +233,7 @@ namespace cm
         int bX = MainRenderer->GetResolutionX() - 48 - 6;
         int bY = 6;
 
-        auto items = World->GetPlayer()->GetInventory();
+        auto items = World->GetPlayer()->InventoryComp.get();
 
         for (int i = 9; i > 0; i--)
         {
@@ -241,7 +241,7 @@ namespace cm
 
             if (items->ItemAt(i - 1) != nullptr)
             {
-                MainRenderer->DrawTexture(items->ItemAt(i - 1)->GetTextureKey(), bX + 6, bY + 6, TileSize, TileSize, true);
+                MainRenderer->DrawTexture(items->ItemAt(i - 1)->TextureKey, bX + 6, bY + 6, TileSize, TileSize, true);
             }
 
             MainRenderer->DrawFont(std::to_string(i),
@@ -262,28 +262,28 @@ namespace cm
         auto weapon = items->EquipmentAt(ItemType::OneHand);
         if (weapon != nullptr)
         {
-            MainRenderer->DrawTexture(weapon->GetTextureKey(), eqX, eqY, TileSize, TileSize, true);
+            MainRenderer->DrawTexture(weapon->TextureKey, eqX, eqY, TileSize, TileSize, true);
             eqY -= (TileSize + 8);
         }
 
         auto offhand = items->EquipmentAt(ItemType::OffHand);
         if (offhand != nullptr)
         {
-            MainRenderer->DrawTexture(offhand->GetTextureKey(), eqX, eqY, TileSize, TileSize, true);
+            MainRenderer->DrawTexture(offhand->TextureKey, eqX, eqY, TileSize, TileSize, true);
             eqY -= (TileSize + 8);
         }
 
         auto helm = items->EquipmentAt(ItemType::Head);
         if (helm != nullptr)
         {
-            MainRenderer->DrawTexture(helm->GetTextureKey(), eqX, eqY, TileSize, TileSize, true);
+            MainRenderer->DrawTexture(helm->TextureKey, eqX, eqY, TileSize, TileSize, true);
             eqY -= (TileSize + 8);
         }
 
         auto boots = items->EquipmentAt(ItemType::Boots);
         if (boots != nullptr)
         {
-            MainRenderer->DrawTexture(boots->GetTextureKey(), eqX, eqY, TileSize, TileSize, true);
+            MainRenderer->DrawTexture(boots->TextureKey, eqX, eqY, TileSize, TileSize, true);
             eqY -= (TileSize + 8);
         }
 
@@ -291,7 +291,7 @@ namespace cm
         int xAb = 6;
         int yAb = 6;
 
-        auto abilities = World->GetPlayer()->GetAbilitySet();
+        auto abilities = World->GetPlayer()->AbilitiesComp.get();
 
         for (int i = 0; i < 4; i++)
         {

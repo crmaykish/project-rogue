@@ -125,7 +125,7 @@ namespace cm
 
             if (t->Items.size() == 1)
             {
-                renderer.DrawTexture(t->Items.at(0)->GetTextureKey(), t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
+                renderer.DrawTexture(t->Items.at(0)->TextureKey, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
             }
             else if (t->Items.size() > 1)
             {

@@ -9,7 +9,7 @@ namespace cm
 
     ActionResult UseAction::Execute(Actor &executor)
     {
-        auto item = executor.GetInventory()->ItemAt(ItemSlot - 1);
+        auto item = executor.InventoryComp->ItemAt(ItemSlot - 1);
 
         if (item == nullptr)
         {
@@ -21,11 +21,11 @@ namespace cm
         if (item->Type == ItemType::Consumable)
         {
             // Use the item
-            item->Use(ItemModifierTrigger::Use, executor, World);
+            // item->Use(ItemModifierTrigger::Use, executor, World);
 
             if (item->Charges == 0)
             {
-                executor.GetInventory()->RemoveItem(ItemSlot - 1);
+                executor.InventoryComp->RemoveItem(ItemSlot - 1);
             }
 
             return ActionResult(ActionStatus::Succeeded, executor.Name + " used " + itemName);

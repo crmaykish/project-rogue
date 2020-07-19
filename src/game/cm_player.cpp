@@ -11,7 +11,11 @@ namespace cm
 {
     Player::Player(const UserInput &input) : Input(input)
     {
-        Items = std::make_unique<Inventory>(Stats);
+        AbilitiesComp = std::make_unique<AbilitySet>();
+        EffectsComp = std::make_unique<EffectComponent>();
+        CombatComp = std::make_unique<Combat>(*this);
+        InventoryComp = std::make_unique<Inventory>(Stats, *EffectsComp);
+
         Reset();
     }
 
@@ -56,11 +60,13 @@ namespace cm
         Level = 1;
         Experience = 0;
 
-        Items->Reset();
+        InventoryComp->Reset();
+
+        // TODO reset effects (or just move all the make uniques into here)
 
         // Add some player abilities
-        Abilities.Reset();
-        Abilities.SetAbility(0, std::make_unique<MeleeAbility>());
+        AbilitiesComp->Reset();
+        AbilitiesComp->SetAbility(0, std::make_unique<MeleeAbility>());
     }
 
     void Player::DecideNextAction(GameWorld &world)
@@ -122,16 +128,6 @@ namespace cm
         {
             nextAction = std::make_unique<MoveAction>(dir, world);
         }
-    }
-
-    Inventory *Player::GetInventory()
-    {
-        return Items.get();
-    }
-
-    AbilitySet *Player::GetAbilitySet()
-    {
-        return &Abilities;
     }
 
 } // namespace cm
