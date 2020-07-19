@@ -118,7 +118,7 @@ namespace cm
             return;
         }
 
-        // damage the actor's of target
+        // damage the actor's target
         // TODO: can't steal more life than target of target has
         auto damage = DamageEffect(life);
         damage.Use(*targetOfTarget, world);
@@ -164,7 +164,6 @@ namespace cm
 
     void LearnAbilityEffect::Use(Actor &actor, GameWorld &world)
     {
-
         auto abilitySet = actor.GetAbilitySet();
 
         int freeSlot = 0;

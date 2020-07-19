@@ -7,7 +7,6 @@
 #include "cm_random.h"
 #include "cm_item_builder.h"
 #include "cm_action.h"
-#include "cm_cellular_automata_map.h"
 #include "cm_room_accretion_map.h"
 
 namespace cm
