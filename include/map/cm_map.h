@@ -30,6 +30,7 @@ namespace cm
         virtual std::vector<std::unique_ptr<Actor>> SpawnNPCs(int playerLevel) = 0;
 
         void Update(GameWorld &world);
+        void Tick(GameWorld &world);
         void Render(Renderer &renderer) const;
         void RenderPost(Renderer &renderer) const;
 

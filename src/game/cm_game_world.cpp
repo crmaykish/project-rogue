@@ -39,11 +39,17 @@ namespace cm
                                   ScrollingCombatText.end());
 
         // Update tiles
-        // TODO: Only run this after an actor moves
-        if (FogOfWar)
+        Level->Update(*this);
+
+        if (TurnNumber != LastTurnNumber)
         {
-            Level->Update(*this);
+            Level->Tick(*this);
+            LastTurnNumber = TurnNumber;
         }
+
+        // TODO: there's some weirdness with the order of operations here
+        // Moving out of the fire and ending a turn still causes fire damage
+
 
         if (TileSelectMode)
         {
@@ -82,7 +88,10 @@ namespace cm
         // Update actors
         for (auto &a : Actors)
         {
-            a->Update(*this);
+            if (a->Active)
+            {
+                a->Update(*this);
+            }
         }
 
         // Handle actor turns

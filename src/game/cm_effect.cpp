@@ -78,7 +78,7 @@ namespace cm
         {
             if (t != nullptr)
             {
-                t->Fire = true;
+                t->OnFire = t->Flammability;
             }
         }
     }

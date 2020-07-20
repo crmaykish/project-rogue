@@ -64,31 +64,59 @@ namespace cm
     {
         for (auto &t : Tiles)
         {
-            // Distance to player
-            auto dist = Distance({t->X, t->Y}, world.GetPlayer()->Position);
+            if (FogOfWar)
+            {
+                // Distance to player
+                auto dist = Distance({t->X, t->Y}, world.GetPlayer()->Position);
 
-            int offset = (world.GetPlayer()->TorchFuel + 1) / 5;
+                int offset = (world.GetPlayer()->TorchFuel + 1) / 5;
 
-            if (dist <= offset + 1)
-            {
-                t->Brightness = 0xFF;
-            }
-            if (dist == offset + 2)
-            {
-                t->Brightness = 0xC0;
-            }
-            if (dist == offset + 3)
-            {
-                t->Brightness = 0xA0;
-            }
-            if (dist == offset + 4)
-            {
-                t->Brightness = 0x60;
-            }
+                if (dist <= offset + 1)
+                {
+                    t->Brightness = 0xFF;
+                }
+                if (dist == offset + 2)
+                {
+                    t->Brightness = 0xC0;
+                }
+                if (dist == offset + 3)
+                {
+                    t->Brightness = 0xA0;
+                }
+                if (dist == offset + 4)
+                {
+                    t->Brightness = 0x60;
+                }
 
-            if (t->Brightness > 0)
+                if (t->Brightness > 0)
+                {
+                    t->Discovered = true;
+                }
+            }
+        }
+    }
+
+    void Map::Tick(GameWorld &world)
+    {
+        for (auto &t : Tiles)
+        {
+            // Update fire
+            if (t->OnFire > 0)
             {
-                t->Discovered = true;
+                for (auto &tile : GetNeighbors(t->X, t->Y, true))
+                {
+                    if (t != nullptr)
+                    {
+                        auto actor = world.GetActor(tile->X, tile->Y);
+
+                        if (actor != nullptr)
+                        {
+                            actor->CombatComp->Damage({5}, world);
+                        }
+                    }
+                }
+
+                t->OnFire--;
             }
         }
     }
@@ -103,11 +131,7 @@ namespace cm
             {
                 renderer.DrawTexture(AssetKey::WallTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
             }
-            else if (t->Type == TileType::WallCracked)
-            {
-                renderer.DrawTexture(AssetKey::WallCrackedTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
-            }
-            else if (t->Type == TileType::Empty)
+            else if (t->Type == TileType::Floor)
             {
                 renderer.DrawTexture(AssetKey::FloorTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
             }
@@ -146,7 +170,7 @@ namespace cm
         for (auto &t : Tiles)
         {
             // Draw tile effects
-            if (t->Fire)
+            if (t->OnFire > 0)
             {
                 renderer.DrawTexture(AssetKey::FireTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
             }

@@ -84,7 +84,7 @@ namespace cm
 
         for (int i = 0; i < RandomInt(enemyMin, enemyMax); i++)
         {
-            auto t = RandomTile(TileType::Empty);
+            auto t = RandomTile(TileType::Floor);
             npcs.emplace_back(RandomEnemy(t->X, t->Y, playerLevel));
         }
 
@@ -97,10 +97,7 @@ namespace cm
         {
             for (int j = 0; j < height; j++)
             {
-                auto t = std::make_unique<Tile>();
-                t->X = x + i;
-                t->Y = y + j;
-                t->Type = TileType::Empty;
+                auto t = CreateFloorTile(x + i, y + j);
 
                 // if tile does not already exist in the map, add it
                 if (GetTile(t->X, t->Y) == nullptr)
@@ -134,12 +131,7 @@ namespace cm
             // add walkable tile if it doesn't exist
             if (GetTile(x, y) == nullptr)
             {
-                auto t = std::make_unique<Tile>();
-                t->X = x;
-                t->Y = y;
-                t->Type = TileType::Bridge;
-
-                Tiles.push_back(std::move(t));
+                Tiles.emplace_back(CreateBridgeTile(x, y));
             }
         }
 
@@ -161,12 +153,7 @@ namespace cm
             // add walkable tile if it doesn't exist
             if (GetTile(x, y) == nullptr)
             {
-                auto t = std::make_unique<Tile>();
-                t->X = x;
-                t->Y = y;
-                t->Type = TileType::Bridge;
-
-                Tiles.push_back(std::move(t));
+                Tiles.emplace_back(CreateBridgeTile(x, y));
             }
         }
     }
@@ -180,7 +167,7 @@ namespace cm
         {
             for (auto &t : Tiles)
             {
-                if (CountNeighborTiles(t->X, t->Y, TileType::Empty) <= 3)
+                if (CountNeighborTiles(t->X, t->Y, TileType::Floor) <= 3)
                 {
                     t->Type = TileType::Unknown;
                 }
@@ -202,7 +189,7 @@ namespace cm
 
         for (auto &a : Tiles)
         {
-            if (a->Type == TileType::Empty)
+            if (a->Type == TileType::Floor)
             {
 
                 int islandSize = FloodFill(a->X, a->Y);
@@ -224,14 +211,9 @@ namespace cm
             for (int j = 0; j < Height; j++)
             {
 
-                if (GetTile(i, j) == nullptr && CountNeighborTiles(i, j, TileType::Empty) > 0)
+                if (GetTile(i, j) == nullptr && CountNeighborTiles(i, j, TileType::Floor) > 0)
                 {
-                    auto t = std::make_unique<Tile>();
-                    t->X = i;
-                    t->Y = j;
-                    t->Type = RandomPercentCheck(5) ? TileType::WallCracked : TileType::Wall;
-
-                    Tiles.push_back(std::move(t));
+                    Tiles.emplace_back(CreateWallTile(i, j));
                 }
             }
         }
@@ -243,7 +225,7 @@ namespace cm
 
         // Place the exit door in a wall tile with at least 3 floor tiles and 2 wall tiles around it
         while (
-            CountNeighborTiles(t->X, t->Y, TileType::Empty) < 4 ||
+            CountNeighborTiles(t->X, t->Y, TileType::Floor) < 4 ||
             CountNeighborTiles(t->X, t->Y, TileType::Wall) < 2)
         {
             // TODO: this will loop forever if the map has no walls
@@ -256,7 +238,7 @@ namespace cm
     void RoomAccretionMap::PlacePlayer()
     {
         // Place the player on a random empty tile
-        auto t = RandomTile(TileType::Empty);
+        auto t = RandomTile(TileType::Floor);
         PlayerX = t->X;
         PlayerY = t->Y;
     }
@@ -266,13 +248,12 @@ namespace cm
         // place chests randomly around the map
         for (int i = 0; i < RandomInt(chestMin, chestMax); i++)
         {
-            auto t = RandomTile(TileType::Empty);
+            auto t = RandomTile(TileType::Floor);
             int itemCount = RandomInt(1, 3);
 
             for (int j = 0; j < itemCount; j++)
             {
                 t->Items.emplace_back(BuildItem());
-
             }
         }
     }
@@ -281,19 +262,19 @@ namespace cm
     {
         for (auto &t : Tiles)
         {
-            if (CountNeighborTiles(t->X, t->Y, TileType::Empty) + CountNeighborTiles(t->X, t->Y, TileType::Water) == 8)
+            if (CountNeighborTiles(t->X, t->Y, TileType::Floor) + CountNeighborTiles(t->X, t->Y, TileType::Water) == 8)
             {
                 int clear = true;
                 for (auto &s : GetNeighbors(t->X, t->Y))
                 {
-                    if (CountNeighborTiles(s->X, s->Y, TileType::Empty) + CountNeighborTiles(s->X, s->Y, TileType::Water) < 5)
+                    if (CountNeighborTiles(s->X, s->Y, TileType::Floor) + CountNeighborTiles(s->X, s->Y, TileType::Water) < 5)
                     {
                         clear = false;
                     }
                 }
                 if (clear)
                 {
-                    t->Type = TileType::Water;
+                    t = CreateWallTile(t->X, t->Y);
                 }
             }
         }
@@ -310,7 +291,7 @@ namespace cm
             return 0;
         }
 
-        if (t->Type != TileType::Empty)
+        if (t->Type != TileType::Floor)
         {
             return 0;
         }

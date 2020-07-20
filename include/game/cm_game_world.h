@@ -33,6 +33,7 @@ namespace cm
     private:
         UserInput &Input;
         bool NextLevel = false;
+        int LastTurnNumber = 0;
         int TurnNumber = 0;
         int CurrentActorIndex = 0;
 
