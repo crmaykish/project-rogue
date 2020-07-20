@@ -45,7 +45,7 @@ namespace cm
         {"Cap", "Helm"},
     };
 
-        ItemAsset BookAsset = {
+    ItemAsset BookAsset = {
         AssetKey::BookBlueTexture,
         {"Text", "Book", "Manual", "Tome"},
     };
@@ -165,7 +165,9 @@ namespace cm
             item->StatModifiers.emplace_back(ActorStatModifier(statMod, value, ActorStatModifierType::Add));
         }
 
-        item->Effects.Add(EffectTrigger::Defend, std::make_unique<RetaliationEffect>());
+        item->Effects.Add(EffectTrigger::Attack, std::make_unique<ExplosionEffect>());
+
+        // item->Effects.Add(EffectTrigger::Defend, std::make_unique<RetaliationEffect>());
 
         // TODO: randomize effects
 

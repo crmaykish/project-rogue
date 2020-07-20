@@ -231,6 +231,8 @@ namespace cm
             a->Render(renderer);
         }
 
+        Level->RenderPost(renderer);
+
         // Render selected tile
 
         if (TileSelectMode)

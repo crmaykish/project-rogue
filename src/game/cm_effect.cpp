@@ -2,6 +2,7 @@
 #include "cm_effect.h"
 #include "cm_logger.h"
 #include "cm_actor.h"
+#include "cm_game_world.h"
 
 namespace cm
 {
@@ -64,6 +65,22 @@ namespace cm
         Log(source->Name + " retaliates", LOG_INFO);
 
         target->CombatComp->Damage({2, source}, *world);
+    }
+
+    void ExplosionEffect::Use(Actor *source, Actor *target, GameWorld *world)
+    {
+
+        // Set all of the neighboring tiles on file
+
+        auto neighbors = world->GetLevel()->GetNeighbors(target->Position.X, target->Position.Y, true);
+
+        for (auto t : neighbors)
+        {
+            if (t != nullptr)
+            {
+                t->Fire = true;
+            }
+        }
     }
 
 } // namespace cm

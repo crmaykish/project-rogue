@@ -36,6 +36,8 @@ namespace cm
         uint8_t Brightness = 255;
 #endif
 
+        bool Fire = false;
+
         bool Counted = false; // TODO: hack, remove this
 
         std::vector<std::unique_ptr<Item>> Items;

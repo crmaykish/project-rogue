@@ -21,11 +21,17 @@ namespace cm
         return nullptr;
     }
 
-    std::vector<Tile *> Map::GetNeighbors(int x, int y) const
+    std::vector<Tile *> Map::GetNeighbors(int x, int y, bool includeSelf) const
     {
         std::vector<Tile *> neighbors;
 
         // TODO: This is amazingly inefficient
+
+        if (includeSelf)
+        {
+            neighbors.push_back(GetTile(x, y));
+        }
+
         neighbors.push_back(GetTile(x - 1, y - 1));
         neighbors.push_back(GetTile(x - 1, y));
         neighbors.push_back(GetTile(x - 1, y + 1));
@@ -130,6 +136,19 @@ namespace cm
             else if (t->Items.size() > 1)
             {
                 renderer.DrawTexture(AssetKey::ChestTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
+            }
+        }
+    }
+
+    void Map::RenderPost(Renderer &renderer) const
+    {
+        // Render world tiles
+        for (auto &t : Tiles)
+        {
+            // Draw tile effects
+            if (t->Fire)
+            {
+                renderer.DrawTexture(AssetKey::FireTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
             }
 
             // draw fog

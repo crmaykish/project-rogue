@@ -31,6 +31,7 @@ namespace cm
 
         void Update(GameWorld &world);
         void Render(Renderer &renderer) const;
+        void RenderPost(Renderer &renderer) const;
 
         int GetWidth() const;
         int GetHeight() const;
@@ -39,7 +40,7 @@ namespace cm
         int GetPlayerY() const;
 
         Tile *GetTile(int x, int y) const;
-        std::vector<Tile *> GetNeighbors(int x, int y) const;
+        std::vector<Tile *> GetNeighbors(int x, int y, bool includeSelf = false) const;
     };
 
 } // namespace cm

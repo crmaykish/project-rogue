@@ -54,6 +54,12 @@ namespace cm
         void Use(Actor *source, Actor *target, GameWorld *world) override;
     };
 
+    class ExplosionEffect : public Effect
+    {
+    public:
+        void Use(Actor *source, Actor *target, GameWorld *world) override;
+    };
+
 } // namespace cm
 
 #endif // CM_EFFECT_H
