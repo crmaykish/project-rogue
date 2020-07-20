@@ -15,3 +15,20 @@
 
 ## v0.1 Stretch Goals
 [ ] Build a WASM version playable in the browser
+
+## Brainstorming
+
+### Effect Ideas:
+- [x] Retaliation
+- [ ] Life Steal
+- [ ] Chain Lightning
+- [ ] Poison Cloud
+- [ ] Explosion
+- [ ] Sacrifice - damage self on use
+- [ ] Charm - convert target to friendly temporarily
+- [ ] Summon Familiar - create a friendly companion
+
+### Ability Ideas:
+- [ ] Whirlwind
+- [ ] Throw Grenade
+- [ ] Invisibility
