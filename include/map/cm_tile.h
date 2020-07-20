@@ -3,13 +3,13 @@
 
 #include "cm_item.h"
 
-// #define FOG_OF_WAR
-
 namespace cm
 {
-    const int TilePixels = 12;
+    static const bool FogOfWar = false;
+
+    const int TileAssetSizePixels = 12;
     const int TileScaling = 3;
-    const int TileSize = TilePixels * TileScaling;
+    const int TileSize = TileAssetSizePixels * TileScaling;
 
     enum struct TileType
     {
@@ -24,21 +24,18 @@ namespace cm
 
     struct Tile
     {
+        // Details
         int X = 0;
         int Y = 0;
         TileType Type = TileType::Unknown;
 
-#ifdef FOG_OF_WAR
-        bool Discovered = false;
-        uint8_t Brightness = 0;
-#else
-        bool Discovered = true;
-        uint8_t Brightness = 255;
-#endif
+        // State
+        uint8_t Brightness = FogOfWar ? 0 : 0xFF;
 
-        bool Fire = false;
-
+        // Flags
         bool Counted = false; // TODO: hack, remove this
+        bool Discovered = !FogOfWar;
+        bool Fire = false;
 
         std::vector<std::unique_ptr<Item>> Items;
     };

@@ -38,11 +38,12 @@ namespace cm
                                                  [](auto &a) { return a.Age == 60; }),
                                   ScrollingCombatText.end());
 
-#ifdef FOG_OF_WAR
         // Update tiles
         // TODO: Only run this after an actor moves
-        Level->Update(*this);
-#endif
+        if (FogOfWar)
+        {
+            Level->Update(*this);
+        }
 
         if (TileSelectMode)
         {
