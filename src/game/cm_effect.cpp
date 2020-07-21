@@ -69,10 +69,9 @@ namespace cm
 
     void ExplosionEffect::Use(Actor *source, Actor *target, GameWorld *world)
     {
-
-        // Set all of the neighboring tiles on file
-
-        auto neighbors = world->GetLevel()->GetNeighbors(target->Position.X, target->Position.Y, true);
+        // Set all of the neighboring tiles on fire
+        auto actor = target != nullptr ? target : source;
+        auto neighbors = world->GetLevel()->GetNeighbors(actor->Position.X, actor->Position.Y, true);
 
         for (auto t : neighbors)
         {

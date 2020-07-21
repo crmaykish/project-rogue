@@ -7,6 +7,7 @@ namespace cm
     // TODO: better way to organize these effects
     std::shared_ptr<Effect> RandomAttackEffect();
     std::shared_ptr<Effect> RandomDefendEffect();
+    std::shared_ptr<Effect> RandomUseEffect();
 
     // Builder Structures
 
@@ -22,8 +23,9 @@ namespace cm
         std::vector<ActorStatType> statModTypes;
         int minStatMods = 0;
         int maxStatMods = 0;
-        bool UsesAttackModifiers = false;
-        bool UsesDefenseModifiers = false;
+        bool onAttackModifiers = false;
+        bool onDefenseModifiers = false;
+        bool onUseModifiers = false;
     };
 
     // Asset Definitions
@@ -47,7 +49,7 @@ namespace cm
 
     // Consumables
     ItemAsset BookAsset = {AssetKey::BookBlueTexture, {"Book"}};
-    ItemAsset PotionAsset = {AssetKey::HealthPotionTexture, {"Potion"}};
+    ItemAsset PotionAsset = {AssetKey::RejuvPotionTexture, {"Potion"}};
 
     // Stat Modifier Collections
 
@@ -67,7 +69,7 @@ namespace cm
         .statModTypes = AllStatModTypes,
         .minStatMods = 1,
         .maxStatMods = 1,
-        .UsesAttackModifiers = true,
+        .onAttackModifiers = true,
     };
 
     ItemBuilder HelmetBuilder = {
@@ -75,7 +77,7 @@ namespace cm
         .statModTypes = AllStatModTypes,
         .minStatMods = 1,
         .maxStatMods = 1,
-        .UsesDefenseModifiers = true,
+        .onDefenseModifiers = true,
     };
 
     ItemBuilder BootsBuilder = {
@@ -83,7 +85,7 @@ namespace cm
         .statModTypes = AllStatModTypes,
         .minStatMods = 1,
         .maxStatMods = 1,
-        .UsesDefenseModifiers = true,
+        .onDefenseModifiers = true,
     };
 
     ItemBuilder OffhandBuilder = {
@@ -91,8 +93,8 @@ namespace cm
         .statModTypes = AllStatModTypes,
         .minStatMods = 1,
         .maxStatMods = 1,
-        .UsesAttackModifiers = true,
-        .UsesDefenseModifiers = true,
+        .onAttackModifiers = true,
+        .onDefenseModifiers = true,
     };
 
     ItemBuilder PotionBuilder = {
@@ -100,6 +102,7 @@ namespace cm
         .statModTypes = {},
         .minStatMods = 0,
         .maxStatMods = 0,
+        .onUseModifiers = true,
     };
 
     // Item Building Implementation
@@ -150,13 +153,6 @@ namespace cm
         item->Name = asset.names.at(RandomInt(asset.names.size()));
         item->TextureKey = asset.key;
 
-        // Consumables need charges
-        if (type == ItemType::Consumable)
-        {
-            item->LimitedCharge = true;
-            item->Charges = 1;
-        }
-
         std::set<ActorStatType> usedMods;
 
         // Add stat modifiers
@@ -179,7 +175,7 @@ namespace cm
 
         // TODO: for now, items can only have one effect of each trigger type
 
-        if (builder.UsesAttackModifiers)
+        if (builder.onAttackModifiers)
         {
             if (RandomPercentCheck(10))
             {
@@ -187,12 +183,17 @@ namespace cm
             }
         }
 
-        if (builder.UsesDefenseModifiers)
+        if (builder.onDefenseModifiers)
         {
             if (RandomPercentCheck(10))
             {
                 item->Effects.Add(EffectTrigger::Defend, RandomDefendEffect());
             }
+        }
+        if (builder.onUseModifiers)
+        {
+            // Note: on-use effects are 100% chance
+            item->Effects.Add(EffectTrigger::UseItem, RandomUseEffect());
         }
 
         return item;
@@ -224,6 +225,20 @@ namespace cm
             return std::make_shared<ExplosionEffect>();
         else if (r == 2)
             return std::make_shared<HealEffect>();
+        else
+            return nullptr;
+    }
+
+    std::shared_ptr<Effect> RandomUseEffect()
+    {
+        auto r = RandomInt(3);
+
+        if (r == 0)
+            return std::make_shared<HealEffect>();
+        else if (r == 1)
+            return std::make_shared<ExplosionEffect>();
+        else if (r == 2)
+            return std::make_shared<SacrificeEffect>();
         else
             return nullptr;
     }

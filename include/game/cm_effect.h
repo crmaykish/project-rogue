@@ -16,11 +16,12 @@ namespace cm
 
     enum struct EffectTrigger
     {
-        Action, /**< Effect is triggered when the owner makes any action */
-        Attack, /**< Effect is triggered when the owner attacks a target */
-        Defend, /**< Effect is triggered when the owner takes damage */
-        Kill,   /**< Effect is triggered when the owner kills a target */
-        Die,    /**< Effect is triggered when the owner dies */
+        Action,  /**< Effect is triggered when the owner makes any action */
+        UseItem, /**< Effect is triggered when the owner uses an item with this effect attached, i.e. not just using any random item */
+        Attack,  /**< Effect is triggered when the owner attacks a target */
+        Defend,  /**< Effect is triggered when the owner takes damage */
+        Kill,    /**< Effect is triggered when the owner kills a target */
+        Die,     /**< Effect is triggered when the owner dies */
     };
 
     class Effect

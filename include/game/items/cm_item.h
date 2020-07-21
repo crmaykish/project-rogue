@@ -33,8 +33,6 @@ namespace cm
 
         // Flags
         bool PickedUp = false;
-        bool LimitedCharge = false;
-        int Charges = 0;
 
         // Modifiers
         std::vector<ActorStatModifier> StatModifiers;

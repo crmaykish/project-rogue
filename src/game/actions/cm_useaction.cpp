@@ -20,13 +20,18 @@ namespace cm
 
         if (item->Type == ItemType::Consumable)
         {
-            // Use the item
-            // item->Use(ItemModifierTrigger::Use, executor, World);
+            auto itemEffectsMap = item->Effects.Effects;
 
-            if (item->Charges == 0)
+            if (itemEffectsMap.find(EffectTrigger::UseItem) != itemEffectsMap.end())
             {
-                executor.InventoryComp->RemoveItem(ItemSlot - 1);
+                // Use item effects
+                for (auto const &effect : itemEffectsMap.at(EffectTrigger::UseItem))
+                {
+                    effect->Use(&executor, nullptr, &World);
+                }
             }
+
+            executor.InventoryComp->RemoveItem(ItemSlot - 1);
 
             return ActionResult(ActionStatus::Succeeded, executor.Name + " used " + itemName);
         }

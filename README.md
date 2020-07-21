@@ -33,7 +33,7 @@
 - [ ] Chain Lightning
 - [ ] Poison Cloud
 - [ ] Explosion
-- [ ] Sacrifice - damage self on use
+- [x] Sacrifice - damage self on use
 - [ ] Charm - convert target to friendly temporarily
 - [ ] Summon Familiar - create a friendly companion
 

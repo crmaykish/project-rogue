@@ -19,6 +19,7 @@ namespace cm
 
         if (Type == ItemType::Consumable)
         {
+            name = "Mysterious " + name;
         }
         else
         {
@@ -26,14 +27,14 @@ namespace cm
             {
                 name = StatPrefixes.at(s.GetStatType()) + " " + name;
             }
-        }
 
-        // TODO: need a better way to loop through an EffectMap
-        for (const auto &a : Effects.Effects)
-        {
-            for (const auto &b : a.second)
+            // TODO: need a better way to loop through an EffectMap
+            for (const auto &a : Effects.Effects)
             {
-                name += " of " + b->GetName();
+                for (const auto &b : a.second)
+                {
+                    name += " of " + b->GetName();
+                }
             }
         }
 
