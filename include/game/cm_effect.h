@@ -11,6 +11,8 @@ namespace cm
     class Actor;
     class GameWorld;
 
+    // TODO: one big master list of effects, everything just takes pointers to them? easy to map and hand out keys
+
     enum struct EffectTrigger
     {
         Action, /**< Effect is triggered when the owner makes any action */
@@ -29,6 +31,7 @@ namespace cm
         Effect();
         virtual ~Effect() {}
         virtual void Use(Actor *source, Actor *target, GameWorld *world) = 0;
+        virtual std::string GetName() = 0;
         uint32_t GetId();
     };
 
@@ -51,12 +54,14 @@ namespace cm
     class RetaliationEffect : public Effect
     {
     public:
+        std::string GetName() override { return "Retaliation"; }
         void Use(Actor *source, Actor *target, GameWorld *world) override;
     };
 
     class ExplosionEffect : public Effect
     {
     public:
+        std::string GetName() override { return "Explosion"; }
         void Use(Actor *source, Actor *target, GameWorld *world) override;
     };
 

@@ -4,12 +4,13 @@
 
 ## v0.1 Release Features
 - [ ] Ten levels to descend with a final boss
-- [ ] One generic randomized class
+- [x] One generic randomized class
 - [ ] Learn abilities from books
 - [ ] Three enemy types with distinct stats and AI behavior
-- [ ] Five weapons
-- [ ] Two shields
-- [ ] Two armor types for each of: head, chest, boots
+- [x] Five weapons
+- [x] Two shields
+- [x] Armor types: head, boots
+- [ ] 5 weapon effects - 2 defend, 2 attack, 1 kill
 - [ ] Inventory management (show item stats, drop items, etc.)
 - [x] Pure SDL2 implementation (remove SDL2_gpu)
 
@@ -17,6 +18,7 @@
 [ ] Build a WASM version playable in the browser
 
 ## Brainstorming
+- Tiles should have move-on effects that they apply to players. Then the players can update themselves rather than the tiles updating actors that are on them
 
 ### Effect Ideas:
 - [x] Retaliation
@@ -33,5 +35,7 @@
 - [ ] Throw Grenade
 - [ ] Invisibility
 
-### TODO
-- Tiles should have move-on effects that they apply to players. Then the players can update themselves rather than the tiles updating actors that are on them
+
+Branch TODO:
+
+Fix Consumables

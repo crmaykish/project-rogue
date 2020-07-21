@@ -1,98 +1,91 @@
+#include <set>
 #include "cm_item_builder.h"
 #include "cm_random.h"
 
 namespace cm
 {
+    // TODO: better way to organize these effects
+    std::shared_ptr<Effect> RandomAttackEffect();
+    std::shared_ptr<Effect> RandomDefendEffect();
+
+    // Builder Structures
+
     struct ItemAsset
     {
-        // TODO: Make this a vector of possible assets
         AssetKey key;
-        // TODO: these names should indicate the item level
         std::vector<std::string> names;
     };
 
     struct ItemBuilder
     {
         std::vector<ItemAsset> assets;
-
         std::vector<ActorStatType> statModTypes;
         int minStatMods = 0;
         int maxStatMods = 0;
-
-        // std::vector<ItemModifier (*)()> itemModTypes;
-        // std::vector<ItemModifierTrigger> itemModTriggers;
-        // int minItemMods = 0;
-        // int maxItemMods = 0;
     };
 
-    ItemAsset SwordAsset = {
-        AssetKey::SwordGreyTexture,
-        {"Sword", "Short Sword", "Long Sword", "Heavy Sword"},
-    };
+    // Asset Definitions
 
-    ItemAsset AxeAsset = {
-        AssetKey::AxeTexture,
-        {"Hatchet", "Axe", "Heavy Axe", "Broad Axe"},
-    };
+    // Weapons
+    ItemAsset DaggerAsset = {AssetKey::DaggerTexture, {"Dagger"}};
+    ItemAsset SwordAsset = {AssetKey::SwordGreyTexture, {"Sword"}};
+    ItemAsset AxeAsset = {AssetKey::AxeTexture, {"Axe"}};
+    ItemAsset HammerAsset = {AssetKey::HammerTexture, {"Hammer"}};
+    ItemAsset BowAsset = {AssetKey::BowTexture, {"Bow"}};
+    ItemAsset WandAsset = {AssetKey::WandBlueTexture, {"Wand"}};
 
-    ItemAsset HelmetLeatherAsset = {
-        AssetKey::HelmetLeatherTexture,
-        {"Hood", "Cowl", "Coif"},
-    };
+    // Armor
+    ItemAsset HelmetLeatherAsset = {AssetKey::HelmetLeatherTexture, {"Hood"}};
+    ItemAsset HelmetSteelAsset = {AssetKey::HelmetSteelTexture, {"Helm"}};
+    ItemAsset BootsLeatherAsset = {AssetKey::BootsLeatherTexture, {"Boots"}};
 
-    ItemAsset HelmetSteelAsset = {
-        AssetKey::HelmetSteelTexture,
-        {"Cap", "Helm"},
-    };
+    // Offhand
+    ItemAsset BucklerAsset = {AssetKey::BucklerTexture, {"Buckler"}};
+    ItemAsset ShieldAsset = {AssetKey::ShieldTowerTexture, {"Shield"}};
 
-    ItemAsset BookAsset = {
-        AssetKey::BookBlueTexture,
-        {"Text", "Book", "Manual", "Tome"},
-    };
+    // Consumables
+    ItemAsset BookAsset = {AssetKey::BookBlueTexture, {"Book"}};
+    ItemAsset PotionAsset = {AssetKey::HealthPotionTexture, {"Potion"}};
 
-    ItemAsset PotionAsset = {
-        AssetKey::HealthPotionTexture,
-        {"Potion", "Phial", "Flask", "Decanter"},
-    };
+    // Stat Modifier Collections
 
     auto AllStatModTypes = {
         ActorStatType::MaxHealth,
-        ActorStatType::MaxEnergy,
+        // ActorStatType::MaxEnergy,
         ActorStatType::Vitality,
         ActorStatType::Strength,
         ActorStatType::Dexterity,
         ActorStatType::Intellect,
     };
 
-    // auto AllItemModifiers = {
-    //     &ItemModifierExtraHit,
-    //     &ItemModifierLifeLeech,
-    //     &ItemModifierSacrifice,
-    //     &ItemModifierExplosion,
-    // };
+    // Item Builder Instances
 
     ItemBuilder WeaponBuilder = {
-        .assets = {SwordAsset, AxeAsset},
+        .assets = {DaggerAsset, SwordAsset, AxeAsset, HammerAsset, WandAsset, BowAsset},
         .statModTypes = AllStatModTypes,
         .minStatMods = 1,
         .maxStatMods = 2,
-        // .itemModTypes = AllItemModifiers,
-        // .itemModTriggers = {ItemModifierTrigger::Attack},
-        // .minItemMods = 0,
-        // .maxItemMods = 1,
     };
 
     ItemBuilder HelmetBuilder = {
         .assets = {HelmetLeatherAsset, HelmetSteelAsset},
         .statModTypes = AllStatModTypes,
         .minStatMods = 1,
-        .maxStatMods = 3,
-        // .itemModTypes = {
-        //     &ItemModifierExplosion,
-        // },
-        // .itemModTriggers = {ItemModifierTrigger::Defend},
-        // .minItemMods = 1,
-        // .maxItemMods = 1,
+        .maxStatMods = 2,
+    };
+
+    ItemBuilder BootsBuilder = {
+        .assets = {BootsLeatherAsset},
+        .statModTypes = AllStatModTypes,
+        .minStatMods = 1,
+        .maxStatMods = 2,
+    };
+
+    ItemBuilder OffhandBuilder = {
+        .assets = {BucklerAsset, ShieldAsset},
+        .statModTypes = AllStatModTypes,
+        .minStatMods = 1,
+        .maxStatMods = 2,
     };
 
     ItemBuilder PotionBuilder = {
@@ -100,26 +93,23 @@ namespace cm
         .statModTypes = {},
         .minStatMods = 0,
         .maxStatMods = 0,
-        // .itemModTypes = {
-        //     &ItemModifierHeal,
-        //     &ItemModifierMana,
-        //     &ItemModifierRejuv,
-        // },
-        // .itemModTriggers = {ItemModifierTrigger::Use},
-        // .minItemMods = 1,
-        // .maxItemMods = 1,
     };
+
+    // Item Building Implementation
 
     std::unordered_map<ItemType, ItemBuilder>
         ItemBuilders = {
             {ItemType::OneHand, WeaponBuilder},
-            {ItemType::Consumable, PotionBuilder},
             {ItemType::Head, HelmetBuilder},
+            {ItemType::Boots, BootsBuilder},
+            {ItemType::OffHand, OffhandBuilder},
+            {ItemType::Consumable, PotionBuilder},
+
     };
 
     std::unique_ptr<Item> BuildItem()
     {
-        switch (RandomInt(3))
+        switch (RandomInt(5))
         {
         case 0:
             return BuildItem(ItemType::Consumable);
@@ -129,6 +119,12 @@ namespace cm
             break;
         case 2:
             return BuildItem(ItemType::Head);
+            break;
+        case 3:
+            return BuildItem(ItemType::Boots);
+            break;
+        case 4:
+            return BuildItem(ItemType::OffHand);
             break;
         default:
             return nullptr;
@@ -154,23 +150,54 @@ namespace cm
             item->Charges = 1;
         }
 
+        std::set<ActorStatType> usedMods;
+
         // Add stat modifiers
         for (int i = 0; i < RandomInt(builder.minStatMods, builder.maxStatMods); i++)
         {
-            // TODO: don't repeat modifiers
-            // TODO: multiplier mods
-            // TODO: define value ranges in the builder
             auto statMod = builder.statModTypes.at(RandomInt(builder.statModTypes.size()));
-            auto value = RandomInt(1, 10);
+
+            while (usedMods.find(statMod) != usedMods.end())
+            {
+                statMod = builder.statModTypes.at(RandomInt(builder.statModTypes.size()));
+            }
+
+            // TODO: define value ranges in the builder
+            auto value = RandomInt(1, 5);
+            // TODO: multiplier mods
             item->StatModifiers.emplace_back(ActorStatModifier(statMod, value, ActorStatModifierType::Add));
+
+            usedMods.insert(statMod);
         }
 
-        item->Effects.Add(EffectTrigger::Attack, std::make_unique<ExplosionEffect>());
+        // TODO: move the effects lists to the builders
+        if (RandomPercentCheck(10))
+        {
+            item->Effects.Add(EffectTrigger::Defend, std::make_unique<RetaliationEffect>());
+        }
 
-        // item->Effects.Add(EffectTrigger::Defend, std::make_unique<RetaliationEffect>());
-
-        // TODO: randomize effects
+        if (RandomPercentCheck(10))
+        {
+            item->Effects.Add(EffectTrigger::Attack, std::make_unique<ExplosionEffect>());
+        }
 
         return item;
     }
+
+    std::shared_ptr<Effect> RandomAttackEffect()
+    {
+        auto r = RandomInt(1);
+
+        if (r == 0)
+            return std::make_shared<ExplosionEffect>();
+    }
+
+    std::shared_ptr<Effect> RandomDefendEffect()
+    {
+        auto r = RandomInt(1);
+
+        if (r == 0)
+            return std::make_shared<RetaliationEffect>();
+    }
+
 } // namespace cm

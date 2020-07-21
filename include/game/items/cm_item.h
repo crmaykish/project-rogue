@@ -16,15 +16,10 @@ namespace cm
         Consumable,
         Head,
         Chest,
-        Legs,
-        Gloves,
         Boots,
         OneHand,
         OffHand,
-        Charm
     };
-
-    // TODO: treat consumables separately from equipment?
 
     // TODO: Item stat modifiers, e.g. extra base damage/armor
 
