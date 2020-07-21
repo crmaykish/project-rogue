@@ -22,6 +22,8 @@ namespace cm
         std::vector<ActorStatType> statModTypes;
         int minStatMods = 0;
         int maxStatMods = 0;
+        bool UsesAttackModifiers = false;
+        bool UsesDefenseModifiers = false;
     };
 
     // Asset Definitions
@@ -65,6 +67,7 @@ namespace cm
         .statModTypes = AllStatModTypes,
         .minStatMods = 1,
         .maxStatMods = 2,
+        .UsesAttackModifiers = true,
     };
 
     ItemBuilder HelmetBuilder = {
@@ -72,6 +75,7 @@ namespace cm
         .statModTypes = AllStatModTypes,
         .minStatMods = 1,
         .maxStatMods = 2,
+        .UsesDefenseModifiers = true,
     };
 
     ItemBuilder BootsBuilder = {
@@ -79,6 +83,7 @@ namespace cm
         .statModTypes = AllStatModTypes,
         .minStatMods = 1,
         .maxStatMods = 2,
+        .UsesDefenseModifiers = true,
     };
 
     ItemBuilder OffhandBuilder = {
@@ -86,6 +91,8 @@ namespace cm
         .statModTypes = AllStatModTypes,
         .minStatMods = 1,
         .maxStatMods = 2,
+        .UsesAttackModifiers = true,
+        .UsesDefenseModifiers = true,
     };
 
     ItemBuilder PotionBuilder = {
@@ -170,15 +177,22 @@ namespace cm
             usedMods.insert(statMod);
         }
 
-        // TODO: move the effects lists to the builders
-        if (RandomPercentCheck(10))
+        // TODO: for now, items can only have one effect of each trigger type
+
+        if (builder.UsesAttackModifiers)
         {
-            item->Effects.Add(EffectTrigger::Defend, std::make_unique<RetaliationEffect>());
+            if (RandomPercentCheck(10))
+            {
+                item->Effects.Add(EffectTrigger::Attack, RandomAttackEffect());
+            }
         }
 
-        if (RandomPercentCheck(10))
+        if (builder.UsesDefenseModifiers)
         {
-            item->Effects.Add(EffectTrigger::Attack, std::make_unique<ExplosionEffect>());
+            if (RandomPercentCheck(10))
+            {
+                item->Effects.Add(EffectTrigger::Defend, RandomDefendEffect());
+            }
         }
 
         return item;
@@ -186,18 +200,30 @@ namespace cm
 
     std::shared_ptr<Effect> RandomAttackEffect()
     {
-        auto r = RandomInt(1);
+        auto r = RandomInt(3);
 
         if (r == 0)
             return std::make_shared<ExplosionEffect>();
+        else if (r == 1)
+            return std::make_shared<LifeStealEffect>();
+        else if (r == 2)
+            return std::make_shared<HealEffect>();
+        else
+            return nullptr;
     }
 
     std::shared_ptr<Effect> RandomDefendEffect()
     {
-        auto r = RandomInt(1);
+        auto r = RandomInt(3);
 
         if (r == 0)
             return std::make_shared<RetaliationEffect>();
+        else if (r == 1)
+            return std::make_shared<ExplosionEffect>();
+        else if (r == 2)
+            return std::make_shared<HealEffect>();
+        else
+            return nullptr;
     }
 
 } // namespace cm

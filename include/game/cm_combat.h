@@ -20,6 +20,7 @@ namespace cm
     public:
         Combat(Actor &owner);
         void Damage(ActorDamage damage, GameWorld &world);
+        void Heal(ActorDamage healing, GameWorld &world);
     };
 
 } // namespace cm

@@ -30,4 +30,11 @@ namespace cm
         }
     }
 
+    void Combat::Heal(ActorDamage healing, GameWorld &world)
+    {
+        Owner.Stats.AdjustHP(healing.Value);
+
+        world.AddCombatText({std::to_string(healing.Value), Owner.Position.X, Owner.Position.Y, ColorGreen});
+    }
+
 } // namespace cm

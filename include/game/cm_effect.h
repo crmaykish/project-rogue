@@ -12,6 +12,7 @@ namespace cm
     class GameWorld;
 
     // TODO: one big master list of effects, everything just takes pointers to them? easy to map and hand out keys
+    // that works as long as effects are all stateless and can be shared across uses
 
     enum struct EffectTrigger
     {
@@ -62,6 +63,20 @@ namespace cm
     {
     public:
         std::string GetName() override { return "Explosion"; }
+        void Use(Actor *source, Actor *target, GameWorld *world) override;
+    };
+
+    class LifeStealEffect : public Effect
+    {
+    public:
+        std::string GetName() override { return "Life Steal"; }
+        void Use(Actor *source, Actor *target, GameWorld *world) override;
+    };
+
+    class HealEffect : public Effect
+    {
+    public:
+        std::string GetName() override { return "Healing"; }
         void Use(Actor *source, Actor *target, GameWorld *world) override;
     };
 

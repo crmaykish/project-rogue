@@ -83,4 +83,19 @@ namespace cm
         }
     }
 
+    void LifeStealEffect::Use(Actor *source, Actor *target, GameWorld *world)
+    {
+        Log(source->Name + " steals life from " + target->Name, LOG_INFO);
+
+        // TODO: can't steal more life than the target has
+        target->CombatComp->Damage({2, source}, *world);
+        source->CombatComp->Heal({2, target}, *world);
+    }
+
+    void HealEffect::Use(Actor *source, Actor *target, GameWorld *world)
+    {
+        Log(source->Name + " healing", LOG_INFO);
+        source->CombatComp->Heal({4}, *world);
+    }
+
 } // namespace cm
