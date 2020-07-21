@@ -38,18 +38,8 @@ namespace cm
                                                  [](auto &a) { return a.Age == 60; }),
                                   ScrollingCombatText.end());
 
-        // Update tiles
+        // Update the level
         Level->Update(*this);
-
-        if (TurnNumber != LastTurnNumber)
-        {
-            Level->Tick(*this);
-            LastTurnNumber = TurnNumber;
-        }
-
-        // TODO: there's some weirdness with the order of operations here
-        // Moving out of the fire and ending a turn still causes fire damage
-
 
         if (TileSelectMode)
         {
@@ -187,6 +177,23 @@ namespace cm
                     }
                 }
             }
+        }
+
+        // Tick the game state once a full round of actor moves has passed
+        if (TurnNumber != LastTurnNumber)
+        {
+            // Tick the actors
+            for (auto &actor : Actors)
+            {
+                if (actor->Active)
+                {
+                    actor->Tick(*this);
+                }
+            }
+
+            // Tick the level
+            Level->Tick(*this);
+            LastTurnNumber = TurnNumber;
         }
 
         // If player is dead, game over

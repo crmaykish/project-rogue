@@ -12,6 +12,7 @@ namespace cm
 
         Enemy(int x, int y);
         void Update(GameWorld &world) override;
+        void Tick(GameWorld &world) override;
         void Render(const Renderer &renderer) override;
 
         bool ActionReady() override;

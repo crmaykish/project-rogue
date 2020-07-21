@@ -32,3 +32,6 @@
 - [ ] Whirlwind
 - [ ] Throw Grenade
 - [ ] Invisibility
+
+### TODO
+- Tiles should have move-on effects that they apply to players. Then the players can update themselves rather than the tiles updating actors that are on them

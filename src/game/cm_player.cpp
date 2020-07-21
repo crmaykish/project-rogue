@@ -6,6 +6,7 @@
 #include "cm_useaction.h"
 #include "cm_abilityaction.h"
 #include "cm_random.h"
+#include "cm_logger.h"
 
 namespace cm
 {
@@ -22,6 +23,13 @@ namespace cm
     void Player::Update(GameWorld &world)
     {
         DecideNextAction(world);
+    }
+
+    void Player::Tick(GameWorld &world)
+    {
+        Log("Ticking:" + Name, LOG_INFO);
+
+        // TODO update end of turn stuff like damage over time ticks, mana regen, etc
     }
 
     bool Player::ActionReady()

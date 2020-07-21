@@ -17,6 +17,7 @@ namespace cm
     public:
         Player(const UserInput &input);
         void Update(GameWorld &world) override;
+        void Tick(GameWorld &world) override;
         void Render(const Renderer &renderer) override;
         void Reset() override;
 

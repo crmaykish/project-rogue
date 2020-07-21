@@ -47,6 +47,7 @@ namespace cm
 
         // Game state changes
         virtual void Update(GameWorld &world) = 0;
+        virtual void Tick(GameWorld &world) = 0;
         virtual void Render(const Renderer &renderer) = 0;
         virtual void Reset(){};
 

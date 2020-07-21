@@ -103,19 +103,6 @@ namespace cm
             // Update fire
             if (t->OnFire > 0)
             {
-                for (auto &tile : GetNeighbors(t->X, t->Y, true))
-                {
-                    if (t != nullptr)
-                    {
-                        auto actor = world.GetActor(tile->X, tile->Y);
-
-                        if (actor != nullptr)
-                        {
-                            actor->CombatComp->Damage({5}, world);
-                        }
-                    }
-                }
-
                 t->OnFire--;
             }
         }

@@ -11,6 +11,9 @@ namespace cm
     const int TileScaling = 3;
     const int TileSize = TileAssetSizePixels * TileScaling;
 
+    class Actor;
+    class GameWorld;
+
     enum struct TileType
     {
         Unknown,
@@ -38,13 +41,12 @@ namespace cm
         bool Discovered = !FogOfWar;
         bool Walkable = false;
 
-        // TODO: some concept of speed/energy to move through the tile
-        // TODO: on-passthrough effects - if an actor enters this tile, they gain an effect (fire, poison, slow, etc)
-
         /**
          * @brief Tiles can store a collection of items that are shown as treasure chests for the player to collect
          */
         std::vector<std::unique_ptr<Item>> Items;
+
+        void SetFire(int fire);
     };
 
     std::unique_ptr<Tile> CreateFloorTile(int x, int y);

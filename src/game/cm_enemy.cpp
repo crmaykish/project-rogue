@@ -40,6 +40,11 @@ namespace cm
         }
     }
 
+    void Enemy::Tick(GameWorld &world)
+    {
+        Log("Ticking:" + Name, LOG_INFO);
+    }
+
     bool Enemy::ActionReady()
     {
         return true;

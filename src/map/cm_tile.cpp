@@ -1,4 +1,7 @@
 #include "cm_tile.h"
+#include "cm_game_world.h"
+#include "cm_actor.h"
+#include "cm_logger.h"
 
 namespace cm
 {
