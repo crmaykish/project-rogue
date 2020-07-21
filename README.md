@@ -29,10 +29,10 @@
 
 ### Effect Ideas:
 - [x] Retaliation
-- [ ] Life Steal
+- [x] Life Steal
 - [ ] Chain Lightning
 - [ ] Poison Cloud
-- [ ] Explosion
+- [ ] Explosion (effect is working, damage over time/spreading fire is not)
 - [x] Sacrifice - damage self on use
 - [ ] Charm - convert target to friendly temporarily
 - [ ] Summon Familiar - create a friendly companion
@@ -41,8 +41,3 @@
 - [ ] Whirlwind
 - [ ] Throw Grenade
 - [ ] Invisibility
-
-
-Branch TODO:
-
-Fix Consumables
