@@ -98,4 +98,10 @@ namespace cm
         source->CombatComp->Heal({4}, *world);
     }
 
+    void SacrificeEffect::Use(Actor *source, Actor *target, GameWorld *world)
+    {
+        Log(source->Name + " sacrifices", LOG_INFO);
+        source->CombatComp->Damage({3}, *world);
+    }
+
 } // namespace cm

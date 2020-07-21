@@ -66,7 +66,7 @@ namespace cm
         .assets = {DaggerAsset, SwordAsset, AxeAsset, HammerAsset, WandAsset, BowAsset},
         .statModTypes = AllStatModTypes,
         .minStatMods = 1,
-        .maxStatMods = 2,
+        .maxStatMods = 1,
         .UsesAttackModifiers = true,
     };
 
@@ -74,7 +74,7 @@ namespace cm
         .assets = {HelmetLeatherAsset, HelmetSteelAsset},
         .statModTypes = AllStatModTypes,
         .minStatMods = 1,
-        .maxStatMods = 2,
+        .maxStatMods = 1,
         .UsesDefenseModifiers = true,
     };
 
@@ -82,7 +82,7 @@ namespace cm
         .assets = {BootsLeatherAsset},
         .statModTypes = AllStatModTypes,
         .minStatMods = 1,
-        .maxStatMods = 2,
+        .maxStatMods = 1,
         .UsesDefenseModifiers = true,
     };
 
@@ -90,7 +90,7 @@ namespace cm
         .assets = {BucklerAsset, ShieldAsset},
         .statModTypes = AllStatModTypes,
         .minStatMods = 1,
-        .maxStatMods = 2,
+        .maxStatMods = 1,
         .UsesAttackModifiers = true,
         .UsesDefenseModifiers = true,
     };
@@ -200,7 +200,7 @@ namespace cm
 
     std::shared_ptr<Effect> RandomAttackEffect()
     {
-        auto r = RandomInt(3);
+        auto r = RandomInt(4);
 
         if (r == 0)
             return std::make_shared<ExplosionEffect>();
@@ -208,6 +208,8 @@ namespace cm
             return std::make_shared<LifeStealEffect>();
         else if (r == 2)
             return std::make_shared<HealEffect>();
+        else if (r == 3)
+            return std::make_shared<SacrificeEffect>();
         else
             return nullptr;
     }

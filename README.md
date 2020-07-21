@@ -12,10 +12,17 @@
 - [x] Armor types: head, boots
 - [ ] 5 weapon effects - 2 defend, 2 attack, 1 kill
 - [ ] Inventory management (show item stats, drop items, etc.)
+- [ ] Melee or ranged attacks depending on the equipped weapon
+- [ ] Experience gain and stat/enemy scaling
 - [x] Pure SDL2 implementation (remove SDL2_gpu)
 
 ## v0.1 Stretch Goals
 [ ] Build a WASM version playable in the browser
+[ ] Level completion rewards options
+
+## Bugs
+ - Maps occasionally spawn alternating wall tiles in a checkerboard pattern, why?
+ - Some combinations of item effects can cause stack overflows from a feedback loop
 
 ## Brainstorming
 - Tiles should have move-on effects that they apply to players. Then the players can update themselves rather than the tiles updating actors that are on them

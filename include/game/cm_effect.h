@@ -80,6 +80,13 @@ namespace cm
         void Use(Actor *source, Actor *target, GameWorld *world) override;
     };
 
+    class SacrificeEffect : public Effect
+    {
+    public:
+        std::string GetName() override { return "Sacrifice"; }
+        void Use(Actor *source, Actor *target, GameWorld *world) override;
+    };
+
 } // namespace cm
 
 #endif // CM_EFFECT_H
