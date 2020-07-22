@@ -53,26 +53,11 @@ namespace cm
         return freeSlot;
     }
 
-    // Melee
-
-    std::string MeleeAbility::GetName()
-    {
-        return "Attack";
-    }
-
-    std::string MeleeAbility::GetDescription()
-    {
-        return "Perform a basic melee attack";
-    }
-
-    AssetKey MeleeAbility::GetIcon()
-    {
-        return AssetKey::MeleeIcon;
-    }
-
-    bool MeleeAbility::Use(Actor &user, GameWorld &world)
+    bool AttackAbility::Use(Actor &user, GameWorld &world)
     {
         auto target = world.GetActor(user.Target.X, user.Target.Y);
+
+        // TODO range checking
 
         if (target == nullptr)
         {
@@ -94,85 +79,11 @@ namespace cm
         return true;
     }
 
-    // Ranged
-
-    std::string RangedAbility::GetName()
-    {
-        return "Shoot";
-    }
-
-    std::string RangedAbility::GetDescription()
-    {
-        return "Perform a basic attack with a ranged weapon";
-    }
-
-    AssetKey RangedAbility::GetIcon()
-    {
-        return AssetKey::RangeIcon;
-    }
-
-    bool RangedAbility::Use(Actor &user, GameWorld &world)
-    {
-        auto target = world.GetActor(user.Target.X, user.Target.Y);
-
-        if (target == nullptr)
-        {
-            return false;
-        }
-
-        if (Distance(user.Position, target->Position) > 4)
-        {
-            return false;
-        }
-
-        // TODO: consider target's defense rating
-        auto baseDamage = user.Stats.GetAttackRating() / 4;
-        int actualDamage = RandomInt(baseDamage / 2, baseDamage * 1.25);
-        // auto effect = DamageEffect({actualDamage, &user});
-        // effect.Use(*target, world);
-
-        return true;
-    }
-
-    // Heal
-
-    std::string HealAbility::GetName()
-    {
-        return "Heal";
-    }
-
-    std::string HealAbility::GetDescription()
-    {
-        return "Heals the caster for 40% HP";
-    }
-
-    AssetKey HealAbility::GetIcon()
-    {
-        return AssetKey::HealIcon;
-    }
-
     bool HealAbility::Use(Actor &user, GameWorld &world)
     {
         user.CombatComp->Heal({user.Stats.MaxHP() * 0.4, &user}, world);
 
         return true;
-    }
-
-    // Cleave
-
-    std::string CleaveAbility::GetName()
-    {
-        return "Cleave";
-    }
-
-    std::string CleaveAbility::GetDescription()
-    {
-        return "Hit all enemies within 1 tile";
-    }
-
-    AssetKey CleaveAbility::GetIcon()
-    {
-        return AssetKey::CleaveIcon;
     }
 
     bool CleaveAbility::Use(Actor &user, GameWorld &world)
@@ -197,6 +108,18 @@ namespace cm
         }
 
         return true;
+    }
+
+    std::unique_ptr<Ability> RandomAbility()
+    {
+        int r = RandomInt(2);
+
+        if (r == 0)
+            return std::make_unique<HealAbility>();
+        else if (r == 1)
+            return std::make_unique<CleaveAbility>();
+
+        return nullptr;
     }
 
 } // namespace cm

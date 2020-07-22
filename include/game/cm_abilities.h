@@ -43,47 +43,39 @@ namespace cm
         void Reset();
     };
 
-    class MeleeAbility : public Ability
+    class AttackAbility : public Ability
     {
     public:
-        std::string GetName() override;
-        std::string GetDescription() override;
-        AssetKey GetIcon() override;
-        bool Use(Actor &user, GameWorld &world) override;
+        std::string GetName() override { return "Attack"; }
+        std::string GetDescription() override { return "Attack with your weapon"; }
+        AssetKey GetIcon() override { return AssetKey::MeleeIcon; }
         int EnergyCost() override { return 2; }
-    };
-
-    class RangedAbility : public Ability
-    {
-    public:
-        std::string GetName() override;
-        std::string GetDescription() override;
-        AssetKey GetIcon() override;
         bool Use(Actor &user, GameWorld &world) override;
-        int EnergyCost() override { return 2; }
     };
 
     class CleaveAbility : public Ability
     {
     public:
-        std::string GetName() override;
-        std::string GetDescription() override;
-        AssetKey GetIcon() override;
+        std::string GetName() override { return "Cleave"; }
+        std::string GetDescription() override { return "Attack all enemies within 1 tile"; };
+        AssetKey GetIcon() override { return AssetKey::CleaveIcon; };
         bool IsSelfCast() override { return true; }
-        bool Use(Actor &user, GameWorld &world) override;
         int EnergyCost() override { return 3; }
+        bool Use(Actor &user, GameWorld &world) override;
     };
 
     class HealAbility : public Ability
     {
     public:
-        std::string GetName() override;
-        std::string GetDescription() override;
-        AssetKey GetIcon() override;
+        std::string GetName() override { return "Heal"; }
+        std::string GetDescription() override { return "Heal yourself for 40\% of max HP"; }
+        AssetKey GetIcon() override { return AssetKey::HealIcon; };
         bool IsSelfCast() override { return true; }
-        bool Use(Actor &user, GameWorld &world) override;
         int EnergyCost() override { return 3; }
+        bool Use(Actor &user, GameWorld &world) override;
     };
+
+    std::unique_ptr<Ability> RandomAbility();
 
 } // namespace cm
 

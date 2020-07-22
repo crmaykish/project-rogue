@@ -21,7 +21,7 @@ namespace cm
         InventoryComp = std::make_unique<Inventory>(Stats, *EffectsComp);
 
         // TODO: all enemies just have a melee attack for now
-        AbilitiesComp->SetAbility(0, std::make_unique<MeleeAbility>());
+        AbilitiesComp->SetAbility(0, std::make_unique<AttackAbility>());
     }
 
     void Enemy::Update(GameWorld &world)

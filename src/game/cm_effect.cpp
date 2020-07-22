@@ -107,15 +107,12 @@ namespace cm
     {
         Log(source->Name + " learns random ability", LOG_INFO);
 
-        auto ability = std::make_unique<HealAbility>(); // Randomize the ability
-
-        // TODO: make sure the ability is something the actor doesn't already know
-
         auto freeSlot = source->AbilitiesComp->FreeSlot();
 
         if (freeSlot >= 0)
         {
-            source->AbilitiesComp->SetAbility(freeSlot, std::move(ability));
+            // TODO: make sure the ability is something the actor doesn't already know
+            source->AbilitiesComp->SetAbility(freeSlot, RandomAbility());
         }
     }
 

@@ -74,7 +74,7 @@ namespace cm
 
         // Add some player abilities
         AbilitiesComp->Reset();
-        AbilitiesComp->SetAbility(0, std::make_unique<MeleeAbility>());
+        AbilitiesComp->SetAbility(0, std::make_unique<AttackAbility>());
     }
 
     void Player::DecideNextAction(GameWorld &world)
