@@ -17,14 +17,6 @@ namespace cm
         }
     }
 
-    // TODO: is this function even necessary?
-    bool AbilitySet::UseAbility(int slot, Actor &user, GameWorld &world)
-    {
-        Abilities.at(slot)->Use(user, world);
-
-        return true;
-    }
-
     Ability *AbilitySet::AbilityAt(int slot)
     {
         if (slot < 0 || slot >= 4)
@@ -43,6 +35,22 @@ namespace cm
     void AbilitySet::Reset()
     {
         std::fill(Abilities.begin(), Abilities.end(), nullptr);
+    }
+
+    int AbilitySet::FreeSlot()
+    {
+        int freeSlot = -1;
+
+        for (auto i = 0; i < Abilities.size(); i++)
+        {
+            if (Abilities.at(i) == nullptr)
+            {
+                freeSlot = i;
+                break;
+            }
+        }
+
+        return freeSlot;
     }
 
     // Melee
@@ -145,9 +153,7 @@ namespace cm
 
     bool HealAbility::Use(Actor &user, GameWorld &world)
     {
-        // auto effect = HealEffect(user.Stats.MaxHP() * 0.4);
-
-        // effect.Use(user, world);
+        user.CombatComp->Heal({user.Stats.MaxHP() * 0.4, &user}, world);
 
         return true;
     }

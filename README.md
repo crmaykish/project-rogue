@@ -10,7 +10,7 @@
 - [x] Five weapons
 - [x] Two shields
 - [x] Armor types: head, boots
-- [ ] 5 weapon effects - 2 defend, 2 attack, 1 kill
+- [ ] 5 weapon effects - 2 defend, 2 attack
 - [ ] Inventory management (show item stats, drop items, etc.)
 - [ ] Melee or ranged attacks depending on the equipped weapon
 - [ ] Experience gain and stat/enemy scaling

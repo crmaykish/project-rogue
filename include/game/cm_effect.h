@@ -88,6 +88,12 @@ namespace cm
         void Use(Actor *source, Actor *target, GameWorld *world) override;
     };
 
+    class LearnAbilityEffect : public Effect
+    {
+        std::string GetName() override { return "Skill"; }
+        void Use(Actor *source, Actor *target, GameWorld *world) override;
+    };
+
 } // namespace cm
 
 #endif // CM_EFFECT_H

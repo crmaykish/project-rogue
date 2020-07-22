@@ -105,16 +105,24 @@ namespace cm
         .onUseModifiers = true,
     };
 
+    ItemBuilder BookBuilder = {
+        .assets = {BookAsset},
+        .statModTypes = {},
+        .minStatMods = 0,
+        .maxStatMods = 0,
+        .onUseModifiers = true,
+        // TODO add fields to specific which abilities this builder can use
+    };
+
     // Item Building Implementation
 
-    std::unordered_map<ItemType, ItemBuilder>
+    std::unordered_map<ItemType, std::vector<ItemBuilder>>
         ItemBuilders = {
-            {ItemType::OneHand, WeaponBuilder},
-            {ItemType::Head, HelmetBuilder},
-            {ItemType::Boots, BootsBuilder},
-            {ItemType::OffHand, OffhandBuilder},
-            {ItemType::Consumable, PotionBuilder},
-
+            {ItemType::OneHand, {WeaponBuilder}},
+            {ItemType::Head, {HelmetBuilder}},
+            {ItemType::Boots, {BootsBuilder}},
+            {ItemType::OffHand, {OffhandBuilder}},
+            {ItemType::Consumable, {PotionBuilder, BookBuilder}},
     };
 
     std::unique_ptr<Item> BuildItem()
@@ -141,10 +149,10 @@ namespace cm
             break;
         }
     }
-
     std::unique_ptr<Item> BuildItem(ItemType type)
     {
-        auto builder = ItemBuilders.at(type);
+        auto builderList = ItemBuilders.at(type);
+        auto builder = builderList.at(RandomInt(builderList.size()));
         auto asset = builder.assets.at(RandomInt(builder.assets.size()));
 
         // Create the base item
@@ -231,7 +239,7 @@ namespace cm
 
     std::shared_ptr<Effect> RandomUseEffect()
     {
-        auto r = RandomInt(3);
+        auto r = RandomInt(4);
 
         if (r == 0)
             return std::make_shared<HealEffect>();
@@ -239,6 +247,8 @@ namespace cm
             return std::make_shared<ExplosionEffect>();
         else if (r == 2)
             return std::make_shared<SacrificeEffect>();
+        else if (r == 3)
+            return std::make_shared<LearnAbilityEffect>();
         else
             return nullptr;
     }

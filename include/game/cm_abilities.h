@@ -37,9 +37,9 @@ namespace cm
 
     public:
         void SetAbility(int slot, std::unique_ptr<Ability> ability);
-        bool UseAbility(int slot, Actor &user, GameWorld &world);
         Ability *AbilityAt(int slot);
         bool AbilityReady(int slot);
+        int FreeSlot();
         void Reset();
     };
 

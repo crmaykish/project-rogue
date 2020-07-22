@@ -103,4 +103,20 @@ namespace cm
         source->CombatComp->Damage({3}, *world);
     }
 
+    void LearnAbilityEffect::Use(Actor *source, Actor *target, GameWorld *world)
+    {
+        Log(source->Name + " learns random ability", LOG_INFO);
+
+        auto ability = std::make_unique<HealAbility>(); // Randomize the ability
+
+        // TODO: make sure the ability is something the actor doesn't already know
+
+        auto freeSlot = source->AbilitiesComp->FreeSlot();
+
+        if (freeSlot >= 0)
+        {
+            source->AbilitiesComp->SetAbility(freeSlot, std::move(ability));
+        }
+    }
+
 } // namespace cm
