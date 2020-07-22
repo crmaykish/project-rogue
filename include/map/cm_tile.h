@@ -7,8 +7,8 @@ namespace cm
 {
     static const bool FogOfWar = true;
 
-    const int TileAssetSizePixels = 12;
-    const int TileScaling = 3;
+    const int TileAssetSizePixels = 8;
+    const int TileScaling = 4;
     const int TileSize = TileAssetSizePixels * TileScaling;
 
     class Actor;
