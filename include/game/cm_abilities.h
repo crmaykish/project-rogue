@@ -49,7 +49,7 @@ namespace cm
         std::string GetName() override { return "Attack"; }
         std::string GetDescription() override { return "Attack with your weapon"; }
         AssetKey GetIcon() override { return AssetKey::MeleeIcon; }
-        int EnergyCost() override { return 2; }
+        int EnergyCost() override { return 1; }
         bool Use(Actor &user, GameWorld &world) override;
     };
 
