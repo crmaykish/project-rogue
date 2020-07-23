@@ -221,25 +221,7 @@ namespace cm
 
     void RoomAccretionMap::PlaceExit()
     {
-        auto t = RandomTile(TileType::Wall);
-
-        // Place the exit door in a wall tile with at least 3 floor tiles and 2 wall tiles around it
-
-        // TODO: this is a hack and it causes the exit to be inaccessible sometimes
-        int limit = 400;
-        int i = 0;
-
-        while (
-            (CountNeighborTiles(t->X, t->Y, TileType::Floor) < 4 ||
-             CountNeighborTiles(t->X, t->Y, TileType::Wall) < 2) &&
-            i < limit)
-        {
-            // TODO: this will loop forever if the map has no walls
-            t = RandomTile(TileType::Wall);
-
-            i++;
-        }
-
+        auto t = RandomTile(TileType::Floor);
         t->Type = TileType::Door;
     }
 
