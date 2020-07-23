@@ -8,43 +8,6 @@
 
 namespace cm
 {
-    void SlimeBehavior::Use(Actor &actor, GameWorld &world)
-    {
-        if (actor.Stats.HP() < actor.Stats.MaxHP())
-        {
-            DamagedTurns++;
-        }
-
-        if (DamagedTurns > 3)
-        {
-            // Heal and split
-            actor.Stats.AdjustHP(actor.Stats.MaxHP());
-
-            // Create a copy of the actor
-            int x = 0;
-            int y = 0;
-
-            for (auto &t : world.GetLevel()->GetNeighbors(actor.Position.X, actor.Position.Y))
-            {
-                if (world.GetActor(t->X, t->Y) == nullptr)
-                {
-                    x = t->X;
-                    y = t->Y;
-                }
-            }
-
-            if (x > 0 && y > 0)
-            {
-                world.LogEvent(actor.Name + " splits in two", false);
-                world.AddEnemy(Slime(x, y, 1));
-            }
-            else
-            {
-                world.LogEvent(actor.Name + " fails to split", false);
-            }
-        }
-    }
-
     Enemy::Enemy(int x, int y)
     {
         Position.X = x;
@@ -79,10 +42,6 @@ namespace cm
 
     void Enemy::Tick(GameWorld &world)
     {
-        if (BehaviorComp != nullptr)
-        {
-            BehaviorComp->Use(*this, world);
-        }
     }
 
     bool Enemy::ActionReady()
@@ -175,8 +134,6 @@ namespace cm
         a->Stats.SetStatBaseValue(ActorStatType::Strength, RandomInt(5, 12));
         a->Stats.SetStatBaseValue(ActorStatType::Dexterity, 2);
         a->Stats.SetStatBaseValue(ActorStatType::Intellect, 2);
-
-        a->BehaviorComp = std::make_unique<SlimeBehavior>();
 
         return a;
     }
