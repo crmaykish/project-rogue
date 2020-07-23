@@ -42,7 +42,6 @@ namespace cm
 
     void Enemy::Tick(GameWorld &world)
     {
-        Log("Ticking:" + Name, LOG_INFO);
     }
 
     bool Enemy::ActionReady()
@@ -119,14 +118,13 @@ namespace cm
         }
     }
 
-    std::unique_ptr<Actor> Ghost(int x, int y, int level)
+    std::unique_ptr<Actor> Slime(int x, int y, int level)
     {
         auto a = std::make_unique<Enemy>(x, y);
-        a->Name = "Ghost";
-        a->Texture = AssetKey::GhostTexture;
+        a->Name = "Slime";
+        a->Texture = AssetKey::SlimeTexture;
         a->Visible = true;
         a->Active = true;
-        a->Level = level;
 
         a->Stats.SetStatBaseValue(ActorStatType::MaxHealth, RandomInt(15, 20));
         a->Stats.SetStatBaseValue(ActorStatType::Health, a->Stats.MaxHP());
@@ -134,15 +132,15 @@ namespace cm
         a->Stats.SetStatBaseValue(ActorStatType::Energy, 2);
         a->Stats.SetStatBaseValue(ActorStatType::Vitality, RandomInt(8, 12));
         a->Stats.SetStatBaseValue(ActorStatType::Strength, RandomInt(5, 12));
-        a->Stats.SetStatBaseValue(ActorStatType::Dexterity, 5);
-        a->Stats.SetStatBaseValue(ActorStatType::Intellect, 5);
+        a->Stats.SetStatBaseValue(ActorStatType::Dexterity, 2);
+        a->Stats.SetStatBaseValue(ActorStatType::Intellect, 2);
 
         return a;
     }
 
     std::unique_ptr<Actor> RandomEnemy(int x, int y, int level)
     {
-        return Ghost(x, y, level);
+        return Slime(x, y, level);
     }
 
 } // namespace cm

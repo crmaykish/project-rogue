@@ -176,17 +176,6 @@ namespace cm
 
         yOffset -= 30;
 
-        // Level/experience
-        MainRenderer->DrawFont("LVL: " + std::to_string(World->GetPlayer()->Level) + " | XP: " + std::to_string(World->GetPlayer()->Experience),
-                               AssetKey::UIFont,
-                               ColorGreen,
-                               10,
-                               yOffset,
-                               0.6,
-                               true);
-
-        yOffset -= 30;
-
         // HP
         MainRenderer->DrawFont("HP: " + std::to_string(World->GetPlayer()->Stats.HP()) + " / " + std::to_string(World->GetPlayer()->Stats.MaxHP()),
                                AssetKey::UIFont,

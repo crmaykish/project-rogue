@@ -12,8 +12,8 @@ namespace cm
     static const int mapHeight = 30;
     static const int roomsCountMin = 5;
     static const int roomsCountMax = 7;
-    static const int roomSizeMin = 6;
-    static const int roomSizeMax = 10;
+    static const int roomSizeMin = 3;
+    static const int roomSizeMax = 6;
     static const int chestMin = 20;
     static const int chestMax = 20;
     static const int enemyMin = 6;
@@ -224,12 +224,20 @@ namespace cm
         auto t = RandomTile(TileType::Wall);
 
         // Place the exit door in a wall tile with at least 3 floor tiles and 2 wall tiles around it
+
+        // TODO: this is a hack and it causes the exit to be inaccessible sometimes
+        int limit = 400;
+        int i = 0;
+
         while (
-            CountNeighborTiles(t->X, t->Y, TileType::Floor) < 4 ||
-            CountNeighborTiles(t->X, t->Y, TileType::Wall) < 2)
+            (CountNeighborTiles(t->X, t->Y, TileType::Floor) < 4 ||
+             CountNeighborTiles(t->X, t->Y, TileType::Wall) < 2) &&
+            i < limit)
         {
             // TODO: this will loop forever if the map has no walls
             t = RandomTile(TileType::Wall);
+
+            i++;
         }
 
         t->Type = TileType::Door;

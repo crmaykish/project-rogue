@@ -27,8 +27,6 @@ namespace cm
 
     void Player::Tick(GameWorld &world)
     {
-        Log("Ticking:" + Name, LOG_INFO);
-
         // TODO update end of turn stuff like damage over time ticks, mana regen, etc
     }
 
@@ -44,7 +42,7 @@ namespace cm
 
     void Player::Render(const Renderer &renderer)
     {
-        renderer.DrawTexture(AssetKey::KnightTexture, Position.X * TileSize, Position.Y * TileSize, TileSize, TileSize);
+        renderer.DrawTexture(AssetKey::PriestTexture, Position.X * TileSize, Position.Y * TileSize, TileSize, TileSize);
     }
 
     void Player::Reset()
@@ -56,7 +54,7 @@ namespace cm
         Stats.SetStatBaseValue(ActorStatType::MaxHealth, 30);
         Stats.SetStatBaseValue(ActorStatType::Health, Stats.MaxHP());
         Stats.SetStatBaseValue(ActorStatType::MaxEnergy, 3);
-        Stats.SetStatBaseValue(ActorStatType::Energy, 4);
+        Stats.SetStatBaseValue(ActorStatType::Energy, 3);
         Stats.SetStatBaseValue(ActorStatType::Vitality, RandomInt(18, 22));
         Stats.SetStatBaseValue(ActorStatType::Strength, RandomInt(15, 18));
         Stats.SetStatBaseValue(ActorStatType::Dexterity, RandomInt(8, 14));

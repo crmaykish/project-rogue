@@ -19,7 +19,7 @@ namespace cm
         std::unique_ptr<Action> NextAction(GameWorld &world) override;
     };
 
-    std::unique_ptr<Actor> Ghost(int x, int y, int level);
+    std::unique_ptr<Actor> Slime(int x, int y, int level);
     std::unique_ptr<Actor> RandomEnemy(int x, int y, int level);
 
 } // namespace cm
