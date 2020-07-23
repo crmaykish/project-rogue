@@ -151,10 +151,6 @@ namespace cm
                 // Action was completed, subtract energy cost from actor who executed it
                 actor->Stats.SetStatBaseValue(ActorStatType::Energy, actor->Stats.Energy() - CurrentAction->EnergyCost());
 
-                // Reset actor's target
-                actor->Target = {0, 0};
-                TileSelected = false;
-
                 // TODO: this turn finished logic code is getting ugly. Review this structure
                 // Maybe an actor->CompleteAction() method to spend mana, cleanup flags, etc.
 
@@ -177,6 +173,10 @@ namespace cm
                     }
                 }
             }
+
+            // Reset actor's target
+            actor->Target = {0, 0};
+            TileSelected = false;
         }
 
         // Tick the game state once a full round of actor moves has passed

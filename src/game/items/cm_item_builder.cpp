@@ -26,6 +26,7 @@ namespace cm
         bool onAttackModifiers = false;
         bool onDefenseModifiers = false;
         bool onUseModifiers = false;
+        int range = 0;
     };
 
     // Asset Definitions
@@ -64,12 +65,22 @@ namespace cm
 
     // Item Builder Instances
 
-    ItemBuilder WeaponBuilder = {
+    ItemBuilder MeleeWeaponBuilder = {
         .assets = {DaggerAsset, SwordAsset, AxeAsset, HammerAsset, WandAsset, BowAsset},
         .statModTypes = AllStatModTypes,
         .minStatMods = 1,
         .maxStatMods = 1,
         .onAttackModifiers = true,
+        .range = 1,
+    };
+
+    ItemBuilder RangedWeaponBuilder = {
+        .assets = {WandAsset, BowAsset},
+        .statModTypes = AllStatModTypes,
+        .minStatMods = 1,
+        .maxStatMods = 1,
+        .onAttackModifiers = true,
+        .range = 2,
     };
 
     ItemBuilder HelmetBuilder = {
@@ -118,7 +129,7 @@ namespace cm
 
     std::unordered_map<ItemType, std::vector<ItemBuilder>>
         ItemBuilders = {
-            {ItemType::OneHand, {WeaponBuilder}},
+            {ItemType::OneHand, {MeleeWeaponBuilder, RangedWeaponBuilder}},
             {ItemType::Head, {HelmetBuilder}},
             {ItemType::Boots, {BootsBuilder}},
             {ItemType::OffHand, {OffhandBuilder}},
@@ -160,6 +171,7 @@ namespace cm
         item->Type = type;
         item->Name = asset.names.at(RandomInt(asset.names.size()));
         item->TextureKey = asset.key;
+        item->Range = builder.range;
 
         std::set<ActorStatType> usedMods;
 

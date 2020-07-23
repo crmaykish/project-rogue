@@ -5,7 +5,7 @@
 ## v0.1 Release Features
 - [ ] Ten levels to descend with a final boss
 - [x] One generic randomized class
-- [ ] Learn abilities from books
+- [x] Learn abilities from books
 - [ ] Three enemy types with distinct stats and AI behavior
 - [x] Five weapons
 - [x] Two shields

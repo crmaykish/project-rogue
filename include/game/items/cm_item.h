@@ -30,6 +30,7 @@ namespace cm
         std::string Description;
         ItemType Type = ItemType::Consumable;
         AssetKey TextureKey;
+        int Range = 0;  // This is only applicable to weapons
 
         // Flags
         bool PickedUp = false;

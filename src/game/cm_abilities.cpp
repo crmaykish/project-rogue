@@ -57,14 +57,24 @@ namespace cm
     {
         auto target = world.GetActor(user.Target.X, user.Target.Y);
 
-        // TODO range checking
-
         if (target == nullptr)
         {
             return false;
         }
 
-        if (Distance(user.Position, target->Position) > 1)
+        auto attackRange = 1;
+
+        // If the actor has a weaponed equipped, use its range
+        auto weapon = user.InventoryComp->EquipmentAt(ItemType::OneHand);
+
+        if (weapon != nullptr)
+        {
+            attackRange = weapon->Range;
+        }
+
+        auto distance = Distance(user.Position, target->Position);
+
+        if (distance > attackRange)
         {
             return false;
         }
