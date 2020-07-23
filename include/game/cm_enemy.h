@@ -5,10 +5,26 @@
 
 namespace cm
 {
+    class Behavior
+    {
+    public:
+        virtual void Use(Actor &actor, GameWorld &world) = 0;
+    };
+
+    class SlimeBehavior : public Behavior
+    {
+    private:
+        int DamagedTurns = 0;
+
+    public:
+        void Use(Actor &actor, GameWorld &world) override;
+    };
+
     class Enemy : public Actor
     {
     public:
         AssetKey Texture = AssetKey::Unknown;
+        std::unique_ptr<Behavior> BehaviorComp;
 
         Enemy(int x, int y);
         void Update(GameWorld &world) override;

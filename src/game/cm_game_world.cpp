@@ -38,6 +38,12 @@ namespace cm
                                                  [](auto &a) { return a.Age == 60; }),
                                   ScrollingCombatText.end());
 
+        // Any actors that get added during other parts of the game loop need to be moved into the actual list
+        for (auto &s : NewActors)
+        {
+            Actors.emplace_back(std::move(s));
+        }
+
         // Update the level
         Level->Update(*this);
 
@@ -371,6 +377,11 @@ namespace cm
     Map *GameWorld::GetLevel()
     {
         return Level.get();
+    }
+
+    void GameWorld::AddEnemy(std::shared_ptr<Actor> enemy)
+    {
+        NewActors.emplace_back(enemy);
     }
 
 } // namespace cm

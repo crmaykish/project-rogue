@@ -48,6 +48,8 @@ namespace cm
         std::vector<std::shared_ptr<Actor>> Actors;
         std::shared_ptr<Actor> PlayerOne;
 
+        std::vector<std::shared_ptr<Actor>> NewActors;
+
         std::unique_ptr<Action> CurrentAction;
 
         int EventLogIndex = 1;
@@ -89,6 +91,8 @@ namespace cm
         std::vector<EventLogElem> &GetEventLog() { return EventLog; }
 
         void AddCombatText(CombatText combatText);
+
+        void AddEnemy(std::shared_ptr<Actor> enemy);
     };
 
 } // namespace cm
