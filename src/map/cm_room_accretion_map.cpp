@@ -274,7 +274,7 @@ namespace cm
                 }
                 if (clear)
                 {
-                    t = CreateWallTile(t->X, t->Y);
+                    t = CreateWaterTile(t->X, t->Y);
                 }
             }
         }
