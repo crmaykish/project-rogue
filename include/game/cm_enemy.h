@@ -7,20 +7,42 @@ namespace cm
 {
     class Enemy : public Actor
     {
+    protected:
     public:
         AssetKey Texture = AssetKey::Unknown;
 
-        Enemy(int x, int y);
+        Enemy(Point position);
+
+        virtual ~Enemy(){};
+
         void Update(GameWorld &world) override;
         void Tick(GameWorld &world) override;
         void Render(const Renderer &renderer) override;
-
         bool ActionReady() override;
+    };
+
+    class Slime : public Enemy
+    {
+    public:
+        Slime(Point position);
         std::unique_ptr<Action> NextAction(GameWorld &world) override;
     };
 
-    std::unique_ptr<Actor> Slime(int x, int y, int level);
-    std::unique_ptr<Actor> RandomEnemy(int x, int y, int level);
+    class Ghost : public Enemy
+    {
+    public:
+        Ghost(Point position);
+        std::unique_ptr<Action> NextAction(GameWorld &world) override;
+    };
+
+    class Spider : public Enemy
+    {
+    public:
+        Spider(Point position);
+        std::unique_ptr<Action> NextAction(GameWorld &world) override;
+    };
+
+    std::unique_ptr<Actor> RandomEnemy(Point position);
 
 } // namespace cm
 

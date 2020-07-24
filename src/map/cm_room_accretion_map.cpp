@@ -85,7 +85,7 @@ namespace cm
         for (int i = 0; i < RandomInt(enemyMin, enemyMax); i++)
         {
             auto t = RandomTile(TileType::Floor);
-            npcs.emplace_back(RandomEnemy(t->X, t->Y, playerLevel));
+            npcs.emplace_back(RandomEnemy({t->X, t->Y}));
         }
 
         return npcs;

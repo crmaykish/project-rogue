@@ -8,20 +8,20 @@
 
 namespace cm
 {
-    Enemy::Enemy(int x, int y)
+    Enemy::Enemy(Point position)
     {
-        Position.X = x;
-        Position.Y = y;
+        Log("constructing enemy");
+
+        Position = position;
 
         // Initialize components
-
         AbilitiesComp = std::make_unique<AbilitySet>();
         EffectsComp = std::make_unique<EffectComponent>();
         CombatComp = std::make_unique<Combat>(*this);
         InventoryComp = std::make_unique<Inventory>(Stats, *EffectsComp);
 
-        // TODO: all enemies just have a melee attack for now
-        AbilitiesComp->SetAbility(0, std::make_unique<AttackAbility>());
+        Visible = true;
+        Active = true;
     }
 
     void Enemy::Update(GameWorld &world)
@@ -49,7 +49,36 @@ namespace cm
         return true;
     }
 
-    std::unique_ptr<Action> Enemy::NextAction(GameWorld &world)
+    void Enemy::Render(const Renderer &renderer)
+    {
+        if (Active && Visible)
+        {
+            renderer.DrawTexture(Texture, Position.X * TileSize, Position.Y * TileSize, TileSize, TileSize);
+
+            renderer.DrawFont(std::to_string(Stats.HP()) + " / " + std::to_string(Stats.MaxHP()),
+                              AssetKey::UIFont,
+                              ColorWhite,
+                              Position.X * TileSize,
+                              (Position.Y + 1) * TileSize,
+                              0.5);
+        }
+    }
+
+    Slime::Slime(Point position) : Enemy(position)
+    {
+        Name = "Slime";
+        Texture = AssetKey::SlimeTexture;
+
+        // Stats
+        Stats.SetStatBaseValue(ActorStatType::MaxHealth, RandomInt(15, 20));
+        Stats.SetStatBaseValue(ActorStatType::Health, Stats.MaxHP());
+        Stats.SetStatBaseValue(ActorStatType::MaxEnergy, 2);
+        Stats.SetStatBaseValue(ActorStatType::Energy, 2);
+
+        AbilitiesComp->SetAbility(0, std::make_unique<AttackAbility>());
+    }
+
+    std::unique_ptr<Action> Slime::NextAction(GameWorld &world)
     {
         auto player = world.GetPlayer();
         auto playerDistance = Distance(Position, player->Position);
@@ -103,44 +132,61 @@ namespace cm
         return std::make_unique<WaitAction>();
     }
 
-    void Enemy::Render(const Renderer &renderer)
+    Ghost::Ghost(Point position) : Enemy(position)
     {
-        if (Active && Visible)
+        Name = "Ghost";
+        Texture = AssetKey::GhostTexture;
+
+        // Stats
+        Stats.SetStatBaseValue(ActorStatType::MaxHealth, RandomInt(15, 20));
+        Stats.SetStatBaseValue(ActorStatType::Health, Stats.MaxHP());
+        Stats.SetStatBaseValue(ActorStatType::MaxEnergy, 2);
+        Stats.SetStatBaseValue(ActorStatType::Energy, 2);
+
+        AbilitiesComp->SetAbility(0, std::make_unique<AttackAbility>());
+    }
+
+    std::unique_ptr<Action> Ghost::NextAction(GameWorld &world)
+    {
+        return std::make_unique<WaitAction>();
+    }
+
+    Spider::Spider(Point position) : Enemy(position)
+    {
+        Name = "Spider";
+        Texture = AssetKey::SpiderTexture;
+
+        // Stats
+        Stats.SetStatBaseValue(ActorStatType::MaxHealth, RandomInt(15, 20));
+        Stats.SetStatBaseValue(ActorStatType::Health, Stats.MaxHP());
+        Stats.SetStatBaseValue(ActorStatType::MaxEnergy, 2);
+        Stats.SetStatBaseValue(ActorStatType::Energy, 2);
+
+        AbilitiesComp->SetAbility(0, std::make_unique<AttackAbility>());
+    }
+
+    std::unique_ptr<Action> Spider::NextAction(GameWorld &world)
+    {
+        return std::make_unique<WaitAction>();
+    }
+
+    std::unique_ptr<Actor> RandomEnemy(Point position)
+    {
+        switch (RandomInt(3))
         {
-            renderer.DrawTexture(Texture, Position.X * TileSize, Position.Y * TileSize, TileSize, TileSize);
-
-            renderer.DrawFont(std::to_string(Stats.HP()) + " / " + std::to_string(Stats.MaxHP()),
-                              AssetKey::UIFont,
-                              ColorWhite,
-                              Position.X * TileSize,
-                              (Position.Y + 1) * TileSize,
-                              0.5);
+        case 0:
+            return std::make_unique<Slime>(position);
+            break;
+        case 1:
+            return std::make_unique<Ghost>(position);
+            break;
+        case 2:
+            return std::make_unique<Spider>(position);
+            break;
+        default:
+            return nullptr;
+            break;
         }
-    }
-
-    std::unique_ptr<Actor> Slime(int x, int y, int level)
-    {
-        auto a = std::make_unique<Enemy>(x, y);
-        a->Name = "Slime";
-        a->Texture = AssetKey::SlimeTexture;
-        a->Visible = true;
-        a->Active = true;
-
-        a->Stats.SetStatBaseValue(ActorStatType::MaxHealth, RandomInt(15, 20));
-        a->Stats.SetStatBaseValue(ActorStatType::Health, a->Stats.MaxHP());
-        a->Stats.SetStatBaseValue(ActorStatType::MaxEnergy, 2);
-        a->Stats.SetStatBaseValue(ActorStatType::Energy, 2);
-        a->Stats.SetStatBaseValue(ActorStatType::Vitality, RandomInt(8, 12));
-        a->Stats.SetStatBaseValue(ActorStatType::Strength, RandomInt(5, 12));
-        a->Stats.SetStatBaseValue(ActorStatType::Dexterity, 2);
-        a->Stats.SetStatBaseValue(ActorStatType::Intellect, 2);
-
-        return a;
-    }
-
-    std::unique_ptr<Actor> RandomEnemy(int x, int y, int level)
-    {
-        return Slime(x, y, level);
     }
 
 } // namespace cm
