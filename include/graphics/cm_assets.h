@@ -87,6 +87,7 @@ namespace cm
         CleaveIcon,
         EnergyIcon,
         EnergyEmptyIcon,
+        TeleportIcon,
     };
 
     class Assets

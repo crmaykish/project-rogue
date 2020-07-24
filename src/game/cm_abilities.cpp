@@ -120,14 +120,39 @@ namespace cm
         return true;
     }
 
+    bool TeleportAbility::Use(Actor &user, GameWorld &world)
+    {
+        auto tile = world.GetLevel()->GetTile(user.Target.X, user.Target.Y);
+
+        if (world.GetActor(tile->X, tile->Y) != nullptr)
+        {
+            return false;
+        }
+
+        if (Distance(user.Position, {tile->X, tile->Y}) > 4)
+        {
+            return false;
+        }
+
+        if (tile->Walkable)
+        {
+            user.Position.X = tile->X;
+            user.Position.Y = tile->Y;
+        }
+
+        return true;
+    }
+
     std::unique_ptr<Ability> RandomAbility()
     {
-        int r = RandomInt(2);
+        int r = RandomInt(3);
 
         if (r == 0)
             return std::make_unique<HealAbility>();
         else if (r == 1)
             return std::make_unique<CleaveAbility>();
+        else if (r == 2)
+            return std::make_unique<TeleportAbility>();
 
         return nullptr;
     }

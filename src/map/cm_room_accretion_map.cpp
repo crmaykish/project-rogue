@@ -16,8 +16,8 @@ namespace cm
     static const int roomSizeMax = 6;
     static const int chestMin = 20;
     static const int chestMax = 20;
-    static const int enemyMin = 6;
-    static const int enemyMax = 12;
+    static const int enemyMin = 3;
+    static const int enemyMax = 5;
     static const int floodChance = 30;
 
     struct Island

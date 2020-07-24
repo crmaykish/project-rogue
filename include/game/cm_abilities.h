@@ -16,6 +16,8 @@ namespace cm
 
     // TODO: define ability result enum instead of bool
 
+    // TODO: abilities should have cooldowns (turns between uses)
+
     class Ability
     {
     public:
@@ -71,6 +73,16 @@ namespace cm
         std::string GetDescription() override { return "Heal yourself for 40\% of max HP"; }
         AssetKey GetIcon() override { return AssetKey::HealIcon; };
         bool IsSelfCast() override { return true; }
+        int EnergyCost() override { return 3; }
+        bool Use(Actor &user, GameWorld &world) override;
+    };
+
+    class TeleportAbility : public Ability
+    {
+    public:
+        std::string GetName() override { return "Teleport"; }
+        std::string GetDescription() override { return "Instantly move up to 4 tiles away"; }
+        AssetKey GetIcon() override { return AssetKey::TeleportIcon; };
         int EnergyCost() override { return 3; }
         bool Use(Actor &user, GameWorld &world) override;
     };

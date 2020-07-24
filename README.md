@@ -43,3 +43,8 @@
 - [ ] Whirlwind
 - [ ] Throw Grenade
 - [ ] Invisibility
+
+### Enemies
+- Ghosts are slow, but can teleport
+- Slimes split into smaller slimes when killed
+- Spiders spit poison from a distance and then run away
