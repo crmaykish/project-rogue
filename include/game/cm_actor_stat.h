@@ -16,7 +16,8 @@ namespace cm
         Vitality,
         Strength,
         Dexterity,
-        Intellect
+        Intellect,
+        ViewDistance
     };
 
     enum struct ActorStatModifierType
@@ -93,6 +94,7 @@ namespace cm
         int MaxHP();
         int Energy();
         int MaxEnergy();
+        int ViewDistance();
 
         void AdjustEnergy(int energy);
         void AdjustHP(int hp);

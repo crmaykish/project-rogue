@@ -35,7 +35,7 @@ namespace cm
 
         // Can the player see this enemy?
         auto dist = Distance({Position.X, Position.Y}, world.GetPlayer()->Position);
-        Visible = (dist <= world.BaseViewDistance);
+        Visible = (dist <= world.GetPlayer()->Stats.ViewDistance());
 
         if (Stats.HP() == 0)
         {
@@ -81,6 +81,7 @@ namespace cm
         Stats.SetStatBaseValue(ActorStatType::Health, Stats.MaxHP());
         Stats.SetStatBaseValue(ActorStatType::MaxEnergy, 2);
         Stats.SetStatBaseValue(ActorStatType::Energy, 2);
+        Stats.SetStatBaseValue(ActorStatType::ViewDistance, 4);
 
         AbilitiesComp->SetAbility(0, std::make_unique<AttackAbility>());
     }
@@ -103,7 +104,7 @@ namespace cm
             }
         }
 
-        else if (playerDistance < 6 || Stats.HP() < Stats.MaxHP())
+        else if (playerDistance <= Stats.ViewDistance() || Stats.HP() < Stats.MaxHP())
         {
             // really bad pathfinding to player
             auto diffX = player->Position.X - Position.X;

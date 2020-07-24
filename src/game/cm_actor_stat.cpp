@@ -137,6 +137,11 @@ namespace cm
         return GetStatValue(ActorStatType::MaxEnergy);
     }
 
+    int ActorStatSet::ViewDistance()
+    {
+        return GetStatValue(ActorStatType::ViewDistance);
+    }
+
     void ActorStatSet::AdjustEnergy(int energy)
     {
         SetStatBaseValue(ActorStatType::Energy, GetStatValue(ActorStatType::Energy) + energy);

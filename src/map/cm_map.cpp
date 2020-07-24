@@ -70,7 +70,7 @@ namespace cm
                 // Distance to player
                 auto dist = Distance({t->X, t->Y}, world.GetPlayer()->Position);
 
-                if (dist <= world.BaseViewDistance)
+                if (dist <= world.GetPlayer()->Stats.ViewDistance())
                 {
                     t->Brightness = TileBrightnessMax - (TileBrightnessInterval * dist);
                     t->Discovered = true;

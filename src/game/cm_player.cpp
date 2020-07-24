@@ -59,6 +59,7 @@ namespace cm
         Stats.SetStatBaseValue(ActorStatType::Strength, RandomInt(15, 18));
         Stats.SetStatBaseValue(ActorStatType::Dexterity, RandomInt(8, 14));
         Stats.SetStatBaseValue(ActorStatType::Intellect, RandomInt(5, 9));
+        Stats.SetStatBaseValue(ActorStatType::ViewDistance, 4);
 
         Active = true;
         Visible = true;
