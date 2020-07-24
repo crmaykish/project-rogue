@@ -10,8 +10,8 @@ namespace cm
     // Generator options
     static const int mapWidth = 40;
     static const int mapHeight = 30;
-    static const int roomsCountMin = 5;
-    static const int roomsCountMax = 7;
+    static const int roomsCountMin = 20;
+    static const int roomsCountMax = 40;
     static const int roomSizeMin = 3;
     static const int roomSizeMax = 6;
     static const int chestMin = 20;

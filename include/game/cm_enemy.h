@@ -10,22 +10,24 @@ namespace cm
     protected:
     public:
         AssetKey Texture = AssetKey::Unknown;
-
         Enemy(Point position);
-
         virtual ~Enemy(){};
-
+        virtual void Tick(GameWorld &world) override;
         void Update(GameWorld &world) override;
-        void Tick(GameWorld &world) override;
         void Render(const Renderer &renderer) override;
         bool ActionReady() override;
     };
 
     class Slime : public Enemy
     {
+    private:
+        bool SpottedPlayer = false;
+        int TurnsToSplit = 3;
+
     public:
         Slime(Point position);
         std::unique_ptr<Action> NextAction(GameWorld &world) override;
+        void Tick(GameWorld &world) override;
     };
 
     class Ghost : public Enemy

@@ -39,10 +39,8 @@ namespace cm
                                   ScrollingCombatText.end());
 
         // Any actors that get added during other parts of the game loop need to be moved into the actual list
-        for (auto &s : NewActors)
-        {
-            Actors.emplace_back(std::move(s));
-        }
+        Actors.insert(Actors.end(), std::make_move_iterator(NewActors.begin()), std::make_move_iterator(NewActors.end()));
+        NewActors.clear();
 
         // Update the level
         Level->Update(*this);

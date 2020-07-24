@@ -132,6 +132,43 @@ namespace cm
         return std::make_unique<WaitAction>();
     }
 
+    // TODO: wrap up this split behavior in an ability or action, let the nextaction function return it as an option
+    // instead of operating independly from that process
+
+    void Slime::Tick(GameWorld &world)
+    {
+        Enemy::Tick(world);
+
+        auto player = world.GetPlayer();
+        auto playerDistance = Distance(Position, player->Position);
+
+        if (playerDistance < 6)
+        {
+            SpottedPlayer = true;
+        }
+
+        if (SpottedPlayer)
+        {
+            TurnsToSplit--;
+        }
+
+        if (TurnsToSplit == 0)
+        {
+            world.LogEvent("Slime is splitting", Friendly);
+
+            for (auto n : world.GetLevel()->GetNeighbors(Position.X, Position.Y))
+            {
+                if (n != nullptr)
+                {
+                    if (n->Walkable && world.GetActor(n->X, n->Y) == nullptr)
+                    {
+                        world.AddEnemy(std::make_unique<Slime>(Point{n->X, n->Y}));
+                    }
+                }
+            }
+        }
+    }
+
     Ghost::Ghost(Point position) : Enemy(position)
     {
         Name = "Ghost";
