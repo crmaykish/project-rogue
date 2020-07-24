@@ -11,6 +11,10 @@ namespace cm
     const int TileScaling = 3;
     const int TileSize = TileAssetSizePixels * TileScaling;
 
+    const uint8_t TileBrightnessMin = 0x20;
+    const uint8_t TileBrightnessMax = 0xFF;
+    const uint8_t TileBrightnessInterval = 0x20;
+
     class Actor;
     class GameWorld;
 
@@ -32,7 +36,7 @@ namespace cm
         TileType Type = TileType::Unknown;
 
         // State
-        uint8_t Brightness = FogOfWar ? 0 : 0xFF;
+        uint8_t Brightness = FogOfWar ? TileBrightnessMin : TileBrightnessMax;
         int Flammability = 0;
         int OnFire = 0;
 

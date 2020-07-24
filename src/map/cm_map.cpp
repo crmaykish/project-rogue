@@ -62,6 +62,7 @@ namespace cm
 
     void Map::Update(GameWorld &world)
     {
+        // TODO: this doesn't need to run at the full framerate. only when something moves
         for (auto &t : Tiles)
         {
             if (FogOfWar)
@@ -69,28 +70,14 @@ namespace cm
                 // Distance to player
                 auto dist = Distance({t->X, t->Y}, world.GetPlayer()->Position);
 
-                int offset = (world.GetPlayer()->TorchFuel + 1) / 5;
-
-                if (dist <= offset + 1)
+                if (dist <= world.BaseViewDistance)
                 {
-                    t->Brightness = 0xFF;
-                }
-                if (dist == offset + 2)
-                {
-                    t->Brightness = 0xC0;
-                }
-                if (dist == offset + 3)
-                {
-                    t->Brightness = 0xA0;
-                }
-                if (dist == offset + 4)
-                {
-                    t->Brightness = 0x60;
-                }
-
-                if (t->Brightness > 0)
-                {
+                    t->Brightness = TileBrightnessMax - (TileBrightnessInterval * dist);
                     t->Discovered = true;
+                }
+                else
+                {
+                    t->Brightness = TileBrightnessMin;
                 }
             }
         }
@@ -113,40 +100,45 @@ namespace cm
         // Render world tiles
         for (auto &t : Tiles)
         {
-            // TODO: should be a switch
-            if (t->Type == TileType::Wall)
+            if (t->Discovered)
             {
-                renderer.DrawTexture(AssetKey::WallTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
-            }
-            else if (t->Type == TileType::Floor)
-            {
-                renderer.DrawTexture(AssetKey::FloorTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
-            }
-            else if (t->Type == TileType::Door)
-            {
-                renderer.DrawTexture(AssetKey::DoorTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
-            }
-            else if (t->Type == TileType::Water)
-            {
-                renderer.DrawTexture(AssetKey::WaterTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
-            }
-            else if (t->Type == TileType::Bridge)
-            {
-                renderer.DrawTexture(AssetKey::BridgeTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
-            }
-            else
-            {
-                // Unrecognized tile type
-                renderer.DrawTexture(AssetKey::Unknown, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
-            }
+                // TODO: should tiles render themselves?
 
-            if (t->Items.size() == 1)
-            {
-                renderer.DrawTexture(t->Items.at(0)->TextureKey, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
-            }
-            else if (t->Items.size() > 1)
-            {
-                renderer.DrawTexture(AssetKey::ChestTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
+                auto textureKey = AssetKey::Unknown;
+
+                switch (t->Type)
+                {
+                case TileType::Wall:
+                    textureKey = AssetKey::WallTexture;
+                    break;
+                case TileType::Floor:
+                    textureKey = AssetKey::FloorTexture;
+                    break;
+                case TileType::Door:
+                    textureKey = AssetKey::DoorTexture;
+                    break;
+                case TileType::Water:
+                    textureKey = AssetKey::WaterTexture;
+                    break;
+                case TileType::Bridge:
+                    textureKey = AssetKey::BridgeTexture;
+                    break;
+                default:
+                    break;
+                }
+
+                // Draw the tile
+                renderer.DrawTexture(textureKey, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
+
+                // Draw items or a chest if the tile contains any
+                if (t->Items.size() == 1)
+                {
+                    renderer.DrawTexture(t->Items.at(0)->TextureKey, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
+                }
+                else if (t->Items.size() > 1)
+                {
+                    renderer.DrawTexture(AssetKey::ChestTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
+                }
             }
         }
     }
@@ -156,25 +148,18 @@ namespace cm
         // Render world tiles
         for (auto &t : Tiles)
         {
-            // Draw tile effects
-            if (t->OnFire > 0)
+            if (t->Discovered)
             {
-                renderer.DrawTexture(AssetKey::FireTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
-            }
+                // Draw tile effects
+                if (t->OnFire > 0)
+                {
+                    renderer.DrawTexture(AssetKey::FireTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
+                }
 
-            // draw fog
-            Color overlayColor = ColorBlack;
-
-            if (t->Brightness == 0 && t->Discovered)
-            {
-                overlayColor.alpha = 0xFF - 0x20;
+                // Draw fog overlay
+                renderer.DrawRectangle(t->X * TileSize, t->Y * TileSize, TileSize, TileSize,
+                                       Color{ColorBlack.red, ColorBlack.green, ColorBlack.blue, 0xFF - t->Brightness});
             }
-            else
-            {
-                overlayColor.alpha = 0xFF - t->Brightness;
-            }
-
-            renderer.DrawRectangle(t->X * TileSize, t->Y * TileSize, TileSize, TileSize, overlayColor);
         }
     }
 

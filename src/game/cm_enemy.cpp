@@ -31,8 +31,11 @@ namespace cm
             return;
         }
 
+        // TODO: this stuff doesn't need to run every frame, but it needs to run every time an actor makes an action
+
         // Can the player see this enemy?
-        Visible = world.GetLevel()->GetTile(Position.X, Position.Y)->Brightness > 0;
+        auto dist = Distance({Position.X, Position.Y}, world.GetPlayer()->Position);
+        Visible = (dist <= world.BaseViewDistance);
 
         if (Stats.HP() == 0)
         {
@@ -42,6 +45,10 @@ namespace cm
 
     void Enemy::Tick(GameWorld &world)
     {
+        if (!Active)
+        {
+            return;
+        }
     }
 
     bool Enemy::ActionReady()

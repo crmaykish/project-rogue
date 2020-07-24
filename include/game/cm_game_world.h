@@ -64,6 +64,8 @@ namespace cm
         void NextActor();
 
     public:
+        int BaseViewDistance = 4;
+
         GameWorld(UserInput &input);
 
         void Init();

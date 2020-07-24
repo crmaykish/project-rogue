@@ -33,7 +33,6 @@ namespace cm
 
         // Stats
         ActorStatSet Stats;
-        int TorchFuel = 0;
         int Level = 1;
         int Experience = 0;
 
