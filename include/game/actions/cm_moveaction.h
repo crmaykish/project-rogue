@@ -24,11 +24,13 @@ namespace cm
     class MoveAction : public Action
     {
     private:
+        Point Destination;
         MoveDirection Direction;
         GameWorld &World;
 
     public:
         MoveAction(MoveDirection direction, GameWorld &world);
+        MoveAction(Point destination, GameWorld &world);
         ActionResult Execute(Actor &executor) override;
         int EnergyCost() override;
     };

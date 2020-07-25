@@ -7,33 +7,43 @@ namespace cm
     MoveAction::MoveAction(MoveDirection direction, GameWorld &world)
         : Direction(direction), World(world) {}
 
+    MoveAction::MoveAction(Point destination, GameWorld &world) : Destination(destination), World(world)
+    {
+    }
+
     ActionResult MoveAction::Execute(Actor &executor)
     {
-        int moveX = 0;
-        int moveY = 0;
-
-        switch (Direction)
+        if (Destination.X == 0 && Destination.Y == 0)
         {
-        // TODO: add diagonal movement
-        case MoveDirection::Left:
-            moveX = -1;
-            break;
-        case MoveDirection::Right:
-            moveX = 1;
-            break;
-        case MoveDirection::Up:
-            moveY = 1;
-            break;
-        case MoveDirection::Down:
-            moveY = -1;
-            break;
-        default:
-            break;
-        }
+            int moveX = 0;
+            int moveY = 0;
 
-        // Set the actor's target
-        executor.Target.X = executor.Position.X + moveX;
-        executor.Target.Y = executor.Position.Y + moveY;
+            switch (Direction)
+            {
+            // TODO: add diagonal movement
+            case MoveDirection::Left:
+                moveX = -1;
+                break;
+            case MoveDirection::Right:
+                moveX = 1;
+                break;
+            case MoveDirection::Up:
+                moveY = 1;
+                break;
+            case MoveDirection::Down:
+                moveY = -1;
+                break;
+            default:
+                break;
+            }
+            // Set the actor's target
+            executor.Target.X = executor.Position.X + moveX;
+            executor.Target.Y = executor.Position.Y + moveY;
+        }
+        else
+        {
+            executor.Target = Destination;
+        }
 
         auto targetTile = World.GetLevel()->GetTile(executor.Target.X, executor.Target.Y);
 
@@ -60,10 +70,9 @@ namespace cm
 
         // Is the tile walkable?
         // TODO: walkable should be based on a flag, not the tiletype
-        if (targetTile->Type == TileType::Floor || targetTile->Type == TileType::Door|| targetTile->Type == TileType::Bridge)
+        if (targetTile->Type == TileType::Floor || targetTile->Type == TileType::Door || targetTile->Type == TileType::Bridge)
         {
-            executor.Position.X += moveX;
-            executor.Position.Y += moveY;
+            executor.Position = executor.Target;
 
             return ActionResult(ActionStatus::Succeeded);
         }

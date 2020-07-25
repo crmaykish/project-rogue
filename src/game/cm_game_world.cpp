@@ -256,6 +256,18 @@ namespace cm
 
         // Render selected tile
 
+        // render actor paths
+        for (auto const &a : Actors)
+        {
+            if (a->Path.size() > 0)
+            {
+                for (auto p : a->Path)
+                {
+                    renderer.DrawTexture(AssetKey::SelectedTileTexture, p.X * TileSize, p.Y * TileSize, TileSize, TileSize);
+                }
+            }
+        }
+
         if (TileSelectMode)
         {
             renderer.DrawTexture(AssetKey::SelectedTileTexture, SelectedTile.X * TileSize, SelectedTile.Y * TileSize, TileSize, TileSize);

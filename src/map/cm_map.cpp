@@ -3,6 +3,8 @@
 
 namespace cm
 {
+    // TODO: I think this function is a huge bottleneck
+    // Switch to a PointMap for storing tiles? Makes iterating slightly harder, but looks up are way faster
     Tile *Map::GetTile(int x, int y) const
     {
         if (x < 0 || x >= Width || y < 0 || y >= Height)

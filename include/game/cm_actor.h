@@ -31,6 +31,8 @@ namespace cm
         Point Position;
         Point Target;
 
+        std::vector<Point> Path;
+
         // Stats
         ActorStatSet Stats;
         int Level = 1;

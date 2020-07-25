@@ -10,6 +10,50 @@
 
 namespace cm
 {
+
+    class PointMap
+    {
+    private:
+        std::unordered_map<int, std::unordered_map<int, Point>> points;
+
+    public:
+        bool Contains(Point p)
+        {
+            if (points.find(p.X) == points.end())
+            {
+                return false;
+            }
+
+            if (points.at(p.X).find(p.Y) == points.at(p.X).end())
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        Point At(int x, int y)
+        {
+            if (Contains(Point{x, y}))
+            {
+                return points.at(x).at(y);
+            }
+
+            return Point{-1, -1};
+        }
+
+        void Insert(int x, int y, Point p)
+        {
+            if (points.find(x) == points.end())
+            {
+                // create the second map
+                points.insert({x, std::unordered_map<int, Point>()});
+            }
+
+            points.at(x).insert({y, p});
+        }
+    };
+
     Enemy::Enemy(Point position)
     {
         Log("constructing enemy");
@@ -187,14 +231,61 @@ namespace cm
     {
         // Ghosts move slowly, but converge on the player from anywhere on the map
 
-        // TODO: pathfinding algorithm
+        Path.clear();
 
+        // Breadth-first pathfinding algorithm
+
+        auto goal = world.GetPlayer()->Position;
         std::queue<Point> frontier;
-        std::unordered_map<Point, Point> cameFrom;
+        PointMap cameFrom;
 
         frontier.push(Position);
 
-        return std::make_unique<WaitAction>();
+        Point current;
+
+        while (!frontier.empty())
+        {
+            current = frontier.front();
+            frontier.pop();
+
+            if (current == goal)
+            {
+                break;
+            }
+
+            for (auto next : world.GetLevel()->GetNeighbors(current.X, current.Y))
+            {
+                if (next != nullptr && next->Walkable)
+                {
+                    auto p = Point{next->X, next->Y};
+                    if (!cameFrom.Contains(p))
+                    {
+                        frontier.push(p);
+                        cameFrom.Insert(p.X, p.Y, current);
+                    }
+                }
+            }
+        }
+
+        // we have a path to any point now, construct a path to the player
+
+        // TODO: handle paths blocked by other enemies, etc
+
+        while (current != Position)
+        {
+            Path.push_back(current);
+            current = cameFrom.At(current.X, current.Y);
+        }
+
+        if (Path.size() > 0)
+        {
+            auto firstMove = *(Path.end() - 1);
+            return std::make_unique<MoveAction>(firstMove, world);
+        }
+        else
+        {
+            return std::make_unique<WaitAction>();
+        }
     }
 
     Spider::Spider(Point position) : Enemy(position)
