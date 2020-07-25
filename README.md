@@ -6,7 +6,7 @@
 - [ ] Ten levels to descend with a final boss
 - [x] One generic randomized class
 - [x] Learn abilities from books
-- [ ] Three enemy types with distinct stats and AI behavior
+- [x] Three enemy types with distinct stats and AI behavior
 - [x] Five weapons
 - [x] Two shields
 - [x] Armor types: head, boots

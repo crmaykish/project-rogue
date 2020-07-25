@@ -196,6 +196,23 @@ namespace cm
 
     std::unique_ptr<Action> Spider::NextAction(GameWorld &world)
     {
+        // Spiders don't move, but they attack if you get too close
+        auto player = world.GetPlayer();
+        auto playerDistance = Distance(Position, player->Position);
+
+        if (playerDistance == 1)
+        {
+            // Set enemy's target to player
+            Target = player->Position;
+
+            auto abilityAction = std::make_unique<AbilityAction>(*this, 0, world);
+
+            if (Stats.Energy() >= abilityAction->EnergyCost())
+            {
+                return abilityAction;
+            }
+        }
+
         return std::make_unique<WaitAction>();
     }
 

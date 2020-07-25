@@ -11,6 +11,8 @@
 
 namespace cm
 {
+    const bool ShowPaths = false;
+
     GameWorld::GameWorld(UserInput &input) : Input(input) {}
 
     void GameWorld::Init()
@@ -257,13 +259,16 @@ namespace cm
         // Render selected tile
 
         // render actor paths
-        for (auto const &a : Actors)
+        if (ShowPaths)
         {
-            if (a->Path.size() > 0)
+            for (auto const &a : Actors)
             {
-                for (auto p : a->Path)
+                if (a->Path.size() > 0)
                 {
-                    renderer.DrawTexture(AssetKey::SelectedTileTexture, p.X * TileSize, p.Y * TileSize, TileSize, TileSize);
+                    for (auto p : a->Path)
+                    {
+                        renderer.DrawTexture(AssetKey::SelectedTileTexture, p.X * TileSize, p.Y * TileSize, TileSize, TileSize);
+                    }
                 }
             }
         }
