@@ -4,6 +4,7 @@
 #include "cm_logger.h"
 #include "cm_effect.h"
 #include "cm_random.h"
+#include "cm_enemy.h"
 
 namespace cm
 {
@@ -138,6 +139,22 @@ namespace cm
         {
             user.Position.X = tile->X;
             user.Position.Y = tile->Y;
+        }
+
+        return true;
+    }
+
+    bool SlimeSplitAbility::Use(Actor &user, GameWorld &world)
+    {
+        for (auto n : world.GetLevel()->GetNeighbors(user.Position.X, user.Position.Y))
+        {
+            if (n != nullptr)
+            {
+                if (n->Walkable && world.GetActor(n->X, n->Y) == nullptr)
+                {
+                    world.AddEnemy(std::make_unique<Slime>(Point{n->X, n->Y}));
+                }
+            }
         }
 
         return true;

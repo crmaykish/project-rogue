@@ -84,12 +84,18 @@ namespace cm
         Stats.SetStatBaseValue(ActorStatType::ViewDistance, 4);
 
         AbilitiesComp->SetAbility(0, std::make_unique<AttackAbility>());
+        AbilitiesComp->SetAbility(1, std::make_unique<SlimeSplitAbility>());
     }
 
     std::unique_ptr<Action> Slime::NextAction(GameWorld &world)
     {
         auto player = world.GetPlayer();
         auto playerDistance = Distance(Position, player->Position);
+
+        if (TurnsToSplit == 0)
+        {
+            return std::make_unique<AbilityAction>(*this, 1, world);
+        }
 
         if (playerDistance == 1)
         {
@@ -158,22 +164,6 @@ namespace cm
         if (SpottedPlayer)
         {
             TurnsToSplit--;
-        }
-
-        if (TurnsToSplit == 0)
-        {
-            world.LogEvent("Slime is splitting", Friendly);
-
-            for (auto n : world.GetLevel()->GetNeighbors(Position.X, Position.Y))
-            {
-                if (n != nullptr)
-                {
-                    if (n->Walkable && world.GetActor(n->X, n->Y) == nullptr)
-                    {
-                        world.AddEnemy(std::make_unique<Slime>(Point{n->X, n->Y}));
-                    }
-                }
-            }
         }
     }
 

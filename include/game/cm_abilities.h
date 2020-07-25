@@ -87,6 +87,16 @@ namespace cm
         bool Use(Actor &user, GameWorld &world) override;
     };
 
+    class SlimeSplitAbility : public Ability
+    {
+        std::string GetName() override { return "Split"; }
+        std::string GetDescription() override { return "Splits into two smaller slimes"; }
+        AssetKey GetIcon() override { return AssetKey::Unknown; };
+        bool IsSelfCast() override { return true; }
+        int EnergyCost() override { return 2; }
+        bool Use(Actor &user, GameWorld &world) override;
+    };
+
     std::unique_ptr<Ability> RandomAbility();
 
 } // namespace cm
