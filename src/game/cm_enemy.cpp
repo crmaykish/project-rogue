@@ -216,8 +216,53 @@ namespace cm
         return std::make_unique<WaitAction>();
     }
 
+    Balrog::Balrog(Point position) : Enemy(position)
+    {
+        Name = "Balrog";
+        Texture = AssetKey::BalrogTexture;
+
+        // Stats
+        Stats.SetStatBaseValue(ActorStatType::MaxHealth, RandomInt(500, 1000));
+        Stats.SetStatBaseValue(ActorStatType::Health, Stats.MaxHP());
+        Stats.SetStatBaseValue(ActorStatType::MaxEnergy, 10);
+        Stats.SetStatBaseValue(ActorStatType::Energy, 10);
+
+        AbilitiesComp->SetAbility(0, std::make_unique<AttackAbility>());
+    }
+
+    std::unique_ptr<Action> Balrog::NextAction(GameWorld &world)
+    {
+        Path = Pathfinder::Path(world, Position, world.GetPlayer()->Position);
+
+        if (Path.size() > 0)
+        {
+            return std::make_unique<MoveAction>(Path.at(0), world);
+        }
+        else
+        {
+            return std::make_unique<WaitAction>();
+        }
+    }
+
+    void Balrog::Render(const Renderer &renderer)
+    {
+        if (Active && Visible)
+        {
+            renderer.DrawTexture(Texture, Position.X * TileSize, Position.Y * TileSize, TileSize * 2, TileSize * 2);
+
+            renderer.DrawFont(std::to_string(Stats.HP()) + " / " + std::to_string(Stats.MaxHP()),
+                              AssetKey::UIFont,
+                              ColorWhite,
+                              (Position.X + 1) * TileSize,
+                              (Position.Y + 2) * TileSize,
+                              0.5);
+        }
+    }
+
     std::unique_ptr<Actor> RandomEnemy(Point position)
     {
+        // return std::make_unique<Balrog>(position);
+
         switch (RandomInt(3))
         {
         case 0:

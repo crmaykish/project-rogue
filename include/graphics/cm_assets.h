@@ -45,6 +45,7 @@ namespace cm
         SlimeTexture,
         MimicTexture,
         SquidTexture,
+        BalrogTexture,
         // Items
         HealthPotionTexture,
         EnergyPotionTexture,

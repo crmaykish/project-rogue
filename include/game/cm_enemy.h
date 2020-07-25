@@ -14,7 +14,7 @@ namespace cm
         virtual ~Enemy(){};
         virtual void Tick(GameWorld &world) override;
         void Update(GameWorld &world) override;
-        void Render(const Renderer &renderer) override;
+        virtual void Render(const Renderer &renderer) override;
         bool ActionReady() override;
     };
 
@@ -42,6 +42,14 @@ namespace cm
     public:
         Spider(Point position);
         std::unique_ptr<Action> NextAction(GameWorld &world) override;
+    };
+
+    class Balrog : public Enemy
+    {
+    public:
+        Balrog(Point position);
+        std::unique_ptr<Action> NextAction(GameWorld &world) override;
+        void Render(const Renderer &renderer) override;
     };
 
     std::unique_ptr<Actor> RandomEnemy(Point position);
