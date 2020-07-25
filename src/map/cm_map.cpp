@@ -158,7 +158,7 @@ namespace cm
 
                 // Draw fog overlay
                 renderer.DrawRectangle(t->X * TileSize, t->Y * TileSize, TileSize, TileSize,
-                                       Color{ColorBlack.red, ColorBlack.green, ColorBlack.blue, 0xFF - t->Brightness});
+                                       Color{ColorBlack.red, ColorBlack.green, ColorBlack.blue, static_cast<uint8_t>(TileBrightnessMax - t->Brightness)});
             }
         }
     }

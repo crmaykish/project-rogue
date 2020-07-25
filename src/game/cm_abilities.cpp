@@ -92,7 +92,7 @@ namespace cm
 
     bool HealAbility::Use(Actor &user, GameWorld &world)
     {
-        user.CombatComp->Heal({user.Stats.MaxHP() * 0.4, &user}, world);
+        user.CombatComp->Heal({static_cast<int>(user.Stats.MaxHP() * 0.4), &user}, world);
 
         return true;
     }
