@@ -6,54 +6,11 @@
 #include "cm_moveaction.h"
 #include "cm_abilityaction.h"
 #include "cm_waitaction.h"
+#include "cm_pathfinder.h"
 #include "cm_logger.h"
 
 namespace cm
 {
-
-    class PointMap
-    {
-    private:
-        std::unordered_map<int, std::unordered_map<int, Point>> points;
-
-    public:
-        bool Contains(Point p)
-        {
-            if (points.find(p.X) == points.end())
-            {
-                return false;
-            }
-
-            if (points.at(p.X).find(p.Y) == points.at(p.X).end())
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        Point At(int x, int y)
-        {
-            if (Contains(Point{x, y}))
-            {
-                return points.at(x).at(y);
-            }
-
-            return Point{-1, -1};
-        }
-
-        void Insert(int x, int y, Point p)
-        {
-            if (points.find(x) == points.end())
-            {
-                // create the second map
-                points.insert({x, std::unordered_map<int, Point>()});
-            }
-
-            points.at(x).insert({y, p});
-        }
-    };
-
     Enemy::Enemy(Point position)
     {
         Log("constructing enemy");
@@ -135,6 +92,8 @@ namespace cm
 
     std::unique_ptr<Action> Slime::NextAction(GameWorld &world)
     {
+        Path.clear();
+
         auto player = world.GetPlayer();
         auto playerDistance = Distance(Position, player->Position);
 
@@ -158,34 +117,13 @@ namespace cm
 
         else if (playerDistance <= Stats.ViewDistance() || Stats.HP() < Stats.MaxHP())
         {
-            // really bad pathfinding to player
-            auto diffX = player->Position.X - Position.X;
-            auto diffY = player->Position.Y - Position.Y;
+            // Attempt to move toward the player
+            // TODO: in theory, this path doesn't have to be updated until the player moves, tiny optimization
+            Path = Pathfinder::Path(world, Position, player->Position);
 
-            auto dir = MoveDirection::Unknown;
-
-            if (diffX > 0)
+            if (Path.size() > 0)
             {
-                dir = MoveDirection::Right;
-            }
-            else if (diffX < 0)
-            {
-                dir = MoveDirection::Left;
-            }
-            else if (diffY > 0)
-            {
-                dir = MoveDirection::Up;
-            }
-            else if (diffY < 0)
-            {
-                dir = MoveDirection::Down;
-            }
-
-            auto moveAction = std::make_unique<MoveAction>(dir, world);
-
-            if (Stats.Energy() >= moveAction->EnergyCost())
-            {
-                return moveAction;
+                return std::make_unique<MoveAction>(Path.at(0), world);
             }
         }
 
@@ -230,57 +168,11 @@ namespace cm
     std::unique_ptr<Action> Ghost::NextAction(GameWorld &world)
     {
         // Ghosts move slowly, but converge on the player from anywhere on the map
-
-        Path.clear();
-
-        // Breadth-first pathfinding algorithm
-
-        auto goal = world.GetPlayer()->Position;
-        std::queue<Point> frontier;
-        PointMap cameFrom;
-
-        frontier.push(Position);
-
-        Point current;
-
-        while (!frontier.empty())
-        {
-            current = frontier.front();
-            frontier.pop();
-
-            if (current == goal)
-            {
-                break;
-            }
-
-            for (auto next : world.GetLevel()->GetNeighbors(current.X, current.Y))
-            {
-                if (next != nullptr && next->Walkable)
-                {
-                    auto p = Point{next->X, next->Y};
-                    if (!cameFrom.Contains(p))
-                    {
-                        frontier.push(p);
-                        cameFrom.Insert(p.X, p.Y, current);
-                    }
-                }
-            }
-        }
-
-        // we have a path to any point now, construct a path to the player
-
-        // TODO: handle paths blocked by other enemies, etc
-
-        while (current != Position)
-        {
-            Path.push_back(current);
-            current = cameFrom.At(current.X, current.Y);
-        }
+        Path = Pathfinder::Path(world, Position, world.GetPlayer()->Position);
 
         if (Path.size() > 0)
         {
-            auto firstMove = *(Path.end() - 1);
-            return std::make_unique<MoveAction>(firstMove, world);
+            return std::make_unique<MoveAction>(Path.at(0), world);
         }
         else
         {
