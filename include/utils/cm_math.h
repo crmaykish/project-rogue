@@ -9,6 +9,11 @@ namespace cm
     {
         int X = 0;
         int Y = 0;
+
+        bool operator<(const Point &p) const
+        {
+            return (X < p.X && Y < p.Y);
+        }
     };
 
     int Distance(Point a, Point b);

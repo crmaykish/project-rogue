@@ -1,3 +1,5 @@
+#include <queue>
+#include <unordered_map>
 #include "cm_enemy.h"
 #include "cm_random.h"
 #include "cm_math.h"
@@ -173,16 +175,25 @@ namespace cm
         Texture = AssetKey::GhostTexture;
 
         // Stats
-        Stats.SetStatBaseValue(ActorStatType::MaxHealth, RandomInt(15, 20));
+        Stats.SetStatBaseValue(ActorStatType::MaxHealth, RandomInt(20, 26));
         Stats.SetStatBaseValue(ActorStatType::Health, Stats.MaxHP());
-        Stats.SetStatBaseValue(ActorStatType::MaxEnergy, 2);
-        Stats.SetStatBaseValue(ActorStatType::Energy, 2);
+        Stats.SetStatBaseValue(ActorStatType::MaxEnergy, 1);
+        Stats.SetStatBaseValue(ActorStatType::Energy, 1);
 
         AbilitiesComp->SetAbility(0, std::make_unique<AttackAbility>());
     }
 
     std::unique_ptr<Action> Ghost::NextAction(GameWorld &world)
     {
+        // Ghosts move slowly, but converge on the player from anywhere on the map
+
+        // TODO: pathfinding algorithm
+
+        std::queue<Point> frontier;
+        std::unordered_map<Point, Point> cameFrom;
+
+        frontier.push(Position);
+
         return std::make_unique<WaitAction>();
     }
 

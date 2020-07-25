@@ -14,7 +14,7 @@
 - [ ] Inventory management (show item stats, drop items, etc.)
 - [x] Melee or ranged attacks depending on the equipped weapon
 - [x] Pure SDL2 implementation (remove SDL2_gpu)
-- [ ] Game balancing - actor stats, loot drop rates, etc.
+- [ ] Game balancing - actor stats, loot drop rates, map parameters etc.
 
 ## v0.1 Stretch Goals
 [ ] Build a WASM version playable in the browser
@@ -22,7 +22,6 @@
 
 ## Bugs
  - Some combinations of item effects can cause stack overflows from a feedback loop
- - Game creation can loop forever adding effects
 
 ## Brainstorming
 - Tiles should have move-on effects that they apply to players. Then the players can update themselves rather than the tiles updating actors that are on them
