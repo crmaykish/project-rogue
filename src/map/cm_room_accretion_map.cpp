@@ -8,16 +8,16 @@
 namespace cm
 {
     // Generator options
-    static const int mapWidth = 40;
-    static const int mapHeight = 30;
-    static const int roomsCountMin = 20;
-    static const int roomsCountMax = 40;
+    static const int mapWidth = 24;
+    static const int mapHeight = 18;
+    static const int roomsCountMin = 10;
+    static const int roomsCountMax = 15;
     static const int roomSizeMin = 3;
-    static const int roomSizeMax = 6;
-    static const int chestMin = 1;
-    static const int chestMax = 3;
-    static const int enemyMin = 3;
-    static const int enemyMax = 6;
+    static const int roomSizeMax = 5;
+    static const int chestMin = 0;
+    static const int chestMax = 1;
+    static const int enemyMin = 6;
+    static const int enemyMax = 10;
     static const int floodChance = 20;
 
     struct Island
