@@ -186,7 +186,7 @@ namespace cm
             }
 
             // TODO: define value ranges in the builder
-            auto value = RandomInt(1, 5);
+            auto value = RandomInt(1, 3);
             // TODO: multiplier mods
             item->StatModifiers.emplace_back(ActorStatModifier(statMod, value, ActorStatModifierType::Add));
 
@@ -197,7 +197,7 @@ namespace cm
 
         if (builder.onAttackModifiers)
         {
-            if (RandomPercentCheck(50))
+            if (RandomPercentCheck(10))
             {
                 item->Effects.Add(EffectTrigger::Attack, RandomAttackEffect());
             }
@@ -205,7 +205,7 @@ namespace cm
 
         if (builder.onDefenseModifiers)
         {
-            if (RandomPercentCheck(50))
+            if (RandomPercentCheck(10))
             {
                 item->Effects.Add(EffectTrigger::Defend, RandomDefendEffect());
             }

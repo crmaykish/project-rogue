@@ -14,11 +14,11 @@ namespace cm
     static const int roomsCountMax = 40;
     static const int roomSizeMin = 3;
     static const int roomSizeMax = 6;
-    static const int chestMin = 20;
-    static const int chestMax = 20;
+    static const int chestMin = 1;
+    static const int chestMax = 3;
     static const int enemyMin = 3;
-    static const int enemyMax = 5;
-    static const int floodChance = 30;
+    static const int enemyMax = 6;
+    static const int floodChance = 20;
 
     struct Island
     {
@@ -239,7 +239,7 @@ namespace cm
         for (int i = 0; i < RandomInt(chestMin, chestMax); i++)
         {
             auto t = RandomTile(TileType::Floor);
-            int itemCount = RandomInt(1, 3);
+            int itemCount = RandomInt(1, 2);
 
             for (int j = 0; j < itemCount; j++)
             {
