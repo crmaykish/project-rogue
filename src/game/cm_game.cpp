@@ -6,6 +6,10 @@
 
 namespace cm
 {
+    int fogX = 0;
+    int fogY = 0;
+    int frames = 0;
+
     void Game::Init()
     {
         Log("Initializing game...", LOG_INFO);
@@ -96,6 +100,20 @@ namespace cm
             Running = false;
         }
 
+        // TODO: wrap this up in a rendering effects or post-processing class
+        if (frames == 4)
+        {
+            fogX--;
+
+            if (fogX == -256 * TileScaling)
+            {
+                fogX = 0;
+            }
+
+            frames = 0;
+        }
+        frames++;
+
         World->Update();
 
         SnapCameraToPlayer();
@@ -110,8 +128,34 @@ namespace cm
 
         MainRenderer->Prepare();
 
+        // Render background
+        int bgTileSize = 48 * TileScaling;
+        int col = 1 + (int)MainRenderer->GetResolutionX() / bgTileSize;
+        int row = (int)MainRenderer->GetResolutionY() / bgTileSize;
+
+        for (int i = 0; i < col; i++)
+        {
+            for (int j = 0; j < col; j++)
+            {
+                MainRenderer->DrawTexture(AssetKey::BackgroundTexture, bgTileSize * i, bgTileSize * j, bgTileSize, bgTileSize, true);
+            }
+        }
+
         // Render world objects
         World->Render(*MainRenderer);
+
+        // Render fog
+        int fogTileSize = 256 * TileScaling;
+        col = 2 + (int)MainRenderer->GetResolutionX() / fogTileSize;
+        row = 1 + (int)MainRenderer->GetResolutionY() / fogTileSize;
+
+        for (int i = 0; i < col; i++)
+        {
+            for (int j = 0; j < col; j++)
+            {
+                MainRenderer->DrawTexture(AssetKey::FogTexture, fogX + fogTileSize * i, fogTileSize * j, fogTileSize, fogTileSize, true);
+            }
+        }
 
         RenderUI();
 

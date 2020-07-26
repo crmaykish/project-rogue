@@ -17,6 +17,8 @@ namespace cm
     {
         // Misc
         Unknown,
+        BackgroundTexture,
+        FogTexture,
         // Fonts
         UIFont,
         // Interface

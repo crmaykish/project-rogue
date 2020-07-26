@@ -95,6 +95,13 @@ namespace cm
         case AssetKey::Unknown:
             assetFileName = "error.png";
             break;
+        case AssetKey::BackgroundTexture:
+            assetFileName = "background.png";
+            break;
+        case AssetKey::FogTexture:
+            assetFileName = "fog.png";
+            break;
+
         case AssetKey::UIFont:
             assetFileName = "EXEPixelPerfect.ttf";
             break;
