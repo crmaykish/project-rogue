@@ -42,6 +42,7 @@ namespace cm
         Point SelectedTile;
 
         int LevelNumber = 0;
+        int MaxLevelNumber = 10;
 
         std::unique_ptr<Map> Level;
 

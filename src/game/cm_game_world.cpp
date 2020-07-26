@@ -339,9 +339,18 @@ namespace cm
                                     [](auto &a) { return !a->Friendly; }),
                      Actors.end());
 
+        LevelNumber++;
+
         // Generate a new map
-        Level = std::make_unique<RoomAccretionMap>();
-        Level = std::make_unique<BossMap>();
+        if (LevelNumber == MaxLevelNumber)
+        {
+            Level = std::make_unique<BossMap>();
+        }
+        else
+        {
+            Level = std::make_unique<RoomAccretionMap>();
+        }
+
         Level->Generate();
 
         // Have the map generate NPCs and add them to the list of actors
@@ -351,8 +360,6 @@ namespace cm
         // Get player starting position
         PlayerOne->Position.X = Level->GetPlayerX();
         PlayerOne->Position.Y = Level->GetPlayerY();
-
-        LevelNumber++;
     }
 
     Actor *GameWorld::GetCurrentActor()
