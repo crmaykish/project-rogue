@@ -66,6 +66,7 @@ namespace cm
         // Default player abilities
         AbilitiesComp->SetAbility(0, std::make_unique<AttackAbility>());
         AbilitiesComp->SetAbility(1, std::make_unique<ChainLightningAbility>());
+        AbilitiesComp->SetAbility(2, std::make_unique<TeleportAbility>());
     }
 
     void Player::DecideNextAction(GameWorld &world)
