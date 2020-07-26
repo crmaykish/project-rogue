@@ -79,6 +79,7 @@ namespace cm
         CharmBlueTexture,
         CharmGreenTexture,
         HelmetSteelTexture,
+        BrazierTexture,
         
         // Icons
         MeleeIcon,

@@ -46,6 +46,9 @@ namespace cm
 
     class Balrog : public Enemy
     {
+    private:
+        bool Awake = false;
+
     public:
         Balrog(Point position);
         std::unique_ptr<Action> NextAction(GameWorld &world) override;

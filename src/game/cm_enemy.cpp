@@ -232,16 +232,25 @@ namespace cm
 
     std::unique_ptr<Action> Balrog::NextAction(GameWorld &world)
     {
-        Path = Pathfinder::Path(world, Position, world.GetPlayer()->Position);
+        auto player = world.GetPlayer();
+        auto playerDistance = Distance(Position, player->Position);
 
-        if (Path.size() > 0)
+        if (playerDistance < 3)
         {
-            return std::make_unique<MoveAction>(Path.at(0), world);
+            Awake = true;
         }
-        else
+
+        if (Awake)
         {
-            return std::make_unique<WaitAction>();
+            Path = Pathfinder::Path(world, Position, world.GetPlayer()->Position);
+
+            if (Path.size() > 0)
+            {
+                return std::make_unique<MoveAction>(Path.at(0), world);
+            }
         }
+
+        return std::make_unique<WaitAction>();
     }
 
     void Balrog::Render(const Renderer &renderer)
@@ -261,8 +270,6 @@ namespace cm
 
     std::unique_ptr<Actor> RandomEnemy(Point position)
     {
-        // return std::make_unique<Balrog>(position);
-
         switch (RandomInt(3))
         {
         case 0:

@@ -40,6 +40,8 @@ namespace cm
         int Flammability = 0;
         int OnFire = 0;
 
+        bool Brazier = false;
+
         // Flags
         bool Counted = false; // TODO: hack, remove this
         bool Discovered = !FogOfWar;

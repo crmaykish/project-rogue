@@ -9,7 +9,7 @@ namespace cm
 
     class RoomAccretionMap : public Map
     {
-    private:
+    protected:
         void BuildRoom(int x, int y, int width, int height);
         void BuildBridge(int x1, int y1, int x2, int y2);
 

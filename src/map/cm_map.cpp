@@ -141,6 +141,11 @@ namespace cm
                 {
                     renderer.DrawTexture(AssetKey::ChestTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
                 }
+
+                if (t->Brazier)
+                {
+                    renderer.DrawTexture(AssetKey::BrazierTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
+                }
             }
         }
     }

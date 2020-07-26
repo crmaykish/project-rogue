@@ -8,6 +8,7 @@
 #include "cm_item_builder.h"
 #include "cm_action.h"
 #include "cm_room_accretion_map.h"
+#include "cm_boss_map.h"
 
 namespace cm
 {
@@ -340,6 +341,7 @@ namespace cm
 
         // Generate a new map
         Level = std::make_unique<RoomAccretionMap>();
+        Level = std::make_unique<BossMap>();
         Level->Generate();
 
         // Have the map generate NPCs and add them to the list of actors
