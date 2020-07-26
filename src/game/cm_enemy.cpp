@@ -213,16 +213,7 @@ namespace cm
         auto player = world.GetPlayer();
         auto playerDistance = Distance(Position, player->Position);
 
-        if (playerDistance > 1 && playerDistance < 4)
-        {
-            auto poisonAura = std::make_unique<AbilityAction>(*this, 1, world);
-
-            if (Stats.Energy() >= poisonAura->EnergyCost())
-            {
-                return poisonAura;
-            }
-        }
-        else if (playerDistance == 1)
+        if (playerDistance == 1)
         {
             Target = player->Position;
 
@@ -231,6 +222,24 @@ namespace cm
             if (Stats.Energy() >= attack->EnergyCost())
             {
                 return attack;
+            }
+        }
+        else if (playerDistance < 3)
+        {
+            auto poisonAura = std::make_unique<AbilityAction>(*this, 1, world);
+
+            if (Stats.Energy() >= poisonAura->EnergyCost())
+            {
+                return poisonAura;
+            }
+        }
+        else if (playerDistance < 5)
+        {
+            Path = Pathfinder::Path(world, Position, world.GetPlayer()->Position);
+
+            if (Path.size() > 0)
+            {
+                return std::make_unique<MoveAction>(Path.at(0), world);
             }
         }
 

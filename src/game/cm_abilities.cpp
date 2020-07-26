@@ -162,7 +162,7 @@ namespace cm
 
     bool PoisonAuraAbility::Use(Actor &user, GameWorld &world)
     {
-        for (auto n : world.GetLevel()->GetNeighbors(user.Position.X, user.Position.Y))
+        for (auto n : world.GetLevel()->GetNeighbors(user.Position.X, user.Position.Y, true))
         {
             if (n != nullptr)
             {
