@@ -35,11 +35,13 @@ namespace cm
 
             return ActionResult(ActionStatus::Succeeded, executor.Name + " used " + itemName);
         }
-        else
+        else if (item->Type != ItemType::Quest)
         {
             // Try to equip the item instead
             return ActionResult(std::make_unique<EquipAction>(ItemSlot - 1));
         }
+
+        return ActionResult(ActionStatus::Invalid, "Cannot use " + itemName);
     }
 
 } // namespace cm
