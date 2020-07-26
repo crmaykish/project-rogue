@@ -84,6 +84,10 @@ namespace cm
         Stats.SetStatBaseValue(ActorStatType::Health, Stats.MaxHP());
         Stats.SetStatBaseValue(ActorStatType::MaxEnergy, 2);
         Stats.SetStatBaseValue(ActorStatType::Energy, 2);
+        Stats.SetStatBaseValue(ActorStatType::Vitality, 8);
+        Stats.SetStatBaseValue(ActorStatType::Strength, 10);
+        Stats.SetStatBaseValue(ActorStatType::Dexterity, 6);
+        Stats.SetStatBaseValue(ActorStatType::Intellect, 4);
         Stats.SetStatBaseValue(ActorStatType::ViewDistance, 4);
 
         AbilitiesComp->SetAbility(0, std::make_unique<AttackAbility>());
@@ -161,6 +165,10 @@ namespace cm
         Stats.SetStatBaseValue(ActorStatType::Health, Stats.MaxHP());
         Stats.SetStatBaseValue(ActorStatType::MaxEnergy, 1);
         Stats.SetStatBaseValue(ActorStatType::Energy, 1);
+        Stats.SetStatBaseValue(ActorStatType::Vitality, 12);
+        Stats.SetStatBaseValue(ActorStatType::Strength, 8);
+        Stats.SetStatBaseValue(ActorStatType::Dexterity, 4);
+        Stats.SetStatBaseValue(ActorStatType::Intellect, 12);
 
         AbilitiesComp->SetAbility(0, std::make_unique<AttackAbility>());
     }
@@ -190,6 +198,10 @@ namespace cm
         Stats.SetStatBaseValue(ActorStatType::Health, Stats.MaxHP());
         Stats.SetStatBaseValue(ActorStatType::MaxEnergy, 2);
         Stats.SetStatBaseValue(ActorStatType::Energy, 2);
+        Stats.SetStatBaseValue(ActorStatType::Vitality, 6);
+        Stats.SetStatBaseValue(ActorStatType::Strength, 6);
+        Stats.SetStatBaseValue(ActorStatType::Dexterity, 14);
+        Stats.SetStatBaseValue(ActorStatType::Intellect, 9);
 
         AbilitiesComp->SetAbility(0, std::make_unique<AttackAbility>());
     }

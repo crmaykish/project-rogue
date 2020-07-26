@@ -12,11 +12,6 @@ namespace cm
 {
     Player::Player(const UserInput &input) : Input(input)
     {
-        AbilitiesComp = std::make_unique<AbilitySet>();
-        EffectsComp = std::make_unique<EffectComponent>();
-        CombatComp = std::make_unique<Combat>(*this);
-        InventoryComp = std::make_unique<Inventory>(Stats, *EffectsComp);
-
         Reset();
     }
 
@@ -49,30 +44,26 @@ namespace cm
     {
         Name = "Colin";
 
+        Active = true;
+        Visible = true;
         Friendly = true;
 
-        Stats.SetStatBaseValue(ActorStatType::MaxHealth, 30);
+        Stats.SetStatBaseValue(ActorStatType::MaxHealth, 50);
         Stats.SetStatBaseValue(ActorStatType::Health, Stats.MaxHP());
         Stats.SetStatBaseValue(ActorStatType::MaxEnergy, 3);
         Stats.SetStatBaseValue(ActorStatType::Energy, 3);
-        Stats.SetStatBaseValue(ActorStatType::Vitality, RandomInt(18, 22));
-        Stats.SetStatBaseValue(ActorStatType::Strength, RandomInt(15, 18));
-        Stats.SetStatBaseValue(ActorStatType::Dexterity, RandomInt(8, 14));
-        Stats.SetStatBaseValue(ActorStatType::Intellect, RandomInt(5, 9));
+        Stats.SetStatBaseValue(ActorStatType::Vitality, RandomInt(10, 24));
+        Stats.SetStatBaseValue(ActorStatType::Strength, RandomInt(10, 24));
+        Stats.SetStatBaseValue(ActorStatType::Dexterity, RandomInt(10, 24));
+        Stats.SetStatBaseValue(ActorStatType::Intellect, RandomInt(10, 24));
         Stats.SetStatBaseValue(ActorStatType::ViewDistance, 4);
 
-        Active = true;
-        Visible = true;
+        AbilitiesComp = std::make_unique<AbilitySet>();
+        EffectsComp = std::make_unique<EffectComponent>();
+        CombatComp = std::make_unique<Combat>(*this);
+        InventoryComp = std::make_unique<Inventory>(Stats, *EffectsComp);
 
-        Level = 1;
-        Experience = 0;
-
-        InventoryComp->Reset();
-
-        // TODO reset effects (or just move all the make uniques into here)
-
-        // Add some player abilities
-        AbilitiesComp->Reset();
+        // Default player abilities
         AbilitiesComp->SetAbility(0, std::make_unique<AttackAbility>());
     }
 

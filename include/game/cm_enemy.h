@@ -22,7 +22,7 @@ namespace cm
     {
     private:
         bool SpottedPlayer = false;
-        int TurnsToSplit = 4;
+        int TurnsToSplit = 5;
 
     public:
         Slime(Point position);

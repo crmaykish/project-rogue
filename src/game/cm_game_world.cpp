@@ -210,6 +210,8 @@ namespace cm
             EventLogIndex = 1;
             EventLog.clear();
             LevelNumber = 0;
+            TurnNumber = 0;
+            ScrollingCombatText.clear();
             NextLevel = true;
             return;
         }
