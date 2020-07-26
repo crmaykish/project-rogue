@@ -219,6 +219,16 @@ namespace cm
         return item;
     }
 
+    std::unique_ptr<Item> BuildKey()
+    {
+        auto item = std::make_unique<Item>();
+        item->Name = "Key";
+        item->Description = "A shiny golden key";
+        item->Type = ItemType::Quest;
+        item->TextureKey = AssetKey::KeyTexture;
+        return item;
+    }
+
     std::shared_ptr<Effect> RandomAttackEffect()
     {
         auto r = RandomInt(4);

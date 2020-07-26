@@ -19,6 +19,7 @@ namespace cm
     static const int enemyMin = 6;
     static const int enemyMax = 10;
     static const int floodChance = 20;
+    static const int lockedDoorChance = 60;
 
     struct Island
     {
@@ -71,7 +72,14 @@ namespace cm
 
         PlaceTreasure();
 
-        PlaceExit();
+        auto lockedDoor = RandomPercentCheck(lockedDoorChance);
+        
+        PlaceExit(lockedDoor);
+
+        if (lockedDoor)
+        {
+            PlaceKey();
+        }
 
         PlacePlayer();
     }
@@ -219,10 +227,11 @@ namespace cm
         }
     }
 
-    void RoomAccretionMap::PlaceExit()
+    void RoomAccretionMap::PlaceExit(bool locked)
     {
         auto t = RandomTile(TileType::Floor);
         t->Type = TileType::Door;
+        t->DoorLocked = locked;
     }
 
     void RoomAccretionMap::PlacePlayer()
@@ -246,6 +255,12 @@ namespace cm
                 t->Items.emplace_back(BuildItem());
             }
         }
+    }
+
+    void RoomAccretionMap::PlaceKey()
+    {
+        auto t = RandomTile(TileType::Floor);
+        t->Items.emplace_back(BuildKey());
     }
 
     void RoomAccretionMap::FloodOpenAreas()

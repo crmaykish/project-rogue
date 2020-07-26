@@ -14,6 +14,7 @@ namespace cm
     enum struct ItemType
     {
         Consumable,
+        Quest,
         Head,
         Chest,
         Boots,

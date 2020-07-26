@@ -46,6 +46,7 @@ namespace cm
         bool Counted = false; // TODO: hack, remove this
         bool Discovered = !FogOfWar;
         bool Walkable = false;
+        bool DoorLocked = false;
 
         /**
          * @brief Tiles can store a collection of items that are shown as treasure chests for the player to collect

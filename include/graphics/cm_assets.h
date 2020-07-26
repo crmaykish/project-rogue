@@ -28,6 +28,7 @@ namespace cm
         WallTexture,
         WallCrackedTexture,
         DoorTexture,
+        DoorLockedTexture,
         TreeTexture,
         ChestTexture,
         WaterTexture,
@@ -80,6 +81,7 @@ namespace cm
         CharmGreenTexture,
         HelmetSteelTexture,
         BrazierTexture,
+        KeyTexture,
         
         // Icons
         MeleeIcon,

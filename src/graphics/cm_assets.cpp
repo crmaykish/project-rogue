@@ -123,6 +123,9 @@ namespace cm
         case AssetKey::DoorTexture:
             assetFileName = "door.png";
             break;
+        case AssetKey::DoorLockedTexture:
+            assetFileName = "door_locked.png";
+            break;
         case AssetKey::TreeTexture:
             assetFileName = "tree.png";
             break;
@@ -276,6 +279,9 @@ namespace cm
             break;
         case AssetKey::BrazierTexture:
             assetFileName = "brazier.png";
+            break;
+        case AssetKey::KeyTexture:
+            assetFileName = "key.png";
             break;
 
         // Icons

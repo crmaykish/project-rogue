@@ -117,7 +117,7 @@ namespace cm
                     textureKey = AssetKey::FloorTexture;
                     break;
                 case TileType::Door:
-                    textureKey = AssetKey::DoorTexture;
+                    textureKey = t->DoorLocked ? AssetKey::DoorLockedTexture : AssetKey::DoorTexture;
                     break;
                 case TileType::Water:
                     textureKey = AssetKey::WaterTexture;

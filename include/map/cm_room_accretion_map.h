@@ -16,9 +16,10 @@ namespace cm
         void RoundCorners();
         void RemoveUnknownTiles();
         void WrapWalls();
-        void PlaceExit();
+        void PlaceExit(bool locked);
         void PlacePlayer();
         void PlaceTreasure();
+        void PlaceKey();
         void FloodOpenAreas();
         std::vector<Island> FindIslands();
 
