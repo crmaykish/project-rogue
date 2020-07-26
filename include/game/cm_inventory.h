@@ -2,7 +2,7 @@
 #define CM_INVENTORY_H
 
 #include <memory>
-#include <unordered_map>
+#include <map>
 #include "cm_item.h"
 #include "cm_actor_stat.h"
 
@@ -20,7 +20,7 @@ namespace cm
         EffectComponent &OwnerEffects;
 
         std::array<std::unique_ptr<Item>, BeltSize> Items;
-        std::unordered_map<ItemType, std::unique_ptr<Item>> Equipment;
+        std::map<ItemType, std::unique_ptr<Item>> Equipment;
 
         int FirstOpenSlot();
 
@@ -37,6 +37,11 @@ namespace cm
         void EquipItem(int slot);
         void UnequipItem(ItemType type);
         Item *EquipmentAt(ItemType type);
+
+        std::map<ItemType, std::unique_ptr<Item>> &GetEquipment()
+        {
+            return Equipment;
+        }
 
         void Reset();
     };

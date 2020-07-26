@@ -245,35 +245,57 @@ namespace cm
 
         // Equipped items
 
-        int eqX = MainRenderer->GetResolutionX() - 10 - TileSize;
-        int eqY = MainRenderer->GetResolutionY() - TileSize * 2;
+        int eqX = MainRenderer->GetResolutionX() - 10 - TileSize - 100;
+        int eqY = MainRenderer->GetResolutionY() - TileSize * 2 - 64;
 
-        auto weapon = items->EquipmentAt(ItemType::OneHand);
-        if (weapon != nullptr)
+        auto &equipped = items->GetEquipment();
+        for (auto const &[type, equipment] : equipped)
         {
-            MainRenderer->DrawTexture(weapon->TextureKey, eqX, eqY, TileSize, TileSize, true);
-            eqY -= (TileSize + 8);
-        }
+            MainRenderer->DrawTexture(equipment->TextureKey, eqX, eqY, TileSize, TileSize, true);
+            eqY -= (TileSize / 2);
 
-        auto offhand = items->EquipmentAt(ItemType::OffHand);
-        if (offhand != nullptr)
-        {
-            MainRenderer->DrawTexture(offhand->TextureKey, eqX, eqY, TileSize, TileSize, true);
-            eqY -= (TileSize + 8);
-        }
+            for (auto &s : equipment->StatModifiers)
+            {
+                MainRenderer->DrawFont(StatNames[s.GetStatType()] + ": " + (s.GetModifierType() == ActorStatModifierType::Add ? "+" : "x") + std::to_string((int)s.GetValue()),
+                                       AssetKey::UIFont,
+                                       ColorYellow,
+                                       eqX,
+                                       eqY,
+                                       0.5,
+                                       true);
 
-        auto helm = items->EquipmentAt(ItemType::Head);
-        if (helm != nullptr)
-        {
-            MainRenderer->DrawTexture(helm->TextureKey, eqX, eqY, TileSize, TileSize, true);
-            eqY -= (TileSize + 8);
-        }
+                eqY -= TileSize / 2;
+            }
 
-        auto boots = items->EquipmentAt(ItemType::Boots);
-        if (boots != nullptr)
-        {
-            MainRenderer->DrawTexture(boots->TextureKey, eqX, eqY, TileSize, TileSize, true);
-            eqY -= (TileSize + 8);
+            for (auto const &[trigger, effects] : equipment->Effects.Effects)
+            {
+                std::string label = trigger == EffectTrigger::Attack ? "Hit: " : "Defend: ";
+
+                MainRenderer->DrawFont(label,
+                                       AssetKey::UIFont,
+                                       ColorWhite,
+                                       eqX,
+                                       eqY,
+                                       0.5,
+                                       true);
+
+                eqY -= TileSize / 2;
+
+                for (auto &ef : effects)
+                {
+                    MainRenderer->DrawFont(ef->GetName(),
+                                           AssetKey::UIFont,
+                                           ColorGreen,
+                                           eqX,
+                                           eqY,
+                                           0.5,
+                                           true);
+
+                    eqY -= TileSize / 2;
+                }
+            }
+
+            eqY -= TileSize / 2;
         }
 
         // Abilities

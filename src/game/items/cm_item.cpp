@@ -3,15 +3,6 @@
 
 namespace cm
 {
-    std::unordered_map<ActorStatType, std::string> StatPrefixes = {
-        {ActorStatType::MaxHealth, "Healthy"},
-        {ActorStatType::MaxEnergy, "Energetic"},
-        {ActorStatType::Vitality, "Vigorous"},
-        {ActorStatType::Strength, "Strong"},
-        {ActorStatType::Dexterity, "Agile"},
-        {ActorStatType::Intellect, "Wise"},
-    };
-
     std::string Item::DisplayName()
     {
         // TODO: cache this display name once it's generated, it will never change

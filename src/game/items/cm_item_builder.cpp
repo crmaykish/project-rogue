@@ -197,7 +197,7 @@ namespace cm
 
         if (builder.onAttackModifiers)
         {
-            if (RandomPercentCheck(10))
+            if (RandomPercentCheck(50))
             {
                 item->Effects.Add(EffectTrigger::Attack, RandomAttackEffect());
             }
@@ -205,7 +205,7 @@ namespace cm
 
         if (builder.onDefenseModifiers)
         {
-            if (RandomPercentCheck(10))
+            if (RandomPercentCheck(50))
             {
                 item->Effects.Add(EffectTrigger::Defend, RandomDefendEffect());
             }

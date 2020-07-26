@@ -21,6 +21,24 @@ namespace cm
         OffHand,
     };
 
+    static std::unordered_map<ActorStatType, std::string> StatNames = {
+        {ActorStatType::MaxHealth, "HP"},
+        {ActorStatType::MaxEnergy, "NRG"},
+        {ActorStatType::Vitality, "VIT"},
+        {ActorStatType::Strength, "STR"},
+        {ActorStatType::Dexterity, "AGI"},
+        {ActorStatType::Intellect, "INT"},
+    };
+
+    static std::unordered_map<ActorStatType, std::string> StatPrefixes = {
+        {ActorStatType::MaxHealth, "Healthy"},
+        {ActorStatType::MaxEnergy, "Energetic"},
+        {ActorStatType::Vitality, "Vigorous"},
+        {ActorStatType::Strength, "Strong"},
+        {ActorStatType::Dexterity, "Agile"},
+        {ActorStatType::Intellect, "Wise"},
+    };
+
     // TODO: Item stat modifiers, e.g. extra base damage/armor
 
     struct Item
@@ -30,7 +48,7 @@ namespace cm
         std::string Description;
         ItemType Type = ItemType::Consumable;
         AssetKey TextureKey;
-        int Range = 0;  // This is only applicable to weapons
+        int Range = 0; // This is only applicable to weapons
 
         // Flags
         bool PickedUp = false;
