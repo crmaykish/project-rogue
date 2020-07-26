@@ -19,6 +19,7 @@ namespace cm
         Unknown,
         BackgroundTexture,
         FogTexture,
+        ScanlinesTexture,
         // Fonts
         UIFont,
         // Interface

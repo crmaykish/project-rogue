@@ -159,6 +159,18 @@ namespace cm
 
         RenderUI();
 
+        // Render scanlines
+        col = 1 + (int)MainRenderer->GetResolutionX() / TileSize;
+        row = (int)MainRenderer->GetResolutionY() / TileSize;
+
+        for (int i = 0; i < col; i++)
+        {
+            for (int j = 0; j < col; j++)
+            {
+                MainRenderer->DrawTexture(AssetKey::ScanlinesTexture, TileSize * i, TileSize * j, TileSize, TileSize, true);
+            }
+        }
+
         MainRenderer->Render();
     }
 

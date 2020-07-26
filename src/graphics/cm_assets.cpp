@@ -101,6 +101,9 @@ namespace cm
         case AssetKey::FogTexture:
             assetFileName = "fog.png";
             break;
+            case AssetKey::ScanlinesTexture:
+            assetFileName = "scanlines.png";
+            break;
 
         case AssetKey::UIFont:
             assetFileName = "EXEPixelPerfect.ttf";
