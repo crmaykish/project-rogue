@@ -39,6 +39,7 @@ namespace cm
         uint8_t Brightness = FogOfWar ? TileBrightnessMin : TileBrightnessMax;
         int Flammability = 0;
         int OnFire = 0;
+        int Poison = 0;
 
         bool Brazier = false;
 

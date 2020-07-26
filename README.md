@@ -21,7 +21,7 @@
 [ ] Level completion rewards options
 
 ## Bugs
- - Some combinations of item effects can cause stack overflows from a feedback loop
+ - Some combinations of item effects can cause stack overflows from a feedback loop (lifesteal)
 
 ## Brainstorming
 - Tiles should have move-on effects that they apply to players. Then the players can update themselves rather than the tiles updating actors that are on them

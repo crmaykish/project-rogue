@@ -204,6 +204,7 @@ namespace cm
         Stats.SetStatBaseValue(ActorStatType::Intellect, 9);
 
         AbilitiesComp->SetAbility(0, std::make_unique<AttackAbility>());
+        AbilitiesComp->SetAbility(1, std::make_unique<PoisonAuraAbility>());
     }
 
     std::unique_ptr<Action> Spider::NextAction(GameWorld &world)
@@ -212,16 +213,24 @@ namespace cm
         auto player = world.GetPlayer();
         auto playerDistance = Distance(Position, player->Position);
 
-        if (playerDistance == 1)
+        if (playerDistance > 1 && playerDistance < 4)
         {
-            // Set enemy's target to player
+            auto poisonAura = std::make_unique<AbilityAction>(*this, 1, world);
+
+            if (Stats.Energy() >= poisonAura->EnergyCost())
+            {
+                return poisonAura;
+            }
+        }
+        else if (playerDistance == 1)
+        {
             Target = player->Position;
 
-            auto abilityAction = std::make_unique<AbilityAction>(*this, 0, world);
+            auto attack = std::make_unique<AbilityAction>(*this, 0, world);
 
-            if (Stats.Energy() >= abilityAction->EnergyCost())
+            if (Stats.Energy() >= attack->EnergyCost())
             {
-                return abilityAction;
+                return attack;
             }
         }
 

@@ -97,6 +97,16 @@ namespace cm
         bool Use(Actor &user, GameWorld &world) override;
     };
 
+    class PoisonAuraAbility : public Ability
+    {
+        std::string GetName() override { return "Poison Aura"; }
+        std::string GetDescription() override { return "Spread poison to a 1 tile radius"; }
+        AssetKey GetIcon() override { return AssetKey::Unknown; };
+        bool IsSelfCast() override { return true; }
+        int EnergyCost() override { return 2; }
+        bool Use(Actor &user, GameWorld &world) override;
+    };
+
     std::unique_ptr<Ability> RandomAbility();
 
 } // namespace cm

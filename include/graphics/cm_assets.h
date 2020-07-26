@@ -36,6 +36,7 @@ namespace cm
         WaterTexture,
         BridgeTexture,
         FireTexture,
+        PoisonTexture,
         // Actors
         KnightTexture,
         MageTexture,

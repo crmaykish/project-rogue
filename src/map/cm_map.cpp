@@ -94,6 +94,12 @@ namespace cm
             {
                 t->OnFire--;
             }
+
+            // Update poison
+            if (t->Poison > 0)
+            {
+                t->Poison--;
+            }
         }
     }
 
@@ -161,6 +167,11 @@ namespace cm
                 if (t->OnFire > 0)
                 {
                     renderer.DrawTexture(AssetKey::FireTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
+                }
+
+                if (t->Poison > 0)
+                {
+                    renderer.DrawTexture(AssetKey::PoisonTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
                 }
 
                 // Draw fog overlay

@@ -160,6 +160,22 @@ namespace cm
         return true;
     }
 
+    bool PoisonAuraAbility::Use(Actor &user, GameWorld &world)
+    {
+        for (auto n : world.GetLevel()->GetNeighbors(user.Position.X, user.Position.Y))
+        {
+            if (n != nullptr)
+            {
+                if (n->Walkable)
+                {
+                    n->Poison = 3;
+                }
+            }
+        }
+
+        return true;
+    }
+
     std::unique_ptr<Ability> RandomAbility()
     {
         int r = RandomInt(3);

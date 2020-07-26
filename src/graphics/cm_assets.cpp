@@ -148,6 +148,9 @@ namespace cm
         case AssetKey::FireTexture:
             assetFileName = "tile_fire.png";
             break;
+        case AssetKey::PoisonTexture:
+            assetFileName = "tile_poison.png";
+            break;
 
         // Actors
         case AssetKey::KnightTexture:
