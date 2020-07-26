@@ -38,6 +38,7 @@ namespace cm
         BridgeTexture,
         FireTexture,
         PoisonTexture,
+        LightningTexture,
         // Actors
         KnightTexture,
         MageTexture,

@@ -19,6 +19,11 @@ namespace cm
         {
             return !(*this == p);
         }
+
+        bool operator<(const Point &p) const
+        {
+            return (X < p.X) || (X == p.X && Y < p.Y);
+        }
     };
 
     int Distance(Point a, Point b);

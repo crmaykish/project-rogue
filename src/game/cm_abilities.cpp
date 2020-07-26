@@ -1,3 +1,4 @@
+#include <set>
 #include "cm_abilities.h"
 #include "cm_actor.h"
 #include "cm_game_world.h"
@@ -176,9 +177,58 @@ namespace cm
         return true;
     }
 
+    bool ChainLightningAbility::Use(Actor &user, GameWorld &world)
+    {
+        // TODO: this is really ugly
+
+        std::set<Point> hit;
+        bool done = false;
+
+        auto target = world.GetActor(user.Target.X, user.Target.Y);
+
+        while (!done && hit.size() < 3)
+        {
+            if (target != nullptr)
+            {
+                if (target->Friendly != user.Friendly)
+                {
+                    // Hit this target with lightning then pick a neighbor
+                    target->CombatComp->Damage({5, &user}, world);
+                    hit.insert(target->Position);
+
+                    // find a neighbor
+
+                    auto neighbors = world.GetLevel()->GetNeighbors(target->Position.X, target->Position.Y, false);
+
+                    for (auto n : neighbors)
+                    {
+                        target = world.GetActor(n->X, n->Y);
+
+                        if (target != nullptr)
+                        {
+                            if (hit.find(target->Position) == hit.end())
+                            {
+                                break;
+                            }
+                        }
+                    }
+
+                    // no valid neighbors found
+                    done = true;
+                }
+            }
+            else
+            {
+                done = true;
+            }
+        }
+
+        return true;
+    }
+
     std::unique_ptr<Ability> RandomAbility()
     {
-        int r = RandomInt(3);
+        int r = RandomInt(5);
 
         if (r == 0)
             return std::make_unique<HealAbility>();
@@ -186,6 +236,10 @@ namespace cm
             return std::make_unique<CleaveAbility>();
         else if (r == 2)
             return std::make_unique<TeleportAbility>();
+        else if (r == 3)
+            return std::make_unique<PoisonAuraAbility>();
+        else if (r == 4)
+            return std::make_unique<ChainLightningAbility>();
 
         return nullptr;
     }

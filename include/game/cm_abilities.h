@@ -107,6 +107,16 @@ namespace cm
         bool Use(Actor &user, GameWorld &world) override;
     };
 
+    class ChainLightningAbility : public Ability
+    {
+        std::string GetName() override { return "Chain Lightning"; }
+        std::string GetDescription() override { return "Shock a target and jump to the nearest target, up to 3 times"; }
+        AssetKey GetIcon() override { return AssetKey::LightningTexture; };
+        bool IsSelfCast() override { return false; }
+        int EnergyCost() override { return 3; }
+        bool Use(Actor &user, GameWorld &world) override;
+    };
+
     std::unique_ptr<Ability> RandomAbility();
 
 } // namespace cm

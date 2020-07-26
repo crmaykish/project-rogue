@@ -32,7 +32,7 @@
 - [x] Retaliation
 - [x] Life Steal
 - [ ] Chain Lightning
-- [ ] Poison Cloud
+- [x] Poison Cloud
 - [ ] Explosion (effect is working, damage over time/spreading fire is not)
 - [x] Sacrifice - damage self on use
 - [ ] Charm - convert target to friendly temporarily

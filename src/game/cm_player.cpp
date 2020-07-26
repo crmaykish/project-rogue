@@ -65,6 +65,7 @@ namespace cm
 
         // Default player abilities
         AbilitiesComp->SetAbility(0, std::make_unique<AttackAbility>());
+        AbilitiesComp->SetAbility(1, std::make_unique<ChainLightningAbility>());
     }
 
     void Player::DecideNextAction(GameWorld &world)

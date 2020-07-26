@@ -101,7 +101,7 @@ namespace cm
         case AssetKey::FogTexture:
             assetFileName = "fog.png";
             break;
-            case AssetKey::ScanlinesTexture:
+        case AssetKey::ScanlinesTexture:
             assetFileName = "scanlines.png";
             break;
 
@@ -153,6 +153,9 @@ namespace cm
             break;
         case AssetKey::PoisonTexture:
             assetFileName = "tile_poison.png";
+            break;
+        case AssetKey::LightningTexture:
+            assetFileName = "tile_lightning.png";
             break;
 
         // Actors
