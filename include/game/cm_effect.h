@@ -90,7 +90,22 @@ namespace cm
 
     class LearnAbilityEffect : public Effect
     {
+    public:
         std::string GetName() override { return "Skill"; }
+        void Use(Actor *source, Actor *target, GameWorld *world) override;
+    };
+
+    class PoisonAuraEffect : public Effect
+    {
+    public:
+        std::string GetName() override { return "Poison"; }
+        void Use(Actor *source, Actor *target, GameWorld *world) override;
+    };
+
+    class ChainLightningEffect : public Effect
+    {
+    public:
+        std::string GetName() override { return "Chain Lightning"; }
         void Use(Actor *source, Actor *target, GameWorld *world) override;
     };
 

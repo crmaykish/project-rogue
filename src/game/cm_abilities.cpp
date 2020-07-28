@@ -163,65 +163,23 @@ namespace cm
 
     bool PoisonAuraAbility::Use(Actor &user, GameWorld &world)
     {
-        for (auto n : world.GetLevel()->GetNeighbors(user.Position.X, user.Position.Y, true))
-        {
-            if (n != nullptr)
-            {
-                if (n->Walkable)
-                {
-                    n->Poison = 3;
-                }
-            }
-        }
+        auto effect = PoisonAuraEffect();
+        effect.Use(&user, nullptr, &world);
 
         return true;
     }
 
     bool ChainLightningAbility::Use(Actor &user, GameWorld &world)
     {
-        // TODO: this is really ugly
-
-        std::set<Point> hit;
-        bool done = false;
-
         auto target = world.GetActor(user.Target.X, user.Target.Y);
 
-        while (!done && hit.size() < 3)
+        if (target == nullptr)
         {
-            if (target != nullptr)
-            {
-                if (target->Friendly != user.Friendly)
-                {
-                    // Hit this target with lightning then pick a neighbor
-                    target->CombatComp->Damage({5, &user}, world);
-                    hit.insert(target->Position);
-
-                    // find a neighbor
-
-                    auto neighbors = world.GetLevel()->GetNeighbors(target->Position.X, target->Position.Y, false);
-
-                    for (auto n : neighbors)
-                    {
-                        target = world.GetActor(n->X, n->Y);
-
-                        if (target != nullptr)
-                        {
-                            if (hit.find(target->Position) == hit.end())
-                            {
-                                break;
-                            }
-                        }
-                    }
-
-                    // no valid neighbors found
-                    done = true;
-                }
-            }
-            else
-            {
-                done = true;
-            }
+            return false;
         }
+
+        auto effect = ChainLightningEffect();
+        effect.Use(&user, target, &world);
 
         return true;
     }
