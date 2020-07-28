@@ -9,8 +9,8 @@
 
 namespace cm
 {
-    const int MaxWidth = 1000;
-    const int MaxHeight = 1000;
+    const int MaxWidth = 100;
+    const int MaxHeight = 100;
     const int MaxTiles = MaxWidth * MaxHeight;
 
     class GameWorld;
@@ -23,15 +23,10 @@ namespace cm
         int PlayerX = 0;
         int PlayerY = 0;
 
-        // std::vector<std::unique_ptr<Tile>> Tiles;
         std::array<Tile, MaxTiles> Tiles;
 
         // TODO: i'm not sure this has made any difference in performance
-
-
         std::vector<Tile *> TilePointers;
-
-        // TODO: store a vector of pointers to active tiles. Is that faster than looping through the array and checking for active?
 
         // TODO: this should probably just be a lambda
         int CountNeighborTiles(Point position, TileType type);
@@ -53,6 +48,14 @@ namespace cm
         int GetPlayerY() const;
 
         Tile *GetTile(Point position);
+
+        /**
+         * @brief Return a list of non-null pointers to any neighboring tiles
+         * 
+         * @param position Point at which to find neighbors
+         * @param includeSelf Include the tile at position in the return vector
+         * @return std::vector<Tile *> A vector of pointers to neighboring tiles
+         */
         std::vector<Tile *> GetNeighbors(Point position, bool includeSelf = false);
     };
 

@@ -256,7 +256,7 @@ namespace cm
             if (CountNeighborTiles(t.Position, TileType::Floor) + CountNeighborTiles(t.Position, TileType::Water) == 8)
             {
                 int clear = true;
-                for (auto &s : GetNeighbors(t.Position))
+                for (auto s : GetNeighbors(t.Position))
                 {
                     if (CountNeighborTiles(s->Position, TileType::Floor) + CountNeighborTiles(s->Position, TileType::Water) < 5)
                     {

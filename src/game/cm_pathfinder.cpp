@@ -26,9 +26,11 @@ namespace cm
                 break;
             }
 
-            for (auto next : world.GetLevel()->GetNeighbors(current))
+            auto neighbors = world.GetLevel()->GetNeighbors(current);
+
+            for (auto next : neighbors)
             {
-                if (next != nullptr && next->Walkable)
+                if (next->Walkable)
                 {
                     auto p = next->Position;
                     if (!cameFrom.Contains(p.X, p.Y))

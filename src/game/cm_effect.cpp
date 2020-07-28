@@ -76,10 +76,7 @@ namespace cm
 
         for (auto t : neighbors)
         {
-            if (t != nullptr)
-            {
-                t->OnFire = t->Flammability;
-            }
+            t->OnFire = t->Flammability;
         }
     }
 
@@ -121,12 +118,9 @@ namespace cm
     {
         for (auto n : world->GetLevel()->GetNeighbors(source->Position, true))
         {
-            if (n != nullptr)
+            if (n->Walkable)
             {
-                if (n->Walkable)
-                {
-                    n->Poison = 3;
-                }
+                n->Poison = 3;
             }
         }
     }

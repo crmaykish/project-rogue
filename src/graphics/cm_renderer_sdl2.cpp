@@ -1,3 +1,4 @@
+#include <unordered_map>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
 #include "cm_renderer_sdl2.h"
@@ -6,6 +7,8 @@
 namespace cm
 {
     const std::string WINDOW_TITLE = "Project Rogue";
+
+    static std::unordered_map<AssetKey, SDL_Texture *> textureMap;
 
     SDL2Renderer::SDL2Renderer(Assets &assetManager) : AssetManager(assetManager) {}
 
@@ -101,6 +104,13 @@ namespace cm
     void SDL2Renderer::Close()
     {
         Log("Closing SDL GPU renderer...", LOG_INFO);
+
+        for (auto t : textureMap)
+        {
+            SDL_DestroyTexture(t.second);
+        }
+
+        textureMap.clear();
     }
 
     void SDL2Renderer::Prepare()
@@ -150,20 +160,34 @@ namespace cm
 
     void SDL2Renderer::DrawTexture(AssetKey textureKey, float x, float y, float w, float h, bool absolute) const
     {
-        auto image = AssetManager.GetTexture(textureKey);
+        SDL_Texture *texture = nullptr;
+
+        auto t = textureMap.find(textureKey);
+
+        if (t == textureMap.end())
+        {
+            auto image = AssetManager.GetTexture(textureKey);
+            texture = SDL_CreateTextureFromSurface(SDLRenderer, image);
+            textureMap.insert({textureKey, texture});
+        }
+        else
+        {
+            texture = t->second;
+        }
+
         auto r = TransformRect(x, y, w, h, absolute);
-        auto texture = SDL_CreateTextureFromSurface(SDLRenderer, image);
         SDL_RenderCopy(SDLRenderer, texture, nullptr, &r);
-        SDL_DestroyTexture(texture);
     }
 
     void SDL2Renderer::DrawFont(std::string text, AssetKey fontKey, Color color, float x, float y, float scale, bool absolute) const
     {
         SDL_Color fontColor = {color.red, color.green, color.blue, color.alpha};
 
+        // TODO: unchanging text elements could be cached instead of rebuilt every frame
+
         auto font = AssetManager.GetFont(fontKey);
-        auto *surface = TTF_RenderText_Blended(font, text.c_str(), fontColor);
-        auto *texture = SDL_CreateTextureFromSurface(SDLRenderer, surface);
+        auto surface = TTF_RenderText_Blended(font, text.c_str(), fontColor);
+        auto texture = SDL_CreateTextureFromSurface(SDLRenderer, surface);
 
         int w, h;
         SDL_QueryTexture(texture, nullptr, nullptr, &w, &h);

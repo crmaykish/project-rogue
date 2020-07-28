@@ -148,12 +148,9 @@ namespace cm
     {
         for (auto n : world.GetLevel()->GetNeighbors(user.Position))
         {
-            if (n != nullptr)
+            if (n->Walkable && world.GetActor(n->Position) == nullptr)
             {
-                if (n->Walkable && world.GetActor(n->Position) == nullptr)
-                {
-                    world.AddEnemy(std::make_unique<Slime>(n->Position));
-                }
+                world.AddEnemy(std::make_unique<Slime>(n->Position));
             }
         }
 

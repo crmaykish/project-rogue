@@ -19,23 +19,43 @@ namespace cm
     std::vector<Tile *> Map::GetNeighbors(Point position, bool includeSelf)
     {
         std::vector<Tile *> neighbors;
-        neighbors.reserve(9);
 
         if (includeSelf)
         {
             neighbors.push_back(GetTile(position));
         }
 
-        // TODO: don't return nulls here, just add real neighbors
+        auto bottomLeft = GetTile({position.X - 1, position.Y - 1});
+        if (bottomLeft != nullptr)
+            neighbors.push_back(bottomLeft);
 
-        neighbors.push_back(GetTile({position.X - 1, position.Y - 1}));
-        neighbors.push_back(GetTile({position.X - 1, position.Y}));
-        neighbors.push_back(GetTile({position.X - 1, position.Y + 1}));
-        neighbors.push_back(GetTile({position.X, position.Y - 1}));
-        neighbors.push_back(GetTile({position.X, position.Y + 1}));
-        neighbors.push_back(GetTile({position.X + 1, position.Y - 1}));
-        neighbors.push_back(GetTile({position.X + 1, position.Y}));
-        neighbors.push_back(GetTile({position.X + 1, position.Y + 1}));
+        auto left = GetTile({position.X - 1, position.Y});
+        if (left != nullptr)
+            neighbors.push_back(left);
+
+        auto topLeft = GetTile({position.X - 1, position.Y + 1});
+        if (topLeft != nullptr)
+            neighbors.push_back(topLeft);
+
+        auto bottom = GetTile({position.X, position.Y - 1});
+        if (bottom != nullptr)
+            neighbors.push_back(bottom);
+
+        auto top = GetTile({position.X, position.Y + 1});
+        if (top != nullptr)
+            neighbors.push_back(top);
+
+        auto bottomRight = GetTile({position.X + 1, position.Y - 1});
+        if (bottomRight != nullptr)
+            neighbors.push_back(bottomRight);
+
+        auto right = GetTile({position.X + 1, position.Y});
+        if (right != nullptr)
+            neighbors.push_back(right);
+
+        auto topRight = GetTile({position.X + 1, position.Y + 1});
+        if (topRight != nullptr)
+            neighbors.push_back(topRight);
 
         return neighbors;
     }
