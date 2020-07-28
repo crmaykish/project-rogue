@@ -6,7 +6,7 @@ namespace cm
 
     ActionResult ExitLevelAction::Execute(Actor &executor)
     {
-        auto door = World.GetLevel()->GetTile(executor.Position.X, executor.Position.Y);
+        auto door = World.GetLevel()->GetTile(executor.Position);
 
         if (door->Type != TileType::Door)
         {

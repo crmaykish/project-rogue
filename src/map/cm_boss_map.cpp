@@ -11,15 +11,14 @@ namespace cm
 
         BuildRoom(1, 1, Width - 2, Height - 2);
         RoundCorners();
-        RemoveUnknownTiles();
         WrapWalls();
 
         for (int i = 2; i < Height - 2; i += 3)
         {
-            GetTile(Width / 2 - 3, i)->Brazier = true;
-            GetTile(Width / 2 - 3, i)->Walkable = false;
-            GetTile(Width / 2 + 3, i)->Brazier = true;
-            GetTile(Width / 2 + 3, i)->Walkable = false;
+            GetTile({Width / 2 - 3, i})->Brazier = true;
+            GetTile({Width / 2 - 3, i})->Walkable = false;
+            GetTile({Width / 2 + 3, i})->Brazier = true;
+            GetTile({Width / 2 + 3, i})->Walkable = false;
         }
 
         PlayerX = Width / 2;

@@ -26,11 +26,11 @@ namespace cm
                 break;
             }
 
-            for (auto next : world.GetLevel()->GetNeighbors(current.X, current.Y))
+            for (auto next : world.GetLevel()->GetNeighbors(current))
             {
                 if (next != nullptr && next->Walkable)
                 {
-                    auto p = Point{next->X, next->Y};
+                    auto p = next->Position;
                     if (!cameFrom.Contains(p.X, p.Y))
                     {
                         frontier.push(p);

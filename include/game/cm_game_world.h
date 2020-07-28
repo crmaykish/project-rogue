@@ -72,7 +72,7 @@ namespace cm
         void Render(Renderer &renderer);
 
         void AddPlayer(std::shared_ptr<Actor> player);
-        Actor *GetActor(int x, int y) const;
+        Actor *GetActor(Point position) const;
         Actor *GetPlayer() const;
 
         void SetNextLevel();

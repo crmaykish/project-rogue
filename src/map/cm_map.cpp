@@ -3,53 +3,47 @@
 
 namespace cm
 {
-    // TODO: I think this function is a huge bottleneck
-    // Switch to a PointMap for storing tiles? Makes iterating slightly harder, but looks up are way faster
-    Tile *Map::GetTile(int x, int y) const
+    Tile *Map::GetTile(Point position)
     {
-        if (x < 0 || x >= Width || y < 0 || y >= Height)
+        if (position.X < 0 ||
+            position.Y < 0 ||
+            position.X >= Width ||
+            position.Y >= Height)
         {
             return nullptr;
         }
 
-        for (auto const &t : Tiles)
-        {
-            if (t->X == x && t->Y == y)
-            {
-                return t.get();
-            }
-        }
-
-        return nullptr;
+        return &Tiles.at((Width * position.X) + position.Y);
     }
 
-    std::vector<Tile *> Map::GetNeighbors(int x, int y, bool includeSelf) const
+    std::vector<Tile *> Map::GetNeighbors(Point position, bool includeSelf)
     {
         std::vector<Tile *> neighbors;
-
-        // TODO: This is amazingly inefficient
+        neighbors.reserve(9);
 
         if (includeSelf)
         {
-            neighbors.push_back(GetTile(x, y));
+            neighbors.push_back(GetTile(position));
         }
 
-        neighbors.push_back(GetTile(x - 1, y - 1));
-        neighbors.push_back(GetTile(x - 1, y));
-        neighbors.push_back(GetTile(x - 1, y + 1));
-        neighbors.push_back(GetTile(x, y - 1));
-        neighbors.push_back(GetTile(x, y + 1));
-        neighbors.push_back(GetTile(x + 1, y - 1));
-        neighbors.push_back(GetTile(x + 1, y));
-        neighbors.push_back(GetTile(x + 1, y + 1));
+        // TODO: don't return nulls here, just add real neighbors
+
+        neighbors.push_back(GetTile({position.X - 1, position.Y - 1}));
+        neighbors.push_back(GetTile({position.X - 1, position.Y}));
+        neighbors.push_back(GetTile({position.X - 1, position.Y + 1}));
+        neighbors.push_back(GetTile({position.X, position.Y - 1}));
+        neighbors.push_back(GetTile({position.X, position.Y + 1}));
+        neighbors.push_back(GetTile({position.X + 1, position.Y - 1}));
+        neighbors.push_back(GetTile({position.X + 1, position.Y}));
+        neighbors.push_back(GetTile({position.X + 1, position.Y + 1}));
 
         return neighbors;
     }
 
-    int Map::CountNeighborTiles(int x, int y, TileType type)
+    int Map::CountNeighborTiles(Point position, TileType type)
     {
         int neighbors = 0;
-        for (auto a : GetNeighbors(x, y))
+        for (auto a : GetNeighbors(position))
         {
             if (a != nullptr)
             {
@@ -65,12 +59,12 @@ namespace cm
     void Map::Update(GameWorld &world)
     {
         // TODO: this doesn't need to run at the full framerate. only when something moves
-        for (auto &t : Tiles)
+        for (auto t : TilePointers)
         {
             if (FogOfWar)
             {
                 // Distance to player
-                auto dist = Distance({t->X, t->Y}, world.GetPlayer()->Position);
+                auto dist = Distance(t->Position, world.GetPlayer()->Position);
 
                 if (dist <= world.GetPlayer()->Stats.ViewDistance())
                 {
@@ -87,7 +81,7 @@ namespace cm
 
     void Map::Tick(GameWorld &world)
     {
-        for (auto &t : Tiles)
+        for (auto t : TilePointers)
         {
             // Update fire
             if (t->OnFire > 0)
@@ -106,7 +100,7 @@ namespace cm
     void Map::Render(Renderer &renderer) const
     {
         // Render world tiles
-        for (auto &t : Tiles)
+        for (auto t : TilePointers)
         {
             if (t->Discovered)
             {
@@ -136,21 +130,21 @@ namespace cm
                 }
 
                 // Draw the tile
-                renderer.DrawTexture(textureKey, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
+                renderer.DrawTexture(textureKey, t->Position.X * TileSize, t->Position.Y * TileSize, TileSize, TileSize);
 
                 // Draw items or a chest if the tile contains any
                 if (t->Items.size() == 1)
                 {
-                    renderer.DrawTexture(t->Items.at(0)->TextureKey, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
+                    renderer.DrawTexture(t->Items.at(0)->TextureKey, t->Position.X * TileSize, t->Position.Y * TileSize, TileSize, TileSize);
                 }
                 else if (t->Items.size() > 1)
                 {
-                    renderer.DrawTexture(AssetKey::ChestTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
+                    renderer.DrawTexture(AssetKey::ChestTexture, t->Position.X * TileSize, t->Position.Y * TileSize, TileSize, TileSize);
                 }
 
                 if (t->Brazier)
                 {
-                    renderer.DrawTexture(AssetKey::BrazierTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
+                    renderer.DrawTexture(AssetKey::BrazierTexture, t->Position.X * TileSize, t->Position.Y * TileSize, TileSize, TileSize);
                 }
             }
         }
@@ -159,23 +153,23 @@ namespace cm
     void Map::RenderPost(Renderer &renderer) const
     {
         // Render world tiles
-        for (auto &t : Tiles)
+        for (auto t : TilePointers)
         {
             if (t->Discovered)
             {
                 // Draw tile effects
                 if (t->OnFire > 0)
                 {
-                    renderer.DrawTexture(AssetKey::FireTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
+                    renderer.DrawTexture(AssetKey::FireTexture, t->Position.X * TileSize, t->Position.Y * TileSize, TileSize, TileSize);
                 }
 
                 if (t->Poison > 0)
                 {
-                    renderer.DrawTexture(AssetKey::PoisonTexture, t->X * TileSize, t->Y * TileSize, TileSize, TileSize);
+                    renderer.DrawTexture(AssetKey::PoisonTexture, t->Position.X * TileSize, t->Position.Y * TileSize, TileSize, TileSize);
                 }
 
                 // Draw fog overlay
-                renderer.DrawRectangle(t->X * TileSize, t->Y * TileSize, TileSize, TileSize,
+                renderer.DrawRectangle(t->Position.X * TileSize, t->Position.Y * TileSize, TileSize, TileSize,
                                        Color{ColorBlack.red, ColorBlack.green, ColorBlack.blue, static_cast<uint8_t>(TileBrightnessMax - t->Brightness)});
             }
         }

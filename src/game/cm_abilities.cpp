@@ -57,7 +57,7 @@ namespace cm
 
     bool AttackAbility::Use(Actor &user, GameWorld &world)
     {
-        auto target = world.GetActor(user.Target.X, user.Target.Y);
+        auto target = world.GetActor(user.Target);
 
         if (target == nullptr)
         {
@@ -101,11 +101,11 @@ namespace cm
     bool CleaveAbility::Use(Actor &user, GameWorld &world)
     {
         // Damage all targets within one tile of the user
-        auto neighbors = world.GetLevel()->GetNeighbors(user.Position.X, user.Position.Y);
+        auto neighbors = world.GetLevel()->GetNeighbors(user.Position);
 
         for (auto n : neighbors)
         {
-            auto enemy = world.GetActor(n->X, n->Y);
+            auto enemy = world.GetActor(n->Position);
 
             if (enemy != nullptr && !enemy->Friendly)
             {
@@ -124,22 +124,21 @@ namespace cm
 
     bool TeleportAbility::Use(Actor &user, GameWorld &world)
     {
-        auto tile = world.GetLevel()->GetTile(user.Target.X, user.Target.Y);
+        auto tile = world.GetLevel()->GetTile(user.Target);
 
-        if (world.GetActor(tile->X, tile->Y) != nullptr)
+        if (world.GetActor(tile->Position) != nullptr)
         {
             return false;
         }
 
-        if (Distance(user.Position, {tile->X, tile->Y}) > 4)
+        if (Distance(user.Position, tile->Position) > 4)
         {
             return false;
         }
 
         if (tile->Walkable)
         {
-            user.Position.X = tile->X;
-            user.Position.Y = tile->Y;
+            user.Position = tile->Position;
         }
 
         return true;
@@ -147,13 +146,13 @@ namespace cm
 
     bool SlimeSplitAbility::Use(Actor &user, GameWorld &world)
     {
-        for (auto n : world.GetLevel()->GetNeighbors(user.Position.X, user.Position.Y))
+        for (auto n : world.GetLevel()->GetNeighbors(user.Position))
         {
             if (n != nullptr)
             {
-                if (n->Walkable && world.GetActor(n->X, n->Y) == nullptr)
+                if (n->Walkable && world.GetActor(n->Position) == nullptr)
                 {
-                    world.AddEnemy(std::make_unique<Slime>(Point{n->X, n->Y}));
+                    world.AddEnemy(std::make_unique<Slime>(n->Position));
                 }
             }
         }
@@ -171,7 +170,7 @@ namespace cm
 
     bool ChainLightningAbility::Use(Actor &user, GameWorld &world)
     {
-        auto target = world.GetActor(user.Target.X, user.Target.Y);
+        auto target = world.GetActor(user.Target);
 
         if (target == nullptr)
         {

@@ -9,6 +9,10 @@
 
 namespace cm
 {
+    const int MaxWidth = 1000;
+    const int MaxHeight = 1000;
+    const int MaxTiles = MaxWidth * MaxHeight;
+
     class GameWorld;
 
     class Map
@@ -19,10 +23,18 @@ namespace cm
         int PlayerX = 0;
         int PlayerY = 0;
 
-        std::vector<std::unique_ptr<Tile>> Tiles;
+        // std::vector<std::unique_ptr<Tile>> Tiles;
+        std::array<Tile, MaxTiles> Tiles;
+
+        // TODO: i'm not sure this has made any difference in performance
+
+
+        std::vector<Tile *> TilePointers;
+
+        // TODO: store a vector of pointers to active tiles. Is that faster than looping through the array and checking for active?
 
         // TODO: this should probably just be a lambda
-        int CountNeighborTiles(int x, int y, TileType type);
+        int CountNeighborTiles(Point position, TileType type);
 
     public:
         virtual ~Map() {}
@@ -40,8 +52,8 @@ namespace cm
         int GetPlayerX() const;
         int GetPlayerY() const;
 
-        Tile *GetTile(int x, int y) const;
-        std::vector<Tile *> GetNeighbors(int x, int y, bool includeSelf = false) const;
+        Tile *GetTile(Point position);
+        std::vector<Tile *> GetNeighbors(Point position, bool includeSelf = false);
     };
 
 } // namespace cm

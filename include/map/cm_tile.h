@@ -2,6 +2,7 @@
 #define CM_TILE_H
 
 #include "cm_item.h"
+#include "cm_math.h"
 
 namespace cm
 {
@@ -31,8 +32,7 @@ namespace cm
     struct Tile
     {
         // Details
-        int X = 0;
-        int Y = 0;
+        Point Position;
         TileType Type = TileType::Unknown;
 
         // State
@@ -57,10 +57,10 @@ namespace cm
         void SetFire(int fire);
     };
 
-    std::unique_ptr<Tile> CreateFloorTile(int x, int y);
-    std::unique_ptr<Tile> CreateWallTile(int x, int y);
-    std::unique_ptr<Tile> CreateBridgeTile(int x, int y);
-    std::unique_ptr<Tile> CreateWaterTile(int x, int y);
+    Tile CreateFloorTile(int x, int y);
+    Tile CreateWallTile(int x, int y);
+    Tile CreateBridgeTile(int x, int y);
+    Tile CreateWaterTile(int x, int y);
 
 } // namespace cm
 

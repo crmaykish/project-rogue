@@ -45,7 +45,7 @@ namespace cm
             executor.Target = Destination;
         }
 
-        auto targetTile = World.GetLevel()->GetTile(executor.Target.X, executor.Target.Y);
+        auto targetTile = World.GetLevel()->GetTile(executor.Target);
 
         // Is there a tile in the move direction?
         if (targetTile == nullptr)
@@ -54,7 +54,7 @@ namespace cm
         }
 
         // Is there another actor on the tile?
-        auto actor = World.GetActor(targetTile->X, targetTile->Y);
+        auto actor = World.GetActor(targetTile->Position);
 
         if (actor != nullptr)
         {

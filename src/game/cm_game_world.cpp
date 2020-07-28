@@ -230,7 +230,7 @@ namespace cm
                 // Drop loot
                 if (RandomInt(100) < 20)
                 {
-                    Level->GetTile(a->Position.X, a->Position.Y)->Items.emplace_back(BuildItem());
+                    Level->GetTile(a->Position)->Items.emplace_back(BuildItem());
                 }
             }
         }
@@ -315,11 +315,11 @@ namespace cm
         Actors.push_back(player);
     }
 
-    Actor *GameWorld::GetActor(int x, int y) const
+    Actor *GameWorld::GetActor(Point position) const
     {
         for (auto const &a : Actors)
         {
-            if (a->Active && a->Position.X == x && a->Position.Y == y)
+            if (a->Active && a->Position == position)
             {
                 return a.get();
             }

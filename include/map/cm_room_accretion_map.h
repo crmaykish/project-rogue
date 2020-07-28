@@ -14,7 +14,6 @@ namespace cm
         void BuildBridge(int x1, int y1, int x2, int y2);
 
         void RoundCorners();
-        void RemoveUnknownTiles();
         void WrapWalls();
         void PlaceExit(bool locked);
         void PlacePlayer();
@@ -26,7 +25,7 @@ namespace cm
         /**
          * @brief Count the number of tiles connected to the tile at [x, y]
          */
-        int FloodFill(int x, int y);
+        int FloodFill(Point position);
 
         /**
          * @brief Return a random tile of the given type or nullptr if no tile is found of that type

@@ -7,7 +7,7 @@ namespace cm
 
     ActionResult PickupAction::Execute(Actor &executor)
     {
-        auto tile = World.GetLevel()->GetTile(executor.Position.X, executor.Position.Y);
+        auto tile = World.GetLevel()->GetTile(executor.Position);
 
         if (tile->Type == TileType::Door)
         {

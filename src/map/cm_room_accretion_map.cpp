@@ -47,8 +47,6 @@ namespace cm
 
         RoundCorners();
 
-        RemoveUnknownTiles();
-
         auto islands = FindIslands();
 
         for (auto i = 0; i < islands.size() - 1; i++)
@@ -73,7 +71,7 @@ namespace cm
         PlaceTreasure();
 
         auto lockedDoor = RandomPercentCheck(lockedDoorChance);
-        
+
         PlaceExit(lockedDoor);
 
         if (lockedDoor)
@@ -82,6 +80,14 @@ namespace cm
         }
 
         PlacePlayer();
+
+        for (auto &t : Tiles)
+        {
+            if (t.Type != TileType::Unknown)
+            {
+                TilePointers.push_back(&t);
+            }
+        }
     }
 
     std::vector<std::unique_ptr<Actor>> RoomAccretionMap::SpawnNPCs(int playerLevel)
@@ -93,7 +99,7 @@ namespace cm
         for (int i = 0; i < RandomInt(enemyMin, enemyMax); i++)
         {
             auto t = RandomTile(TileType::Floor);
-            npcs.emplace_back(RandomEnemy({t->X, t->Y}));
+            npcs.emplace_back(RandomEnemy(t->Position));
         }
 
         return npcs;
@@ -105,13 +111,8 @@ namespace cm
         {
             for (int j = 0; j < height; j++)
             {
-                auto t = CreateFloorTile(x + i, y + j);
-
-                // if tile does not already exist in the map, add it
-                if (GetTile(t->X, t->Y) == nullptr)
-                {
-                    Tiles.push_back(std::move(t));
-                }
+                auto tile = GetTile({x + i, y + j});
+                *tile = CreateFloorTile(x + i, y + j);
             }
         }
     }
@@ -136,11 +137,8 @@ namespace cm
                 x -= j;
             }
 
-            // add walkable tile if it doesn't exist
-            if (GetTile(x, y) == nullptr)
-            {
-                Tiles.emplace_back(CreateBridgeTile(x, y));
-            }
+            auto tile = GetTile({x, y});
+            *tile = CreateBridgeTile(x, y);
         }
 
         // build vertical corridor
@@ -158,11 +156,8 @@ namespace cm
                 y -= j;
             }
 
-            // add walkable tile if it doesn't exist
-            if (GetTile(x, y) == nullptr)
-            {
-                Tiles.emplace_back(CreateBridgeTile(x, y));
-            }
+            auto tile = GetTile({x, y});
+            *tile = CreateBridgeTile(x, y);
         }
     }
 
@@ -175,20 +170,12 @@ namespace cm
         {
             for (auto &t : Tiles)
             {
-                if (CountNeighborTiles(t->X, t->Y, TileType::Floor) <= 3)
+                if (CountNeighborTiles(t.Position, TileType::Floor) <= 3)
                 {
-                    t->Type = TileType::Unknown;
+                    t.Type = TileType::Unknown;
                 }
             }
         }
-    }
-
-    void RoomAccretionMap::RemoveUnknownTiles()
-    {
-        Tiles.erase(std::remove_if(Tiles.begin(),
-                                   Tiles.end(),
-                                   [](auto &t) { return t->Type == TileType::Unknown; }),
-                    Tiles.end());
     }
 
     std::vector<Island> RoomAccretionMap::FindIslands()
@@ -197,14 +184,13 @@ namespace cm
 
         for (auto &a : Tiles)
         {
-            if (a->Type == TileType::Floor)
+            if (a.Type == TileType::Floor)
             {
-
-                int islandSize = FloodFill(a->X, a->Y);
+                int islandSize = FloodFill(a.Position);
 
                 if (islandSize > 0)
                 {
-                    islands.emplace_back(Island{a->X, a->Y, islandSize});
+                    islands.emplace_back(Island{a.Position.X, a.Position.Y, islandSize});
                 }
             }
         }
@@ -218,10 +204,10 @@ namespace cm
         {
             for (int j = 0; j < Height; j++)
             {
-
-                if (GetTile(i, j) == nullptr && CountNeighborTiles(i, j, TileType::Floor) > 0)
+                if (GetTile({i, j})->Type == TileType::Unknown && CountNeighborTiles({i, j}, TileType::Floor) > 0)
                 {
-                    Tiles.emplace_back(CreateWallTile(i, j));
+                    auto tile = GetTile({i, j});
+                    *tile = CreateWallTile(i, j);
                 }
             }
         }
@@ -238,8 +224,8 @@ namespace cm
     {
         // Place the player on a random empty tile
         auto t = RandomTile(TileType::Floor);
-        PlayerX = t->X;
-        PlayerY = t->Y;
+        PlayerX = t->Position.X;
+        PlayerY = t->Position.Y;
     }
 
     void RoomAccretionMap::PlaceTreasure()
@@ -267,29 +253,27 @@ namespace cm
     {
         for (auto &t : Tiles)
         {
-            if (CountNeighborTiles(t->X, t->Y, TileType::Floor) + CountNeighborTiles(t->X, t->Y, TileType::Water) == 8)
+            if (CountNeighborTiles(t.Position, TileType::Floor) + CountNeighborTiles(t.Position, TileType::Water) == 8)
             {
                 int clear = true;
-                for (auto &s : GetNeighbors(t->X, t->Y))
+                for (auto &s : GetNeighbors(t.Position))
                 {
-                    if (CountNeighborTiles(s->X, s->Y, TileType::Floor) + CountNeighborTiles(s->X, s->Y, TileType::Water) < 5)
+                    if (CountNeighborTiles(s->Position, TileType::Floor) + CountNeighborTiles(s->Position, TileType::Water) < 5)
                     {
                         clear = false;
                     }
                 }
                 if (clear)
                 {
-                    t = CreateWaterTile(t->X, t->Y);
+                    t = CreateWaterTile(t.Position.X, t.Position.Y);
                 }
             }
         }
     }
 
-    int RoomAccretionMap::FloodFill(int x, int y)
+    int RoomAccretionMap::FloodFill(Point position)
     {
-        // TODO: this sometimes returns 0, why?
-
-        auto t = GetTile(x, y);
+        auto t = GetTile(position);
 
         if (t == nullptr)
         {
@@ -310,10 +294,10 @@ namespace cm
 
         int total = 1;
 
-        total += FloodFill(x + 1, y);
-        total += FloodFill(x - 1, y);
-        total += FloodFill(x, y + 1);
-        total += FloodFill(x, y - 1);
+        total += FloodFill({position.X + 1, position.Y});
+        total += FloodFill({position.X - 1, position.Y});
+        total += FloodFill({position.X, position.Y + 1});
+        total += FloodFill({position.X, position.Y - 1});
 
         return total;
     }
@@ -322,9 +306,10 @@ namespace cm
     {
         bool containsType = false;
 
+        // TODO: slow
         for (auto &t : Tiles)
         {
-            if (t->Type == type)
+            if (t.Type == type)
             {
                 containsType = true;
                 break;
@@ -336,14 +321,14 @@ namespace cm
             return nullptr;
         }
 
-        int randIndex = RandomInt(Tiles.size());
+        auto tile = GetTile({RandomInt(Width), RandomInt(Height)});
 
-        while (Tiles.at(randIndex)->Type != type)
+        while (tile->Type != type)
         {
-            randIndex = RandomInt(Tiles.size());
+            tile = GetTile({RandomInt(Width), RandomInt(Height)});
         }
 
-        return Tiles.at(randIndex).get();
+        return tile;
     }
 
 } // namespace cm

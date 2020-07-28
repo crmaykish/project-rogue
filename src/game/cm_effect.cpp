@@ -72,7 +72,7 @@ namespace cm
     {
         // Set all of the neighboring tiles on fire
         auto actor = target != nullptr ? target : source;
-        auto neighbors = world->GetLevel()->GetNeighbors(actor->Position.X, actor->Position.Y, true);
+        auto neighbors = world->GetLevel()->GetNeighbors(actor->Position, true);
 
         for (auto t : neighbors)
         {
@@ -119,7 +119,7 @@ namespace cm
 
     void PoisonAuraEffect::Use(Actor *source, Actor *target, GameWorld *world)
     {
-        for (auto n : world->GetLevel()->GetNeighbors(source->Position.X, source->Position.Y, true))
+        for (auto n : world->GetLevel()->GetNeighbors(source->Position, true))
         {
             if (n != nullptr)
             {
@@ -150,11 +150,11 @@ namespace cm
 
                     // find a neighbor
 
-                    auto neighbors = world->GetLevel()->GetNeighbors(target->Position.X, target->Position.Y, false);
+                    auto neighbors = world->GetLevel()->GetNeighbors(target->Position, false);
 
                     for (auto n : neighbors)
                     {
-                        target = world->GetActor(n->X, n->Y);
+                        target = world->GetActor(n->Position);
 
                         if (target != nullptr)
                         {
