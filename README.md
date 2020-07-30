@@ -43,6 +43,8 @@
 - [ ] Whirlwind
 - [ ] Throw Grenade
 - [ ] Invisibility
+- Degenerating shield - acts like temporary HP
+- Slow moving blast wave or line that ticks each turn
 
 ### Enemies
 - Ghosts are slow, but can teleport
