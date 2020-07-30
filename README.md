@@ -48,3 +48,8 @@
 - Ghosts are slow, but can teleport
 - Slimes split into smaller slimes when killed
 - Spiders spit poison from a distance and then run away
+
+### Synergies
+- More fire damage for every on-fire tile around you
+- Burning targets take more fire damage
+- Healing has a chance to heal again
