@@ -18,6 +18,9 @@ namespace cm
             }
         }
 
+        // TODO: this is out of order with the ability messages
+        // world.LogEvent(Owner.Name + " takes " + std::to_string(damage.Value) + " damage", Owner.Friendly);
+
         world.AddCombatText({std::to_string(damage.Value), Owner.Position.X, Owner.Position.Y, ColorRed});
 
         // Trigger on-defend effects for this actor

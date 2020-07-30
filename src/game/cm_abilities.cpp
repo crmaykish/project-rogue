@@ -82,9 +82,14 @@ namespace cm
             return false;
         }
 
-        // TODO: consider target's defense rating
         auto baseDamage = user.Stats.GetAttackRating() / 4;
-        int actualDamage = RandomInt(baseDamage / 2, baseDamage * 1.25);
+        auto defense = target->Stats.GetDefenseRating() / 6;
+        int actualDamage = RandomInt(baseDamage / 2, baseDamage * 2) - RandomInt(defense / 2, defense * 2);
+
+        if (actualDamage <= 0)
+        {
+            actualDamage = 1;
+        }
 
         // Damage the target
         target->CombatComp->Damage({actualDamage, &user}, world);
