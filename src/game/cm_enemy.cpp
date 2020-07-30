@@ -134,9 +134,6 @@ namespace cm
         return std::make_unique<WaitAction>();
     }
 
-    // TODO: wrap up this split behavior in an ability or action, let the nextaction function return it as an option
-    // instead of operating independly from that process
-
     void Slime::Tick(GameWorld &world)
     {
         Enemy::Tick(world);

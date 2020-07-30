@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <set>
 #include "cm_abilities.h"
 #include "cm_actor.h"
@@ -146,12 +147,25 @@ namespace cm
 
     bool SlimeSplitAbility::Use(Actor &user, GameWorld &world)
     {
-        for (auto n : world.GetLevel()->GetNeighbors(user.Position))
+        auto neighbors = world.GetLevel()->GetNeighbors(user.Position, true);
+        std::random_shuffle(neighbors.begin(), neighbors.end());
+
+        auto max = neighbors.size() < 2 ? neighbors.size() : 2;
+        auto i = 0;
+
+        for (auto n : neighbors)
         {
+            if (i == max)
+            {
+                break;
+            }
+
             if (n->Walkable && world.GetActor(n->Position) == nullptr)
             {
                 world.AddEnemy(std::make_unique<Slime>(n->Position));
             }
+
+            i++;
         }
 
         return true;
