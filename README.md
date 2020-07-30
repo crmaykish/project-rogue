@@ -11,9 +11,9 @@
 - [x] Two shields
 - [x] Armor types: head, boots
 - [x] Four weapon effects - 2 defend, 2 attack
-- [ ] Inventory management (show item stats, drop items, etc.)
 - [x] Melee or ranged attacks depending on the equipped weapon
 - [x] Pure SDL2 implementation (remove SDL2_gpu)
+- [ ] Inventory management (show item stats, drop items, etc.)
 - [ ] Game balancing - actor stats, loot drop rates, map parameters etc.
 
 ## v0.1 Stretch Goals
@@ -37,6 +37,7 @@
 - [x] Sacrifice - damage self on use
 - [ ] Charm - convert target to friendly temporarily
 - [ ] Summon Familiar - create a friendly companion
+- [ ] Silenced - reduce energy to 1 for 3 turns
 
 ### Ability Ideas:
 - [ ] Whirlwind
