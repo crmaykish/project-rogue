@@ -53,8 +53,6 @@ namespace cm
          * @brief Tiles can store a collection of items that are shown as treasure chests for the player to collect
          */
         std::vector<std::unique_ptr<Item>> Items;
-
-        void SetFire(int fire);
     };
 
     Tile CreateFloorTile(int x, int y);

@@ -1,5 +1,6 @@
 #include "cm_map.h"
 #include "cm_game_world.h"
+#include "cm_random.h"
 
 namespace cm
 {
@@ -106,6 +107,14 @@ namespace cm
             // Update fire
             if (t->OnFire > 0)
             {
+                for (auto n : GetNeighbors(t->Position))
+                {
+                    if (RandomPercentCheck(50))
+                    {
+                        n->OnFire = t->OnFire - 1;
+                    }
+                }
+
                 t->OnFire--;
             }
 

@@ -12,7 +12,7 @@ namespace cm
 
         t.Type = TileType::Floor;
         t.Walkable = true;
-        t.Flammability = 2;
+        t.Flammability = 3;
         return t;
     }
 
@@ -32,7 +32,7 @@ namespace cm
         t.Position = {x, y};
         t.Type = TileType::Bridge;
         t.Walkable = true;
-        t.Flammability = 3;
+        t.Flammability = 5;
 
         return t;
     }
