@@ -65,6 +65,8 @@ namespace cm
 
         // Default player abilities
         AbilitiesComp->SetAbility(0, std::make_unique<AttackAbility>());
+        // Start with one random ability
+        AbilitiesComp->SetAbility(1, RandomAbility());
     }
 
     void Player::DecideNextAction(GameWorld &world)
