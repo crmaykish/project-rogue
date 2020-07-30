@@ -95,7 +95,7 @@ namespace cm
 
     void Game::Update()
     {
-        if (Input.Quit.On)
+        if (Input.Quit.On || Input.Escape.On)
         {
             Running = false;
         }
@@ -183,14 +183,14 @@ namespace cm
 
     void Game::RenderUI()
     {
-        int yOffset = MainRenderer->GetResolutionY() - 50;
+        int yOffset = MainRenderer->GetResolutionY();
 
         // Level number
         MainRenderer->DrawFont("Floor: " + std::to_string(World->GetLevelNumber()),
                                AssetKey::UIFont,
                                ColorWhite,
                                MainRenderer->GetResolutionX() - 120,
-                               yOffset + 20,
+                               yOffset - 40,
                                0.6,
                                true);
 
@@ -199,20 +199,20 @@ namespace cm
                                AssetKey::UIFont,
                                ColorWhite,
                                MainRenderer->GetResolutionX() - 120,
-                               yOffset - 20,
+                               yOffset - 80,
                                0.6,
                                true);
 
-        // Player name
-        MainRenderer->DrawFont(World->GetPlayer()->Name,
+        // HP
+        MainRenderer->DrawFont("HP: " + std::to_string(World->GetPlayer()->Stats.HP()) + " / " + std::to_string(World->GetPlayer()->Stats.MaxHP()),
                                AssetKey::UIFont,
-                               ColorWhite,
+                               ColorRed,
                                10,
-                               yOffset,
-                               1.0,
+                               yOffset - 40,
+                               0.6,
                                true);
 
-        yOffset -= 30;
+        yOffset -= 70;
 
         // Energy
         int energyX = 10;
@@ -229,17 +229,6 @@ namespace cm
             MainRenderer->DrawTexture(AssetKey::EnergyEmptyIcon, energyX, energyY, 24, 24, true);
             energyX += 32;
         }
-
-        yOffset -= 30;
-
-        // HP
-        MainRenderer->DrawFont("HP: " + std::to_string(World->GetPlayer()->Stats.HP()) + " / " + std::to_string(World->GetPlayer()->Stats.MaxHP()),
-                               AssetKey::UIFont,
-                               ColorRed,
-                               10,
-                               yOffset,
-                               0.6,
-                               true);
 
         yOffset -= 30;
 
@@ -275,28 +264,28 @@ namespace cm
 
         yOffset -= 60;
 
-        int bX = MainRenderer->GetResolutionX() - 48 - 6;
-        int bY = 6;
+        int bX = MainRenderer->GetResolutionX() - (16 * TileScaling) - ((TileScaling * 2));
+        int bY = (TileScaling * 2);
 
         auto items = World->GetPlayer()->InventoryComp.get();
 
         for (int i = 9; i > 0; i--)
         {
-            MainRenderer->DrawTexture(AssetKey::ItemOutlineTexture, bX, bY, 48, 48, true);
+            MainRenderer->DrawTexture(AssetKey::ItemOutlineTexture, bX, bY, 16 * TileScaling, 16 * TileScaling, true);
 
             if (items->ItemAt(i - 1) != nullptr)
             {
-                MainRenderer->DrawTexture(items->ItemAt(i - 1)->TextureKey, bX + 6, bY + 6, TileSize, TileSize, true);
+                MainRenderer->DrawTexture(items->ItemAt(i - 1)->TextureKey, bX + (TileScaling * 2), bY + (TileScaling * 2), TileSize, TileSize, true);
             }
 
             MainRenderer->DrawFont(std::to_string(i),
                                    AssetKey::UIFont,
                                    ColorWhite,
-                                   bX + 6,
+                                   bX + (TileScaling * 2),
                                    bY,
                                    0.5,
                                    true);
-            bX -= 48 + 6;
+            bX -= 16 * TileScaling + (TileScaling * 2);
         }
 
         // Equipped items
@@ -355,8 +344,8 @@ namespace cm
         }
 
         // Abilities
-        int xAb = 6;
-        int yAb = 6;
+        int xAb = (TileScaling * 2);
+        int yAb = (TileScaling * 2);
 
         auto abilities = World->GetPlayer()->AbilitiesComp.get();
 
@@ -364,11 +353,11 @@ namespace cm
         {
             auto a = abilities->AbilityAt(i);
 
-            MainRenderer->DrawTexture(AssetKey::AbilityOutlineTexture, xAb, yAb, 48, 48, true);
+            MainRenderer->DrawTexture(AssetKey::AbilityOutlineTexture, xAb, yAb, 16 * TileScaling, 16 * TileScaling, true);
 
             if (a != nullptr)
             {
-                MainRenderer->DrawTexture(a->GetIcon(), xAb + 6, yAb + 6, TileSize, TileSize, true);
+                MainRenderer->DrawTexture(a->GetIcon(), xAb + (TileScaling * 2), yAb + (TileScaling * 2), TileSize, TileSize, true);
 
                 // TODO: ugly
                 std::string letter;
@@ -393,13 +382,13 @@ namespace cm
                 MainRenderer->DrawFont(letter, // TODO: show keys instead of numbers
                                        AssetKey::UIFont,
                                        ColorWhite,
-                                       xAb + 6,
+                                       xAb + (TileScaling * 2),
                                        yAb,
                                        0.5,
                                        true);
             }
 
-            xAb += 48 + 6;
+            xAb += 16 * TileScaling + (TileScaling * 2);
         }
 
         // Render combat log

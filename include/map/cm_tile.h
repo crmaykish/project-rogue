@@ -9,7 +9,7 @@ namespace cm
     static const bool FogOfWar = true;
 
     const int TileAssetSizePixels = 12;
-    const int TileScaling = 3;
+    const int TileScaling = 5;
     const int TileSize = TileAssetSizePixels * TileScaling;
 
     const uint8_t TileBrightnessMin = 0x20;

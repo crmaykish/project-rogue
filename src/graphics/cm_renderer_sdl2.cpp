@@ -65,7 +65,20 @@ namespace cm
         SDLWindow = SDL_CreateWindow(WINDOW_TITLE.c_str(),
                                      SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                                      ResolutionW, ResolutionH,
-                                     SDL_WINDOW_SHOWN);
+                                     Fullscreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : SDL_WINDOW_SHOWN);
+
+        if (Fullscreen)
+        {
+            SDL_DisplayMode displayMode = {0};
+
+            if (SDL_GetCurrentDisplayMode(0, &displayMode) != 0)
+            {
+                Log("Failed to get current display mode: " + std::string(SDL_GetError()), LOG_ERROR);
+            }
+
+            ResolutionW = displayMode.w;
+            ResolutionH = displayMode.h;
+        }
 
         if (SDLWindow == NULL)
         {
