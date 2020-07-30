@@ -147,28 +147,33 @@ namespace cm
 
     bool SlimeSplitAbility::Use(Actor &user, GameWorld &world)
     {
-        auto neighbors = world.GetLevel()->GetNeighbors(user.Position, true);
-        std::random_shuffle(neighbors.begin(), neighbors.end());
+        auto neighbors = world.GetLevel()->GetNeighbors(user.Position);
 
-        auto max = neighbors.size() < 2 ? neighbors.size() : 2;
-        auto i = 0;
-
-        for (auto n : neighbors)
+        if (!neighbors.empty())
         {
-            if (i == max)
-            {
-                break;
-            }
+            std::random_shuffle(neighbors.begin(), neighbors.end());
 
-            if (n->Walkable && world.GetActor(n->Position) == nullptr)
+            for (auto n : neighbors)
             {
-                world.AddEnemy(std::make_unique<Slime>(n->Position));
-            }
+                if (n->Walkable && world.GetActor(n->Position) == nullptr)
+                {
+                    auto currentHP = user.Stats.HP();
 
-            i++;
+                    // Adjust the original slime's max HP to its current HP
+                    user.Stats.SetStatBaseValue(ActorStatType::MaxHealth, currentHP);
+
+                    // Create a new slime with the same max HP
+                    auto clone = std::make_unique<Slime>(n->Position);
+                    clone->Stats.SetStatBaseValue(ActorStatType::Health, currentHP);
+                    clone->Stats.SetStatBaseValue(ActorStatType::MaxHealth, currentHP);
+                    world.AddEnemy(std::move(clone));
+
+                    return true;
+                }
+            }
         }
 
-        return true;
+        return false;
     }
 
     bool PoisonAuraAbility::Use(Actor &user, GameWorld &world)
