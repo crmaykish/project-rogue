@@ -199,7 +199,7 @@ namespace cm
         // TODO: unchanging text elements could be cached instead of rebuilt every frame
 
         auto font = AssetManager.GetFont(fontKey);
-        auto surface = TTF_RenderText_Blended(font, text.c_str(), fontColor);
+        auto surface = TTF_RenderText_Solid(font, text.c_str(), fontColor);
         auto texture = SDL_CreateTextureFromSurface(SDLRenderer, surface);
 
         int w, h;

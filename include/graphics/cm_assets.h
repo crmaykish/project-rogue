@@ -11,7 +11,7 @@ namespace cm
     const std::string AssetsPath = "assets/";
     const std::string FontsPath = AssetsPath;
 
-    const int FontSize = 64;
+    const int FontSize = 40;
 
     enum struct AssetKey
     {

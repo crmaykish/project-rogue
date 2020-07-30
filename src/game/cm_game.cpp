@@ -191,7 +191,7 @@ namespace cm
                                ColorWhite,
                                MainRenderer->GetResolutionX() - 120,
                                yOffset - 40,
-                               0.6,
+                               1.0,
                                true);
 
         // Turn number
@@ -200,7 +200,7 @@ namespace cm
                                ColorWhite,
                                MainRenderer->GetResolutionX() - 120,
                                yOffset - 80,
-                               0.6,
+                               1.0,
                                true);
 
         // HP
@@ -209,7 +209,7 @@ namespace cm
                                ColorRed,
                                10,
                                yOffset - 40,
-                               0.6,
+                               1.0,
                                true);
 
         yOffset -= 70;
@@ -238,7 +238,7 @@ namespace cm
                                ColorYellow,
                                10,
                                yOffset,
-                               0.6,
+                               1.0,
                                true);
 
         yOffset -= 30;
@@ -249,7 +249,7 @@ namespace cm
                                ColorYellow,
                                10,
                                yOffset,
-                               0.6,
+                               1.0,
                                true);
 
         yOffset -= 30;
@@ -259,7 +259,7 @@ namespace cm
                                ColorPurple,
                                10,
                                yOffset,
-                               0.6,
+                               1.0,
                                true);
 
         yOffset -= 60;
@@ -281,9 +281,9 @@ namespace cm
             MainRenderer->DrawFont(std::to_string(i),
                                    AssetKey::UIFont,
                                    ColorWhite,
-                                   bX + (TileScaling * 2),
-                                   bY,
-                                   0.5,
+                                   bX + (TileScaling * 3),
+                                   bY * 2,
+                                   1.0,
                                    true);
             bX -= 16 * TileScaling + (TileScaling * 2);
         }
@@ -306,7 +306,7 @@ namespace cm
                                        ColorYellow,
                                        eqX,
                                        eqY,
-                                       0.5,
+                                       1.0,
                                        true);
 
                 eqY -= TileSize / 2;
@@ -321,7 +321,7 @@ namespace cm
                                        ColorWhite,
                                        eqX,
                                        eqY,
-                                       0.5,
+                                       1.0,
                                        true);
 
                 eqY -= TileSize / 2;
@@ -333,7 +333,7 @@ namespace cm
                                            ColorGreen,
                                            eqX,
                                            eqY,
-                                           0.5,
+                                           1.0,
                                            true);
 
                     eqY -= TileSize / 2;
@@ -382,9 +382,9 @@ namespace cm
                 MainRenderer->DrawFont(letter, // TODO: show keys instead of numbers
                                        AssetKey::UIFont,
                                        ColorWhite,
-                                       xAb + (TileScaling * 2),
-                                       yAb,
-                                       0.5,
+                                       xAb + (TileScaling * 3),
+                                       yAb * 2,
+                                       1.0,
                                        true);
             }
 
@@ -403,7 +403,7 @@ namespace cm
 
         while (elem != eventLog.end())
         {
-            MainRenderer->DrawFont((*elem).event, AssetKey::UIFont, (*elem).color, eventLogX, eventLogY, 0.5, true);
+            MainRenderer->DrawFont((*elem).event, AssetKey::UIFont, (*elem).color, eventLogX, eventLogY, 1.0, true);
             eventLogY -= 28;
 
             std::advance(elem, 1);

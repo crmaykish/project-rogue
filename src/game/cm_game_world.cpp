@@ -303,7 +303,7 @@ namespace cm
             auto color = d.RenderColor;
             color.alpha -= (d.Age);
 
-            renderer.DrawFont(d.Text, AssetKey::UIFont, color, x, y, 0.6);
+            renderer.DrawFont(d.Text, AssetKey::UIFont, color, x, y, 1.0);
 
             lastAge = d.Age;
         }

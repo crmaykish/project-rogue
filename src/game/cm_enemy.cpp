@@ -70,7 +70,7 @@ namespace cm
                               ColorWhite,
                               Position.X * TileSize,
                               (Position.Y + 1) * TileSize,
-                              0.5);
+                              1.0);
         }
     }
 
