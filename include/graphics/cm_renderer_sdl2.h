@@ -9,7 +9,7 @@ namespace cm
 {
     const int RESOLUTION_DEFAULT_W = 1280;
     const int RESOLUTION_DEFAULT_H = 800;
-    const bool Fullscreen = true;
+    const bool Fullscreen = false;
 
     class SDL2Renderer : public Renderer
     {
